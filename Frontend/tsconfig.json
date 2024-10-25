@@ -18,10 +18,15 @@
         "name": "next"
       }
     ],
-    "baseUrl": "./src" // 프로젝트 루트를 기준으로 설정
-    // "paths": {
-    //   "@/*": ["/*"]
-    // }
+    "baseUrl": ".", // 프로젝트 루트를 기준으로 설정
+    "paths": {
+      "@/*": ["src/*"],
+      "@components": ["src/components/*"],
+      "@store": ["src/redux/*"],
+      "@assets": ["src/assets/*"],
+      "@hooks": ["src/hooks/*"],
+      "@utils": ["src/utils/*"]
+    }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "Frontend/**/*"],
   "exclude": ["node_modules"]

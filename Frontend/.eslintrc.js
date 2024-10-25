@@ -11,6 +11,8 @@ module.exports = {
     'prettier', // Prettier 포맷팅 관련 규칙
   ],
   rules: {
+    'import/no-unresolved': 'off', // 경로 관련 규칙 비활성화
+    '@typescript-eslint/no-require-imports': 'off',
     'import/default': 'off', // import 규칙 중 기본 내보내기 오류 비활성화
     'simple-import-sort/imports': 'warn', // import 구문을 알파벳 순서로 정렬 (경고)
     'simple-import-sort/exports': 'error', // export 구문을 알파벳 순서로 정렬 (에러)
@@ -23,7 +25,7 @@ module.exports = {
         html: true, // HTML 태그에서도 빈 태그를 self-closing으로 설정
       },
     ],
-    'react/jsx-first-prop-new-line': 'error', // JSX 첫 번째 속성을 새 줄에 배치 (에러)
+    // 'react/jsx-first-prop-new-line': 'error', // JSX 첫 번째 속성을 새 줄에 배치 (에러)
     'comma-dangle': [
       'error',
       {
@@ -31,7 +33,7 @@ module.exports = {
         objects: 'always-multiline', // 객체에서 항상 쉼표 사용 (줄바꿈 시)
         imports: 'never', // import 구문에서는 끝에 쉼표 사용 안 함
         exports: 'never', // export 구문에서는 끝에 쉼표 사용 안 함
-        functions: 'never', // 함수 인자에서는 끝에 쉼표 사용 안 함
+        functions: 'always-multiline', // 함수 인자에서도 줄바꿈 시 쉼표 사용을 허용
       },
     ],
     indent: ['error', 2], // 들여쓰기를 2칸으로 설정 (에러)

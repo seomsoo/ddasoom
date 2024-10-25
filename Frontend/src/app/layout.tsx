@@ -3,6 +3,9 @@ import './globals.css';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
+import ReactQueryProvider from '@/utils/reactQueryProvider';
+import ReduxProvider from '@/utils/reduxProvider';
+
 const nanumRegular = localFont({
   src: '../fonts/NanumSquareNeoOTF-Rg.otf',
   variable: '--font-nanumRegular',
@@ -45,10 +48,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="ko-KR">
       <body
         className={`${nanumRegular.variable} ${nanumLight.variable} ${nanumBold.variable} ${nanumExtraBold.variable} ${nanumHeavy.variable} ${hakgyoansimR.variable} ${hakgyoansimB.variable} antialiased`}>
-        {children}
+        <ReduxProvider>
+          <ReactQueryProvider>{children}</ReactQueryProvider>
+        </ReduxProvider>
       </body>
     </html>
   );
