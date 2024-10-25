@@ -1,0 +1,18 @@
+0 verbose cli C:\Program Files\nodejs\node.exe C:\Users\SSAFY\AppData\Roaming\npm\node_modules\npm\bin\npm-cli.js
+1 info using npm@10.8.1
+2 info using node@v18.20.4
+3 silly config load:file:C:\Users\SSAFY\AppData\Roaming\npm\node_modules\npm\npmrc
+4 silly config load:file:C:\Users\SSAFY\Desktop\S11P31C103\Frontend\.npmrc
+5 silly config load:file:C:\Users\SSAFY\.npmrc
+6 silly config load:file:C:\Users\SSAFY\AppData\Roaming\npm\etc\npmrc
+7 verbose title npm eslint node_modules/.cache/.eslintcache
+8 verbose argv "eslint" "--cache" "--cache-location" "node_modules/.cache/.eslintcache" "--fix"
+9 verbose logfile logs-max:10 dir:C:\Users\SSAFY\Desktop\S11P31C103\Frontend\--cache-location\_logs\2024-10-25T10_38_32_966Z-
+10 verbose logfile C:\Users\SSAFY\Desktop\S11P31C103\Frontend\--cache-location\_logs\2024-10-25T10_38_32_966Z-debug-0.log
+11 silly logfile done cleaning log files
+12 verbose cwd C:\Users\SSAFY\Desktop\S11P31C103\Frontend
+13 verbose os Windows_NT 10.0.19045
+14 verbose node v18.20.4
+15 verbose npm  v10.8.1
+16 verbose exit 1
+17 verbose code 1

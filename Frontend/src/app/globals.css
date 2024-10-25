@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply font-nanumRegular;
+  max-width: 390px;
+  margin: 0 auto;
+  padding: 16px;
+  background-color: #ebf4e3;
+  width: 100%;
+  min-height: 100vh;
+}
+
+html {
+  background-color: #ffff;
+}
