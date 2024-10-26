@@ -1,0 +1,78 @@
+server:
+  port: 8000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, busrefresh
+
+spring:
+  profiles:
+    default: local
+
+  application:
+    name: gateway-service
+
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+
+  cloud:
+    gateway:
+      routes:
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/users/actuator/**
+            - Method=GET,POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/users/(?<segment>.*), /$\{segment}
+
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/users/**
+
+        - id: diary-service
+          uri: lb://DIARY-SERVICE
+          predicates:
+            - Path=/diary/actuator/**
+            - Method=GET,POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/diary/(?<segment>.*), /$\{segment}
+
+        - id: diary-service
+          uri: lb://DIARY-SERVICE
+          predicates:
+            - Path=/diary/**
+
+        - id: emergency-service
+          uri: lb://EMERGENCY-SERVICE
+          predicates:
+            - Path=/emergency/actuator/**
+            - Method=GET,POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/emergency/(?<segment>.*), /$\{segment}
+
+        - id: emergency-service
+          uri: lb://EMERGENCY-SERVICE
+          predicates:
+            - Path=/emergency/**
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
