@@ -6,15 +6,17 @@ type ButtonProps = {
   children?: React.ReactNode;
   color?: string;
   textColor?: string;
+  onPress: () => void;
 };
 
 const Button = ({
   children,
   color = "white",
   textColor = "black",
+  onPress,
 }: ButtonProps) => {
   return (
-    <ButtonWrapper>
+    <ButtonWrapper onPress={onPress}>
       <ButtonContainer color={color}>
         {typeof children === "string" ? (
           <ButtonText textColor={textColor}>{children}</ButtonText>
