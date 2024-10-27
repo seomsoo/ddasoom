@@ -9,9 +9,10 @@ import { router } from "expo-router";
 
 const Main = () => {
   const handleKaKaoLogin = async () => {
-    const result = await login();
-    if (result) {
-      console.log(result);
+    const { accessToken, refreshToken } = await login();
+    if (accessToken && refreshToken) {
+      console.log(accessToken);
+      router.push("authorized");
     }
   };
 
