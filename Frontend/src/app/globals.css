@@ -2,16 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply font-nanumRegular;
-  max-width: 390px;
-  margin: 0 auto;
-  padding: 16px;
-  background-color: #ebf4e3;
-  width: 100%;
-  min-height: 100vh;
+:root {
+  --background-color: #ebf4e3;
+  --text-color: #262626;
 }
 
 html {
-  background-color: #ffff;
+  background-color: #ffffff; /* 여백을 흰색으로 유지 */
+}
+
+body {
+  @apply font-nanumRegular antialiased;
+  color: var(--text-color);
 }
