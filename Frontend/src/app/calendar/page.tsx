@@ -1,7 +1,12 @@
 import React from 'react';
 
+import Calendar from '@/components/Calendar/Calendar';
 export default function calendar() {
   return (
-    <div>캘린더</div>
+    <div>
+      <Calendar/>      
+      {/* 공황 일지 */}
+      {/* 생활 기록 */}
+    </div>
   );
 }
