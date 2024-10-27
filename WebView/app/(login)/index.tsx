@@ -5,6 +5,7 @@ import logoImage from "@/assets/images/logo.png";
 import styled from "styled-components/native";
 import Button from "@/components/common/Button";
 import { login } from "@react-native-kakao/user";
+import { router } from "expo-router";
 
 const Main = () => {
   const handleKaKaoLogin = async () => {
@@ -12,6 +13,10 @@ const Main = () => {
     if (result) {
       console.log(result);
     }
+  };
+
+  const handleUnauthorized = () => {
+    router.push("breath");
   };
 
   return (
@@ -29,7 +34,7 @@ const Main = () => {
         <Button color="yellow" textColor="black" onPress={handleKaKaoLogin}>
           카카오 로그인
         </Button>
-        <Button color="white" textColor="black" onPress={() => {}}>
+        <Button color="white" textColor="black" onPress={handleUnauthorized}>
           따숨 둘러보기
         </Button>
       </FloatingView>
