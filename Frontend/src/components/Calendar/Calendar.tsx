@@ -1,5 +1,6 @@
 'use client';
-import { addMonths, format, isToday, setMonth, setYear, subMonths } from 'date-fns';
+
+import { addMonths, format, isSameMonth, isToday, setMonth, setYear, subMonths } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import Image from 'next/image';
 import React, { useState } from 'react';
@@ -8,6 +9,7 @@ import { useSwipeable } from 'react-swipeable';
 import CalendarListIcon from '@/asset/Svg/calendarListIcon.svg';
 
 import CalendarModal from './CalendarModal';
+import Link from 'next/link';
 
 const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
 
@@ -26,7 +28,10 @@ export default function Calendar() {
   };
 
   const handleNextMonth = () => {
-    setCurrentDate(prevDate => addMonths(prevDate, 1));
+    const nextMonthDate = addMonths(currentDate, 1);
+    if (isSameMonth(nextMonthDate, new Date()) || nextMonthDate < new Date()) {
+      setCurrentDate(nextMonthDate);
+    }
   };
 
   const handlers = useSwipeable({
@@ -61,8 +66,13 @@ export default function Calendar() {
           </p>
         </div>
         <div className="flex space-x-4 text-lg font-hakgyoansimR">
-          <button>자가진단</button>
-          <button>리포트</button>
+          <Link href="/calendar/selfDiagnosis">
+            <button>자가진단</button>
+          </Link>
+
+          <Link href="/calendar/report">
+            <button>리포트</button>
+          </Link>
         </div>
       </div>
 
