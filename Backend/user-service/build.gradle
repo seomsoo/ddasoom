@@ -66,6 +66,9 @@ dependencies {
     //Rest Docs
     asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+
+    //JWT
+    implementation 'com.auth0:java-jwt:4.4.0'
 }
 
 dependencyManagement {
@@ -81,7 +84,7 @@ asciidoctor {
     sources {
         include("**/index.adoc")
     }
-    
+
     baseDirFollowsSourceFile()
     dependsOn test
 }
