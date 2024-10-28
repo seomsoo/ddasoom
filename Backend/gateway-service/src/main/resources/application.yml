@@ -40,7 +40,7 @@ spring:
         - id: user-service
           uri: lb://USER-SERVICE
           predicates:
-            - Path=/users/**
+            - Path=/api/users/**
 
         - id: diary-service
           uri: lb://DIARY-SERVICE
@@ -54,7 +54,7 @@ spring:
         - id: diary-service
           uri: lb://DIARY-SERVICE
           predicates:
-            - Path=/diary/**
+            - Path=/api/diary/**
 
         - id: emergency-service
           uri: lb://EMERGENCY-SERVICE
@@ -68,7 +68,7 @@ spring:
         - id: emergency-service
           uri: lb://EMERGENCY-SERVICE
           predicates:
-            - Path=/emergency/**
+            - Path=/api/emergency/**
 
 eureka:
   client:
