@@ -1,12 +1,8 @@
-import { View, Text } from "react-native";
 import React from "react";
+import WebView from "react-native-webview";
 
 const AuthedScreen = () => {
-  return (
-    <View>
-      <Text>AuthedScreen</Text>
-    </View>
-  );
+  return <WebView style={{ flex: 1 }} source={{ uri: "https://expo.dev" }} />;
 };
 
 export default AuthedScreen;
