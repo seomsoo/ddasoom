@@ -6,4 +6,7 @@ public record User(
         String name
 ) {
 
+    public User(String email, String name) {
+        this(null, email, name);
+    }
 }
