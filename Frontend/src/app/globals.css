@@ -3,8 +3,11 @@
 @tailwind utilities;
 
 :root {
-  --background-color: #ebf4e3;
   --text-color: #262626;
+  --gradient-color-start1: #ffffff; /* 첫 번째 그라데이션 시작 색상 */
+  --gradient-color-end1: #a4daaf; /* 첫 번째 그라데이션 끝 색상 */
+  --gradient-color-start2: #20f64f; /* 두 번째 그라데이션 시작 색상 */
+  --gradient-color-end2: #ff4b4b; /* 두 번째 그라데이션 끝 색상 */
 }
 
 html {
@@ -14,4 +17,12 @@ html {
 body {
   @apply font-nanumRegular antialiased;
   color: var(--text-color);
+
+  /* 두 가지 그라데이션 적용 */
+  background-image:
+    linear-gradient(to bottom, var(--gradient-color-start1), var(--gradient-color-end1) 70%),
+    /* 첫 번째 그라데이션 */
+      linear-gradient(to bottom right, var(--gradient-color-start2) 10%, var(--gradient-color-end2) 100%); /* 두 번째 그라데이션 */
+  background-size: cover;
+  background-blend-mode: screen; /* 겹쳐보이는 효과 */
 }
