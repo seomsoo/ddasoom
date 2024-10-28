@@ -4,14 +4,15 @@ import backGroundImg from "@/assets/images/first.png";
 import logoImage from "@/assets/images/logo.png";
 import styled from "styled-components/native";
 import Button from "@/components/common/Button";
-import { login } from "@react-native-kakao/user";
+import { login, me } from "@react-native-kakao/user";
 import { router } from "expo-router";
 
 const Main = () => {
+  console.log("login");
+
   const handleKaKaoLogin = async () => {
     const { accessToken, refreshToken } = await login();
     if (accessToken && refreshToken) {
-      console.log(accessToken);
       router.push("authorized");
     }
   };
@@ -22,7 +23,6 @@ const Main = () => {
 
   return (
     <Container>
-      <StatusBar barStyle="light-content" />
       <Image source={backGroundImg} style={{ width: "100%", height: "100%" }} />
       <FloatingView>
         <LogoView>
