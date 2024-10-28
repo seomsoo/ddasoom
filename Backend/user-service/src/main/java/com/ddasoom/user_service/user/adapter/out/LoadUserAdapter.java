@@ -6,7 +6,6 @@ import com.ddasoom.user_service.user.application.port.out.LoadUserPort;
 import com.ddasoom.user_service.user.error.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 
-
 @PersistenceAdapter
 @RequiredArgsConstructor
 public class LoadUserAdapter implements LoadUserPort {

@@ -1,9 +1,8 @@
-package com.ddasoom.user_service.user.application.service;
+package com.ddasoom.user_service.user.error;
 
 import static com.ddasoom.user_service.common.util.ApiUtils.error;
 
 import com.ddasoom.user_service.common.util.ApiUtils.ApiResult;
-import com.ddasoom.user_service.user.error.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
