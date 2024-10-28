@@ -4,5 +4,5 @@ import com.ddasoom.user_service.user.adapter.in.web.response.LoginResponse;
 
 public interface LoginUseCase {
 
-    LoginResponse login(LoginCommand command);
+    LoginResponse login(String email);
 }
