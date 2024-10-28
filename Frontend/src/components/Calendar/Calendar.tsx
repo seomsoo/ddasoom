@@ -19,17 +19,14 @@ export default function Calendar() {
   const endOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
 
   const blankDays = Array.from({ length: startOfMonth.getDay() }, () => '');
-  const daysInMonth = Array.from(
-    { length: endOfMonth.getDate() },
-    (_, i) => i + 1,
-  );
+  const daysInMonth = Array.from({ length: endOfMonth.getDate() }, (_, i) => i + 1);
 
   const handlePreviousMonth = () => {
-    setCurrentDate((prevDate) => subMonths(prevDate, 1));
+    setCurrentDate(prevDate => subMonths(prevDate, 1));
   };
 
   const handleNextMonth = () => {
-    setCurrentDate((prevDate) => addMonths(prevDate, 1));
+    setCurrentDate(prevDate => addMonths(prevDate, 1));
   };
 
   const handlers = useSwipeable({
@@ -43,23 +40,23 @@ export default function Calendar() {
   };
 
   const handleYearChange = (newYear: number) => {
-    setCurrentDate((prevDate) => setYear(prevDate, newYear));
+    setCurrentDate(prevDate => setYear(prevDate, newYear));
   };
 
   const handleMonthChange = (newMonth: number) => {
-    setCurrentDate((prevDate) => setMonth(prevDate, newMonth - 1));
+    setCurrentDate(prevDate => setMonth(prevDate, newMonth - 1));
     setIsModal(false);
   };
 
   return (
     <div className="w-full mx-auto" {...handlers}>
-      <div className="flex justify-between items-center mb-6 px-4">
-        <div className="text-left" onClick={handleOpenModal} >
+      <div className="flex justify-between items-center mb-6 px-3">
+        <div className="text-left" onClick={handleOpenModal}>
           <p className="text-lg font-hakgyoansimR">{format(currentDate, 'yyyy년', { locale: ko })}</p>
           <p className="text-3xl font-hakgyoansimR">
             {format(currentDate, 'MM월', { locale: ko })}
             <button className="ml-3">
-              <Image src={CalendarListIcon} alt="calendarList" />
+              <Image className="mb-1" src={CalendarListIcon} alt="calendarList" />
             </button>
           </p>
         </div>
@@ -80,7 +77,7 @@ export default function Calendar() {
       )}
 
       <div className="grid grid-cols-7 text-center font-hakgyoansimR mb-3 ">
-        {daysOfWeek.map((day) => (
+        {daysOfWeek.map(day => (
           <div key={day} className="text-2xl">
             {day}
           </div>
@@ -89,17 +86,19 @@ export default function Calendar() {
 
       <div className="grid grid-cols-7 gap-y-4">
         {blankDays.map((_, idx) => (
-          <div key={idx} className="text-center"> </div>
+          <div key={idx} className="text-center">
+            {' '}
+          </div>
         ))}
-        {daysInMonth.map((day) => {
+        {daysInMonth.map(day => {
           const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
           const isTodayDate = isToday(date);
 
           return (
             <div key={day} className="flex flex-col items-center text-gray5">
-              <div
-                className="h-11 w-11 flex items-center justify-center rounded-full bg-gray3" />
-              <span className={`text-sm mt-2 font-hakgyoansimR ${isTodayDate && 'bg-main1 w-8 rounded-xl text-center text-gray1' }`}>
+              <div className="h-11 w-11 flex items-center justify-center rounded-full bg-gray3" />
+              <span
+                className={`text-sm mt-2 font-hakgyoansimR ${isTodayDate && 'bg-main1 w-8 rounded-xl text-center text-gray1'}`}>
                 {format(date, 'd')}
               </span>
             </div>
