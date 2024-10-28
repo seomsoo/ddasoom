@@ -59,7 +59,7 @@ export default function BreathHeart({ timing }: BreathHeartProps) {
     setTimer(1);
 
     const stepTimeout = setTimeout(() => {
-      setCurrentStage((prevStage) => (prevStage + 1) % sequence.length);
+      setCurrentStage(prevStage => (prevStage + 1) % sequence.length);
     }, duration);
 
     return () => clearTimeout(stepTimeout);
@@ -68,8 +68,8 @@ export default function BreathHeart({ timing }: BreathHeartProps) {
   useEffect(() => {
     if (isAnimating) {
       const countdown = setInterval(() => {
-        setTimer((prevTime) => prevTime + 1);
-        setElapsedTime((prevElapsed) => prevElapsed + 1);
+        setTimer(prevTime => prevTime + 1);
+        setElapsedTime(prevElapsed => prevElapsed + 1);
       }, 1000);
 
       return () => clearInterval(countdown);
@@ -90,8 +90,7 @@ export default function BreathHeart({ timing }: BreathHeartProps) {
             transform: `scale(${scale})`,
             transitionDuration: `${sequence[currentStage]?.duration || 1000}ms`,
             transformOrigin: 'bottom',
-          }}
-        >
+          }}>
           <Image src={HeartSvg} alt="HeartSvg" width={64} height={64} />
         </div>
 
@@ -100,9 +99,11 @@ export default function BreathHeart({ timing }: BreathHeartProps) {
         </div>
       </div>
 
-      {!isAnimating && (<button onClick={handleStart} className="mt-4" disabled={isAnimating} >
-        시작하기
-      </button>)}
+      {!isAnimating && (
+        <button onClick={handleStart} className="mt-4" disabled={isAnimating}>
+          시작하기
+        </button>
+      )}
     </div>
   );
 }
