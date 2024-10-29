@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
@@ -14,7 +13,11 @@ export default function Navbar() {
       </Link>
 
       <Link href="/main">
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 w-24 h-24 bg-main2 rounded-[30px] overflow-hidden shadow-[4px_4px_4px_rgba(0,0,0,0.5)]">
+        <div
+          style={{
+            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3), 0 6px 20px rgba(0, 0, 0, 0.2)',
+          }}
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 w-24 h-24 bg-main2 rounded-[30px] overflow-hidden ">
           <Ddasomi className="w-28 h-28 translate-y-4 -translate-x-1" />
         </div>
       </Link>
