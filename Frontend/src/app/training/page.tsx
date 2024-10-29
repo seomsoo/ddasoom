@@ -1,16 +1,14 @@
-import Image from 'next/image';
-import React from 'react';
+import Link from 'next/link';
 
 import DdasomiSvg from '@/asset/Svg/ddasomi.svg';
 import SunglassDasomiSvg from '@/asset/Svg/sunglassDdasomi.svg';
 import Navbar from '@/components/Navbar';
-import Link from 'next/link';
 
 export default function Training() {
   return (
-    <div className="flex flex-col items-center mt-14 max-h-screen relative">
+    <div className="flex flex-col items-center mt-11 max-h-screen relative">
       <div className="relative w-full flex ml-6">
-        <Image src={DdasomiSvg} alt="DdasomiSvg" className="absolute -top-14 w-32 h-32 z-0 " />
+        <DdasomiSvg className="absolute -top-14 w-32 h-32 z-0 " />
       </div>
       <div className="flex ml-8 mt-7 bg-main4 border border-r-0 border-main1 shadow-md rounded-l-2xl w-full max-w-md p-4 py-6 mb-4 z-10">
         <Link href="/training/breath">
@@ -29,7 +27,7 @@ export default function Training() {
           <div className="flex flex-col gap-2 text-right ml-20 relative">
             <h2 className="text-3xl font-nanumBold">그라운딩</h2>
             <div className="absolute -top-6 -left-[120px]  transform rotate-12">
-              <Image src={DdasomiSvg} alt="DdasomiSvg" className="w-32 h-32 z-2" />
+              <DdasomiSvg className="w-32 h-32 z-2" />
             </div>
             <div className="text-sm">
               <p className="mr-1">감각에 집중하여</p>
@@ -40,7 +38,7 @@ export default function Training() {
       </div>
 
       <div className="relative w-full flex z-0">
-        <Image src={SunglassDasomiSvg} alt="DdasomiSvg" className="absolute w-32 h-32 -top-8 right-2 z-0" />
+        <SunglassDasomiSvg alt="DdasomiSvg" className="absolute w-32 h-32 -top-8 -right-2 z-0" />
       </div>
       <div className="flex ml-8 mt-7 bg-main4 border border-r-0 border-main1 shadow-md rounded-l-2xl w-full max-w-md p-4 py-6 mb-4 z-10">
         <Link href="/training/calmDown">
