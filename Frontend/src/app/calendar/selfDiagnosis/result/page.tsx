@@ -1,9 +1,10 @@
 'use client';
 
+import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import React from 'react';
+
 import DdasomiSvg from '@/asset/Svg/ddasomi.svg';
-import Image from 'next/image';
 export default function SelfDiagnosisResultPage() {
   const searchParams = useSearchParams();
   const yesCount = parseInt(searchParams.get('yesCount') || '0', 10); // 쿼리 파라미터에서 yesCount 값을 가져옵니다.
@@ -12,7 +13,6 @@ export default function SelfDiagnosisResultPage() {
 
   return (
     <div className="flex flex-col items-center p-6">
-      <h2 className="text-lg font-bold mb-6">자가진단</h2>
       <div className="w-full max-w-md p-6 text-center">
         <h3 className="text-2xl font-semibold mb-4">{isPanicSuspected ? '공황 증상이 의심됩니다.' : '괜찮습니다!'}</h3>
         <Image src={DdasomiSvg} alt="ddasomi" />
