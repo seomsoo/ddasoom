@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React from 'react';
 
@@ -22,7 +21,7 @@ export default function SelfDiagnosisResultPage() {
     <main className="flex flex-col items-center">
       <div className="w-full max-w-md mt-5 text-center">
         <h3 className="text-3xl font-hakgyoansimR mb-2">{isPanicSuspected ? '괜찮으신가요?' : '괜찮습니다!'}</h3>
-        <Image src={DdasomiSvg} alt="ddasomi" className="ml-16 my-6" width={200} height={200} />
+        <DdasomiSvg className="ml-16 my-6" width={200} height={200} />
         <article className="my-5 text-sm">
           {isPanicSuspected ? (
             <div>

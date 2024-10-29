@@ -17,7 +17,7 @@ export default function SelfDiagnosisPage() {
         공황장애 진단 기준에 따른 <br /> 자가진단입니다.
       </p>
       <p className="text-xs">총 13문항으로, 다음 중 나타난 증상을 모두 골라주세요.</p>
-      <Image src={Ddasomi} alt="ddasomiImage" className="mt-4" />
+      <Ddasomi className="mt-4" />
       <Button label="시작하기" className="mt-12" onClick={handleStartCheck} />
     </div>
   );
