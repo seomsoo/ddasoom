@@ -14,7 +14,7 @@ import Calendar from '@/components/Record/Calendar';
 import DiaryItem from '@/components/Record/DiaryItem';
 
 export default function RecordPage() {
-  const todayTrainings = ['호흡 연습', '호흡 연습', '호흡 연습'];
+  const todayTrainings = ['호흡하기'];
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [todayRecord, setTodayRecord] = useState<{ diaryEntry: string | null; selectedIcons: string[] | null }>({
     diaryEntry: null,
