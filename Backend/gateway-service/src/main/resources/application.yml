@@ -40,6 +40,18 @@ spring:
         - id: user-service
           uri: lb://USER-SERVICE
           predicates:
+            - Path=/api/users/login
+            - Method=POST
+
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/api/users
+            - Method=POST
+
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
             - Path=/api/users/**
 
         - id: diary-service
@@ -76,3 +88,7 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://localhost:8761/eureka
+
+jwt:
+  issuer: DDASOOM
+  client-secret: asdfasdfasdfadadfa
