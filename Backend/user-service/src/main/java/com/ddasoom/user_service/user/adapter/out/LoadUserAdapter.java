@@ -13,14 +13,30 @@ public class LoadUserAdapter implements LoadUserPort {
     private final UserRepository userRepository;
 
     @Override
-    public User loadUser(String email) {
-        UserJpaEntity user = userRepository.findByEmail(email)
+    public User loadUser(Long userId) {
+        UserJpaEntity user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
 
         return new User(
                 user.getId(),
                 user.getEmail(),
-                user.getName()
+                user.getName(),
+                0
+        );
+    }
+
+    @Override
+    public User loadUser(String email) {
+        UserJpaEntity user = userRepository.findByEmail(email)
+                .orElseThrow(UserNotFoundException::new);
+
+        //TODO: 연속 훈련일 수 받아오기
+
+        return new User(
+                user.getId(),
+                user.getEmail(),
+                user.getName(),
+                0
         );
     }
 }
