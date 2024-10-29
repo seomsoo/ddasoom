@@ -8,7 +8,7 @@ import CigaretteSvg from '@/asset/Svg/cigarette.svg';
 import AlcoholSvg from '@/asset/Svg/alcohol.svg';
 import ExerciseSvg from '@/asset/Svg/exercise.svg';
 import Header from '@/components/Header';
-import RecordItem from '@/components/RecordItem';
+import RecordItem from '@/components/Record/RecordItem';
 import Button from '@/components/Button';
 
 export default function DailyRecordPage() {
@@ -52,8 +52,18 @@ export default function DailyRecordPage() {
   }, [selectedIcons, diaryEntry]);
 
   const handleAddDailyRecord = () => {
+    const dateKey = `dailyRecord-${year}-${month}-${day}`;
+    const recordData = {
+      selectedIcons: Object.keys(selectedIcons).filter(icon => selectedIcons[icon]),
+      diaryEntry: diaryEntry.trim(),
+    };
+
+    // 날짜별 키로 로컬 스토리지에 저장
+    localStorage.setItem(dateKey, JSON.stringify(recordData));
+    // /calendar로 이동
     router.push('/calendar');
   };
+
   return (
     <div className="flex flex-col gap-4 justify-center">
       <Header label={label} />

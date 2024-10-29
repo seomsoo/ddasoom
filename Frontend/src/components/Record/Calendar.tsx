@@ -70,10 +70,10 @@ export default function Calendar({ selectedDate, onDateSelect }: CalendarProps) 
           </p>
         </div>
         <div className="flex space-x-4 text-lg font-hakgyoansimR">
-          <Link href="/calendar/selfDiagnosis">
+          <Link href="/record/selfDiagnosis">
             <button>자가진단</button>
           </Link>
-          <Link href="/calendar/report">
+          <Link href="/record/report">
             <button>리포트</button>
           </Link>
         </div>
