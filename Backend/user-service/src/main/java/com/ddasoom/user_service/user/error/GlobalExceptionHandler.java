@@ -3,6 +3,7 @@ package com.ddasoom.user_service.user.error;
 import static com.ddasoom.user_service.common.util.ApiUtils.error;
 
 import com.ddasoom.user_service.common.util.ApiUtils.ApiResult;
+import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -17,11 +18,16 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @Slf4j
 @ControllerAdvice
 @RequiredArgsConstructor
-public class GeneralExceptionHandler {
+public class GlobalExceptionHandler {
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<?> handleUserNotFoundException(Exception e) {
         return newResponse(e, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<?> handleConstraintViolationException(Exception e) {
+        return newResponse("잘못된 입력 양식입니다.", HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(DuplicatedUserException.class)
