@@ -24,6 +24,11 @@ public class GeneralExceptionHandler {
         return newResponse(e, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(DuplicatedUserException.class)
+    public ResponseEntity<?> handleDuplicatedUserException(Exception e) {
+        return newResponse(e, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(HttpMediaTypeException.class)
     public ResponseEntity<?> handleHttpMediaTypeException(Exception e) {
         return newResponse(e, HttpStatus.UNSUPPORTED_MEDIA_TYPE);
