@@ -1,13 +1,19 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
-import React, { useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import React, { useState, useEffect } from 'react';
 
 import CaffeineSvg from '@/asset/Svg/caffeine.svg';
+import CigaretteSvg from '@/asset/Svg/cigarette.svg';
+import AlcoholSvg from '@/asset/Svg/alcohol.svg';
+import ExerciseSvg from '@/asset/Svg/exercise.svg';
 import Header from '@/components/Header';
+import RecordItem from '@/components/RecordItem';
+import Button from '@/components/Button';
 
 export default function DailyRecordPage() {
   const searchParams = useSearchParams();
+  const router = useRouter();
 
   // 쿼리 파라미터에서 year, month, day 가져오기
   const year = searchParams.get('year');
@@ -20,8 +26,16 @@ export default function DailyRecordPage() {
   // 각 아이콘의 선택 상태를 관리하는 객체
   const [selectedIcons, setSelectedIcons] = useState<{ [key: string]: boolean }>({
     caffeine: false,
-    // 추가 아이콘 상태 초기화
+    cigarette: false,
+    alcohol: false,
+    exercise: false,
   });
+
+  // 한 줄 일기 내용
+  const [diaryEntry, setDiaryEntry] = useState('');
+
+  // 기록하기 버튼 활성화 여부
+  const [isButtonEnabled, setIsButtonEnabled] = useState(false);
 
   // 아이콘 클릭 핸들러
   const handleIconClick = (iconId: string) => {
@@ -31,17 +45,59 @@ export default function DailyRecordPage() {
     }));
   };
 
-  return (
-    <div>
-      <Header label={label} />
-      <p>오늘 하루 어떤 활동을 하셨나요?</p>
+  // isButtonEnabled 상태 업데이트
+  useEffect(() => {
+    const isAnyIconSelected = Object.values(selectedIcons).some(selected => selected);
+    setIsButtonEnabled(isAnyIconSelected || diaryEntry.trim() !== '');
+  }, [selectedIcons, diaryEntry]);
 
-      <div className="flex space-x-4 mt-4">
-        {/* 아이콘을 클릭하면 색상이 동적으로 변경됨 */}
-        <div onClick={() => handleIconClick('caffeine')} className="cursor-pointer">
-          <CaffeineSvg className={`${selectedIcons.caffeine ? 'text-main4' : 'text-gray5'}`} />
-        </div>
+  const handleAddDailyRecord = () => {
+    router.push('/calendar');
+  };
+  return (
+    <div className="flex flex-col gap-4 justify-center">
+      <Header label={label} />
+      <p className="font-hakgyoansimR text-2xl">
+        오늘 하루 <br />
+        어떤 활동을 하셨나요?
+      </p>
+
+      <div className="flex justify-center items-center space-x-4 mt-4">
+        <RecordItem
+          label="카페인"
+          Icon={CaffeineSvg}
+          isSelected={selectedIcons.caffeine}
+          onClick={() => handleIconClick('caffeine')}
+        />
+        <RecordItem
+          label="니코틴"
+          Icon={CigaretteSvg}
+          isSelected={selectedIcons.cigarette}
+          onClick={() => handleIconClick('cigarette')}
+        />
+        <RecordItem
+          label="알코올"
+          Icon={AlcoholSvg}
+          isSelected={selectedIcons.alcohol}
+          onClick={() => handleIconClick('alcohol')}
+        />
+        <RecordItem
+          label="운동"
+          Icon={ExerciseSvg}
+          isSelected={selectedIcons.exercise}
+          onClick={() => handleIconClick('exercise')}
+        />
       </div>
+      <p className="font-hakgyoansimR text-2xl mt-7">오늘의 한 줄 일기</p>
+      <div className="bg-main4 w-full h-60 rounded-xl border border-2 border-main1 p-4">
+        <textarea
+          placeholder="글을 입력하세요..."
+          className="w-full h-full bg-transparent outline-none resize-none"
+          value={diaryEntry}
+          onChange={e => setDiaryEntry(e.target.value)}
+        />
+      </div>
+      <Button label="기록하기" disabled={!isButtonEnabled} onClick={handleAddDailyRecord} />
     </div>
   );
 }
