@@ -15,15 +15,7 @@ public class DailyRecordAdapter implements DailyRecordPort {
     @Override
     public void saveDailyRecord(Long userId, DailyRecordCommand command) {
         dailyRepository.save(
-                DailyJpaEntity.builder()
-                        .userId(userId)
-                        .alcohol(command.alcohol())
-                        .caffeine(command.caffeine())
-                        .smoking(command.smoking())
-                        .exercise(command.exercise())
-                        .description(command.description())
-                        .date(command.date())
-                        .build()
+                DailyJpaEntity.of(userId, command)
         );
     }
 

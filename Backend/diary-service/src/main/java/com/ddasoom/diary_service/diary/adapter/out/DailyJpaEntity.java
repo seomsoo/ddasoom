@@ -1,5 +1,6 @@
 package com.ddasoom.diary_service.diary.adapter.out;
 
+import com.ddasoom.diary_service.diary.application.port.in.DailyRecordCommand;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -48,5 +49,17 @@ public class DailyJpaEntity {
         this.smoking = smoking;
         this.exercise = exercise;
         this.description = description;
+    }
+
+    public static DailyJpaEntity of(Long userId, DailyRecordCommand command) {
+        return DailyJpaEntity.builder()
+                .userId(userId)
+                .alcohol(command.alcohol())
+                .caffeine(command.caffeine())
+                .smoking(command.smoking())
+                .exercise(command.exercise())
+                .description(command.description())
+                .date(command.date())
+                .build();
     }
 }
