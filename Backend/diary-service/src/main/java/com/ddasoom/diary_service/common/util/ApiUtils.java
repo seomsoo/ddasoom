@@ -3,6 +3,7 @@ package com.ddasoom.diary_service.common.util;
 import static com.ddasoom.diary_service.common.util.ApiUtils.ApiStatus.ERROR;
 import static com.ddasoom.diary_service.common.util.ApiUtils.ApiStatus.SUCCESS;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
@@ -20,6 +21,7 @@ public class ApiUtils {
         return new ApiResult<>(ERROR, null, new ApiError(message, status));
     }
 
+    @Getter
     public static class ApiError {
 
         private final String message;
@@ -35,6 +37,7 @@ public class ApiUtils {
         }
     }
 
+    @Getter
     public static class ApiResult<T> {
 
         private final ApiStatus status;
