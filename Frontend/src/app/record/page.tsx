@@ -14,7 +14,7 @@ import Calendar from '@/components/Record/Calendar';
 import DiaryItem from '@/components/Record/DiaryItem';
 
 export default function RecordPage() {
-  const todayTrainings = ['호흡 연습', '호흡 연습', '호흡 연습' ];
+  const todayTrainings = ['호흡 연습', '호흡 연습', '호흡 연습'];
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [todayRecord, setTodayRecord] = useState<{ diaryEntry: string | null; selectedIcons: string[] | null }>({
     diaryEntry: null,
@@ -28,23 +28,33 @@ export default function RecordPage() {
   } | null>(null);
   const router = useRouter();
 
+  // 공황 발생 날짜 목록
   const panicDataList = useMemo(() => [
     {
       start_date: '2024-10-29 13:30',
       duration: 5,
-      address: '서울특별시 강남구 삼성동 ddddddddd',
+      address: '서울특별시 강남구 삼성동',
       description: '지하철에서 갑작스럽게 공황이 왔다.',
     },
-  ], []); 
+    {
+      start_date: '2024-10-28 10:00',
+      duration: 3,
+      address: '광주광역시 광산구 수완동',
+      description: '엔젤에 사람이 너무 많았다.',
+    },
+  ], []);
+
+  // 공황 장애 발생 날짜만 추출하여 문자열 배열로 생성
+  const isPanicList = useMemo(() => {
+    return panicDataList.map(entry => entry.start_date.split(' ')[0]); // 'YYYY-MM-DD' 형식만 추출
+  }, [panicDataList]);
 
   useEffect(() => {
-    // 선택된 날짜 기본 설정
     if (!selectedDate) {
       setSelectedDate(new Date());
       return;
     }
 
-    // 날짜 포맷 설정
     const formattedDate = `${selectedDate.getFullYear()}-${String(selectedDate.getMonth() + 1).padStart(2, '0')}-${String(
       selectedDate.getDate(),
     ).padStart(2, '0')}`;
@@ -82,11 +92,11 @@ export default function RecordPage() {
   const renderSomiIcon = () => {
     switch (todayTrainings.length) {
     case 1:
-      return <YellowSomi className='mb-2'/>;
+      return <YellowSomi className='mb-2' />;
     case 2:
-      return <OrangeSomi className='mb-2'/>;
+      return <OrangeSomi className='mb-2' />;
     case 3:
-      return <GreenSomi />;
+      return <GreenSomi className='mb-2' />;
     default:
       return null;
     }
@@ -94,7 +104,12 @@ export default function RecordPage() {
 
   return (
     <div className="pb-32">
-      <Calendar selectedDate={selectedDate} onDateSelect={setSelectedDate} />
+      <Calendar 
+        selectedDate={selectedDate} 
+        onDateSelect={setSelectedDate} 
+        isPanicList={isPanicList}  // 공황 발생 날짜 목록 전달
+        isTraining={todayTrainings.length} 
+      />
 
       {/* 공황 일지 박스: panicData가 있을 때만 표시 */}
       {panicData && (
@@ -116,7 +131,6 @@ export default function RecordPage() {
         <div className="flex flex-col items-center mr-4 font-nanumBold text-gray5">
           {todayTrainings && renderSomiIcon()}
           <div className="bg-main3 rounded-2xl p-2 text-center text-xxs w-15 h-5 text-nowrap flex items-center justify-center">
-          
             <div>
               {displayDate.getDate()} {selectedDay}
             </div>

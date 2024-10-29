@@ -7,6 +7,9 @@ import React, { useState } from 'react';
 import { useSwipeable } from 'react-swipeable';
 
 import CalendarListIcon from '@/asset/Svg/calendarListIcon.svg';
+import GreenSomi from '@/asset/Svg/greenSomi.svg';
+import OrangeSomi from '@/asset/Svg/orangeSomi.svg';
+import YellowSomi from '@/asset/Svg/yellowSomi.svg';
 
 import CalendarModal from './CalendarModal';
 
@@ -15,9 +18,11 @@ const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
 interface CalendarProps {
   selectedDate: Date | null;
   onDateSelect: (date: Date) => void;
+  isPanicList: string[];
+  isTraning: number | null;
 }
 
-export default function Calendar({ selectedDate, onDateSelect }: CalendarProps) {
+export default function Calendar({ selectedDate, onDateSelect, isPanicList, isTraning }: CalendarProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [isModal, setIsModal] = useState(false);
 
@@ -56,6 +61,19 @@ export default function Calendar({ selectedDate, onDateSelect }: CalendarProps) 
     setCurrentDate(prevDate => setMonth(prevDate, newMonth - 1));
     setIsModal(false);
   };
+
+  const renderSomiIcon = () => {
+    switch (isTraning) {
+    case 1:
+      return <YellowSomi className="w-6 h-6" />;
+    case 2:
+      return <OrangeSomi className="w-6 h-6" />;
+    case 3:
+    default:
+      return <GreenSomi className="w-16 h-16" />;
+    }
+  };
+  console.log(isTraning);
 
   return (
     <div className="w-full mx-auto" {...handlers}>
@@ -107,22 +125,33 @@ export default function Calendar({ selectedDate, onDateSelect }: CalendarProps) 
           const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
           const isTodayDate = isToday(date);
           const isSelected = selectedDate && isSameDay(date, selectedDate);
-
+          const dateString = format(date, 'yyyy-MM-dd');
+          const isPanicDay = isPanicList.includes(dateString);
           return (
             <div key={day} className="flex flex-col items-center text-gray5">
               <div
                 onClick={() => onDateSelect(date)}
-                className="h-11 w-11 flex items-center justify-center rounded-full cursor-pointer bg-gray3"
-              />
+                className={`relative h-11 w-11 flex items-center justify-center rounded-full cursor-pointer ${
+                  isPanicDay ? 'bg-black' : 'bg-gray3'
+                }`}
+              >
+                {/* 훈련 개수에 따른 Somi 아이콘 렌더링 */}
+                {isTraning && (
+                  <div className="absolute inset-11 flex items-center justify-center">
+                    {renderSomiIcon()}
+                  </div>
+                )}
+              </div>
               <span
                 className={`text-sm mt-2 font-hakgyoansimR w-8 rounded-xl text-center ${
-                  isSelected ? 'bg-indigo-300 text-white' : isTodayDate ? 'bg-main1 text-gray1' : ''
+                  isSelected ? 'bg-main1 text-gray1' : isTodayDate ? 'bg-indigo-300 text-white' : ''
                 }`}>
                 {day}
               </span>
             </div>
           );
         })}
+
       </div>
     </div>
   );
