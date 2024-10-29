@@ -35,6 +35,9 @@ const config: Config = {
         hakgyoansimR: ['var(--font-hakgyoansimR)', 'sans-serif'],
         hakgyoansimB: ['var(--font-hakgyoansimB)', 'sans-serif'],
       },
+      fontSize: {
+        xxs: '10px',
+      },
     },
   },
   plugins: [],
