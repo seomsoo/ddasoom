@@ -1,14 +1,16 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
+import HerongSomi from '@/asset/Svg/herongSomi.svg';
+import MapIcon from '@/asset/Svg/mapIcon.svg';
 import AddIcon from '@/asset/Svg/plusCircle.svg';
-import Calendar from '@/components/Calendar/Calendar';
 import Navbar from '@/components/Navbar';
-import DiaryItem from '@/components/Calendar/DiaryItem';
+import Calendar from '@/components/Record/Calendar';
+import DiaryItem from '@/components/Record/DiaryItem';
 
-export default function CalendarPage() {
+export default function RecordPage() {
   const todayTrainings = ['호흡 연습', '그라운딩', '안정화 기법'];
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [todayRecord, setTodayRecord] = useState<{ diaryEntry: string | null; selectedIcons: string[] | null }>({
@@ -16,68 +18,52 @@ export default function CalendarPage() {
     selectedIcons: null,
   });
   const [panicData, setPanicData] = useState<{
-    time: string;
-    duration: string;
-    location: string;
-    note: string;
+    start_date: string;
+    duration: number;
+    address: string;
+    description?: string;
   } | null>(null);
   const router = useRouter();
 
-  // 임시 공황 데이터
-  const testPanicData = {
-    '2024-10-28': {
-      time: '17:59',
-      duration: '3분',
-      location: '광주광역시 광산구 수완동',
-      note: '엔젤에 사람이 너무 많았다.',
+  const panicDataList = useMemo(() => [
+    {
+      start_date: '2024-10-29 13:30',
+      duration: 5,
+      address: '서울특별시 강남구 삼성동 ddddddddd',
+      description: '지하철에서 갑작스럽게 공황이 왔다.',
     },
-    '2024-10-29': {
-      time: '13:30',
-      duration: '5분',
-      location: '서울특별시 강남구 삼성동',
-      note: '지하철에서 갑작스럽게 공황이 왔다.',
-    },
-  };
+  ], []); 
 
-  // 오늘 날짜를 기본으로 설정
   useEffect(() => {
+    // 선택된 날짜 기본 설정
     if (!selectedDate) {
       setSelectedDate(new Date());
+      return;
     }
-  }, [selectedDate]);
 
-  // 선택된 날짜 변경 시 로컬 스토리지에서 해당 날짜의 기록 가져오기
-  useEffect(() => {
-    if (selectedDate) {
-      const dateKey = `dailyRecord-${selectedDate.getFullYear()}-${selectedDate.getMonth() + 1}-${selectedDate.getDate()}`;
-      const storedRecord = localStorage.getItem(dateKey);
-      if (storedRecord) {
-        const parsedRecord = JSON.parse(storedRecord);
-        setTodayRecord({
-          diaryEntry: parsedRecord.diaryEntry,
-          selectedIcons: parsedRecord.selectedIcons,
-        });
-        console.log('Record found:', parsedRecord);
-      } else {
-        setTodayRecord({ diaryEntry: null, selectedIcons: null });
-        console.log('No record found for:', dateKey);
-      }
+    // 날짜 포맷 설정
+    const formattedDate = `${selectedDate.getFullYear()}-${String(selectedDate.getMonth() + 1).padStart(2, '0')}-${String(
+      selectedDate.getDate(),
+    ).padStart(2, '0')}`;
+
+    // 로컬 스토리지에서 해당 날짜의 기록 가져오기
+    const dateKey = `dailyRecord-${formattedDate}`;
+    const storedRecord = localStorage.getItem(dateKey);
+    if (storedRecord) {
+      const parsedRecord = JSON.parse(storedRecord);
+      setTodayRecord({
+        diaryEntry: parsedRecord.diaryEntry,
+        selectedIcons: parsedRecord.selectedIcons,
+      });
+    } else {
+      setTodayRecord({ diaryEntry: null, selectedIcons: null });
     }
-  }, [selectedDate]);
 
-  // 선택된 날짜와 일치하는 공황 데이터 가져오기
-  useEffect(() => {
-    if (selectedDate) {
-      const formattedDate = `${selectedDate.getFullYear()}-${selectedDate.getMonth() + 1}-${selectedDate.getDate()}`;
-      if (testPanicData[formattedDate]) {
-        setPanicData(testPanicData[formattedDate]);
-      } else {
-        setPanicData(null);
-      }
-    }
-  }, [selectedDate]);
+    // panicDataList에서 선택된 날짜에 맞는 데이터 가져오기
+    const matchedData = panicDataList.find((entry) => entry.start_date.startsWith(formattedDate));
+    setPanicData(matchedData || null);
+  }, [selectedDate, panicDataList]);
 
-  // 선택된 날짜와 요일 추출
   const displayDate = selectedDate || new Date();
   const selectedDay = ['일', '월', '화', '수', '목', '금', '토'][displayDate.getDay()];
 
@@ -86,7 +72,6 @@ export default function CalendarPage() {
     const month = displayDate.getMonth() + 1;
     const day = displayDate.getDate();
 
-    // /calendar/dailyRecord 경로에 년, 월, 일을 쿼리 파라미터로 전달
     router.push(`/calendar/dailyRecord?year=${year}&month=${month}&day=${day}`);
   };
 
@@ -96,19 +81,21 @@ export default function CalendarPage() {
 
       {/* 공황 일지 박스: panicData가 있을 때만 표시 */}
       {panicData && (
-        <div className="bg-main4 rounded-2xl border border-main1 p-3 shadow-sm mt-4">
-          <p className="font-bold text-lg">공황 일지</p>
-          <div className="mt-2">
-            <p>발생 시각 : {panicData.time}</p>
-            <p>경과 시간 : {panicData.duration}</p>
-            <p>장소 : {panicData.location}</p>
-            <p>한줄 기록 : {panicData.note}</p>
+        <div>
+          <HerongSomi className="mt-6 -mb-5 ml-5"/>
+          <div className="bg-main4 rounded-2xl border border-main1 p-3 shadow-sm mt-4">
+            <p className="font-bold text-lg">공황 일지</p>
+            <div className="mt-2">
+              <p className='font-nanumBold'>발생 시각 : <span className='font-nanumRegular'>{panicData.start_date}</span></p>
+              <p className='font-nanumBold'>경과 시간 : <span className='font-nanumRegular'>{panicData.duration}분</span></p>
+              <p className='flex font-nanumBold'>장&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;소 :  <span className='flex font-nanumRegular inline-block align-top w-56'><MapIcon className="w-8 h-6 ml-2"/>{panicData.address}</span></p>
+              {panicData.description && <p className='font-nanumBold'>한줄 기록 : <span className='font-nanumRegular inline-block align-top w-56'>{panicData.description}</span></p>}
+            </div>
           </div>
         </div>
       )}
 
       <div className="bg-main4 rounded-2xl border border-main1 p-3 shadow-sm mt-4 flex">
-        {/* 왼쪽: 날짜와 오늘 한 훈련 목록 */}
         <div className="flex flex-col items-center mr-4 font-nanumBold text-gray5">
           <div className="bg-main3 rounded-2xl p-2 text-center text-xxs w-15 h-5 text-nowrap flex items-center justify-center">
             <div>
@@ -125,10 +112,8 @@ export default function CalendarPage() {
           </div>
         </div>
 
-        {/* 구분선 */}
         <div className="border-l border-gray3 mr-4" />
 
-        {/* 오른쪽: 기록 메시지 또는 기록 내용 */}
         <div className="flex flex-col items-center justify-center text-main1 font-nanumBold w-48">
           {todayRecord.diaryEntry || todayRecord.selectedIcons ? (
             <>

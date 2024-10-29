@@ -8,7 +8,7 @@ import CigaretteSvg from '@/asset/Svg/cigarette.svg';
 import AlcoholSvg from '@/asset/Svg/alcohol.svg';
 import ExerciseSvg from '@/asset/Svg/exercise.svg';
 import Header from '@/components/Header';
-import RecordItem from '@/components/Calendar/RecordItem';
+import RecordItem from '@/components/Record/RecordItem';
 import Button from '@/components/Button';
 
 export default function DailyRecordPage() {

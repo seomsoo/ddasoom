@@ -18,11 +18,11 @@ export default function Navbar() {
             boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3), 0 6px 20px rgba(0, 0, 0, 0.2)',
           }}
           className="absolute bottom-8 left-1/2 transform -translate-x-1/2 w-24 h-24 bg-main2 rounded-[30px] overflow-hidden ">
-          <Ddasomi className="w-28 h-28 translate-y-4 -translate-x-1" />
+          <Ddasomi className="w-28 h-28 translate-y-4 -translate-x-1.5" />
         </div>
       </Link>
 
-      <Link href="/calendar">
+      <Link href="/record">
         <NavIcon2 className="w-10 h-10" />
       </Link>
     </div>
