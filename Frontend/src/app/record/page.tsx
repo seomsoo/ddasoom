@@ -3,15 +3,18 @@
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useMemo, useState } from 'react';
 
+import GreenSomi from '@/asset/Svg/greenSomi.svg';
 import HerongSomi from '@/asset/Svg/herongSomi.svg';
 import MapIcon from '@/asset/Svg/mapIcon.svg';
+import OrangeSomi from '@/asset/Svg/orangeSomi.svg';
 import AddIcon from '@/asset/Svg/plusCircle.svg';
+import YellowSomi from '@/asset/Svg/yellowSomi.svg';
 import Navbar from '@/components/Navbar';
 import Calendar from '@/components/Record/Calendar';
 import DiaryItem from '@/components/Record/DiaryItem';
 
 export default function RecordPage() {
-  const todayTrainings = ['호흡 연습', '그라운딩', '안정화 기법'];
+  const todayTrainings = ['호흡 연습', '호흡 연습', '호흡 연습' ];
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [todayRecord, setTodayRecord] = useState<{ diaryEntry: string | null; selectedIcons: string[] | null }>({
     diaryEntry: null,
@@ -72,7 +75,21 @@ export default function RecordPage() {
     const month = displayDate.getMonth() + 1;
     const day = displayDate.getDate();
 
-    router.push(`/calendar/dailyRecord?year=${year}&month=${month}&day=${day}`);
+    router.push(`/record/dailyRecord?year=${year}&month=${month}&day=${day}`);
+  };
+
+  // DdaSomi 아이콘 조건부 렌더링
+  const renderSomiIcon = () => {
+    switch (todayTrainings.length) {
+    case 1:
+      return <YellowSomi className='mb-2'/>;
+    case 2:
+      return <OrangeSomi className='mb-2'/>;
+    case 3:
+      return <GreenSomi />;
+    default:
+      return null;
+    }
   };
 
   return (
@@ -82,7 +99,7 @@ export default function RecordPage() {
       {/* 공황 일지 박스: panicData가 있을 때만 표시 */}
       {panicData && (
         <div>
-          <HerongSomi className="mt-6 -mb-5 ml-5"/>
+          <HerongSomi className="mt-6 -mb-5 ml-5 "/>
           <div className="bg-main4 rounded-2xl border border-main1 p-3 shadow-sm mt-4">
             <p className="font-bold text-lg">공황 일지</p>
             <div className="mt-2">
@@ -97,7 +114,9 @@ export default function RecordPage() {
 
       <div className="bg-main4 rounded-2xl border border-main1 p-3 shadow-sm mt-4 flex">
         <div className="flex flex-col items-center mr-4 font-nanumBold text-gray5">
+          {todayTrainings && renderSomiIcon()}
           <div className="bg-main3 rounded-2xl p-2 text-center text-xxs w-15 h-5 text-nowrap flex items-center justify-center">
+          
             <div>
               {displayDate.getDate()} {selectedDay}
             </div>
