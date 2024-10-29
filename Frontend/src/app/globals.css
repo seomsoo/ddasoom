@@ -12,11 +12,15 @@
 
 html {
   background-color: #ffffff; /* 여백을 흰색으로 유지 */
+  display: flex;
+  justify-content: center;
 }
 
 body {
   @apply font-nanumRegular antialiased;
+  max-width: 390px;
   color: var(--text-color);
+  width: 100%;
 
   /* 두 가지 그라데이션 적용 */
   background-image:
@@ -24,5 +28,5 @@ body {
     /* 첫 번째 그라데이션 */
       linear-gradient(to bottom right, var(--gradient-color-start2) 10%, var(--gradient-color-end2) 100%); /* 두 번째 그라데이션 */
   background-size: cover;
-  background-blend-mode: screen; /* 겹쳐보이는 효과 */
+  background-blend-mode: screen;
 }

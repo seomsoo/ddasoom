@@ -50,17 +50,12 @@ export default function RootLayout({
   return (
     <html lang="ko-KR">
       <body
-        className={`${nanumRegular.variable} ${nanumLight.variable} ${nanumBold.variable} ${nanumExtraBold.variable} ${nanumHeavy.variable} ${hakgyoansimR.variable} ${hakgyoansimB.variable} antialiased  flex justify-center items-center min-h-screen`}
-      >
-        <div  className="w-full max-w-[390px] min-h-screen p-4"
-          style={{
-            backgroundColor: 'var(--background-color)',
-          }}>
+        className={`${nanumRegular.variable} ${nanumLight.variable} ${nanumBold.variable} ${nanumExtraBold.variable} ${nanumHeavy.variable} ${hakgyoansimR.variable} ${hakgyoansimB.variable} antialiased  flex justify-center items-center min-h-screen`}>
+        <div className="w-full max-w-[390px] min-h-screen p-4">
           <ReduxProvider>
             <ReactQueryProvider>{children}</ReactQueryProvider>
-          </ReduxProvider>          
+          </ReduxProvider>
         </div>
-
       </body>
     </html>
   );
