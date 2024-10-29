@@ -59,7 +59,7 @@ export default function SelfDiagnosisDetailPage() {
       <div className=" flex flex-col items-center ">
         {/* 프로그레스 바 */}
         <div className="w-52 bg-gray2 rounded-full h-1.5 mb-4">
-          <div className="bg-main2 h-1.5 rounded-full" style={{ width: `${progress}%` }} />
+          <div className="bg-main2 h-1.5 rounded-full transition-all duration-500" style={{ width: `${progress}%` }} />
         </div>
 
         {/* 질문 텍스트 */}
