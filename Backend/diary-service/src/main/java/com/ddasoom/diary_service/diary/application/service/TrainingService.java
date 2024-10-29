@@ -5,6 +5,7 @@ import com.ddasoom.diary_service.diary.application.domain.TrainingType;
 import com.ddasoom.diary_service.diary.application.port.in.TrainingUseCase;
 import com.ddasoom.diary_service.diary.application.port.out.TrainingRecordPort;
 import com.ddasoom.diary_service.diary.error.TrainingTypeBadRequestException;
+import java.time.LocalDate;
 import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,11 @@ public class TrainingService implements TrainingUseCase {
         if (Arrays.stream(TrainingType.values())
                 .noneMatch(type -> type.name().equals(trainingType))) {
             throw new TrainingTypeBadRequestException();
+        }
+
+        //이미 저장된 기록이 있으면 저장 안함.
+        if (trainingRecordPort.existTrainingRecordBy(userId, trainingType, LocalDate.now())) {
+            return;
         }
 
         trainingRecordPort.saveTrainingRecord(userId, trainingType);

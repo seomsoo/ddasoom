@@ -2,6 +2,7 @@ package com.ddasoom.diary_service.diary.adapter.out;
 
 import com.ddasoom.diary_service.common.annotation.PersistenceAdapter;
 import com.ddasoom.diary_service.diary.application.port.out.TrainingRecordPort;
+import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 
 @PersistenceAdapter
@@ -18,5 +19,10 @@ public class TrainingRecordAdapter implements TrainingRecordPort {
                         .trainingType(trainingType)
                         .build()
         );
+    }
+
+    @Override
+    public boolean existTrainingRecordBy(Long userId, String trainingType, LocalDate date) {
+        return trainingRepository.existsByUserIdAndTrainingTypeAndDate(userId, trainingType, date);
     }
 }
