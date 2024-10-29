@@ -15,7 +15,29 @@ export default function CalendarPage() {
     diaryEntry: null,
     selectedIcons: null,
   });
+  const [panicData, setPanicData] = useState<{
+    time: string;
+    duration: string;
+    location: string;
+    note: string;
+  } | null>(null);
   const router = useRouter();
+
+  // 임시 공황 데이터
+  const testPanicData = {
+    '2024-10-28': {
+      time: '17:59',
+      duration: '3분',
+      location: '광주광역시 광산구 수완동',
+      note: '엔젤에 사람이 너무 많았다.',
+    },
+    '2024-10-29': {
+      time: '13:30',
+      duration: '5분',
+      location: '서울특별시 강남구 삼성동',
+      note: '지하철에서 갑작스럽게 공황이 왔다.',
+    },
+  };
 
   // 오늘 날짜를 기본으로 설정
   useEffect(() => {
@@ -43,6 +65,18 @@ export default function CalendarPage() {
     }
   }, [selectedDate]);
 
+  // 선택된 날짜와 일치하는 공황 데이터 가져오기
+  useEffect(() => {
+    if (selectedDate) {
+      const formattedDate = `${selectedDate.getFullYear()}-${selectedDate.getMonth() + 1}-${selectedDate.getDate()}`;
+      if (testPanicData[formattedDate]) {
+        setPanicData(testPanicData[formattedDate]);
+      } else {
+        setPanicData(null);
+      }
+    }
+  }, [selectedDate]);
+
   // 선택된 날짜와 요일 추출
   const displayDate = selectedDate || new Date();
   const selectedDay = ['일', '월', '화', '수', '목', '금', '토'][displayDate.getDay()];
@@ -60,7 +94,19 @@ export default function CalendarPage() {
     <div className="pb-32">
       <Calendar selectedDate={selectedDate} onDateSelect={setSelectedDate} />
 
-      {/* 공황 일지 박스 */}
+      {/* 공황 일지 박스: panicData가 있을 때만 표시 */}
+      {panicData && (
+        <div className="bg-main4 rounded-2xl border border-main1 p-3 shadow-sm mt-4">
+          <p className="font-bold text-lg">공황 일지</p>
+          <div className="mt-2">
+            <p>발생 시각 : {panicData.time}</p>
+            <p>경과 시간 : {panicData.duration}</p>
+            <p>장소 : {panicData.location}</p>
+            <p>한줄 기록 : {panicData.note}</p>
+          </div>
+        </div>
+      )}
+
       <div className="bg-main4 rounded-2xl border border-main1 p-3 shadow-sm mt-4 flex">
         {/* 왼쪽: 날짜와 오늘 한 훈련 목록 */}
         <div className="flex flex-col items-center mr-4 font-nanumBold text-gray5">
