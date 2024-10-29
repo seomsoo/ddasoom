@@ -2,8 +2,6 @@ package com.ddasoom.diary_service.diary.adapter.out;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -31,11 +29,10 @@ public class TrainingJpaEntity {
     @CreationTimestamp
     private LocalDateTime date;
 
-    @Enumerated(value = EnumType.STRING)
-    private TrainingType trainingType;
+    private String trainingType;
 
     @Builder
-    private TrainingJpaEntity(Long userId, TrainingType trainingType) {
+    private TrainingJpaEntity(Long userId, String trainingType) {
         this.userId = userId;
         this.trainingType = trainingType;
     }
