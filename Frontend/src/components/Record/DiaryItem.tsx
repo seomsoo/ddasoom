@@ -1,7 +1,6 @@
-import React from 'react';
+import AlcoholSvg from '@/asset/Svg/DiaryAlcohol.svg';
 import CaffeineSvg from '@/asset/Svg/DiaryCaffeine.svg';
 import CigaretteSvg from '@/asset/Svg/DiaryCigarette.svg';
-import AlcoholSvg from '@/asset/Svg/DiaryAlcohol.svg';
 import ExerciseSvg from '@/asset/Svg/DiaryExercise.svg';
 
 interface RecordItemProps {
