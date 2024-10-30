@@ -82,6 +82,20 @@ spring:
           predicates:
             - Path=/api/emergency/**
 
+        - id: voice-service
+          uri: lb://VOICE-SERVICE
+          predicates:
+            - Path=/voice/actuator/**
+            - Method=GET,POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/voice/(?<segment>.*), /$\{segment}
+
+        - id: voice-service
+          uri: lb://VOICE-SERVICE
+          predicates:
+            - Path=/api/voice/**
+
 eureka:
   client:
     register-with-eureka: true
