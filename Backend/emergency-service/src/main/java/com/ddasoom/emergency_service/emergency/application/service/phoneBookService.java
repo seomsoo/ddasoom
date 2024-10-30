@@ -20,6 +20,7 @@ public class phoneBookService implements PhoneBookUseCase {
     @Override
     public void addPhoneBook(PhoneBookCommand command) {
         PhoneBook phoneBook = new PhoneBook(
+                null,
                 command.userId(),
                 command.phoneNumber(),
                 command.alias()
@@ -35,7 +36,6 @@ public class phoneBookService implements PhoneBookUseCase {
         return phoneBookList.stream().map(phoneBook ->
                 new PhoneBookResponse(
                         phoneBook.phoneBookId(),
-                        phoneBook.userId(),
                         phoneBook.phoneNumber(),
                         phoneBook.alias())
         ).toList();

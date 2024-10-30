@@ -27,7 +27,7 @@ public class PhoneBookAdapter implements AddPhoneBookPort {
         return phoneBooks.stream().map(phoneBook ->
                 new PhoneBook(
                         phoneBook.getId(),
-                        phoneBook.getUserId(),
+                        null,
                         phoneBook.getPhoneNumber(),
                         phoneBook.getAlias())
         ).toList();
