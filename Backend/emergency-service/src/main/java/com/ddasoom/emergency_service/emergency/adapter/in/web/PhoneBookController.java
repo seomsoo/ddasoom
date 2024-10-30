@@ -9,7 +9,9 @@ import com.ddasoom.emergency_service.emergency.adapter.in.web.request.AddPhoneRe
 import com.ddasoom.emergency_service.emergency.adapter.in.web.response.PhoneBookResponse;
 import com.ddasoom.emergency_service.emergency.application.port.in.PhoneBookCommand;
 import com.ddasoom.emergency_service.emergency.application.port.in.PhoneBookUseCase;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,7 +41,11 @@ public class PhoneBookController {
     }
 
     @GetMapping("/api/emergency/phone-books")
-    public ApiResult<List<PhoneBookResponse>> getPhoneBooks(@RequestHeader("X-Authenticated-User") Long userId) {
-        return success(phoneBookUseCase.findPhoneBookList(userId));
+    public ApiResult<Map<String, Object>> getPhoneBooks(@RequestHeader("X-Authenticated-User") Long userId) {
+        Map<String, Object> response = new HashMap<>();
+        List<PhoneBookResponse> phoneBookList = phoneBookUseCase.findPhoneBookList(userId);
+        response.put("userId", userId);
+        response.put("phoneBooks", phoneBookList);
+        return success(response);
     }
 }

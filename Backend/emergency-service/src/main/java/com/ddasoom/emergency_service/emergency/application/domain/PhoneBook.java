@@ -7,7 +7,4 @@ public record PhoneBook(
         String alias
 ) {
 
-    public PhoneBook(Long userId, String phoneNumber, String alias) {
-        this(null, userId, phoneNumber, alias);
-    }
 }
