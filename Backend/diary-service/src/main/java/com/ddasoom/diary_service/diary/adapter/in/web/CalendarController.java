@@ -4,6 +4,7 @@ import static com.ddasoom.diary_service.common.util.ApiUtils.success;
 
 import com.ddasoom.diary_service.common.annotation.WebAdapter;
 import com.ddasoom.diary_service.common.util.ApiUtils.ApiResult;
+import com.ddasoom.diary_service.diary.adapter.in.web.response.CalendarResponse;
 import com.ddasoom.diary_service.diary.adapter.in.web.response.CalendarsResponse;
 import com.ddasoom.diary_service.diary.application.port.in.CalendarQuery;
 import java.util.Optional;
@@ -25,5 +26,13 @@ public class CalendarController {
             @RequestParam(name = "year", required = false) Optional<Integer> year,
             @RequestParam(value = "month", required = false) Optional<Integer> month) {
         return success(calendarQuery.getCalendars(userId, year, month));
+    }
+
+    @GetMapping("/api/diary/calendar")
+    public ApiResult<CalendarResponse> getCalendar(@RequestHeader("X-Authenticated-User") Long userId,
+            @RequestParam(name = "year", required = false) Optional<Integer> year,
+            @RequestParam(value = "month", required = false) Optional<Integer> month,
+            @RequestParam(name = "day", required = false) Optional<Integer> day) {
+        return success(calendarQuery.getCalendar(userId, year, month, day));
     }
 }

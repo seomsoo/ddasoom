@@ -1,4 +1,4 @@
-package com.ddasoom.diary_service.diary.adapter.out;
+package com.ddasoom.diary_service.diary.adapter.out.daily;
 
 import com.ddasoom.diary_service.diary.application.port.in.DailyRecordCommand;
 import jakarta.persistence.Column;
