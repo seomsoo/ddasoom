@@ -26,7 +26,7 @@ public class PhoneBookController {
     private final PhoneBookUseCase phoneBookUseCase;
 
     @ResponseStatus(CREATED)
-    @PostMapping("/api/emergency/phone-books")
+    @PostMapping("/api/emergency/phone-book")
     public void AddPhoneBook(@RequestHeader("X-Authenticated-User") Long userId,
             @RequestBody AddPhoneRequest request) {
         PhoneBookCommand command = new PhoneBookCommand(
