@@ -1,5 +1,4 @@
 'use client';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
@@ -8,7 +7,7 @@ import Button from '@/components/Button';
 export default function SelfDiagnosisPage() {
   const router = useRouter();
   const handleStartCheck = () => {
-    router.push('/calendar/selfDiagnosis/check');
+    router.push('/record/selfDiagnosis/check');
   };
   return (
     <div className="flex flex-col justify-center items-center gap-5 mt-14">

@@ -60,7 +60,7 @@ export default function DailyRecordPage() {
 
     // 날짜별 키로 로컬 스토리지에 저장
     localStorage.setItem(dateKey, JSON.stringify(recordData));
-    router.push('/record');
+    router.push(`/record?year=${year}&month=${month}&day=${day}`);
   };
 
   return (

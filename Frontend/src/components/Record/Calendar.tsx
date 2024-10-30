@@ -1,3 +1,4 @@
+'use client';
 import { addMonths, format, isSameDay, isSameMonth, isToday, setMonth, setYear, subMonths } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import Link from 'next/link';
@@ -17,10 +18,10 @@ interface CalendarProps {
   selectedDate: Date | null;
   onDateSelect: (date: Date) => void;
   isPanicList: string[];
-  isTraining: number | null;
+  isTrainingList: { date: string; trainingCount: number }[]; // 날짜별 isTraining 값을 리스트로 전달
 }
 
-export default function Calendar({ selectedDate, onDateSelect, isPanicList, isTraining }: CalendarProps) {
+export default function Calendar({ selectedDate, onDateSelect, isPanicList, isTrainingList }: CalendarProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [isModal, setIsModal] = useState(false);
 
@@ -61,16 +62,16 @@ export default function Calendar({ selectedDate, onDateSelect, isPanicList, isTr
   };
 
   // DdaSomi 아이콘 조건부 렌더링 함수
-  const renderSomiIcon = () => {
-    switch (isTraining) {
-    case 1:
-      return <YellowSomi className="w-10 h-10 mt-2" />;
-    case 2:
-      return <OrangeSomi className="w-10 h-10 mt-2" />;
-    case 3:
-      return <GreenSomi className="w-10 h-8 ml-1 mb-1" />;
-    default:
-      return; 
+  const renderSomiIcon = (trainingCount: number) => {
+    switch (trainingCount) {
+      case 1:
+        return <YellowSomi className="w-10 h-10 mt-2" />;
+      case 2:
+        return <OrangeSomi className="w-10 h-10 mt-2" />;
+      case 3:
+        return <GreenSomi className="w-10 h-8 ml-1 mb-1" />;
+      default:
+        return null;
     }
   };
 
@@ -116,36 +117,39 @@ export default function Calendar({ selectedDate, onDateSelect, isPanicList, isTr
 
       <div className="grid grid-cols-7 gap-y-4">
         {blankDays.map((_, idx) => (
-          <div key={idx} className="text-center">{' '}</div>
+          <div key={idx} className="text-center">
+            {' '}
+          </div>
         ))}
         {daysInMonth.map(day => {
           const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
           const isTodayDate = isToday(date);
           const isSelected = selectedDate && isSameDay(date, selectedDate);
-          const isFutureDate = date > new Date();
           const dateString = format(date, 'yyyy-MM-dd');
           const isPanicDay = isPanicList.includes(dateString);
+
+          // 날짜에 해당하는 isTraining 값을 찾기
+          const trainingData = isTrainingList?.find(item => item.date === dateString);
+          const trainingCount = trainingData ? trainingData.trainingCount : 0;
 
           return (
             <div key={day} className="flex flex-col items-center text-gray5">
               <div
-                onClick={() => !isFutureDate && onDateSelect(date)}
+                onClick={() => date <= new Date() && onDateSelect(date)}
                 className={`relative h-11 w-11 flex items-center justify-center rounded-full cursor-pointer ${
                   isPanicDay ? 'bg-black' : 'bg-gray3'
-                }`}
-              >
-                {/* 훈련 개수에 따른 따소미 아이콘 렌더링 */}
-                {isTraining && (
+                }`}>
+                {/* isTraining 값에 따라 캐릭터 아이콘 즉시 렌더링 */}
+                {trainingCount > 0 && (
                   <div className="absolute inset-0 flex items-center justify-center">
-                    {renderSomiIcon()}
+                    {renderSomiIcon(trainingCount)}
                   </div>
                 )}
               </div>
               <span
                 className={`text-sm mt-2 font-hakgyoansimR w-8 rounded-xl text-center ${
                   isSelected ? 'bg-main1 text-gray1' : isTodayDate ? 'bg-indigo-300 text-white' : ''
-                }`}
-              >
+                }`}>
                 {day}
               </span>
             </div>
