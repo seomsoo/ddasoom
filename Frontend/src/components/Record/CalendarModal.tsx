@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 interface CalendarModalProps {
   year: number;
@@ -12,11 +12,20 @@ export default function CalendarModal({ year, month, onClose, onYearChange, onMo
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth() + 1;
 
+  useEffect(() => {
+    // 모달이 열릴 때 body에 overflow:hidden 적용
+    document.body.style.overflow = 'hidden';
+    return () => {
+      // 모달이 닫힐 때 원래 상태로 복구
+      document.body.style.overflow = '';
+    };
+  }, []);
+
   const handlePreviousYear = () => onYearChange(year - 1);
   const handleNextYear = () => onYearChange(year + 1);
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-65 flex items-center justify-center">
+    <div className="fixed inset-0 bg-black bg-opacity-65 flex items-center justify-center z-50">
       <div className="bg-gray1 p-4 py-8 rounded-2xl w-80 text-gray5">
         <div className="flex justify-between items-center mb-6 font-nanumExtraBold">
           <p className="text-2xl ml-2">{year}년</p>
@@ -34,8 +43,7 @@ export default function CalendarModal({ year, month, onClose, onYearChange, onMo
           {Array.from({ length: 12 }, (_, i) => i + 1).map(m => {
             const isDisabled =
               (year === currentYear && m > currentMonth) || // 이번 년도에서 현재 월 이후의 월 비활성화
-              year > currentYear || // 미래 년도 전체 비활성화
-              year < currentYear; // 과거 년도 전체 비활성화
+              year > currentYear; // 미래 년도 전체 비활성화
 
             return (
               <button
