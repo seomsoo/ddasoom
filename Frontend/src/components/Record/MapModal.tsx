@@ -16,11 +16,15 @@ const MapModal: React.FC<MapModalProps> = ({ center, onClose }) => {
   });
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="relative bg-white w-80 max-w-lg p-4 rounded-lg shadow-lg">
-        <button onClick={onClose} className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 z-10">
-          닫기
-        </button>
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50">
+      <div className="flex flex-col bg-main4 w-80 max-w-lg rounded-lg shadow-lg">
+        <div className="flex justify-between p-2">
+          <p>공황 발생 장소</p>
+          <button onClick={onClose} className=" text-gray5 z-10">
+            닫기
+          </button>
+        </div>
+
         <Map center={center} style={{ width: '100%', height: '200px' }} level={3}>
           <MapMarker position={center} />
         </Map>

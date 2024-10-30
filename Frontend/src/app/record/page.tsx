@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useMemo, useState } from 'react';
 
 import GreenSomi from '@/asset/Svg/greenSomi.svg';
@@ -8,6 +8,7 @@ import HerongSomi from '@/asset/Svg/herongSomi.svg';
 import MapIcon from '@/asset/Svg/mapIcon.svg';
 import OrangeSomi from '@/asset/Svg/orangeSomi.svg';
 import AddIcon from '@/asset/Svg/plusCircle.svg';
+import Seed from '@/asset/Svg/seedling.svg';
 import YellowSomi from '@/asset/Svg/yellowSomi.svg';
 import Navbar from '@/components/Navbar';
 import Calendar from '@/components/Record/Calendar';
@@ -15,6 +16,9 @@ import DiaryItem from '@/components/Record/DiaryItem';
 import MapModal from '@/components/Record/MapModal';
 
 export default function RecordPage() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
   const [todayTraining, setTodayTraining] = useState<{ date: string; trainingList: string[] } | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [isMapModal, setIsMapModal] = useState(false);
@@ -28,15 +32,14 @@ export default function RecordPage() {
     address: string;
     description?: string;
   } | null>(null);
-  const router = useRouter();
 
   // 공황 발생 날짜 목록
   const panicDataList = useMemo(
     () => [
       {
-        start_date: '2024-10-29 13:30',
+        start_date: '2024-10-24 13:30',
         duration: 5,
-        address: '서울특별시 강남구 삼성동',
+        address: '서울특별시 강남구 삼성동 99-7',
         description: '지하철에서 갑작스럽게 공황이 왔다. 숨이 잘 안 쉬어져서 너무 힘들었다.',
       },
       {
@@ -72,14 +75,21 @@ export default function RecordPage() {
     return panicDataList.map(entry => entry.start_date.split(' ')[0]); // 'YYYY-MM-DD' 형식만 추출
   }, [panicDataList]);
 
-  useEffect(() => {
-    if (!selectedDate) {
-      setSelectedDate(new Date());
-      return;
-    }
+  const isTrainingList = trainingDataList.map(training => ({
+    date: training.date,
+    trainingCount: training.trainingList.length,
+  }));
 
-    const formattedDate = `${selectedDate.getFullYear()}-${String(selectedDate.getMonth() + 1).padStart(2, '0')}-${String(
-      selectedDate.getDate(),
+  useEffect(() => {
+    const year = searchParams.get('year');
+    const month = searchParams.get('month');
+    const day = searchParams.get('day');
+    const initialDate = year && month && day ? new Date(Number(year), Number(month) - 1, Number(day)) : new Date();
+    setSelectedDate(initialDate);
+
+    // 선택된 날짜 형식 변환
+    const formattedDate = `${initialDate.getFullYear()}-${String(initialDate.getMonth() + 1).padStart(2, '0')}-${String(
+      initialDate.getDate(),
     ).padStart(2, '0')}`;
 
     // 로컬 스토리지에서 해당 날짜의 기록 가져오기
@@ -102,7 +112,7 @@ export default function RecordPage() {
     // trainingDataList에서 선택된 날짜에 맞는 데이터 가져오기
     const matchedTrainingData = trainingDataList.find(entry => entry.date === formattedDate);
     setTodayTraining(matchedTrainingData || null);
-  }, [selectedDate, panicDataList, trainingDataList]);
+  }, [searchParams, panicDataList, trainingDataList]);
 
   const displayDate = selectedDate || new Date();
   const selectedDay = ['일', '월', '화', '수', '목', '금', '토'][displayDate.getDay()];
@@ -115,11 +125,21 @@ export default function RecordPage() {
     router.push(`/record/dailyRecord?year=${year}&month=${month}&day=${day}`);
   };
 
-  // DdaSomi 아이콘 조건부 렌더링
-  const renderSomiIcon = () => {
-    if (!todayTraining) return null;
+  const handleDateSelect = (date: Date) => {
+    setSelectedDate(date);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
 
-    switch (todayTraining.trainingList.length) {
+    router.push(`/record?year=${year}&month=${month}&day=${day}`);
+  };
+
+  /* eslint-disable indent */
+  // 훈련 기록에 따른 따소미 캐릭터
+  // ESLint 규칙에 따라 들여쓰기 8칸은 오류
+  // 이 코드에서만 규칙 비활성화
+  const renderSomiIcon = () => {
+    switch (todayTraining?.trainingList.length) {
       case 1:
         return <YellowSomi className="mb-2" />;
       case 2:
@@ -127,13 +147,10 @@ export default function RecordPage() {
       case 3:
         return <GreenSomi className="mb-2" />;
       default:
-        return null;
+        return <HerongSomi className="mb-2" />;
     }
   };
-  const isTrainingList = trainingDataList.map(training => ({
-    date: training.date,
-    trainingCount: training.trainingList.length,
-  }));
+  /* eslint-enable indent */
 
   const handleOpenMap = () => {
     setIsMapModal(true);
@@ -143,16 +160,16 @@ export default function RecordPage() {
     <div className="pb-32">
       <Calendar
         selectedDate={selectedDate}
-        onDateSelect={setSelectedDate}
+        onDateSelect={handleDateSelect}
         isPanicList={isPanicList} // 공황 발생 날짜 목록 전달
         isTrainingList={isTrainingList} // 날짜별 훈련 데이터 전달
       />
 
-      {/* 공황 일지 박스: panicData가 있을 때만 표시 */}
+      {/* 공황 일지 : panicData가 있을 때만 표시 */}
       {panicData && (
-        <div>
-          <HerongSomi className="mt-6 -mb-5 ml-5 " />
-          <div className="bg-main4 rounded-2xl border border-main1 p-3 shadow-sm mt-4">
+        <div className="mt-8 relative">
+          <HerongSomi className="absolute -top-7 right-7 -z-0" />
+          <div className="relative bg-main4 rounded-2xl border border-main1 p-3 shadow-sm mt-4 z-0">
             <p className="font-bold text-lg">공황 일지</p>
             <div className="mt-2">
               <p className="font-nanumBold">
@@ -161,10 +178,10 @@ export default function RecordPage() {
               <p className="font-nanumBold">
                 경과 시간 : <span className="font-nanumRegular">{panicData.duration}분</span>
               </p>
-              <p className="flex font-nanumBold">
-                장&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;소 :{' '}
-                <span className="flex font-nanumRegular inline-block align-top w-56" onClick={handleOpenMap}>
-                  <MapIcon className="w-8 h-6 ml-2" />
+              <div className="flex">
+                <p className="flex font-nanumBold">장&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;소</p>
+                <span className="flex font-nanumRegular break-words" onClick={handleOpenMap}>
+                  &nbsp;: <MapIcon className="w-8 h-6 ml-2" />
                   {panicData.address}
                 </span>
                 {isMapModal && (
@@ -174,67 +191,63 @@ export default function RecordPage() {
                       lat: 33.450701,
                       lng: 126.570667,
                     }}
-                    level={3} // 지도의 확대 레벨
                     onClose={() => setIsMapModal(false)}
                   />
                 )}
-              </p>
+              </div>
               {panicData.description && (
-                <p className="font-nanumBold">
-                  한줄 기록 :{' '}
-                  <span className="font-nanumRegular inline-block align-top w-60">{panicData.description}</span>
-                </p>
+                <div className="flex">
+                  <p className="font-nanumBold whitespace-nowrap ">한줄 기록 : </p>
+                  <span className="font-nanumRegular ml-1 ">{panicData.description}</span>
+                </div>
               )}
             </div>
           </div>
         </div>
       )}
 
-      <div className="bg-main4 rounded-2xl border border-main1 p-3 shadow-sm mt-4 flex">
-        <div className="flex flex-col items-center mr-4 font-nanumBold text-gray5">
+      {/* 생활 기록 */}
+      <div className="relative bg-main4 rounded-2xl border border-main1 p-3 shadow-sm mt-5 min-h-60 flex">
+        <Seed className="absolute -top-4 left-3" />
+        {/* 훈련 기록 */}
+        <div className="flex flex-col items-center mr-3 font-nanumBold min-w-16 text-gray5">
           {renderSomiIcon()}
           <div className="bg-main3 rounded-2xl p-2 text-center text-xxs w-15 h-5 text-nowrap flex items-center justify-center">
             <div>
               {displayDate.getDate()} {selectedDay}
             </div>
           </div>
-          <div className="flex flex-col gap-2 mt-4 font-nanumBold text-gray5 text-center text-xxs">
+          <div className="flex flex-col gap-2 mt-4 font-nanumBold text-gray5 text-center text-xxs text-nowrap">
             오늘 한 훈련
             {todayTraining?.trainingList.map((training, index) => (
-              <div key={index} className="bg-gray2 rounded-full px-2 py-1">
+              <div key={index} className="bg-gray2 rounded-full px-2 py-2">
                 {training}
               </div>
             ))}
           </div>
         </div>
 
-        <div className="border-l border-gray3 mr-4" />
+        {/* 구분선 */}
+        <div className="border-l border-gray3 mr-3" />
 
-        <div className="flex flex-col justify-center text-main1 font-nanumBold w-56">
+        {/* 데일리 기록 */}
+        <div className="flex flex-col text-main1 font-nanumBold w-full ">
           {todayRecord.diaryEntry || todayRecord.selectedIcons ? (
             <>
-              <div>
-                {todayRecord.selectedIcons && (
-                  <div className="flex gap-2">
-                    {todayRecord.selectedIcons.map((icon, index) => (
-                      <span key={index}>
-                        <DiaryItem label={icon} />
-                      </span>
-                    ))}
-                  </div>
-                )}
+              <div className="flex justify-center">
+                <DiaryItem labels={todayRecord.selectedIcons} />
               </div>
-              <div>
-                {todayRecord.diaryEntry && (
-                  <p className="w-full mt-4 ml-3 text-black text-sm">{todayRecord.diaryEntry}</p>
+              <div className="mt-6 text-black text-sm">
+                {todayRecord.diaryEntry ? (
+                  <p className="w-full break-words px-2">{todayRecord.diaryEntry}</p>
+                ) : (
+                  <p className="text-center">오늘의 한 줄 일기가 없습니다.</p>
                 )}
               </div>
             </>
           ) : (
-            <div className="flex flex-col items-center">
-              <div>
-                <p className="text-sm mb-5">오늘 하루를 기록 하시겠어요?</p>
-              </div>
+            <div className="flex flex-col items-center justify-center text-center mt-16">
+              <p className="text-sm mb-5">오늘 하루를 기록 하시겠어요?</p>
               <AddIcon onClick={handleAddRecord} className="cursor-pointer" />
             </div>
           )}

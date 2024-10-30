@@ -1,14 +1,15 @@
 import React from 'react';
+
+import AlcoholSvg from '@/asset/Svg/DiaryAlcohol.svg';
 import CaffeineSvg from '@/asset/Svg/DiaryCaffeine.svg';
 import CigaretteSvg from '@/asset/Svg/DiaryCigarette.svg';
-import AlcoholSvg from '@/asset/Svg/DiaryAlcohol.svg';
 import ExerciseSvg from '@/asset/Svg/DiaryExercise.svg';
 
 interface RecordItemProps {
-  label: string;
+  labels: string[] | null;
 }
 
-export default function DiaryItem({ label }: RecordItemProps) {
+export default function DiaryItem({ labels = [] }: RecordItemProps) {
   // label에 따라 아이콘을 매핑하는 객체 생성
   const iconMap: { [key: string]: React.ComponentType<React.SVGProps<SVGSVGElement>> } = {
     caffeine: CaffeineSvg,
@@ -17,19 +18,22 @@ export default function DiaryItem({ label }: RecordItemProps) {
     exercise: ExerciseSvg,
   };
 
-  // label 값에 해당하는 아이콘을 가져옴
-  const Icon = iconMap[label];
-
-  // label에 따라 배경색을 설정
-  const bgColor =
-    label === 'caffeine' ? 'bg-sub2' : label === 'cigarette' ? 'bg-sub3' : label === 'alcohol' ? 'bg-sub4' : 'bg-sub5';
-
+  // 특정 label에 배경색을 적용하는 함수
+  const getBgColor = (key: string) => {
+    return key === 'caffeine' ? 'bg-sub2' : key === 'cigarette' ? 'bg-sub3' : key === 'alcohol' ? 'bg-sub4' : 'bg-sub5';
+  };
+  console.log(labels);
   return (
-    <div className="flex flex-col items-center">
-      <div
-        className={`flex flex-grow justify-center items-start rounded-full  shadow-[0px_6px_10px_rgba(0,0,0,0.25)] w-11 h-11 ${bgColor}`}>
-        {Icon && <Icon className="text-white w-12 h-12 my-2 mx-2" />}
-      </div>
+    <div className="flex gap-3">
+      {Object.entries(iconMap).map(([key, Icon]) => (
+        <div
+          key={key}
+          className={`flex justify-center items-center rounded-full shadow-md w-11 h-11 ${
+            labels?.includes(key) ? getBgColor(key) : 'bg-gray1'
+          }`}>
+          <Icon className={`${labels?.includes(key) ? 'text-main4' : 'text-gray4'}`} />
+        </div>
+      ))}
     </div>
   );
 }

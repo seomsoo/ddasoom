@@ -44,7 +44,7 @@ export default function SelfDiagnosisDetailPage() {
 
     if (currentQuestionIndex === questions.length - 1) {
       const finalYesCount = yesCount + (selectedOption === '네' ? 1 : 0);
-      router.push(`/calendar/selfDiagnosis/result?yesCount=${finalYesCount}`);
+      router.push(`/record/selfDiagnosis/result?yesCount=${finalYesCount}`);
     } else {
       setCurrentQuestionIndex(prevIndex => prevIndex + 1);
       setSelectedOption(null);
