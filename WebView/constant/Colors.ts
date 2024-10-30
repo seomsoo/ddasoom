@@ -1,6 +1,7 @@
-export const Colors = {
+export const Colors: ColorsType = {
+  BACKGROUND: "#EBF4E3",
   BLACK: "#000000",
-  WHITE: "F8F9FA",
+  WHITE: "#F8F9FA",
   MAIN1: "#8EBB5B",
   MAIN2: "#B6D89A",
   MAIN3: "#EBF4E3",
@@ -18,4 +19,27 @@ export const Colors = {
     500: "#576373",
   },
   BUTTON1: "#5B9915",
+};
+
+export type ColorsType = {
+  BACKGROUND: string;
+  BLACK: string;
+  WHITE: string;
+  MAIN1: string;
+  MAIN2: string;
+  MAIN3: string;
+  MAIN4: string;
+  SUB1: string;
+  SUB2: string;
+  SUB3: string;
+  SUB4: string;
+  SUB5: string;
+  GRAY: {
+    100: string;
+    200: string;
+    300: string;
+    400: string;
+    500: string;
+  };
+  BUTTON1: string;
 };
