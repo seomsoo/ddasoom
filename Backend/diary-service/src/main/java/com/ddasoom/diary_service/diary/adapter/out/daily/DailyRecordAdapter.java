@@ -27,6 +27,8 @@ public class DailyRecordAdapter implements DailyRecordPort {
 
     @Override
     public DailyRecordInfo getDailyRecord(Long userId, int year, int month, int day) {
-        return null;
+        return dailyRepository.findByUserIdAndDate(userId, year, month, day)
+                .map(DailyJpaEntity::toDailyRecordInfo)
+                .orElse(null);
     }
 }

@@ -1,5 +1,6 @@
 package com.ddasoom.diary_service.diary.adapter.out.panic;
 
+import com.ddasoom.diary_service.diary.application.domain.PanicRecordInfo;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -34,4 +35,14 @@ public class PanicJpaEntity {
 
     @Column(length = 500)
     private String description;
+
+    public PanicRecordInfo toRecordInfo() {
+        return PanicRecordInfo.builder()
+                .startDate(this.startDate)
+                .duration(this.duration)
+                .latitude(this.latitude)
+                .longitude(this.longitude)
+                .description(this.description)
+                .build();
+    }
 }

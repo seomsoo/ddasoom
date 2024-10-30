@@ -13,7 +13,8 @@ public class PanicRecordAdapter implements PanicRecordPort {
 
     @Override
     public PanicRecordInfo getPanicRecord(Long userId, int year, int month, int day) {
-        panicRepository.findByUserIdAndDate(userId, year, month, day);
-        return null;
+        return panicRepository.findByUserIdAndDate(userId, year, month, day)
+                .map(PanicJpaEntity::toRecordInfo)
+                .orElse(null);
     }
 }
