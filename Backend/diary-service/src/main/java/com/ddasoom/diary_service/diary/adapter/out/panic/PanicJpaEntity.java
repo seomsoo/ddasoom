@@ -1,4 +1,4 @@
-package com.ddasoom.diary_service.diary.adapter.out;
+package com.ddasoom.diary_service.diary.adapter.out.panic;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
