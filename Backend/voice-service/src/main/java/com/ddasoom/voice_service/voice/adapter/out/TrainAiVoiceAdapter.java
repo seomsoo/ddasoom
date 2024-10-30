@@ -55,11 +55,9 @@ public class TrainAiVoiceAdapter implements TrainAiVoicePort {
         ResponseEntity<String> response = restTemplate.postForEntity(url, requestEntity, String.class);
 
         try {
-            String voiceId = objectMapper.readTree(response.getBody())
+            return objectMapper.readTree(response.getBody())
                     .get("voice_id")
                     .asText();
-            
-            return voiceId;
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
