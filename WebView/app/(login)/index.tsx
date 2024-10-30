@@ -11,10 +11,10 @@ const Main = () => {
   console.log("login");
 
   const handleKaKaoLogin = async () => {
-    const { accessToken, refreshToken } = await login();
-    if (accessToken && refreshToken) {
-      router.push("authorized");
-    }
+    // const { accessToken, refreshToken } = await login();
+    // if (accessToken && refreshToken) {
+    router.push("authorized");
+    // }
   };
 
   const handleUnauthorized = () => {
