@@ -1,7 +1,7 @@
 package com.ddasoom.diary_service.diary.application.port.out;
 
-import com.ddasoom.diary_service.diary.application.domain.TrainingRecordInfo;
 import java.time.LocalDate;
+import java.util.List;
 
 public interface TrainingRecordPort {
 
@@ -9,5 +9,5 @@ public interface TrainingRecordPort {
 
     boolean existTrainingRecordBy(Long userId, String trainingType, LocalDate date);
 
-    TrainingRecordInfo getTrainingRecord(Long userId, int year, int month, int day);
+    List<String> getTrainingRecord(Long userId, int year, int month, int day);
 }
