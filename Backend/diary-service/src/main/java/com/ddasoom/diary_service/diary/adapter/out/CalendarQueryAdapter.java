@@ -29,10 +29,10 @@ public class CalendarQueryAdapter implements CalendarPort {
         LocalDate startDate = LocalDate.of(year, month, 1);
         LocalDate endDate = startDate.withDayOfMonth(startDate.lengthOfMonth());
 
-        List<CalendarsDto> trainingData = getTrainingData(userId, trainingJpaEntity, startDate, endDate);
-        List<CalendarsDto> panicData = getPanicData(userId, year, month, panicJpaEntity);
+        List<CalendarsDto> trainings = getTrainings(userId, trainingJpaEntity, startDate, endDate);
+        List<CalendarsDto> panics = getPanics(userId, year, month, panicJpaEntity);
 
-        Map<LocalDate, CalendarsDto> resultMap = getDateCalendarsMap(trainingData, panicData);
+        Map<LocalDate, CalendarsDto> resultMap = getDateCalendarsMap(trainings, panics);
 
         // 결과를 날짜순으로 정렬하여 반환
         return resultMap.values().stream()
@@ -40,7 +40,7 @@ public class CalendarQueryAdapter implements CalendarPort {
                 .collect(Collectors.toList());
     }
 
-    private List<CalendarsDto> getTrainingData(Long userId, QTrainingJpaEntity training, LocalDate startDate,
+    private List<CalendarsDto> getTrainings(Long userId, QTrainingJpaEntity training, LocalDate startDate,
             LocalDate endDate) {
         return jpaQueryFactory
                 .select(new QCalendarsDto(
@@ -55,7 +55,7 @@ public class CalendarQueryAdapter implements CalendarPort {
                 .fetch();
     }
 
-    private List<CalendarsDto> getPanicData(Long userId, int year, int month, QPanicJpaEntity panic) {
+    private List<CalendarsDto> getPanics(Long userId, int year, int month, QPanicJpaEntity panic) {
         DateTimePath<LocalDateTime> startDate = panic.startDate;
 
         return jpaQueryFactory
