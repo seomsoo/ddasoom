@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 import AlcoholSvg from '@/asset/Svg/alcohol.svg';
@@ -11,14 +11,18 @@ import Button from '@/components/Button';
 import Header from '@/components/Header';
 import RecordItem from '@/components/Record/RecordItem';
 
-export default function DailyRecordPage() {
-  const searchParams = useSearchParams();
+type SearchParmas = Record<string, string | string | undefined>;
+interface DailyRecordPageSearchParams {
+  searchParams: SearchParmas;
+}
+
+export default function DailyRecordPage({ searchParams }: DailyRecordPageSearchParams) {
   const router = useRouter();
 
   // 쿼리 파라미터에서 year, month, day 가져오기
-  const year = searchParams.get('year');
-  const month = searchParams.get('month');
-  const day = searchParams.get('day');
+  const year = searchParams.year;
+  const month = searchParams.month;
+  const day = searchParams.day;
 
   // 선택된 날짜 label
   const label = year && month && day ? `${year}년 ${month}월 ${day}일` : '';
@@ -98,7 +102,7 @@ export default function DailyRecordPage() {
         />
       </div>
       <p className="font-hakgyoansimR text-2xl mt-7">오늘의 한 줄 일기</p>
-      <div className="bg-main4 w-full h-60 rounded-xl border border-2 border-main1 p-4">
+      <div className="bg-main4 w-full h-60 rounded-xl border-2 border-main1 p-4">
         <textarea
           placeholder="글을 입력하세요..."
           className="w-full h-full bg-transparent outline-none resize-none"
