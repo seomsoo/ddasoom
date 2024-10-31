@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useMemo, useState } from 'react';
 
 import GreenSomi from '@/asset/Svg/greenSomi.svg';
@@ -15,8 +15,7 @@ import Calendar from '@/components/Record/Calendar';
 import DiaryItem from '@/components/Record/DiaryItem';
 import MapModal from '@/components/Record/MapModal';
 
-export default function RecordPage() {
-  const searchParams = useSearchParams();
+export default function RecordPage({ searchParams }: SearchParamsProps) {
   const router = useRouter();
 
   const [todayTraining, setTodayTraining] = useState<{ date: string; trainingList: string[] } | null>(null);
@@ -81,9 +80,9 @@ export default function RecordPage() {
   }));
 
   useEffect(() => {
-    const year = searchParams.get('year');
-    const month = searchParams.get('month');
-    const day = searchParams.get('day');
+    const year = searchParams.year;
+    const month = searchParams.month;
+    const day = searchParams.day;
     const initialDate = year && month && day ? new Date(Number(year), Number(month) - 1, Number(day)) : new Date();
     setSelectedDate(initialDate);
 
