@@ -1,6 +1,7 @@
-// src/components/VideoSelector.tsx
 'use client';
 import { useRouter } from 'next/navigation';
+
+import Fire from '@/asset/Svg/modakbul.svg';
 
 export default function VideoSelector() {
   const router = useRouter();
@@ -10,12 +11,24 @@ export default function VideoSelector() {
   };
 
   return (
-    <div className="flex space-x-4">
-      <button onClick={() => handleVideoSelect('fireplace')} className="px-4 py-2 bg-blue-500 rounded">
-        캠프파이어
+    <div className="flex flex-col font-nanumBold  text-main4 mt-12 text-[26px] space-y-7 w-64  ">
+      <button className="flex items-center justify-between py-2 text-left  bg-[#8ad1b6] border-sub5 border-2  rounded-2xl">
+        <span className="ml-7">
+          따솜이 <br /> 세우기
+        </span>
+        <Fire className="mr-5" />
       </button>
-      <button onClick={() => handleVideoSelect('wind')} className="px-4 py-2 bg-green-500 rounded">
-        바람
+      <button
+        onClick={() => handleVideoSelect('fireplace')}
+        className="flex items-center justify-between py-2 text-left  bg-[#e68671] border-sub3 border-2  rounded-2xl">
+        <span className="ml-7">불멍</span>
+        <Fire className="mr-5" />
+      </button>
+      <button
+        onClick={() => handleVideoSelect('wind')}
+        className="flex items-center justify-between py-2 z-10 text-left  bg-[#7d92ee] border-sub4 border-2  rounded-2xl">
+        <span className="ml-7">바람쐬기</span>
+        <Fire className="mr-5" />
       </button>
     </div>
   );

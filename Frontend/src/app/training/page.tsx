@@ -6,7 +6,7 @@ import Navbar from '@/components/Navbar';
 
 export default function Training() {
   return (
-    <div className="flex flex-col items-center mt-11 max-h-screen relative">
+    <div className="flex flex-col inset-0 h-screen  items-center mt-11 max-h-screen relative">
       <div className="relative w-full flex ml-6">
         <DdasomiSvg className="absolute -top-14 w-32 h-32 z-0 " />
       </div>

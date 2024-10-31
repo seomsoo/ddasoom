@@ -1,9 +1,21 @@
+import Hill from '@/asset/Svg/hill.svg';
 import VideoSelector from '@/components/Training/VideoSelector';
+
 export default function CalmDownTrainingPage() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white">
-      <h1 className="text-3xl mb-6">원하는 콘텐츠를 선택하세요</h1>
-      <VideoSelector />
-    </div>
+    <section className="absolute inset-0 background1 flex justify-center overflow-hidden text-white">
+      <div className="absolute bottom-0 w-full">
+        <Hill />
+      </div>
+      <div className="text-center">
+        <h1 className="text-4xl font-hakgyoansimR mt-32 mb-6">
+          마음의 평온을 찾아
+          <br /> 떠날 준비가 되셨나요?
+        </h1>
+        <div className="flex items-center justify-center ">
+          <VideoSelector />
+        </div>
+      </div>
+    </section>
   );
 }

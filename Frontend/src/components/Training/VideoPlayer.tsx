@@ -9,7 +9,7 @@ import SoundOn from '@/asset/Svg/soundOn.svg';
 import { videoData } from '@/components/Training/VideoData';
 
 type VideoPlayerProps = {
-  videoType: keyof typeof videoData; // videoData 객체의 키 중 하나를 videoType으로 사용
+  videoType: keyof typeof videoData;
 };
 
 export default function VideoPlayer({ videoType }: VideoPlayerProps) {
@@ -21,17 +21,24 @@ export default function VideoPlayer({ videoType }: VideoPlayerProps) {
   const data = videoData[videoType];
 
   useEffect(() => {
-    // 첫 번째 텍스트 애니메이션
     setTimeout(() => {
-      setVisibleText(data.text);
+      setVisibleText(data.introText);
       setAnimationClass('animate-fadein');
     }, 500);
 
-    // 텍스트가 서서히 사라지는 애니메이션
     setTimeout(() => {
       setAnimationClass('animate-fadeout');
     }, 3000);
-  }, [data.text]);
+
+    setTimeout(() => {
+      setVisibleText(data.focusText);
+      setAnimationClass('animate-fadein');
+    }, 4500);
+
+    setTimeout(() => {
+      setAnimationClass('animate-fadeout');
+    }, 7000);
+  }, [data.introText, data.focusText]);
 
   const handleSoundToggle = () => {
     setIsMuted(!isMuted);
@@ -41,7 +48,7 @@ export default function VideoPlayer({ videoType }: VideoPlayerProps) {
   };
 
   const handleCancel = () => {
-    router.push('/training/calmdown');
+    router.push('/training/result');
   };
 
   return (
@@ -56,13 +63,12 @@ export default function VideoPlayer({ videoType }: VideoPlayerProps) {
           src={data.src}
         />
       ) : (
-        <div className="absolute inset-0 flex items-center justify-center text-white">
-          <span>{data.text}</span>
+        <div className="absolute inset-0 flex items-center justify-center text-main4">
+          <span>{data.introText}</span>
         </div>
       )}
 
-      {/* 텍스트 애니메이션 */}
-      <div className="absolute inset-0 flex items-center justify-center text-white text-3xl font-hakgyoansimR">
+      <div className="absolute inset-0 flex items-center justify-center text-main4 text-3xl font-hakgyoansimR">
         <span
           style={{
             backgroundImage: 'linear-gradient(to top, #ffffff, #EBF4E3)',
@@ -75,14 +81,12 @@ export default function VideoPlayer({ videoType }: VideoPlayerProps) {
         </span>
       </div>
 
-      {/* Sound Toggle Button */}
       {data.type === 'video' && (
         <button onClick={handleSoundToggle} className="absolute top-10 left-8 z-10">
           {isMuted ? <SoundOff /> : <SoundOn />}
         </button>
       )}
 
-      {/* Cancel Button */}
       <button onClick={handleCancel} className="absolute top-9 right-8 z-10">
         <Cancel />
       </button>
