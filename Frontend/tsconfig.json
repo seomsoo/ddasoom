@@ -18,7 +18,7 @@
         "name": "next"
       }
     ],
-    "baseUrl": ".", // 프로젝트 루트를 기준으로 설정
+    "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
       "@components": ["src/components/*"],
@@ -28,6 +28,13 @@
       "@utils": ["src/utils/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "Frontend/**/*"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "Frontend/**/*",
+    "global.d.ts"  // global.d.ts 파일 포함
+  ],
   "exclude": ["node_modules"]
 }
