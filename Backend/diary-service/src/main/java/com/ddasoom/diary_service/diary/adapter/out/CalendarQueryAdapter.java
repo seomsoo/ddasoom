@@ -1,9 +1,11 @@
 package com.ddasoom.diary_service.diary.adapter.out;
 
-import static com.ddasoom.diary_service.diary.adapter.out.QPanicJpaEntity.panicJpaEntity;
-import static com.ddasoom.diary_service.diary.adapter.out.QTrainingJpaEntity.trainingJpaEntity;
+import static com.ddasoom.diary_service.diary.adapter.out.panic.QPanicJpaEntity.panicJpaEntity;
+import static com.ddasoom.diary_service.diary.adapter.out.training.QTrainingJpaEntity.trainingJpaEntity;
 
 import com.ddasoom.diary_service.common.annotation.PersistenceAdapter;
+import com.ddasoom.diary_service.diary.adapter.out.panic.QPanicJpaEntity;
+import com.ddasoom.diary_service.diary.adapter.out.training.QTrainingJpaEntity;
 import com.ddasoom.diary_service.diary.application.domain.CalendarsDto;
 import com.ddasoom.diary_service.diary.application.domain.QCalendarsDto;
 import com.ddasoom.diary_service.diary.application.port.out.CalendarPort;
