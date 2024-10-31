@@ -8,6 +8,5 @@ public interface CalendarQuery {
 
     CalendarsResponse getCalendars(Long userId, Optional<Integer> year, Optional<Integer> month);
 
-    CalendarResponse getCalendar(Long userId, Optional<Integer> yearRequest, Optional<Integer> monthRequest,
-            Optional<Integer> dayRequest);
+    CalendarResponse getCalendar(Long userId, GetCalendarCommand getCalendarCommand);
 }
