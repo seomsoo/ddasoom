@@ -1,13 +1,18 @@
 'use client';
 
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 
 import DdasomiSvg from '@/asset/Svg/shadowDdasomi.svg';
 import Button from '@/components/Button';
-export default function SelfDiagnosisResultPage() {
-  const searchParams = useSearchParams();
-  const yesCount = parseInt(searchParams.get('yesCount') || '0', 10); // 쿼리 파라미터에서 yesCount 값을 가져오기
+
+type searchParams = Record<string, string | undefined>;
+interface SelfDiagnosisResultPageProps {
+  searchParams: searchParams;
+}
+
+export default function SelfDiagnosisResultPage({ searchParams }: SelfDiagnosisResultPageProps) {
+  const yesCount = parseInt(searchParams.yesCount || '0', 10); // 쿼리 파라미터에서 yesCount 값을 가져오기
   const isPanicSuspected = yesCount >= 4;
   const router = useRouter();
   const handleMoveMain = () => {
