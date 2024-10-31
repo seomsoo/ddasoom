@@ -1,4 +1,4 @@
-package com.ddasoom.voice_service.voice.adapter.out;
+package com.ddasoom.voice_service.voice.adapter.out.s3;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
