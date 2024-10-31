@@ -71,6 +71,8 @@ public class ElevenLabsAiVoiceAdapter implements TrainAiVoicePort, ConvertTextSc
     @Override
     public List<SoundFile> convertTextScriptToSoundPort(String voiceKey) {
         Map<String, String> scripts = new HashMap<>();
+
+        //TODO: 스크립트 확정 후 추가 예정
         scripts.put("EMERGENCY-001", "지금 숨을 잘 쉬고 있어. 숨이 들어오고 나가는 걸 천천히 느껴봐");
 
         return scripts.entrySet().stream()
