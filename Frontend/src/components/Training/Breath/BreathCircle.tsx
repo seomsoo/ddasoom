@@ -1,4 +1,5 @@
 'use client';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useMemo, useState } from 'react';
 
 import Button from '@/components/Button';
@@ -15,6 +16,7 @@ const circumference = 2 * Math.PI * circleRadius;
 const gapLength = 20;
 
 export default function BreathCircle({ timing }: BreathCircleProps) {
+  const router = useRouter();
   const [description, setDescription] = useState('');
   const [timer, setTimer] = useState(1);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -46,11 +48,7 @@ export default function BreathCircle({ timing }: BreathCircleProps) {
 
   const handleStartStop = () => {
     if (isAnimating) {
-      setIsAnimating(false);
-      setTimer(1);
-      setStageProgress([]);
-      setCurrentStage(0);
-      setDescription('');
+      router.push('/training/result');
     } else {
       setIsAnimating(true);
       setCurrentStage(0);
