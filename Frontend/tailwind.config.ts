@@ -8,6 +8,29 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      keyframes: {
+        fadein: {
+          '0%': {
+            opacity: '0',
+          },
+          '100%': {
+            opacity: '1',
+          },
+        },
+        fadeout: {
+          '0%': {
+            opacity: '1',
+          },
+          '100%': {
+            opacity: '0',
+           
+          },
+        },
+      },
+      animation: {
+        fadein: 'fadein 2s ease-out forwards',
+        fadeout: 'fadeout 1s ease-out forwards',
+      },
       colors: {
         main1: '#8ebb5b',
         main2: '#b6d89a',
