@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -29,9 +30,11 @@ public class PanicJpaEntity {
 
     private int duration;
 
-    private double latitude;
+    private BigDecimal latitude;
 
-    private double longitude;
+    private BigDecimal longitude;
+
+    private String address;
 
     @Column(length = 500)
     private String description;
@@ -44,5 +47,15 @@ public class PanicJpaEntity {
                 .longitude(this.longitude)
                 .description(this.description)
                 .build();
+    }
+
+    public PanicJpaEntity(Long userId, LocalDateTime startDate, int duration, BigDecimal latitude,
+            BigDecimal longitude, String address) {
+        this.userId = userId;
+        this.startDate = startDate;
+        this.duration = duration;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.address = address;
     }
 }
