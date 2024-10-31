@@ -9,6 +9,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -49,13 +51,15 @@ public class PanicJpaEntity {
                 .build();
     }
 
-    public PanicJpaEntity(Long userId, LocalDateTime startDate, int duration, BigDecimal latitude,
+    public PanicJpaEntity(Long userId, int duration, BigDecimal latitude,
             BigDecimal longitude, String address) {
         this.userId = userId;
-        this.startDate = startDate;
         this.duration = duration;
         this.latitude = latitude;
         this.longitude = longitude;
         this.address = address;
+
+        LocalDateTime nowSeoul = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+        this.startDate = nowSeoul.minusSeconds(duration);
     }
 }

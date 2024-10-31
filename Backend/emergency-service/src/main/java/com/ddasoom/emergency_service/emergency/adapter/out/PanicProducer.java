@@ -3,6 +3,7 @@ package com.ddasoom.emergency_service.emergency.adapter.out;
 import com.ddasoom.emergency_service.emergency.adapter.in.web.request.SavePanicRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;

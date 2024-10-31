@@ -23,7 +23,6 @@ public class PanicRecordAdapter implements PanicRecordPort {
     public void savePanicRecord(PanicRecordInfo panic) {
         panicRepository.save(new PanicJpaEntity(
                 panic.userId(),
-                panic.startDate(),
                 panic.duration(),
                 panic.latitude(),
                 panic.longitude(),
