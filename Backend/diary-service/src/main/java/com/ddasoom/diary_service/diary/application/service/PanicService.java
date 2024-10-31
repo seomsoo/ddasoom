@@ -17,7 +17,6 @@ public class PanicService implements PanicUseCase {
     public void savePanic(PanicCommand command) {
         PanicRecordInfo panic = new PanicRecordInfo(
                 command.userId(),
-                command.startDate(),
                 command.duration(),
                 command.latitude(),
                 command.longitude(),

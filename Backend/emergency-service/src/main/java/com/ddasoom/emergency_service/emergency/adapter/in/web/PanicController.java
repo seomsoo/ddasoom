@@ -24,6 +24,7 @@ public class PanicController {
     @PostMapping("/api/emergency/panic")
     public void savePanic(@RequestHeader("X-Authenticated-User") Long userId,
             @RequestBody SavePanicRequest request) throws JsonProcessingException {
+
         request.setUserId(userId);
         producer.send("panic", request);
     }

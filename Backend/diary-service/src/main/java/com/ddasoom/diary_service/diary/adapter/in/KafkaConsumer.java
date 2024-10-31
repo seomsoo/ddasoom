@@ -28,8 +28,7 @@ public class KafkaConsumer {
         map = mapper.readValue(kafkaMessage, new TypeReference<Map<String, Object>>() {});
 
         PanicCommand panicCommand = new PanicCommand(
-                (Long) map.get("userId"),
-                LocalDateTime.parse((String) map.get("startDate")),
+                ((Number) map.get("userId")).longValue(),
                 (Integer) map.get("duration"),
                 new BigDecimal(map.get("latitude").toString()),
                 new BigDecimal(map.get("longitude").toString()),

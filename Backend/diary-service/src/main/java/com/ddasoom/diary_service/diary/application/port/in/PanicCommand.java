@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 
 public record PanicCommand(
         Long userId,
-        LocalDateTime startDate,
         int duration,
         BigDecimal latitude,
         BigDecimal longitude,
