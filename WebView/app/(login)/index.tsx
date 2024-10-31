@@ -1,4 +1,11 @@
-import { View, Text, Image, TouchableOpacity, StatusBar } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  StatusBar,
+  Alert,
+} from "react-native";
 import React from "react";
 import backGroundImg from "@/assets/images/first.png";
 import logoImage from "@/assets/images/logo.png";
@@ -6,15 +13,44 @@ import styled from "styled-components/native";
 import Button from "@/components/common/Button";
 import { login, me } from "@react-native-kakao/user";
 import { router } from "expo-router";
+import { signIn, signUp } from "@/services/auth";
+import useAuthStore from "@/zustand/authStore";
+import { AxiosError } from "axios";
 
 const Main = () => {
-  console.log("login");
+  const { setToken, setUserEmail, setUserName, setUserId } = useAuthStore();
 
   const handleKaKaoLogin = async () => {
-    // const { accessToken, refreshToken } = await login();
-    // if (accessToken && refreshToken) {
-    router.push("authorized");
-    // }
+    const { accessToken, refreshToken } = await login();
+
+    if (!accessToken || !refreshToken) {
+      Alert.alert("로그인 오류");
+      return;
+    }
+
+    const { email } = await me();
+
+    if (!email || email === "") {
+      Alert.alert("로그인 오류");
+      return;
+    }
+
+    try {
+      const { userId, name, token } = await signIn(email);
+      setToken(token);
+      setUserEmail(email);
+      setUserName(name);
+      setUserId(userId);
+
+      router.push("authorized");
+    } catch (e: unknown) {
+      if (e instanceof AxiosError && e.code === "404") {
+        router.push("signupModal");
+      } else {
+        // 그 외 오류 처리
+        Alert.alert("로그인 오류", "다시 시도해주세요.");
+      }
+    }
   };
 
   const handleUnauthorized = () => {
