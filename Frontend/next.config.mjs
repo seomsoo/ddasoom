@@ -1,8 +1,10 @@
+import withVideos from 'next-videos';
 import path from 'path';
 
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  webpack: config => {
+const nextConfig = withVideos({
+  reactStrictMode: true,
+  webpack: (config) => {
     config.resolve.alias = {
       ...config.resolve.alias,
       '@': path.resolve('./src'),
@@ -12,14 +14,15 @@ const nextConfig = {
       '@hooks': path.resolve('./src/hooks'),
       '@utils': path.resolve('./src/utils'),
     };
+
     // SVG를 React 컴포넌트로 사용하기 위한 설정 추가
     config.module.rules.push({
-      test: /\.svg$/, // SVG 파일에 대해
-      use: ['@svgr/webpack'], // @svgr/webpack 사용
+      test: /\.svg$/,
+      use: ['@svgr/webpack'],
     });
 
     return config;
   },
-};
+});
 
 export default nextConfig;
