@@ -6,6 +6,7 @@ import com.ddasoom.diary_service.common.annotation.UseCase;
 import com.ddasoom.diary_service.diary.adapter.in.web.response.CalendarResponse;
 import com.ddasoom.diary_service.diary.adapter.in.web.response.CalendarsResponse;
 import com.ddasoom.diary_service.diary.application.port.in.CalendarQuery;
+import com.ddasoom.diary_service.diary.application.port.in.GetCalendarCommand;
 import com.ddasoom.diary_service.diary.application.port.out.CalendarPort;
 import com.ddasoom.diary_service.diary.application.port.out.DailyRecordPort;
 import com.ddasoom.diary_service.diary.application.port.out.PanicRecordPort;
@@ -36,11 +37,10 @@ public class CalendarService implements CalendarQuery {
     }
 
     @Override
-    public CalendarResponse getCalendar(Long userId, Optional<Integer> yearRequest, Optional<Integer> monthRequest,
-            Optional<Integer> dayRequest) {
-        int year = yearRequest.orElse(now().getYear());
-        int month = monthRequest.orElse(now().getMonthValue());
-        int day = dayRequest.orElse(now().getDayOfMonth());
+    public CalendarResponse getCalendar(Long userId, GetCalendarCommand getCalendarCommand) {
+        int year = getCalendarCommand.year();
+        int month = getCalendarCommand.month();
+        int day = getCalendarCommand.day();
 
         return new CalendarResponse(
                 panicRecordPort.getPanicRecord(userId, year, month, day),
