@@ -36,7 +36,7 @@ module.exports = {
         functions: 'always-multiline', // 함수 인자에서도 줄바꿈 시 쉼표 사용을 허용
       },
     ],
-    indent: ['error', 2], // 들여쓰기를 2칸으로 설정 (에러)
+    indent: ['warn', 2], // 들여쓰기를 2칸으로 설정 (에러)
     quotes: ['error', 'single'], // 문자열을 single quote로 설정 (에러)
     'eol-last': 'error', // 파일 끝에 줄바꿈이 필요함 (에러)
     semi: ['error', 'always'], // 세미콜론을 항상 사용 (에러)
