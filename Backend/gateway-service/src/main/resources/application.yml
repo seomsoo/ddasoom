@@ -40,7 +40,19 @@ spring:
         - id: user-service
           uri: lb://USER-SERVICE
           predicates:
-            - Path=/users/**
+            - Path=/api/users/login
+            - Method=POST
+
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/api/users
+            - Method=POST
+
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/api/users/**
 
         - id: diary-service
           uri: lb://DIARY-SERVICE
@@ -54,7 +66,7 @@ spring:
         - id: diary-service
           uri: lb://DIARY-SERVICE
           predicates:
-            - Path=/diary/**
+            - Path=/api/diary/**
 
         - id: emergency-service
           uri: lb://EMERGENCY-SERVICE
@@ -68,7 +80,21 @@ spring:
         - id: emergency-service
           uri: lb://EMERGENCY-SERVICE
           predicates:
-            - Path=/emergency/**
+            - Path=/api/emergency/**
+
+        - id: voice-service
+          uri: lb://VOICE-SERVICE
+          predicates:
+            - Path=/voices/actuator/**
+            - Method=GET,POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/voices/(?<segment>.*), /$\{segment}
+
+        - id: voice-service
+          uri: lb://VOICE-SERVICE
+          predicates:
+            - Path=/api/voices/**
 
 eureka:
   client:
@@ -76,3 +102,7 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://localhost:8761/eureka
+
+jwt:
+  issuer: DDASOOM
+  client-secret: asdfasdfasdfadadfa
