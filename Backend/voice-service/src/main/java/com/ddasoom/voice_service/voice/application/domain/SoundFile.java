@@ -5,4 +5,7 @@ public record SoundFile(
         byte[] bytes
 ) {
 
+    public long size() {
+        return bytes.length;
+    }
 }

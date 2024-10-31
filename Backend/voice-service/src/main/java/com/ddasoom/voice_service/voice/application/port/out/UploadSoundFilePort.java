@@ -5,5 +5,5 @@ import java.util.List;
 
 public interface UploadSoundFilePort {
 
-    void uploadSoundFile(List<SoundFile> files);
+    void uploadSoundFiles(List<SoundFile> files);
 }
