@@ -20,7 +20,7 @@ public class ConvertTextScriptToSoundService implements ConvertTextScriptToSound
     @Override
     public void convertTextScriptToSoundUseCase(String voiceKey) {
         List<SoundFile> soundFiles = convertTextScriptToSoundPort.convertTextScriptToSoundPort(voiceKey);
-        
-        uploadSoundFilePort.uploadSoundFile(soundFiles);
+
+        uploadSoundFilePort.uploadSoundFiles(soundFiles);
     }
 }
