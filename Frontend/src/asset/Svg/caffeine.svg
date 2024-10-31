@@ -1,0 +1,22 @@
+<svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path
+    d="M21.25 11.25V22.5C21.25 24.575 19.575 26.25 17.5 26.25H10C7.925 26.25 6.25 24.575 6.25 22.5V11.25H21.25Z"
+    fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+  />
+  <path
+    d="M21.25 11.25H25C25.6875 11.25 26.25 11.8125 26.25 12.5V16.25C26.25 16.9375 25.6875 17.5 25 17.5H21.25"
+    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+  />
+  <mask id="mask0_268_209" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="6" y="-1" width="15" height="22">
+    <path
+      d="M10 0C10 2.5 7.5 2.5 7.5 5C7.5 7.5 10 7.5 10 10C10 12.5 7.5 12.5 7.5 15C7.5 17.5 10 17.5 10 20M15 0C15 2.5 12.5 2.5 12.5 5C12.5 7.5 15 7.5 15 10C15 12.5 12.5 12.5 12.5 15C12.5 17.5 15 17.5 15 20M20 0C20 2.5 17.5 2.5 17.5 5C17.5 7.5 20 7.5 20 10C20 12.5 17.5 12.5 17.5 15C17.5 17.5 20 17.5 20 20"
+      stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+    />
+  </mask>
+  <g mask="url(#mask0_268_209)">
+    <path
+      d="M30 2.5H0V8.75H30V2.5Z"
+      fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+    />
+  </g>
+</svg>
