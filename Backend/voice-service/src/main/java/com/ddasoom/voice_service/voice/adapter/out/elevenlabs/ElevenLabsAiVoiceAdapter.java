@@ -1,4 +1,4 @@
-package com.ddasoom.voice_service.voice.adapter.out;
+package com.ddasoom.voice_service.voice.adapter.out.elevenlabs;
 
 import com.ddasoom.voice_service.voice.application.domain.SoundFile;
 import com.ddasoom.voice_service.voice.application.domain.Voice;
@@ -83,11 +83,17 @@ public class ElevenLabsAiVoiceAdapter implements TrainAiVoicePort, ConvertTextSc
 
         // 헤더 설정
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("xi-api-key", "sk_2ff2c593c65116b4f22f94c7ae2a77b77986f005c314683e");
 
         // JSON 본문 설정
-        String requestJson = String.format("{\"text\":\"%s\", \"model_id\":\"eleven_multilingual_v2\"}", script);
+        String requestJson = null;
+        try {
+            String format = objectMapper.writeValueAsString(new TextToSpeechRequest(script));
+            requestJson = String.format(format);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
 
         // HttpEntity 생성
         HttpEntity<String> entity = new HttpEntity<>(requestJson, headers);
