@@ -20,7 +20,8 @@ public class PanicService implements PanicUseCase {
                 command.duration(),
                 command.latitude(),
                 command.longitude(),
-                command.address()
+                command.address(),
+                command.description()
         );
 
         panicRecordPort.savePanicRecord(panic);
