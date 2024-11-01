@@ -1,6 +1,5 @@
-// src/data/videoData.ts
-import fireplaceVideo from '@/asset/Video/fireplace.mp4';
-import windVideo from '@/asset/Video/wind.mp4';
+import fireplaceVideo from '../../../public/videos/fireplace.mp4';
+import windVideo from '../../../public/videos/wind.mp4';
 
 type VideoData = {
   src?: string;

@@ -1,0 +1,13 @@
+spring:
+  config:
+    activate:
+      on-profile: deploy
+
+  cloud:
+    config:
+      uri: http://config-service:8888
+      name: emergency-service
+
+  rabbitmq:
+    host: rabbitmq
+    port: 5672

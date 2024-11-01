@@ -14,21 +14,6 @@ spring:
   application:
     name: gateway-service
 
-jwt:
-  issuer: DDASOOM
-  client-secret: asdfasdfasdfadadfa
-
-
----
-spring:
-  config:
-    activate:
-      on-profile: local
-
-  rabbitmq:
-    host: localhost
-    port: 5672
-
   cloud:
     gateway:
       routes:
@@ -100,23 +85,24 @@ spring:
           predicates:
             - Path=/api/voices/**
 
-eureka:
-  client:
-    register-with-eureka: true
-    fetch-registry: true
-    service-url:
-      defaultZone: http://localhost:8761/eureka
+jwt:
+  issuer: DDASOOM
+  client-secret: asdfasdfasdfadadfa
 
 
 ---
 spring:
   config:
     activate:
-      on-profile: deploy
+      on-profile: local
+
+  rabbitmq:
+    host: localhost
+    port: 5672
 
 eureka:
   client:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://k11c103.p.ssafy.io:8761/eureka
+      defaultZone: http://localhost:8761/eureka

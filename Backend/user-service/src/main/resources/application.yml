@@ -39,17 +39,3 @@ jwt:
   issuer: DDASOOM
   client-secret: asdfasdfasdfadadfa
   expiry-seconds: 1800
-
-
----
-spring:
-  config:
-    activate:
-      on-profile: deploy
-
-eureka:
-  client:
-    register-with-eureka: true
-    fetch-registry: true
-    service-url:
-      defaultZone: http://k11c103.p.ssafy.io:8761/eureka
