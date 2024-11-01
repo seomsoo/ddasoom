@@ -1,8 +1,8 @@
 'use client';
 import React, { useState } from 'react';
 
-import HerongSomi from '@/asset/Svg/herongSomi.svg';
-import MapIcon from '@/asset/Svg/mapIcon.svg';
+import HerongSomi from '@/svgs/herongSomi.svg';
+import MapIcon from '@/svgs/mapIcon.svg';
 
 import MapModal from './MapModal';
 

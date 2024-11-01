@@ -1,6 +1,6 @@
-import GreenSomi from '@/asset/Svg/greenSomi.svg';
-import OrangeSomi from '@/asset/Svg/orangeSomi.svg';
-import YellowSomi from '@/asset/Svg/yellowSomi.svg';
+import GreenSomi from '@/svgs/greenSomi.svg';
+import OrangeSomi from '@/svgs/orangeSomi.svg';
+import YellowSomi from '@/svgs/yellowSomi.svg';
 
 interface DdasomiIconProps {
   trainingCount: number;
