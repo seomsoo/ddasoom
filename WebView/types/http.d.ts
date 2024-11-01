@@ -1,7 +1,13 @@
-type ErrorMsg = {
-  message: string;
-  status: number;
-};
+interface DdasoomError extends AxiosError {
+  response?: {
+    data: {
+      error: {
+        message: string;
+        status: number;
+      };
+    };
+  };
+}
 
 interface BaseResponse<T> {
   status: string;

@@ -9,20 +9,11 @@ type ButtonProps = {
   onPress: () => void;
 };
 
-const Button = ({
-  children,
-  color = "white",
-  textColor = "black",
-  onPress,
-}: ButtonProps) => {
+const Button = ({ children, color = "white", textColor = "black", onPress }: ButtonProps) => {
   return (
     <ButtonWrapper onPress={onPress}>
       <ButtonContainer color={color}>
-        {typeof children === "string" ? (
-          <ButtonText textColor={textColor}>{children}</ButtonText>
-        ) : (
-          children
-        )}
+        {typeof children === "string" ? <ButtonText textColor={textColor}>{children}</ButtonText> : children}
       </ButtonContainer>
     </ButtonWrapper>
   );
