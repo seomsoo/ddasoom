@@ -1,4 +1,3 @@
-// src/data/videoData.ts
 import fireplaceVideo from '../../../public/videos/fireplace.mp4';
 import windVideo from '../../../public/videos/wind.mp4';
 
