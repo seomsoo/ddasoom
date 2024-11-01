@@ -1,7 +1,7 @@
-import AlcoholSvg from '@/asset/Svg/Alcohol.svg';
-import CaffeineSvg from '@/asset/Svg/Caffeine.svg';
-import CigaretteSvg from '@/asset/Svg/Cigarette.svg';
-import ExerciseSvg from '@/asset/Svg/Exercise.svg';
+import AlcoholSvg from '@/asset/Svg/alcohol.svg';
+import CaffeineSvg from '@/asset/Svg/caffeine.svg';
+import CigaretteSvg from '@/asset/Svg/cigarette.svg';
+import ExerciseSvg from '@/asset/Svg/exercise.svg';
 
 interface RecordItemProps {
   label: string;

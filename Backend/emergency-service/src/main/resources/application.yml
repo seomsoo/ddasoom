@@ -42,6 +42,10 @@ spring:
     activate:
       on-profile: deploy
 
+  rabbitmq:
+    host: k11c103.p.ssafy.io
+    port: 5672
+
 eureka:
   client:
     register-with-eureka: true
