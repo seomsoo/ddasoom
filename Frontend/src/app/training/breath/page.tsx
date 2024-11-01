@@ -1,6 +1,6 @@
-import Ddasomi from '@/asset/Svg/shadowDdasomi.svg';
 import Header from '@/components/Header';
 import BreathCircle from '@/components/Training/Breath/BreathCircle';
+import Ddasomi from '@/svgs/shadowDdasomi.svg';
 
 const BreatTrainingPage = () => {
   return (

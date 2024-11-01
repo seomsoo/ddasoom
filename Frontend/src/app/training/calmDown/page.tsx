@@ -1,6 +1,6 @@
-import Hill from '@/asset/Svg/hill.svg';
 import Header from '@/components/Header';
 import VideoSelector from '@/components/Training/VideoSelector';
+import Hill from '@/svgs/hill.svg';
 
 export default function CalmDownTrainingPage() {
   return (

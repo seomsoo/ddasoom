@@ -3,9 +3,9 @@
 import Image from 'next/image';
 import React, { useEffect, useMemo, useState } from 'react';
 
-import DdasomiTest from '@/asset/Svg/ddasomi.svg';
-import HeartSvg from '@/asset/Svg/heart.svg';
-import HeartLineSvg from '@/asset/Svg/heartLine.svg';
+import DdasomiTest from '@/svgs/ddasomi.svg';
+import HeartSvg from '@/svgs/heart.svg';
+import HeartLineSvg from '@/svgs/heartLine.svg';
 
 interface BreathHeartProps {
   timing: 'shortTime' | 'basicTime' | 'longTime';
