@@ -63,4 +63,8 @@ public class PanicJpaEntity {
         LocalDateTime nowSeoul = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
         this.startDate = nowSeoul.minusSeconds(duration);
     }
+
+    public void saveDescription(String description) {
+        this.description = description;
+    }
 }

@@ -3,10 +3,12 @@ package com.ddasoom.emergency_service.emergency.adapter.in.web;
 import static org.springframework.http.HttpStatus.CREATED;
 
 import com.ddasoom.emergency_service.common.annotation.WebAdapter;
+import com.ddasoom.emergency_service.emergency.adapter.in.web.request.SavePanicDescriptionRequest;
 import com.ddasoom.emergency_service.emergency.adapter.in.web.request.SavePanicRequest;
 import com.ddasoom.emergency_service.emergency.adapter.out.PanicProducer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -27,5 +29,12 @@ public class PanicController {
 
         request.setUserId(userId);
         producer.send("panic", request);
+    }
+
+    @PatchMapping("/api/emergency/panic/description")
+    public void savePanicDescription(@RequestHeader("X-Authenticated-User") Long userId,
+            @RequestBody SavePanicDescriptionRequest request) throws JsonProcessingException {
+
+        producer.send("panic-description", request);
     }
 }
