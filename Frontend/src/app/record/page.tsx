@@ -3,17 +3,17 @@
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useMemo, useState } from 'react';
 
-import GreenSomi from '@/asset/Svg/greenSomi.svg';
-import HerongSomi from '@/asset/Svg/herongSomi.svg';
-import MapIcon from '@/asset/Svg/mapIcon.svg';
-import OrangeSomi from '@/asset/Svg/orangeSomi.svg';
-import AddIcon from '@/asset/Svg/plusCircle.svg';
-import Seed from '@/asset/Svg/seedling.svg';
-import YellowSomi from '@/asset/Svg/yellowSomi.svg';
 import Navbar from '@/components/Navbar';
 import Calendar from '@/components/Record/Calendar';
 import DiaryItem from '@/components/Record/DiaryItem';
 import MapModal from '@/components/Record/MapModal';
+import GreenSomi from '@/svgs/greenSomi.svg';
+import HerongSomi from '@/svgs/herongSomi.svg';
+import MapIcon from '@/svgs/mapIcon.svg';
+import OrangeSomi from '@/svgs/orangeSomi.svg';
+import AddIcon from '@/svgs/plusCircle.svg';
+import Seed from '@/svgs/seedling.svg';
+import YellowSomi from '@/svgs/yellowSomi.svg';
 
 export default function RecordPage({ searchParams }: SearchParamsProps) {
   const router = useRouter();
