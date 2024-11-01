@@ -2,7 +2,7 @@ import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import Link from 'next/link';
 
-import CalendarListIcon from '@/asset/Svg/calendarListIcon.svg';
+import CalendarListIcon from '@/svgs/calendarListIcon.svg';
 
 interface CalendarHeaderProps {
   currentDate: Date;

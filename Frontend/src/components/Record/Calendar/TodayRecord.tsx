@@ -2,13 +2,13 @@
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
-import GreenSomi from '@/asset/Svg/greenSomi.svg';
-import HerongSomi from '@/asset/Svg/herongSomi.svg';
-import OrangeSomi from '@/asset/Svg/orangeSomi.svg';
-import AddIcon from '@/asset/Svg/plusCircle.svg';
-import Seed from '@/asset/Svg/seedling.svg';
-import YellowSomi from '@/asset/Svg/yellowSomi.svg';
 import DiaryItem from '@/components/Record/Calendar/DiaryItem';
+import GreenSomi from '@/svgs/greenSomi.svg';
+import HerongSomi from '@/svgs/herongSomi.svg';
+import OrangeSomi from '@/svgs/orangeSomi.svg';
+import AddIcon from '@/svgs/plusCircle.svg';
+import Seed from '@/svgs/seedling.svg';
+import YellowSomi from '@/svgs/yellowSomi.svg';
 
 interface TodayRecordProps {
   training: { date: string; trainingList: string[] } | null;
