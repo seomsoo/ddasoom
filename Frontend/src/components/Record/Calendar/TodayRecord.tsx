@@ -13,7 +13,7 @@ import DiaryItem from '@/components/Record/Calendar/DiaryItem';
 interface TodayRecordProps {
   training: { date: string; trainingList: string[] } | null;
   date: Date;
-  record: { diaryEntry: string | null; selectedIcons: string[] | null };
+  record: { date: string | null; description: string | null; selectedIcons: string[] | null };
 }
 export default function TodayRecord({ training, date, record }: TodayRecordProps) {
   const router = useRouter();
@@ -43,6 +43,7 @@ export default function TodayRecord({ training, date, record }: TodayRecordProps
 
     router.push(`/record/dailyRecord?year=${year}&month=${month}&day=${day}`);
   };
+  console.log('record:', record);
 
   return (
     <div className="relative bg-main4 rounded-2xl border border-main1 p-3 shadow-sm mt-5 min-h-60 flex">
@@ -70,14 +71,14 @@ export default function TodayRecord({ training, date, record }: TodayRecordProps
 
       {/* 데일리 기록 */}
       <div className="flex flex-col text-main1 font-nanumBold w-full ">
-        {record.diaryEntry || record.selectedIcons ? (
+        {record.description || record.selectedIcons ? (
           <>
             <div className="flex justify-center">
               <DiaryItem labels={record.selectedIcons} />
             </div>
             <div className="mt-6 text-black text-sm">
-              {record.diaryEntry ? (
-                <p className="w-full break-words px-2">{record.diaryEntry}</p>
+              {record.description ? (
+                <p className="w-full break-words px-2">{record.description}</p>
               ) : (
                 <p className="text-center">오늘의 한 줄 일기가 없습니다.</p>
               )}
