@@ -1,8 +1,8 @@
 'use client';
 import { useRouter } from 'next/navigation';
 
-import Ddasom from '@/asset/Svg/ddasomi.svg';
 import Button from '@/components/Button';
+import Ddasom from '@/svgs/ddasomi.svg';
 export default function TrainingResultPage() {
   const router = useRouter();
   const handleMoveTraining = () => {

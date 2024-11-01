@@ -1,8 +1,8 @@
 import Link from 'next/link';
 
-import DdasomiSvg from '@/asset/Svg/ddasomi.svg';
-import SunglassDasomiSvg from '@/asset/Svg/sunglassDdasomi.svg';
 import Navbar from '@/components/Navbar';
+import DdasomiSvg from '@/svgs/ddasomi.svg';
+import SunglassDasomiSvg from '@/svgs/sunglassDdasomi.svg';
 
 export default function Training() {
   return (
