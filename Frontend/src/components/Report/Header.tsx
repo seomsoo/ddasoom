@@ -1,8 +1,8 @@
 'use client';
 import { useRouter } from 'next/navigation';
 
-import Back from '@/asset/Svg/backIcon.svg';
-import Ddasom from '@/asset/Svg/ddasomi.svg';
+import Back from '@/svgs/backIcon.svg';
+import Ddasom from '@/svgs/ddasomi.svg';
 
 export default function Header() {
   const router = useRouter();
