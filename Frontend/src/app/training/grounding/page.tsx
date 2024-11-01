@@ -2,12 +2,12 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-import AppleSvg from '@/asset/Svg/apple.svg';
-import EarSound from '@/asset/Svg/earSound.svg';
-import Footprint from '@/asset/Svg/footPrint.svg';
-import Mic from '@/asset/Svg/groundingMic.svg';
 import Button from '@/components/Button';
 import Header from '@/components/Header';
+import AppleSvg from '@/svgs/apple.svg';
+import EarSound from '@/svgs/earSound.svg';
+import Footprint from '@/svgs/footPrint.svg';
+import Mic from '@/svgs/groundingMic.svg';
 
 export default function GroundingTrainingPage() {
   const [step, setStep] = useState(1);
@@ -43,11 +43,14 @@ export default function GroundingTrainingPage() {
 
   return (
     <div>
-      <Header label='그라운딩'/>
+      <Header label="그라운딩" />
       <main className="px-4 mt-10 flex flex-col items-center">
         <div className="w-full flex justify-center mb-4">
           <div className="w-52 bg-gray2 rounded-full h-1.5">
-            <div className="bg-main2 h-1.5 rounded-full transition-all duration-500" style={{ width: `${progress}%` }} />
+            <div
+              className="bg-main2 h-1.5 rounded-full transition-all duration-500"
+              style={{ width: `${progress}%` }}
+            />
           </div>
         </div>
 
@@ -70,8 +73,6 @@ export default function GroundingTrainingPage() {
           </div>
         </div>
       </main>
-
     </div>
-
   );
 }

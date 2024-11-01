@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
-import Ddasomi from '@/asset/Svg/shadowDdasomi.svg';
 import Header from '@/components/Header';
+import Ddasomi from '@/svgs/shadowDdasomi.svg';
 
 export default function SelfDiagnosisPage() {
   return (
