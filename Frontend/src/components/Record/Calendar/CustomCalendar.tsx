@@ -14,14 +14,19 @@ import CalendarModal from './CalendarModal';
 
 const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
 
-interface CalendarProps {
+interface CustomCalendarProps {
   selectedDate: Date | null;
   onDateSelect: (date: Date) => void;
   isPanicList: string[];
   isTrainingList: { date: string; trainingCount: number }[]; // 날짜별 isTraining 값을 리스트로 전달
 }
 
-export default function Calendar({ selectedDate, onDateSelect, isPanicList, isTrainingList }: CalendarProps) {
+export default function CustomCalendar({
+  selectedDate,
+  onDateSelect,
+  isPanicList,
+  isTrainingList,
+}: CustomCalendarProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [isModal, setIsModal] = useState(false);
 
