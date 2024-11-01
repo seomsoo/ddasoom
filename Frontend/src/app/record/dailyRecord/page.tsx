@@ -9,7 +9,7 @@ import CigaretteSvg from '@/asset/Svg/cigarette.svg';
 import ExerciseSvg from '@/asset/Svg/exercise.svg';
 import Button from '@/components/Button';
 import Header from '@/components/Header';
-import RecordItem from '@/components/Record/RecordItem';
+import RecordItem from '@/components/Record/DailyRecord/RecordItem';
 
 type SearchParmas = Record<string, string | string | undefined>;
 interface DailyRecordPageSearchParams {
