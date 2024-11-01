@@ -23,6 +23,7 @@ spring:
           search-paths: Backend/application-config
           default-label: develop
 
+
 ---
 spring:
   config:
@@ -30,5 +31,5 @@ spring:
       on-profile: deploy
 
   rabbitmq:
-    host: k11c103.p.ssafy.io
+    host: rabbitmq
     port: 5672
