@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import React from 'react';
 
-import Ddasomi from '@/asset/Svg/ddasomi.svg';
-import NavIcon1 from '@/asset/Svg/navIcon1.svg';
-import NavIcon2 from '@/asset/Svg/navIcon2.svg';
+import Ddasomi from '@/svgs/ddasomi.svg';
+import NavIcon1 from '@/svgs/navIcon1.svg';
+import NavIcon2 from '@/svgs/navIcon2.svg';
 
 export default function Navbar() {
   return (
