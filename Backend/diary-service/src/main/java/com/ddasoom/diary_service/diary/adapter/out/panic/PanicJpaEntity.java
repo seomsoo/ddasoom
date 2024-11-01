@@ -7,7 +7,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,9 +32,11 @@ public class PanicJpaEntity {
 
     private int duration;
 
-    private double latitude;
+    private BigDecimal latitude;
 
-    private double longitude;
+    private BigDecimal longitude;
+
+    private String address;
 
     @Column(length = 500)
     private String description;
@@ -44,5 +49,22 @@ public class PanicJpaEntity {
                 .longitude(this.longitude)
                 .description(this.description)
                 .build();
+    }
+
+    public PanicJpaEntity(Long userId, int duration, BigDecimal latitude,
+            BigDecimal longitude, String address, String description) {
+        this.userId = userId;
+        this.duration = duration;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.address = address;
+        this.description = description;
+
+        LocalDateTime nowSeoul = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+        this.startDate = nowSeoul.minusSeconds(duration);
+    }
+
+    public void saveDescription(String description) {
+        this.description = description;
     }
 }
