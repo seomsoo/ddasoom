@@ -14,4 +14,6 @@ public interface PanicRepository extends JpaRepository<PanicJpaEntity, Long> {
             + "AND FUNCTION('DAY', p.startDate) = :day")
     Optional<PanicJpaEntity> findByUserIdAndDate(@Param("userId") Long userId, @Param("year") int year,
             @Param("month") int month, @Param("day") int day);
+
+    Optional<PanicJpaEntity> findTopByUserIdOrderByStartDateDesc(Long userId);
 }
