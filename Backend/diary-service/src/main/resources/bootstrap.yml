@@ -6,7 +6,7 @@ spring:
   cloud:
     config:
       uri: http://config-service:8888
-      name: user-service
+      name: diary-service
 
   rabbitmq:
     host: rabbitmq
