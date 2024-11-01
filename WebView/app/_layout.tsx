@@ -2,15 +2,11 @@ import React, { useEffect } from "react";
 import { Slot, Stack } from "expo-router";
 import { ThemeProvider } from "styled-components/native";
 import theme from "@/styles/Theme";
-import {
-  getKeyHashAndroid,
-  initializeKakaoSDK,
-} from "@react-native-kakao/core";
+import { getKeyHashAndroid, initializeKakaoSDK } from "@react-native-kakao/core";
 import { Platform, StatusBar, View } from "react-native";
 
 const Root = () => {
-  const statusBarHeight =
-    Platform.OS === "android" ? StatusBar.currentHeight : 0;
+  const statusBarHeight = Platform.OS === "android" ? StatusBar.currentHeight : 0;
 
   useEffect(() => {
     // getKeyHashAndroid().then(console.log);
