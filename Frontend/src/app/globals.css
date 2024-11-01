@@ -30,3 +30,22 @@ body {
   background-size: cover;
   background-blend-mode: screen;
 }
+
+.background1 {
+  background: linear-gradient(-45deg, #1d2c41, #B7C9D9, #4FA3F0, #22131a);
+  background-repeat: no-repeat;
+  background-size: 400% 400%;
+  animation: backgroundChange 20s ease-in-out infinite;
+}
+
+@keyframes backgroundChange {
+  0% {
+    background-position: 0 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
+}
