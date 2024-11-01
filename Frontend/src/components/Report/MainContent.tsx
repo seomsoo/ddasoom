@@ -1,5 +1,5 @@
-import Ddasom2 from '@/asset/Svg/greensunglass.svg';
 import DiaryItem from '@/components/Record/ResultItem';
+import Ddasom2 from '@/svgs/greensunglass.svg';
 
 import SummaryBox from './SummaryBox';
 
