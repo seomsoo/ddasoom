@@ -23,6 +23,7 @@ spring:
           search-paths: Backend/application-config
           default-label: develop
 
+
 ---
 spring:
   config:
