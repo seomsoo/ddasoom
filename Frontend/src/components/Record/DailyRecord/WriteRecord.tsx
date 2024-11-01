@@ -2,12 +2,12 @@
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
-import AlcoholSvg from '@/asset/Svg/alcohol.svg';
-import CaffeineSvg from '@/asset/Svg/caffeine.svg';
-import CigaretteSvg from '@/asset/Svg/cigarette.svg';
-import ExerciseSvg from '@/asset/Svg/exercise.svg';
 import Button from '@/components/Button';
 import RecordItem from '@/components/Record/DailyRecord/RecordItem';
+import AlcoholSvg from '@/svgs/alcohol.svg';
+import CaffeineSvg from '@/svgs/caffeine.svg';
+import CigaretteSvg from '@/svgs/cigarette.svg';
+import ExerciseSvg from '@/svgs/exercise.svg';
 
 interface WriteRecordProps {
   dateYear?: string;
