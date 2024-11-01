@@ -3,3 +3,7 @@ spring:
     config:
       uri: http://k11c103.p.ssafy.io:8888
       name: user-service
+
+  rabbitmq:
+    host: localhost
+    port: 5672

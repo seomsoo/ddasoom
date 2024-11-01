@@ -19,9 +19,9 @@ spring:
     config:
       server:
         git:
-          uri: https://lab.ssafy.com/s11-final/S11P31C103.git
-          search-paths: application-config
-
+          uri: https://oauth2:exLQD6KWgaZA32EUayiy@lab.ssafy.com/s11-final/S11P31C103.git
+          search-paths: Backend/application-config
+          default-label: develop
 
 ---
 spring:
