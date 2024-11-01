@@ -1,6 +1,7 @@
 package com.ddasoom.diary_service.diary.adapter.in;
 
 import com.ddasoom.diary_service.diary.application.port.in.PanicCommand;
+import com.ddasoom.diary_service.diary.application.port.in.PanicDescriptionCommand;
 import com.ddasoom.diary_service.diary.application.port.in.PanicUseCase;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -21,13 +22,12 @@ public class KafkaConsumer {
 
     @KafkaListener(topics = "panic")
     public void savePanic(String kafkaMessage) throws JsonProcessingException {
-
         Map<String, Object> map = new HashMap<>();
         ObjectMapper mapper = new ObjectMapper();
 
         map = mapper.readValue(kafkaMessage, new TypeReference<Map<String, Object>>() {});
 
-        PanicCommand panicCommand = new PanicCommand(
+        PanicCommand command = new PanicCommand(
                 ((Number) map.get("userId")).longValue(),
                 (Integer) map.get("duration"),
                 new BigDecimal(map.get("latitude").toString()),
@@ -36,6 +36,21 @@ public class KafkaConsumer {
                 (String) map.get("description")
         );
 
-        panicUseCase.savePanic(panicCommand);
+        panicUseCase.savePanic(command);
+    }
+
+    @KafkaListener(topics = "panic-description")
+    public void savePanicDescription(String kafkaMessage) throws JsonProcessingException {
+        Map<String, Object> map = new HashMap<>();
+        ObjectMapper mapper = new ObjectMapper();
+
+        map = mapper.readValue(kafkaMessage, new TypeReference<Map<String, Object>>() {});
+
+        PanicDescriptionCommand command = new PanicDescriptionCommand(
+                ((Number) map.get("panicId")).longValue(),
+                (String) map.get("description")
+        );
+
+        panicUseCase.savePanicDescription(command);
     }
 }
