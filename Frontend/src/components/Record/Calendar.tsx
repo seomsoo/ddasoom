@@ -5,10 +5,10 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 import { useSwipeable } from 'react-swipeable';
 
-import CalendarListIcon from '@/asset/Svg/calendarListIcon.svg';
-import GreenSomi from '@/asset/Svg/greenSomi.svg';
-import OrangeSomi from '@/asset/Svg/orangeSomi.svg';
-import YellowSomi from '@/asset/Svg/yellowSomi.svg';
+import CalendarListIcon from '@/svgs/calendarListIcon.svg';
+import GreenSomi from '@/svgs/greenSomi.svg';
+import OrangeSomi from '@/svgs/orangeSomi.svg';
+import YellowSomi from '@/svgs/yellowSomi.svg';
 
 import CalendarModal from './CalendarModal';
 

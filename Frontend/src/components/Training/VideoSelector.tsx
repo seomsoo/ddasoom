@@ -1,7 +1,7 @@
 'use client';
 import { useRouter } from 'next/navigation';
 
-import Fire from '@/asset/Svg/modakbul.svg';
+import Fire from '@/svgs/modakbul.svg';
 
 export default function VideoSelector() {
   const router = useRouter();

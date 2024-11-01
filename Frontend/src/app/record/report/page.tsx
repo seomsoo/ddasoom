@@ -2,10 +2,10 @@
 
 import { useRouter } from 'next/navigation';
 
-import Back from '@/asset/Svg/backIcon.svg';
-import Ddasom from '@/asset/Svg/ddasomi.svg';
-import Ddasom2 from '@/asset/Svg/greensunglass.svg';
 import DiaryItem from '@/components/Record/ResultItem';
+import Back from '@/svgs/backIcon.svg';
+import Ddasom from '@/svgs/ddasomi.svg';
+import Ddasom2 from '@/svgs/greensunglass.svg';
 export default function ReportPage() {
   const router = useRouter();
 

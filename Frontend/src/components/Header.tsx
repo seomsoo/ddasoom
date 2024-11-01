@@ -3,14 +3,13 @@
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
-import BackIcon from '@/asset/Svg/backIcon.svg';
+import BackIcon from '@/svgs/backIcon.svg';
 
 interface HeaderProps {
   label: string;
-
 }
 
-export default function Header({ label}: HeaderProps) {
+export default function Header({ label }: HeaderProps) {
   const router = useRouter();
 
   return (
