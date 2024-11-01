@@ -8,6 +8,7 @@ import com.ddasoom.diary_service.diary.application.domain.PanicReportInfo;
 import com.ddasoom.diary_service.diary.application.port.in.ReportQuery;
 import com.ddasoom.diary_service.diary.application.port.out.DailyRecordPort;
 import com.ddasoom.diary_service.diary.application.port.out.PanicRecordPort;
+import com.ddasoom.diary_service.diary.application.port.out.TrainingRecordPort;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -18,14 +19,16 @@ public class ReportService implements ReportQuery {
 
     private final PanicRecordPort panicRecordPort;
     private final DailyRecordPort dailyRecordPort;
+    private final TrainingRecordPort trainingRecordPort;
 
     @Override
     public ReportResponse getReport(Long userId, int year, int month) {
-
         GetPanicReport panicReport = getPanicReport(panicRecordPort.getPanicReport(userId, year, month));
         GetDailyReport dailyReport = dailyRecordPort.getDailyReport(userId, year, month);
+        int trainingContinuousDay = calculateContinuousTrainingDay(
+                trainingRecordPort.getTrainingThreeContinuousDay(userId, year, month));
 
-        return ReportResponse.of(panicReport, dailyReport);
+        return ReportResponse.of(panicReport, dailyReport, trainingContinuousDay);
     }
 
     private GetPanicReport getPanicReport(List<PanicReportInfo> panicReportInfos) {
@@ -45,5 +48,19 @@ public class ReportService implements ReportQuery {
                 .panicDurationAverage(panicDurationSum / panicReportInfos.size())
                 .panicOccurDay(panicOccurDay)
                 .build();
+    }
+
+    private int calculateContinuousTrainingDay(List<Integer> days) {
+        int continuousDay = 0;
+        int rp, lp;
+        for (lp = 0, rp = 1; rp < days.size(); rp++) {
+            if (days.get(rp - 1) + 1 != days.get(rp)) {
+                continuousDay = Math.max(continuousDay, rp - lp + 1);
+                lp = rp;
+            }
+        }
+        continuousDay = Math.max(continuousDay, rp - lp);
+
+        return continuousDay;
     }
 }

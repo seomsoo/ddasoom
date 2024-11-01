@@ -17,4 +17,12 @@ public interface TrainingRepository extends JpaRepository<TrainingJpaEntity, Lon
             + "AND FUNCTION('DAY', t.date) = :day")
     List<String> findAllByUserIdAndDay(@Param("userId") Long userId, @Param("year") int year,
             @Param("month") int month, @Param("day") int day);
+
+    @Query("SELECT FUNCTION('DAY', t.date) FROM TrainingJpaEntity t "
+            + "WHERE t.userId = :userId "
+            + "AND FUNCTION('YEAR', t.date) = :year "
+            + "AND FUNCTION('MONTH', t.date) = :month "
+            + "GROUP BY(t.date)")
+    List<Integer> findAllContinuousDay(@Param("userId") Long userId, @Param("year") int year,
+            @Param("month") int month);
 }
