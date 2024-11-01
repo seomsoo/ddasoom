@@ -1,7 +1,7 @@
 import Navbar from '@/components/Navbar';
 import Calendar from '@/components/Record/Calendar/Calendar';
 
-export default function RecordPage({ searchParams }: SearchParamsProps) {
+export default function RecordPage({ searchParams }: { searchParams: { [key: string]: string | undefined } }) {
   return (
     <div>
       <Calendar searchParams={searchParams} />

@@ -7,13 +7,22 @@ import CustomCalendar from '@/components/Record/Calendar/CustomCalendar';
 import PanicRecord from './PanicRecord';
 import TodayRecord from './TodayRecord';
 
-export default function Calendar({ searchParams }: SearchParamsProps) {
+interface CalendarProps {
+  searchParams: { [key: string]: string | undefined };
+}
+
+export default function Calendar({ searchParams }: CalendarProps) {
   const router = useRouter();
 
   const [todayTraining, setTodayTraining] = useState<{ date: string; trainingList: string[] } | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [todayRecord, setTodayRecord] = useState<{ diaryEntry: string | null; selectedIcons: string[] | null }>({
-    diaryEntry: null,
+  const [todayRecord, setTodayRecord] = useState<{
+    date: string | null;
+    description: string | null;
+    selectedIcons: string[] | null;
+  }>({
+    date: null,
+    description: null,
     selectedIcons: null,
   });
   const [panicData, setPanicData] = useState<{
@@ -23,7 +32,6 @@ export default function Calendar({ searchParams }: SearchParamsProps) {
     description?: string;
   } | null>(null);
 
-  // 공황 발생 날짜 목록
   const panicDataList = useMemo(
     () => [
       {
@@ -60,11 +68,7 @@ export default function Calendar({ searchParams }: SearchParamsProps) {
     [],
   );
 
-  // 공황 장애 발생 날짜만 추출하여 문자열 배열로 생성
-  const isPanicList = useMemo(() => {
-    return panicDataList.map(entry => entry.start_date.split(' ')[0]); // 'YYYY-MM-DD' 형식만 추출
-  }, [panicDataList]);
-
+  const isPanicList = useMemo(() => panicDataList.map(entry => entry.start_date.split(' ')[0]), [panicDataList]);
   const isTrainingList = trainingDataList.map(training => ({
     date: training.date,
     trainingCount: training.trainingList.length,
@@ -75,56 +79,56 @@ export default function Calendar({ searchParams }: SearchParamsProps) {
     const month = searchParams.month;
     const day = searchParams.day;
     const initialDate = year && month && day ? new Date(Number(year), Number(month) - 1, Number(day)) : new Date();
-    setSelectedDate(initialDate);
+    setSelectedDate(initialDate); // 선택된 날짜 업데이트
+  }, [searchParams]);
 
-    // 선택된 날짜 형식 변환
-    const formattedDate = `${initialDate.getFullYear()}-${String(initialDate.getMonth() + 1).padStart(2, '0')}-${String(
-      initialDate.getDate(),
-    ).padStart(2, '0')}`;
+  useEffect(() => {
+    if (selectedDate) {
+      const formattedDate = `${selectedDate.getFullYear()}-${String(selectedDate.getMonth() + 1).padStart(2, '0')}-${String(
+        selectedDate.getDate(),
+      ).padStart(2, '0')}`;
 
-    // 로컬 스토리지에서 해당 날짜의 기록 가져오기
-    const dateKey = `dailyRecord-${formattedDate}`;
-    const storedRecord = localStorage.getItem(dateKey);
-    if (storedRecord) {
-      const parsedRecord = JSON.parse(storedRecord);
-      setTodayRecord({
-        diaryEntry: parsedRecord.diaryEntry,
-        selectedIcons: parsedRecord.selectedIcons,
-      });
-    } else {
-      setTodayRecord({ diaryEntry: null, selectedIcons: null });
+      const dateKey = `dailyRecord-${formattedDate}`;
+      const storedRecord = localStorage.getItem(dateKey);
+
+      if (storedRecord) {
+        const parsedRecord = JSON.parse(storedRecord);
+        setTodayRecord({
+          date: parsedRecord.date,
+          description: parsedRecord.description,
+          selectedIcons: parsedRecord.selectedIcons,
+        });
+      } else {
+        setTodayRecord({ date: null, description: null, selectedIcons: null });
+      }
+
+      const matchedData = panicDataList.find(entry => entry.start_date.startsWith(formattedDate));
+      setPanicData(matchedData || null);
+
+      const matchedTrainingData = trainingDataList.find(entry => entry.date === formattedDate);
+      setTodayTraining(matchedTrainingData || null);
     }
-
-    // panicDataList에서 선택된 날짜에 맞는 데이터 가져오기
-    const matchedData = panicDataList.find(entry => entry.start_date.startsWith(formattedDate));
-    setPanicData(matchedData || null);
-
-    // trainingDataList에서 선택된 날짜에 맞는 데이터 가져오기
-    const matchedTrainingData = trainingDataList.find(entry => entry.date === formattedDate);
-    setTodayTraining(matchedTrainingData || null);
-  }, [searchParams, panicDataList, trainingDataList]);
-
-  const displayDate = selectedDate || new Date();
+  }, [selectedDate, panicDataList, trainingDataList]);
 
   const handleDateSelect = (date: Date) => {
     setSelectedDate(date);
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
     const day = date.getDate();
-
     router.push(`/record?year=${year}&month=${month}&day=${day}`);
   };
 
+  console.log('selectedDate:', selectedDate);
   return (
     <div className="pb-32">
       <CustomCalendar
         selectedDate={selectedDate}
         onDateSelect={handleDateSelect}
-        isPanicList={isPanicList} // 공황 발생 날짜 목록 전달
-        isTrainingList={isTrainingList} // 날짜별 훈련 데이터 전달
+        isPanicList={isPanicList}
+        isTrainingList={isTrainingList}
       />
       {panicData && <PanicRecord panicList={panicData} />}
-      <TodayRecord training={todayTraining} date={displayDate} record={todayRecord} />
+      <TodayRecord training={todayTraining} date={selectedDate || new Date()} record={todayRecord} />
     </div>
   );
 }
