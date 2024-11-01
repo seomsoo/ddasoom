@@ -26,7 +26,8 @@ public class PanicRecordAdapter implements PanicRecordPort {
                 panic.duration(),
                 panic.latitude(),
                 panic.longitude(),
-                panic.address()
+                panic.address(),
+                panic.description()
         ));
     }
 }

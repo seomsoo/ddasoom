@@ -52,12 +52,13 @@ public class PanicJpaEntity {
     }
 
     public PanicJpaEntity(Long userId, int duration, BigDecimal latitude,
-            BigDecimal longitude, String address) {
+            BigDecimal longitude, String address, String description) {
         this.userId = userId;
         this.duration = duration;
         this.latitude = latitude;
         this.longitude = longitude;
         this.address = address;
+        this.description = description;
 
         LocalDateTime nowSeoul = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
         this.startDate = nowSeoul.minusSeconds(duration);

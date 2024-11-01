@@ -20,8 +20,8 @@ public record PanicRecordInfo(Long userId,
     }
 
     public PanicRecordInfo(Long userId, int duration, BigDecimal latitude,
-                           BigDecimal longitude, String address) {
-        this(userId, null, duration, latitude, longitude, address, "");
+                           BigDecimal longitude, String address, String description) {
+        this(userId, null, duration, latitude, longitude, address, description);
     }
 
     //TODO: 주소 변환 (역지오코딩)

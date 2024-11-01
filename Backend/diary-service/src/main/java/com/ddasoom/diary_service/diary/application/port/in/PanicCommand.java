@@ -8,7 +8,8 @@ public record PanicCommand(
         int duration,
         BigDecimal latitude,
         BigDecimal longitude,
-        String address
+        String address,
+        String description
 ) {
 
 }

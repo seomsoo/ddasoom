@@ -32,7 +32,8 @@ public class KafkaConsumer {
                 (Integer) map.get("duration"),
                 new BigDecimal(map.get("latitude").toString()),
                 new BigDecimal(map.get("longitude").toString()),
-                (String) map.get("address")
+                (String) map.get("address"),
+                (String) map.get("description")
         );
 
         panicUseCase.savePanic(panicCommand);
