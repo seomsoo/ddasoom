@@ -1,0 +1,34 @@
+/* src/components/BackGround/Background.module.css */
+.background1 {
+  background: linear-gradient(-45deg, #1d2c41, #B7C9D9, #4FA3F0, #22131a);
+  background-repeat: no-repeat;
+  background-size: 400% 400%;
+  animation: backgroundChange 20s ease-in-out infinite;
+}
+
+.background2 {
+  background: linear-gradient(-45deg, #fd7373, #8ad1b6, #58da7f, #fff23f, #4FA3F0);
+  background-repeat: no-repeat;
+  background-size: 400% 400%;
+  animation: backgroundChange 20s ease-in-out infinite;
+}
+
+.background3 {
+  background: linear-gradient(-45deg, #ffffff, #d6ff85, #dffca7, #fffc3d, #80ff00);
+  background-repeat: no-repeat;
+  background-size: 400% 400%;
+  animation: backgroundChange 20s ease-in-out infinite;
+}
+
+
+@keyframes backgroundChange {
+  0% {
+    background-position: 0 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
+}
