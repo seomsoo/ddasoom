@@ -3,10 +3,10 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
-import Cancel from '@/asset/Svg/cancel.svg';
-import SoundOff from '@/asset/Svg/soundOff.svg';
-import SoundOn from '@/asset/Svg/soundOn.svg';
 import { videoData } from '@/components/Training/VideoData';
+import Cancel from '@/svgs/cancel.svg';
+import SoundOff from '@/svgs/soundOff.svg';
+import SoundOn from '@/svgs/soundOn.svg';
 
 type VideoPlayerProps = {
   videoType: keyof typeof videoData;
