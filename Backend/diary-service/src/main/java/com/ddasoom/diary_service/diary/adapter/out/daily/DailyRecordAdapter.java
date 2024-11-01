@@ -5,6 +5,7 @@ import com.ddasoom.diary_service.diary.application.domain.DailyRecordInfo;
 import com.ddasoom.diary_service.diary.application.port.in.DailyRecordCommand;
 import com.ddasoom.diary_service.diary.application.port.out.DailyRecordPort;
 import java.time.LocalDate;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 
 @PersistenceAdapter
@@ -30,5 +31,12 @@ public class DailyRecordAdapter implements DailyRecordPort {
         return dailyRepository.findByUserIdAndDate(userId, year, month, day)
                 .map(DailyJpaEntity::toDailyRecordInfo)
                 .orElse(null);
+    }
+
+    @Override
+    public List<DailyRecordInfo> getDailyReport(Long userId, int year, int month) {
+        return dailyRepository.findAllByUserIdAndDate(userId, year, month).stream()
+                .map(DailyJpaEntity::toDailyRecordInfo)
+                .toList();
     }
 }
