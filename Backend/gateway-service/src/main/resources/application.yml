@@ -14,21 +14,6 @@ spring:
   application:
     name: gateway-service
 
-jwt:
-  issuer: DDASOOM
-  client-secret: asdfasdfasdfadadfa
-
-
----
-spring:
-  config:
-    activate:
-      on-profile: local
-
-  rabbitmq:
-    host: localhost
-    port: 5672
-
   cloud:
     gateway:
       routes:
@@ -99,6 +84,21 @@ spring:
           uri: lb://VOICE-SERVICE
           predicates:
             - Path=/api/voices/**
+
+jwt:
+  issuer: DDASOOM
+  client-secret: asdfasdfasdfadadfa
+
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  rabbitmq:
+    host: localhost
+    port: 5672
 
 eureka:
   client:
