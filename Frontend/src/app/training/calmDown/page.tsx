@@ -1,10 +1,10 @@
+import background from '@/components/BackGround/Background.module.css';
 import Header from '@/components/Header';
 import VideoSelector from '@/components/Training/VideoSelector';
 import Hill from '@/svgs/hill.svg';
-
 export default function CalmDownTrainingPage() {
   return (
-    <section className="absolute inset-0 background1 flex justify-center overflow-hidden text-white">
+    <section className={`${background.background1} absolute inset-0  flex justify-center overflow-hidden text-white`}>
       <div className=" absolute top-9 left-2 w-full">
         <Header label="" />
       </div>
