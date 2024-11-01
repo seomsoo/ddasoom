@@ -6,7 +6,7 @@ spring:
   cloud:
     config:
       uri: http://config-service:8888
-      name: user-service
+      name: emergency-service
 
   rabbitmq:
     host: rabbitmq

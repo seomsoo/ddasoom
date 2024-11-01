@@ -1,11 +1,4 @@
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  StatusBar,
-  Alert,
-} from "react-native";
+import { View, Text, Image, TouchableOpacity, StatusBar, Alert, ImageBackground } from "react-native";
 import React from "react";
 import backGroundImg from "@/assets/images/first.png";
 import logoImage from "@/assets/images/logo.png";
@@ -21,36 +14,41 @@ const Main = () => {
   const { setToken, setUserEmail, setUserName, setUserId } = useAuthStore();
 
   const handleKaKaoLogin = async () => {
-    const { accessToken, refreshToken } = await login();
+    router.push("authorized");
 
-    if (!accessToken || !refreshToken) {
-      Alert.alert("로그인 오류");
-      return;
-    }
+    // const { accessToken, refreshToken } = await login();
 
-    const { email } = await me();
+    // if (!accessToken || !refreshToken) {
+    //   Alert.alert("로그인 오류1");
+    //   return;
+    // }
 
-    if (!email || email === "") {
-      Alert.alert("로그인 오류");
-      return;
-    }
+    // const { email } = await me();
 
-    try {
-      const { userId, name, token } = await signIn(email);
-      setToken(token);
-      setUserEmail(email);
-      setUserName(name);
-      setUserId(userId);
+    // if (!email || email === "") {
+    //   Alert.alert("로그인 오류");
+    //   return;
+    // }
 
-      router.push("authorized");
-    } catch (e: unknown) {
-      if (e instanceof AxiosError && e.code === "404") {
-        router.push("signupModal");
-      } else {
-        // 그 외 오류 처리
-        Alert.alert("로그인 오류", "다시 시도해주세요.");
-      }
-    }
+    // console.log("여기까진 잘됨");
+    // try {
+    //   const { userId, name, token } = await signIn(email);
+    //   setToken(token);
+    //   setUserEmail(email);
+    //   setUserName(name);
+    //   setUserId(userId);
+
+    //   router.push("authorized");
+    // } catch (e: unknown) {
+    //   const error = e as DdasoomError;
+    //   const errorCode = error.response?.data.error.status;
+
+    //   if (errorCode === 404) {
+    //     router.push("signupModal");
+    //   } else {
+    //     Alert.alert("로그인 오류");
+    //   }
+    // }
   };
 
   const handleUnauthorized = () => {
@@ -59,22 +57,19 @@ const Main = () => {
 
   return (
     <Container>
-      <Image source={backGroundImg} style={{ width: "100%", height: "100%" }} />
-      <FloatingView>
-        <LogoView>
-          <Image
-            source={logoImage}
-            style={{ width: 200 }}
-            resizeMode="contain"
-          />
-        </LogoView>
-        <Button color="yellow" textColor="black" onPress={handleKaKaoLogin}>
-          카카오 로그인
-        </Button>
-        <Button color="white" textColor="black" onPress={handleUnauthorized}>
-          따숨 둘러보기
-        </Button>
-      </FloatingView>
+      <ImageBackground source={backGroundImg} style={{ width: "100%", height: "100%" }}>
+        <FloatingView>
+          <LogoView>
+            <Image source={logoImage} style={{ width: 200 }} resizeMode="contain" />
+          </LogoView>
+          <Button color="yellow" textColor="black" onPress={handleKaKaoLogin}>
+            카카오 로그인
+          </Button>
+          <Button color="white" textColor="black" onPress={handleUnauthorized}>
+            따숨 둘러보기
+          </Button>
+        </FloatingView>
+      </ImageBackground>
     </Container>
   );
 };
