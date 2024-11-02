@@ -1,7 +1,6 @@
 package com.ddasoom.emergency_service.emergency.adapter.out.client;
 
 import com.ddasoom.emergency_service.emergency.adapter.in.web.request.PanicSimpleRequest;
-import com.ddasoom.emergency_service.emergency.application.domain.PanicSimple;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

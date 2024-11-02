@@ -3,6 +3,7 @@ package com.ddasoom.emergency_service.emergency.error;
 import static com.ddasoom.emergency_service.common.util.ApiUtils.error;
 
 import com.ddasoom.emergency_service.common.util.ApiUtils.ApiResult;
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -14,10 +15,27 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 @Slf4j
 @ControllerAdvice
 @RequiredArgsConstructor
 public class GeneralExceptionHandler {
+
+    @ExceptionHandler(FeignException.class)
+    public ResponseEntity<?> handleFeignException(FeignException e) {
+        Pattern pattern = Pattern.compile("\"message\":\"(.*?)\"");
+        Matcher matcher = pattern.matcher(e.getMessage());
+        String message = "";
+
+        if (matcher.find()) {
+            message = matcher.group(1);
+        }
+
+        System.out.println(e.getMessage());
+        return newResponse(message, HttpStatus.valueOf(e.status()));
+    }
 
     @ExceptionHandler(PhoneBookNotFoundException.class)
     public ResponseEntity<?> handlePhoneBookNotFoundException(Exception e) {
