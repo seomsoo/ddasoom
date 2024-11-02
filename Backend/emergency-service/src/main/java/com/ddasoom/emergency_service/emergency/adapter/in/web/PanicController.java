@@ -1,13 +1,18 @@
 package com.ddasoom.emergency_service.emergency.adapter.in.web;
 
+import static com.ddasoom.emergency_service.common.util.ApiUtils.success;
 import static org.springframework.http.HttpStatus.CREATED;
 
 import com.ddasoom.emergency_service.common.annotation.WebAdapter;
+import com.ddasoom.emergency_service.common.util.ApiUtils.ApiResult;
 import com.ddasoom.emergency_service.emergency.adapter.in.web.request.SavePanicDescriptionRequest;
 import com.ddasoom.emergency_service.emergency.adapter.in.web.request.SavePanicRequest;
+import com.ddasoom.emergency_service.emergency.adapter.in.web.response.PanicSimpleResponse;
 import com.ddasoom.emergency_service.emergency.adapter.out.PanicProducer;
+import com.ddasoom.emergency_service.emergency.application.port.in.PanicUseCase;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class PanicController {
 
     private final PanicProducer producer;
+    private final PanicUseCase panicUseCase;
 
     @ResponseStatus(CREATED)
     @PostMapping("/api/emergency/panic")
@@ -36,5 +42,10 @@ public class PanicController {
             @RequestBody SavePanicDescriptionRequest request) throws JsonProcessingException {
 
         producer.send("panic-description", request);
+    }
+
+    @GetMapping("/api/emergency/panic-simple")
+    public ApiResult<PanicSimpleResponse> getPanicSimple(@RequestHeader("X-Authenticated-User") Long userId) {
+        return success(panicUseCase.getPanicSimple(userId));
     }
 }
