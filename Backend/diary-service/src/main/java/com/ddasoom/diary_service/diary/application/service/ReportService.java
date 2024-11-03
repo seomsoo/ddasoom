@@ -10,6 +10,7 @@ import com.ddasoom.diary_service.diary.application.port.out.DailyRecordPort;
 import com.ddasoom.diary_service.diary.application.port.out.PanicRecordPort;
 import com.ddasoom.diary_service.diary.application.port.out.TrainingRecordPort;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 
@@ -39,7 +40,7 @@ public class ReportService implements ReportQuery {
         int panicDurationSum = 0;
         List<Integer> panicOccurDay = new ArrayList<>();
         for (PanicReportInfo panicReportInfo : panicReportInfos) {
-            panicDurationSum = panicReportInfo.duration();
+            panicDurationSum += panicReportInfo.duration();
             panicOccurDay.add(panicReportInfo.startDate().getDayOfMonth());
         }
 
@@ -51,16 +52,21 @@ public class ReportService implements ReportQuery {
     }
 
     private int calculateContinuousTrainingDay(List<Integer> days) {
-        int continuousDay = 0;
-        int rp, lp;
-        for (lp = 0, rp = 1; rp < days.size(); rp++) {
-            if (days.get(rp - 1) + 1 != days.get(rp)) {
-                continuousDay = Math.max(continuousDay, rp - lp + 1);
-                lp = rp;
+        int continuousDay = 1, check = 1;
+        if (days.isEmpty()) {
+            return 0;
+        }
+
+        Collections.sort(days);
+        for (int i = 0; i < days.size() - 1; i++) {
+            if (days.get(i) + 1 == days.get(i + 1)) {
+                check++;
+            } else {
+                continuousDay = Math.max(continuousDay, check);
+                check = 1;
             }
         }
-        continuousDay = Math.max(continuousDay, rp - lp);
-
+        continuousDay = Math.max(continuousDay, check);
         return continuousDay;
     }
 }
