@@ -2,7 +2,7 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
-import { videoData } from '@/components/Training/VideoData';
+import { videoData } from '@/constants/VideoData';
 import Cancel from '@/svgs/cancel.svg';
 import SoundOff from '@/svgs/soundOff.svg';
 import SoundOn from '@/svgs/soundOn.svg';
