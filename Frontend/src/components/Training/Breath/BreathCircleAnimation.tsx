@@ -17,7 +17,7 @@ const BreathCircleAnimation: React.FC<BreathCircleAnimationProps> = ({
   stageProgress,
   currentStage,
 }) => (
-  <svg width="350" height="350" viewBox="6 0 250 100" style={{ transform: 'rotate(5deg)' }}>
+  <svg width="350" height="350" viewBox="3 0 250 100" style={{ transform: 'rotate(5deg)' }}>
     {Array(sequenceLength)
       .fill(0)
       .map((_, index) => (
