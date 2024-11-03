@@ -2,11 +2,12 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-import AppleSvg from '@/asset/Svg/apple.svg';
-import EarSound from '@/asset/Svg/earSound.svg';
-import Footprint from '@/asset/Svg/footPrint.svg';
-import Mic from '@/asset/Svg/groundingMic.svg';
 import Button from '@/components/Button';
+import Header from '@/components/Header';
+import AppleSvg from '@/svgs/apple.svg';
+import EarSound from '@/svgs/earSound.svg';
+import Footprint from '@/svgs/footPrint.svg';
+import Mic from '@/svgs/groundingMic.svg';
 
 export default function GroundingTrainingPage() {
   const [step, setStep] = useState(1);
@@ -41,31 +42,37 @@ export default function GroundingTrainingPage() {
   };
 
   return (
-    <main className="px-4 mt-10 flex flex-col items-center">
-      <div className="w-full flex justify-center mb-4">
-        <div className="w-52 bg-gray2 rounded-full h-1.5">
-          <div className="bg-main2 h-1.5 rounded-full transition-all duration-500" style={{ width: `${progress}%` }} />
+    <div>
+      <Header label="그라운딩" />
+      <main className="px-4 mt-10 flex flex-col items-center">
+        <div className="w-full flex justify-center mb-4">
+          <div className="w-52 bg-gray2 rounded-full h-1.5">
+            <div
+              className="bg-main2 h-1.5 rounded-full transition-all duration-500"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
         </div>
-      </div>
 
-      <span className="font-hakgyoansimR text-3xl text-center">
-        {stepContent[step - 1].title.split('\n').map((line, index) => (
-          <span key={index}>
-            {line} <br />
-          </span>
-        ))}
-      </span>
-      <div className="flex flex-col items-center mt-10">
-        <div className="py-12 w-64 h-64 items-center border-[12px] border-[#9AD27D] bg-white rounded-full" />
-        {stepContent[step - 1].image}
-        <article className="my-6">
-          <span className="text-3xl font-nanumBold text-gray5">{stepContent[step - 1].label}</span>
-        </article>
-        <Mic className="mb-4" />
-        <div className="mt-4 w-[328px]">
-          <Button label={step < stepContent.length ? '다음' : '완료'} onClick={handleNextStep} />
+        <span className="font-hakgyoansimR text-3xl text-center">
+          {stepContent[step - 1].title.split('\n').map((line, index) => (
+            <span key={index}>
+              {line} <br />
+            </span>
+          ))}
+        </span>
+        <div className="flex flex-col items-center mt-10">
+          <div className="py-12 w-64 h-64 items-center border-[12px] border-[#9AD27D] bg-white rounded-full" />
+          {stepContent[step - 1].image}
+          <article className="my-6">
+            <span className="text-3xl font-nanumBold text-gray5">{stepContent[step - 1].label}</span>
+          </article>
+          <Mic className="mb-4" />
+          <div className="mt-4 w-[328px]">
+            <Button label={step < stepContent.length ? '다음' : '완료'} onClick={handleNextStep} />
+          </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </div>
   );
 }

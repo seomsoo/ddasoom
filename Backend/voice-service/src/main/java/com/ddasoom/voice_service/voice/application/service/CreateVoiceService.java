@@ -17,7 +17,7 @@ public class CreateVoiceService implements CreateVoiceUseCase {
     private final CreateVoicePort createVoicePort;
 
     @Override
-    public void createVoice(CreateVoiceCommand command) {
+    public String createVoice(CreateVoiceCommand command) {
         String voiceKey = trainAiVoicePort.trainAiVoice(command.voices());
 
         createVoicePort.createVoice(
@@ -25,5 +25,7 @@ public class CreateVoiceService implements CreateVoiceUseCase {
                 command.voiceName(),
                 voiceKey
         );
+
+        return voiceKey;
     }
 }
