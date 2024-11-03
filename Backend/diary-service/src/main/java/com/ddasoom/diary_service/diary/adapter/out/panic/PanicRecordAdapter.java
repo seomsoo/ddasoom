@@ -4,6 +4,7 @@ import com.ddasoom.diary_service.common.annotation.PersistenceAdapter;
 import com.ddasoom.diary_service.diary.application.domain.PanicRecordInfo;
 import com.ddasoom.diary_service.diary.application.port.in.PanicDescriptionCommand;
 import com.ddasoom.diary_service.diary.application.port.out.PanicRecordPort;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -15,10 +16,11 @@ public class PanicRecordAdapter implements PanicRecordPort {
     private final PanicRepository panicRepository;
 
     @Override
-    public PanicRecordInfo getPanicRecord(Long userId, int year, int month, int day) {
+    public List<PanicRecordInfo> getPanicRecord(Long userId, int year, int month, int day) {
         return panicRepository.findByUserIdAndDate(userId, year, month, day)
+                .stream()
                 .map(PanicJpaEntity::toRecordInfo)
-                .orElse(null);
+                .toList();
     }
 
     @Override

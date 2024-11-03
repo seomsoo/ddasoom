@@ -4,7 +4,7 @@ import com.ddasoom.diary_service.diary.application.domain.DailyRecordInfo;
 import com.ddasoom.diary_service.diary.application.domain.PanicRecordInfo;
 import java.util.List;
 
-public record CalendarResponse(PanicRecordInfo panicRecord,
+public record CalendarResponse(List<PanicRecordInfo> panicRecord,
                                List<String> trainingRecord,
                                DailyRecordInfo dailyRecord) {
 
