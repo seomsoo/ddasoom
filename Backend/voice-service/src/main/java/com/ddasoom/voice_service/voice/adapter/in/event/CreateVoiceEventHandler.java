@@ -1,6 +1,7 @@
 package com.ddasoom.voice_service.voice.adapter.in.event;
 
 import com.ddasoom.voice_service.voice.application.domain.Voice;
+import com.ddasoom.voice_service.voice.application.port.in.ConvertTextScriptToSoundUseCase;
 import com.ddasoom.voice_service.voice.application.port.in.CreateVoiceCommand;
 import com.ddasoom.voice_service.voice.application.port.in.CreateVoiceUseCase;
 import java.io.IOException;
@@ -16,13 +17,16 @@ import org.springframework.web.multipart.MultipartFile;
 public class CreateVoiceEventHandler {
 
     private final CreateVoiceUseCase createVoiceUseCase;
+    private final ConvertTextScriptToSoundUseCase convertTextScriptToSoundUseCase;
 
     @Async
     @EventListener
     public void createVoice(CreateVoiceEvent event) {
-        createVoiceUseCase.createVoice(
+        String voiceKey = createVoiceUseCase.createVoice(
                 new CreateVoiceCommand(event.userId(), event.voiceName(), mapToVoices(event.voices()))
         );
+
+        convertTextScriptToSoundUseCase.convertTextScriptToSoundUseCase(voiceKey);
     }
 
     private List<Voice> mapToVoices(List<MultipartFile> voices) {

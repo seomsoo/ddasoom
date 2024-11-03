@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableOpacity, StatusBar } from "react-native";
+import { View, Text, Image, TouchableOpacity, StatusBar, Alert, ImageBackground } from "react-native";
 import React from "react";
 import backGroundImg from "@/assets/images/first.png";
 import logoImage from "@/assets/images/logo.png";
@@ -6,14 +6,48 @@ import styled from "styled-components/native";
 import Button from "@/components/common/Button";
 import { login, me } from "@react-native-kakao/user";
 import { router } from "expo-router";
+import { signIn, signUp } from "@/services/auth";
+import useAuthStore from "@/zustand/authStore";
+import { AxiosError } from "axios";
 
 const Main = () => {
-  console.log("login");
+  const { setToken, setUserEmail, setUserName, setUserId } = useAuthStore();
 
   const handleKaKaoLogin = async () => {
-    // const { accessToken, refreshToken } = await login();
-    // if (accessToken && refreshToken) {
     router.push("authorized");
+
+    // const { accessToken, refreshToken } = await login();
+
+    // if (!accessToken || !refreshToken) {
+    //   Alert.alert("로그인 오류1");
+    //   return;
+    // }
+
+    // const { email } = await me();
+
+    // if (!email || email === "") {
+    //   Alert.alert("로그인 오류");
+    //   return;
+    // }
+
+    // console.log("여기까진 잘됨");
+    // try {
+    //   const { userId, name, token } = await signIn(email);
+    //   setToken(token);
+    //   setUserEmail(email);
+    //   setUserName(name);
+    //   setUserId(userId);
+
+    //   router.push("authorized");
+    // } catch (e: unknown) {
+    //   const error = e as DdasoomError;
+    //   const errorCode = error.response?.data.error.status;
+
+    //   if (errorCode === 404) {
+    //     router.push("signupModal");
+    //   } else {
+    //     Alert.alert("로그인 오류");
+    //   }
     // }
   };
 
@@ -23,22 +57,19 @@ const Main = () => {
 
   return (
     <Container>
-      <Image source={backGroundImg} style={{ width: "100%", height: "100%" }} />
-      <FloatingView>
-        <LogoView>
-          <Image
-            source={logoImage}
-            style={{ width: 200 }}
-            resizeMode="contain"
-          />
-        </LogoView>
-        <Button color="yellow" textColor="black" onPress={handleKaKaoLogin}>
-          카카오 로그인
-        </Button>
-        <Button color="white" textColor="black" onPress={handleUnauthorized}>
-          따숨 둘러보기
-        </Button>
-      </FloatingView>
+      <ImageBackground source={backGroundImg} style={{ width: "100%", height: "100%" }}>
+        <FloatingView>
+          <LogoView>
+            <Image source={logoImage} style={{ width: 200 }} resizeMode="contain" />
+          </LogoView>
+          <Button color="yellow" textColor="black" onPress={handleKaKaoLogin}>
+            카카오 로그인
+          </Button>
+          <Button color="white" textColor="black" onPress={handleUnauthorized}>
+            따숨 둘러보기
+          </Button>
+        </FloatingView>
+      </ImageBackground>
     </Container>
   );
 };

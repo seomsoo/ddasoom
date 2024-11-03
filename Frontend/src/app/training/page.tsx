@@ -1,12 +1,12 @@
 import Link from 'next/link';
 
-import DdasomiSvg from '@/asset/Svg/ddasomi.svg';
-import SunglassDasomiSvg from '@/asset/Svg/sunglassDdasomi.svg';
 import Navbar from '@/components/Navbar';
+import DdasomiSvg from '@/svgs/ddasomi.svg';
+import SunglassDasomiSvg from '@/svgs/sunglassDdasomi.svg';
 
 export default function Training() {
   return (
-    <div className="flex flex-col items-center mt-11 max-h-screen relative">
+    <div className="flex flex-col inset-0 h-screen  items-center mt-11 max-h-screen relative">
       <div className="relative w-full flex ml-6">
         <DdasomiSvg className="absolute -top-14 w-32 h-32 z-0 " />
       </div>

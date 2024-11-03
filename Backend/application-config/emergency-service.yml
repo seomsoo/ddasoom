@@ -1,0 +1,69 @@
+server:
+  port: 0
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, busrefresh
+
+spring:
+  profiles:
+    default: local
+
+  application:
+    name: emergency-service
+
+  datasource:
+    url: jdbc:h2:mem:~/EmergencyServiceApplication
+    username: sa
+    password:
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+      path: /h2-console
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+
+---
+spring:
+  config:
+    activate:
+      on-profile: deploy
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://k11c103.p.ssafy.io:3308/ddasoom?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+    username: ddasoom
+    password: ssafygwangjuc103
+
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://service-discovery:8761/eureka
