@@ -27,7 +27,6 @@ public class DailyQueryRepository {
                         .and(daily.date.year().eq(year))
                         .and(daily.date.month().eq(month))
                 )
-                .groupBy(daily.userId)
                 .fetchOne();
     }
 }
