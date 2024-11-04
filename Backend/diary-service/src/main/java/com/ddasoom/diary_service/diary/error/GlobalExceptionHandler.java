@@ -20,6 +20,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(PanicNotFoundException.class)
+    public ResponseEntity<?> handlePanicNotFoundException(Exception e) {
+        return newResponse(e, HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(TrainingTypeBadRequestException.class)
     public ResponseEntity<?> handleTrainingTypeBadRequestException(Exception e) {
         return newResponse(e, HttpStatus.BAD_REQUEST);
