@@ -1,6 +1,7 @@
 'use client';
 import { useRouter } from 'next/navigation';
 
+import background from '@/components/BackGround/Background.module.css';
 import Back from '@/svgs/backIcon.svg';
 import Ddasom from '@/svgs/ddasomi.svg';
 
@@ -12,7 +13,7 @@ export default function Header() {
       style={{
         boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.2)',
       }}
-      className="h-80 relative flex flex-col background2 -m-4 rounded-b-[55px] shadow-xl">
+      className={`${background.background2} h-80 relative flex flex-col -m-4 rounded-b-[55px] shadow-xl`}>
       <Back className="ml-6 absolute top-4" onClick={() => router.back()} />
       <Ddasom className="absolute bottom-24 left-1/2 transform -translate-x-1/2 w-44 h-44" />
 

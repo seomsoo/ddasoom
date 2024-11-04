@@ -31,4 +31,9 @@ public class TrainingRecordAdapter implements TrainingRecordPort {
     public List<String> getTrainingRecord(Long userId, int year, int month, int day) {
         return trainingRepository.findAllByUserIdAndDay(userId, year, month, day);
     }
+
+    @Override
+    public List<Integer> getTrainingThreeContinuousDay(Long userId, int year, int month) {
+        return trainingRepository.findAllContinuousDay(userId, year, month);
+    }
 }

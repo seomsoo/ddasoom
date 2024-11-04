@@ -1,0 +1,40 @@
+.background1 {
+  background: linear-gradient(-45deg, #1d2c41, #B7C9D9, #4FA3F0, #22131a);
+  background-repeat: no-repeat;
+  background-size: 400% 400%;
+  animation: backgroundChange 20s ease-in-out infinite;
+}
+
+.background2 {
+  background: linear-gradient(-45deg, #fd7373, #8ad1b6, #58da7f, #fff23f, #4FA3F0);
+  background-repeat: no-repeat;
+  background-size: 400% 400%;
+  animation: backgroundChange 20s ease-in-out infinite;
+}
+
+.background3 {
+  background: linear-gradient(-45deg, #1a237e, #3a6ea5, #2e5077, #0a2f4e, #284b63);
+  background-repeat: no-repeat;
+  background-size: 400% 400%;
+  animation: backgroundChange 20s ease-in-out infinite;
+}
+
+.background4 {
+  background: linear-gradient(-45deg, #ffffff, #4bd881, #68c9f3, #91ebff);
+  background-repeat: no-repeat;
+  background-size: 400% 400%;
+  animation: backgroundChange 20s ease-in-out infinite;
+}
+
+
+@keyframes backgroundChange {
+  0% {
+    background-position: 0 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
+}
