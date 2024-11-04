@@ -1,15 +1,29 @@
 import React from 'react';
 
+import DoctorDdasomiSvg from '@/svgs/doctorDdasomi.svg';
 import DdasomiSvg from '@/svgs/shadowDdasomi.svg';
+
 interface ResultContextProps {
   isPanicSuspected: boolean;
 }
 
 export default function ResultContext({ isPanicSuspected }: ResultContextProps) {
   return (
-    <div className="w-full max-w-md mt-20 text-center">
-      <h3 className="text-3xl font-hakgyoansimR mb-6">{isPanicSuspected ? '괜찮으신가요?' : '괜찮습니다!'}</h3>
-      <DdasomiSvg className="w-full my-10" width={200} height={200} />
+    <div className="flex flex-col w-full gap-4 mt-14 text-center">
+      <h3 className="text-3xl font-hakgyoansimR">
+        {isPanicSuspected ? (
+          <div className="flex flex-col justify-center items-center gap-5">
+            <span>괜찮으신가요?</span>
+            <DoctorDdasomiSvg />
+          </div>
+        ) : (
+          <div className="flex flex-col justify-center items-center">
+            <span>괜찮습니다!</span>
+            <DdasomiSvg />
+          </div>
+        )}
+      </h3>
+
       <article className="my-6 text-sm">
         {isPanicSuspected ? (
           <div>
