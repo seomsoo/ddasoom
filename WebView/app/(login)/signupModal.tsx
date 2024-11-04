@@ -15,10 +15,12 @@ const SignupModal = () => {
 
   const handleSignup = async () => {
     // 회원가입
+    console.log(`회원가입 시도. 이름 : ${userName}, 이메일 : ${userEmail}`);
+
     try {
       setIsLoading(true);
       await signUp({ name: userName, email: userEmail });
-      router.push("login");
+      router.push("/");
     } catch (e: unknown) {
       ToastAndroid.show("로그인 오류가 발생했습니다.", 3000);
     } finally {
