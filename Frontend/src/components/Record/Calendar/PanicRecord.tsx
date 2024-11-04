@@ -22,7 +22,7 @@ export default function PanicRecord({ panicList }: PanicRecordProps) {
   };
   return (
     <div>
-      <div className="mt-8 relative">
+      <div className="mt-10 relative">
         <HerongSomi className="absolute -top-7 right-7 -z-0" />
         <div className="relative bg-main4 rounded-2xl border border-main1 p-3 shadow-sm mt-4 z-0">
           <p className="font-bold text-lg">공황 일지</p>

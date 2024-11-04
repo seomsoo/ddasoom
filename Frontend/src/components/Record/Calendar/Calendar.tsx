@@ -118,7 +118,6 @@ export default function Calendar({ searchParams }: CalendarProps) {
     router.push(`/record?year=${year}&month=${month}&day=${day}`);
   };
 
-  console.log('selectedDate:', selectedDate);
   return (
     <div className="pb-32">
       <CustomCalendar
