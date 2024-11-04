@@ -1,5 +1,4 @@
 'use client';
-import { useRouter } from 'next/navigation';
 import React, { useEffect, useMemo, useState } from 'react';
 
 import CustomCalendar from '@/components/Record/Calendar/CustomCalendar';
@@ -12,8 +11,6 @@ interface CalendarProps {
 }
 
 export default function Calendar({ searchParams }: CalendarProps) {
-  const router = useRouter();
-
   const [todayTraining, setTodayTraining] = useState<{ date: string; trainingList: string[] } | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [todayRecord, setTodayRecord] = useState<{
@@ -112,13 +109,8 @@ export default function Calendar({ searchParams }: CalendarProps) {
 
   const handleDateSelect = (date: Date) => {
     setSelectedDate(date);
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    router.push(`/record?year=${year}&month=${month}&day=${day}`);
   };
 
-  console.log('selectedDate:', selectedDate);
   return (
     <div className="pb-32">
       <CustomCalendar
