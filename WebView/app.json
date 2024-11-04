@@ -28,12 +28,18 @@
     "plugins": [
       "expo-router",
       [
+        "react-native-ble-plx",
+        {
+          "isBackgroundEnabled": true,
+          "modes": ["peripheral", "central"],
+          "bluetoothAlwaysPermission": "Allow $(PRODUCT_NAME) to connect to bluetooth devices"
+        }
+      ],
+      [
         "expo-build-properties",
         {
           "android": {
-            "extraMavenRepos": [
-              "https://devrepo.kakao.com/nexus/content/groups/public/"
-            ]
+            "extraMavenRepos": ["https://devrepo.kakao.com/nexus/content/groups/public/"]
           }
         }
       ],
@@ -44,8 +50,7 @@
           "android": {
             "authCodeHandlerActivity": true
           },
-          "ios": {
-          }
+          "ios": {}
         }
       ]
     ]
