@@ -13,7 +13,7 @@ public interface PanicRepository extends JpaRepository<PanicJpaEntity, Long> {
             + "AND FUNCTION('YEAR', p.startDate) = :year "
             + "AND FUNCTION('MONTH', p.startDate) = :month "
             + "AND FUNCTION('DAY', p.startDate) = :day")
-    Optional<PanicJpaEntity> findByUserIdAndDate(@Param("userId") Long userId, @Param("year") int year,
+    List<PanicJpaEntity> findByUserIdAndDate(@Param("userId") Long userId, @Param("year") int year,
             @Param("month") int month, @Param("day") int day);
 
     @Query("SELECT p FROM PanicJpaEntity p "
