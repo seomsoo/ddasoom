@@ -5,7 +5,7 @@ import com.ddasoom.emergency_service.emergency.adapter.in.web.response.PhoneBook
 import com.ddasoom.emergency_service.emergency.application.domain.PhoneBook;
 import com.ddasoom.emergency_service.emergency.application.port.in.PhoneBookCommand;
 import com.ddasoom.emergency_service.emergency.application.port.in.PhoneBookUseCase;
-import com.ddasoom.emergency_service.emergency.application.port.out.AddPhoneBookPort;
+import com.ddasoom.emergency_service.emergency.application.port.out.PhoneBookPort;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class phoneBookService implements PhoneBookUseCase {
 
-    private final AddPhoneBookPort addPhoneBookPort;
+    private final PhoneBookPort phoneBookPort;
 
     @Override
     public void addPhoneBook(PhoneBookCommand command) {
@@ -26,12 +26,12 @@ public class phoneBookService implements PhoneBookUseCase {
                 command.alias()
         );
 
-        addPhoneBookPort.addPhoneBook(phoneBook);
+        phoneBookPort.addPhoneBook(phoneBook);
     }
 
     @Override
     public List<PhoneBookResponse> findPhoneBookList(Long userId) {
-        List<PhoneBook> phoneBookList = addPhoneBookPort.findPhoneBookList(userId);
+        List<PhoneBook> phoneBookList = phoneBookPort.findPhoneBookList(userId);
 
         return phoneBookList.stream().map(phoneBook ->
                 new PhoneBookResponse(
