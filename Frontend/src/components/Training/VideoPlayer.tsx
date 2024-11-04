@@ -1,9 +1,8 @@
-// src/components/VideoPlayer.tsx
 'use client';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
-import { videoData } from '@/components/Training/VideoData';
+import { videoData } from '@/constants/VideoData';
 import Cancel from '@/svgs/cancel.svg';
 import SoundOff from '@/svgs/soundOff.svg';
 import SoundOn from '@/svgs/soundOn.svg';
@@ -68,7 +67,7 @@ export default function VideoPlayer({ videoType }: VideoPlayerProps) {
         </div>
       )}
 
-      <div className="absolute inset-0 flex items-center justify-center text-main4 text-3xl font-hakgyoansimR">
+      <div className="absolute left-14 bottom-16 text-center pointer-events-none z-10 flex items-center justify-center text-main4 text-4xl font-hakgyoansimR">
         <span
           style={{
             backgroundImage: 'linear-gradient(to top, #ffffff, #EBF4E3)',
@@ -76,7 +75,7 @@ export default function VideoPlayer({ videoType }: VideoPlayerProps) {
             WebkitTextFillColor: 'transparent',
             textShadow: '1px 4px 2px rgba(0, 0, 0, 0.3)',
           }}
-          className={`mb-80 ${animationClass}`}>
+          className={`mr-4 text-nowrap ${animationClass}`}>
           {visibleText}
         </span>
       </div>

@@ -1,0 +1,126 @@
+server:
+  port: 8000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, busrefresh
+
+spring:
+  profiles:
+    default: local
+
+  application:
+    name: gateway-service
+
+  cloud:
+    gateway:
+      routes:
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/users/actuator/**
+            - Method=GET,POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/users/(?<segment>.*), /$\{segment}
+
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/api/users/login
+            - Method=POST
+
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/api/users
+            - Method=POST
+
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/api/users/**
+
+        - id: diary-service
+          uri: lb://DIARY-SERVICE
+          predicates:
+            - Path=/diary/actuator/**
+            - Method=GET,POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/diary/(?<segment>.*), /$\{segment}
+
+        - id: diary-service
+          uri: lb://DIARY-SERVICE
+          predicates:
+            - Path=/api/diary/**
+
+        - id: emergency-service
+          uri: lb://EMERGENCY-SERVICE
+          predicates:
+            - Path=/emergency/actuator/**
+            - Method=GET,POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/emergency/(?<segment>.*), /$\{segment}
+
+        - id: emergency-service
+          uri: lb://EMERGENCY-SERVICE
+          predicates:
+            - Path=/api/emergency/**
+
+        - id: voice-service
+          uri: lb://VOICE-SERVICE
+          predicates:
+            - Path=/voices/actuator/**
+            - Method=GET,POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/voices/(?<segment>.*), /$\{segment}
+
+        - id: voice-service
+          uri: lb://VOICE-SERVICE
+          predicates:
+            - Path=/api/voices/**
+
+jwt:
+  issuer: DDASOOM
+  client-secret: asdfasdfasdfadadfa
+
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+
+---
+spring:
+  config:
+    activate:
+      on-profile: deploy
+
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://service-discovery:8761/eureka

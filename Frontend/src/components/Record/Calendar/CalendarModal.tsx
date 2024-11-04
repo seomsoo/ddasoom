@@ -24,8 +24,17 @@ export default function CalendarModal({ year, month, onClose, onYearChange, onMo
   const handlePreviousYear = () => onYearChange(year - 1);
   const handleNextYear = () => onYearChange(year + 1);
 
+  const handleClickOutside = (event: React.MouseEvent<HTMLDivElement>) => {
+    if ((event.target as HTMLDivElement).id === 'modal-overlay') {
+      onClose();
+    }
+  };
+
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-65 flex items-center justify-center z-50">
+    <div
+      id="modal-overlay"
+      className="fixed inset-0 bg-black bg-opacity-65 flex items-center justify-center z-50"
+      onClick={handleClickOutside}>
       <div className="bg-gray1 p-4 py-8 rounded-2xl w-80 text-gray5">
         <div className="flex justify-between items-center mb-6 font-nanumExtraBold">
           <p className="text-2xl ml-2">{year}년</p>
@@ -51,7 +60,12 @@ export default function CalendarModal({ year, month, onClose, onYearChange, onMo
                 className={`py-3 px-4 rounded-xl text-sm font-nanumBold ${
                   m === month && !isDisabled ? 'bg-main1 text-gray1' : 'bg-gray2 text-gray5'
                 } ${isDisabled ? 'cursor-not-allowed opacity-50' : ''}`}
-                onClick={() => (!isDisabled ? onMonthSelect(m) : null)}
+                onClick={() => {
+                  if (!isDisabled) {
+                    onMonthSelect(m);
+                    onClose(); // 달 선택 시 모달 닫기
+                  }
+                }}
                 disabled={isDisabled} // 버튼 비활성화
               >
                 {m}월
