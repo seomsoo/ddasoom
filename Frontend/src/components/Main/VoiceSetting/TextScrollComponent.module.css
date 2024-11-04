@@ -1,0 +1,52 @@
+@font-face {
+  font-family: 'NanumExtraBold';
+  src: url('/fonts/NanumSquareNeoOTF-Eb.otf') format('opentype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 300px; /* 텍스트 표시 영역 */
+  overflow: hidden;
+  position: relative;
+}
+
+.textLine {
+  font-size: 1.3rem;
+  font-weight: 600;
+  transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1); /* 부드러운 애니메이션 */
+  text-align: center;
+  white-space: nowrap;
+  line-height: 1.9rem;
+}
+
+.currentLine {
+  color: #D0F0FF; /* 부드러운 하늘색 */
+  opacity: 1;
+  transform: translateY(0); /* 중앙 고정 */
+}
+
+/* 처음 두 줄 강조 */
+.firstTwoLines {
+  color: #739dfe; /* 따뜻한 파스텔 오렌지 */
+  font-size: 1.5rem; 
+  opacity: 1;
+  transform: translateY(0);
+  font-family: 'NanumExtraBold', sans-serif; 
+}
+
+.pastLine {
+  color: rgba(129, 143, 148, 0.335); /* 연한 파란색 */
+  transform: translateY(-1.2rem); /* 위로 이동하여 사라짐 */
+  opacity: 0;
+}
+
+.futureLine {
+  color: rgba(176, 224, 230, 0.6); /* 연한 청록색 */
+  transform: translateY(1.2rem); /* 아래에 대기 */
+  opacity: 0.5;
+}
