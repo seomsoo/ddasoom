@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+
 import script from './scriptData';
 import styles from './TextScrollComponent.module.css';
 
@@ -8,9 +9,15 @@ interface TextScrollComponentProps {
   isRecording: boolean;
   currentLine: number;
   setCurrentLine: React.Dispatch<React.SetStateAction<number>>;
+  onTextEnd: () => void; // 텍스트가 끝날 때 호출되는 함수
 }
 
-export default function TextScrollComponent({ isRecording, currentLine, setCurrentLine }: TextScrollComponentProps) {
+export default function TextScrollComponent({
+  isRecording,
+  currentLine,
+  setCurrentLine,
+  onTextEnd,
+}: TextScrollComponentProps) {
   useEffect(() => {
     if (isRecording && currentLine < script.length - 1) {
       const line = script[currentLine];
@@ -21,10 +28,13 @@ export default function TextScrollComponent({ isRecording, currentLine, setCurre
       }, duration);
 
       return () => clearTimeout(timeout);
+    } else if (isRecording && currentLine >= script.length - 1) {
+      // 마지막 줄에 도달한 경우 onTextEnd 호출
+      onTextEnd();
     }
-  }, [isRecording, currentLine, setCurrentLine]);
+  }, [isRecording, currentLine, setCurrentLine, onTextEnd]);
 
-  const visibleLines = 5; // 한 번에 보이는 줄 수
+  const visibleLines = 5;
   const startLine = Math.max(0, currentLine - Math.floor(visibleLines / 2));
   const endLine = Math.min(script.length, currentLine + Math.floor(visibleLines / 2));
 
