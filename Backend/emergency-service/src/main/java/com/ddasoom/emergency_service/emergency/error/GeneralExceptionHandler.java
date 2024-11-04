@@ -4,6 +4,8 @@ import static com.ddasoom.emergency_service.common.util.ApiUtils.error;
 
 import com.ddasoom.emergency_service.common.util.ApiUtils.ApiResult;
 import feign.FeignException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -14,9 +16,6 @@ import org.springframework.web.HttpMediaTypeException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Slf4j
 @ControllerAdvice
@@ -33,7 +32,6 @@ public class GeneralExceptionHandler {
             message = matcher.group(1);
         }
 
-        System.out.println(e.getMessage());
         return newResponse(message, HttpStatus.valueOf(e.status()));
     }
 
