@@ -4,11 +4,12 @@ import backGroundImg from "@/assets/images/first.png";
 import logoImage from "@/assets/images/logo.png";
 import styled from "styled-components/native";
 import Button from "@/components/common/Button";
-import { login, me } from "@react-native-kakao/user";
+import { login, me, unlink } from "@react-native-kakao/user";
 import { router } from "expo-router";
 import { signIn, signUp } from "@/services/auth";
 import useAuthStore from "@/zustand/authStore";
 import { AxiosError } from "axios";
+import theme from "@/styles/Theme";
 
 const Main = () => {
   const { setToken, setUserEmail, setUserName, setUserId } = useAuthStore();
@@ -39,7 +40,8 @@ const Main = () => {
       setUserId(userId);
       console.log("로그인 성공. 토큰 : ", token);
 
-      router.push("authorized");
+      // router.push("authorized");
+      router.push("signupModal");
     } catch (e: unknown) {
       const error = e as DdasoomError;
       const errorCode = error.response?.data.error.status;
@@ -71,6 +73,9 @@ const Main = () => {
           </Button>
           <Button color="white" textColor="black" onPress={() => router.push("ble")}>
             임시 BLE 이동
+          </Button>
+          <Button onPress={() => unlink()} color={theme.color.MAIN1}>
+            언링크 임시
           </Button>
         </FloatingView>
       </ImageBackground>
