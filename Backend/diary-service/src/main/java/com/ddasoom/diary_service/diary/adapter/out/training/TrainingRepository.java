@@ -10,6 +10,8 @@ public interface TrainingRepository extends JpaRepository<TrainingJpaEntity, Lon
 
     boolean existsByUserIdAndTrainingTypeAndDate(Long userId, String trainingType, LocalDate date);
 
+    boolean existsByUserIdAndDate(Long userId, LocalDate date);
+
     @Query("SELECT t.trainingType FROM TrainingJpaEntity t "
             + "WHERE t.userId = :userId "
             + "AND FUNCTION('YEAR', t.date) = :year "
