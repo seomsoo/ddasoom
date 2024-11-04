@@ -69,6 +69,9 @@ const Main = () => {
           <Button color="white" textColor="black" onPress={handleUnauthorized}>
             따숨 둘러보기
           </Button>
+          <Button color="white" textColor="black" onPress={() => router.push("ble")}>
+            임시 BLE 이동
+          </Button>
         </FloatingView>
       </ImageBackground>
     </Container>
