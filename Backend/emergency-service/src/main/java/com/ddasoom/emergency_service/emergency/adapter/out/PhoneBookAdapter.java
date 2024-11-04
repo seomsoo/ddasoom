@@ -2,15 +2,14 @@ package com.ddasoom.emergency_service.emergency.adapter.out;
 
 import com.ddasoom.emergency_service.common.annotation.PersistenceAdapter;
 import com.ddasoom.emergency_service.emergency.application.domain.PhoneBook;
-import com.ddasoom.emergency_service.emergency.application.port.out.AddPhoneBookPort;
-import java.util.List;
-
+import com.ddasoom.emergency_service.emergency.application.port.out.PhoneBookPort;
 import com.ddasoom.emergency_service.emergency.error.PhoneBookNotFoundException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 
 @PersistenceAdapter
 @RequiredArgsConstructor
-public class PhoneBookAdapter implements AddPhoneBookPort {
+public class PhoneBookAdapter implements PhoneBookPort {
 
     private final PhoneBookRepository phoneBookRepository;
 
@@ -27,7 +26,7 @@ public class PhoneBookAdapter implements AddPhoneBookPort {
     public List<PhoneBook> findPhoneBookList(Long userId) {
         List<PhoneBookJpaEntity> phoneBooks = phoneBookRepository.findByUserId(userId);
 
-        if(phoneBooks.isEmpty()) {
+        if (phoneBooks.isEmpty()) {
             throw new PhoneBookNotFoundException();
         }
 
