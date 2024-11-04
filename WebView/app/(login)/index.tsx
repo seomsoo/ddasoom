@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableOpacity, StatusBar, Alert, ImageBackground } from "react-native";
+import { View, Text, Image, TouchableOpacity, StatusBar, Alert, ImageBackground, ToastAndroid } from "react-native";
 import React from "react";
 import backGroundImg from "@/assets/images/first.png";
 import logoImage from "@/assets/images/logo.png";
@@ -14,41 +14,42 @@ const Main = () => {
   const { setToken, setUserEmail, setUserName, setUserId } = useAuthStore();
 
   const handleKaKaoLogin = async () => {
-    router.push("authorized");
+    const { accessToken, refreshToken } = await login();
 
-    // const { accessToken, refreshToken } = await login();
+    if (!accessToken || !refreshToken) {
+      ToastAndroid.show("로그인 오류가 발생했습니다.", 3000);
+      return;
+    }
 
-    // if (!accessToken || !refreshToken) {
-    //   Alert.alert("로그인 오류1");
-    //   return;
-    // }
+    const { email, nickname } = await me();
 
-    // const { email } = await me();
+    if (!email || email === "") {
+      ToastAndroid.show("로그인 오류가 발생했습니다.", 3000);
+      return;
+    }
 
-    // if (!email || email === "") {
-    //   Alert.alert("로그인 오류");
-    //   return;
-    // }
+    setUserEmail(email);
+    setUserName(nickname);
 
-    // console.log("여기까진 잘됨");
-    // try {
-    //   const { userId, name, token } = await signIn(email);
-    //   setToken(token);
-    //   setUserEmail(email);
-    //   setUserName(name);
-    //   setUserId(userId);
+    try {
+      const { userId, name, token } = await signIn(email);
+      setToken(token);
+      setUserEmail(email);
+      setUserName(name);
+      setUserId(userId);
+      console.log("로그인 성공. 토큰 : ", token);
 
-    //   router.push("authorized");
-    // } catch (e: unknown) {
-    //   const error = e as DdasoomError;
-    //   const errorCode = error.response?.data.error.status;
+      router.push("authorized");
+    } catch (e: unknown) {
+      const error = e as DdasoomError;
+      const errorCode = error.response?.data.error.status;
 
-    //   if (errorCode === 404) {
-    //     router.push("signupModal");
-    //   } else {
-    //     Alert.alert("로그인 오류");
-    //   }
-    // }
+      if (errorCode === 404) {
+        router.push("signupModal");
+      } else {
+        ToastAndroid.show("로그인 오류가 발생했습니다.", 3000);
+      }
+    }
   };
 
   const handleUnauthorized = () => {
