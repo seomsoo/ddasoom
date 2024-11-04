@@ -3,7 +3,6 @@ package com.ddasoom.wear
 import android.app.Application
 import android.content.Intent
 import android.content.res.Configuration
-import com.ddasoom.wear.service.MessageService
 
 import com.facebook.react.PackageList
 import com.facebook.react.ReactApplication
@@ -45,9 +44,9 @@ class MainApplication : Application(), ReactApplication {
     super.onCreate()
     SoLoader.init(this, false)
 
-    // MessageService 시작
-    val serviceIntent = Intent(this, MessageService::class.java)
-    startService(serviceIntent)
+//    // MessageService 시작
+//    val serviceIntent = Intent(this, MessageService::class.java)
+//    startService(serviceIntent)
 
     if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
       // If you opted-in for the New Architecture, we load the native entry point for this app.
