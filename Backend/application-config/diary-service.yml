@@ -61,6 +61,9 @@ spring:
     host: rabbitmq
     port: 5672
 
+  kafka:
+    bootstrap-servers: k11c103.p.ssafy.io:9092
+
 eureka:
   client:
     register-with-eureka: true
