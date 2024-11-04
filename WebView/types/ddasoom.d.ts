@@ -9,3 +9,9 @@ type EmergencyPhoneNumber = {
   name: Name;
   phoneNumber: PhoneNumber;
 };
+
+// 웹-앱 통신 DTO
+type WebMessageDto = {
+  title: string;
+  content: string | number | object;
+};
