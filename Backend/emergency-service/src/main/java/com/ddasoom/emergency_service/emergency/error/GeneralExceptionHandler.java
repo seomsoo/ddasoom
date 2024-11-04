@@ -35,11 +35,6 @@ public class GeneralExceptionHandler {
         return newResponse(message, HttpStatus.valueOf(e.status()));
     }
 
-    @ExceptionHandler(PhoneBookNotFoundException.class)
-    public ResponseEntity<?> handlePhoneBookNotFoundException(Exception e) {
-        return newResponse(e, HttpStatus.NOT_FOUND);
-    }
-
     @ExceptionHandler(HttpMediaTypeException.class)
     public ResponseEntity<?> handleHttpMediaTypeException(Exception e) {
         return newResponse(e, HttpStatus.UNSUPPORTED_MEDIA_TYPE);
