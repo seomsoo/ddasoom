@@ -17,10 +17,11 @@ public class PanicRecordAdapter implements PanicRecordPort {
     private final PanicRepository panicRepository;
 
     @Override
-    public PanicRecordInfo getPanicRecord(Long userId, int year, int month, int day) {
+    public List<PanicRecordInfo> getPanicRecord(Long userId, int year, int month, int day) {
         return panicRepository.findByUserIdAndDate(userId, year, month, day)
+                .stream()
                 .map(PanicJpaEntity::toRecordInfo)
-                .orElse(null);
+                .toList();
     }
 
     @Override
