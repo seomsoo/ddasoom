@@ -3,6 +3,9 @@ package com.ddasoom.emergency_service.emergency.error;
 import static com.ddasoom.emergency_service.common.util.ApiUtils.error;
 
 import com.ddasoom.emergency_service.common.util.ApiUtils.ApiResult;
+import feign.FeignException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -19,9 +22,17 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @RequiredArgsConstructor
 public class GeneralExceptionHandler {
 
-    @ExceptionHandler(PhoneBookNotFoundException.class)
-    public ResponseEntity<?> handlePhoneBookNotFoundException(Exception e) {
-        return newResponse(e, HttpStatus.NOT_FOUND);
+    @ExceptionHandler(FeignException.class)
+    public ResponseEntity<?> handleFeignException(FeignException e) {
+        Pattern pattern = Pattern.compile("\"message\":\"(.*?)\"");
+        Matcher matcher = pattern.matcher(e.getMessage());
+        String message = "";
+
+        if (matcher.find()) {
+            message = matcher.group(1);
+        }
+
+        return newResponse(message, HttpStatus.valueOf(e.status()));
     }
 
     @ExceptionHandler(HttpMediaTypeException.class)

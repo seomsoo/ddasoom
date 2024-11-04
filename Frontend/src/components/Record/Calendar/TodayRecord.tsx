@@ -46,7 +46,7 @@ export default function TodayRecord({ training, date, record }: TodayRecordProps
   console.log('record:', record);
 
   return (
-    <div className="relative bg-main4 rounded-2xl border border-main1 p-3 shadow-sm mt-5 min-h-60 flex">
+    <div className="relative bg-main4 rounded-2xl border border-main1 p-3 shadow-sm mt-10 min-h-60 flex">
       <Seed className="absolute -top-4 left-3" />
       {/* 훈련 기록 */}
       <div className="flex flex-col items-center mr-3 font-nanumBold min-w-16 text-gray5">
