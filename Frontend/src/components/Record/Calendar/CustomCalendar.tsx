@@ -74,7 +74,7 @@ export default function CustomCalendar({
       )}
 
       {/* 요일 레이블을 Swiper 외부로 이동 */}
-      <div className="grid grid-cols-7 text-center font-hakgyoansimR mb-3">
+      <div className="grid grid-cols-7 text-center font-hakgyoansimR mb-5">
         {daysOfWeek.map(day => (
           <div key={day} className="text-2xl">
             <span className={`${day === '일' ? 'text-sub3' : day === '토' ? 'text-sub4' : ''}`}>{day}</span>

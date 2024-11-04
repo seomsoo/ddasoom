@@ -51,7 +51,7 @@ export default function CalendarGrid({
         const isFutureDate = currentDay > new Date();
 
         return (
-          <div key={day} className="flex flex-col items-center text-gray5">
+          <div key={day} className="flex flex-col items-center text-gray5 ">
             <div
               onClick={() => {
                 if (!isFutureDate) {
