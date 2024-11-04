@@ -48,23 +48,30 @@ export default function CalendarGrid({
         const isPanicDay = isPanicList.includes(dateString);
         const trainingData = isTrainingList.find(item => item.date === dateString);
         const trainingCount = trainingData ? trainingData.trainingCount : 0;
+        const isFutureDate = currentDay > new Date();
 
         return (
           <div key={day} className="flex flex-col items-center text-gray5">
             <div
               onClick={() => {
-                if (currentDay <= new Date()) {
+                if (!isFutureDate) {
                   onDateSelect(currentDay);
                 }
               }}
               className={`relative h-11 w-11 flex items-center justify-center rounded-full ${
-                currentDay <= new Date() ? 'cursor-pointer' : 'cursor-default'
+                isFutureDate ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer'
               } ${isPanicDay ? 'bg-black' : 'bg-[#d6f0bf]'}`}>
               {trainingCount > 0 && <DdasomiIcon trainingCount={trainingCount} />}
             </div>
             <span
               className={`text-sm mt-2 font-hakgyoansimR w-8 rounded-xl text-center ${
-                isSelected ? 'bg-main1 text-gray1' : isTodayDate ? 'bg-indigo-300 text-white' : ''
+                isSelected
+                  ? 'bg-main1 text-gray1'
+                  : isTodayDate
+                    ? 'bg-indigo-300 text-white'
+                    : isFutureDate
+                      ? 'opacity-30'
+                      : ''
               }`}>
               {day}
             </span>
