@@ -5,7 +5,7 @@ import { router } from "expo-router";
 import type { WebView as WebViewType } from "react-native-webview";
 
 const useSendToken = (webViewRef: React.RefObject<WebViewType>) => {
-  const { token } = useAuthStore();
+  const { token, userId, userName } = useAuthStore();
 
   const sendMessageToWeb = () => {
     if (!token || token === "") {
@@ -14,7 +14,7 @@ const useSendToken = (webViewRef: React.RefObject<WebViewType>) => {
       return;
     }
 
-    const data = JSON.stringify({ title: "TOKEN", content: token });
+    const data = JSON.stringify({ title: "TOKEN", content: { token, userId, userName } });
     webViewRef.current?.injectJavaScript(`
       window.postMessage(${data}, "*");
     `);
