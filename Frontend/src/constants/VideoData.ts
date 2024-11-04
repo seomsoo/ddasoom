@@ -1,12 +1,7 @@
-import fireplaceVideo from '../../../public/videos/fireplace.mp4';
-import windVideo from '../../../public/videos/wind.mp4';
+import { VideoData } from '@/types/VideoDataTypes';
 
-type VideoData = {
-  src?: string;
-  introText: string;
-  focusText: string;
-  type: 'video' | 'text';
-};
+import fireplaceVideo from '../../public/videos/fireplace.mp4';
+import windVideo from '../../public/videos/wind.mp4';
 
 export const videoData: Record<string, VideoData> = {
   fireplace: {
