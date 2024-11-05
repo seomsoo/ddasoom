@@ -14,9 +14,10 @@ interface WriteRecordProps {
   dateMonth?: string;
   dateDay?: string;
 }
+
 export default function WriteRecord({ dateYear, dateMonth, dateDay }: WriteRecordProps) {
   const router = useRouter();
-  // 각 아이콘의 선택 상태를 관리하는 객체
+
   const [selectedIcons, setSelectedIcons] = useState<{ [key: string]: boolean }>({
     caffeine: false,
     cigarette: false,
@@ -24,23 +25,18 @@ export default function WriteRecord({ dateYear, dateMonth, dateDay }: WriteRecor
     exercise: false,
   });
 
-  // 한 줄 일기 내용
   const [description, setDescription] = useState('');
-
-  // 기록하기 버튼 활성화 여부
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
 
-  // 아이콘 클릭 핸들러
   const handleIconClick = (iconId: string) => {
     setSelectedIcons(prevSelected => ({
       ...prevSelected,
-      [iconId]: !prevSelected[iconId], // 현재 아이콘의 선택 상태를 토글
+      [iconId]: !prevSelected[iconId],
     }));
   };
 
   const formattedDate = `${dateYear ?? ''}-${dateMonth?.padStart(2, '0') ?? ''}-${dateDay?.padStart(2, '0') ?? ''}`;
 
-  // isButtonEnabled 상태 업데이트
   useEffect(() => {
     const isAnyIconSelected = Object.values(selectedIcons).some(selected => selected);
     setIsButtonEnabled(isAnyIconSelected || description.trim() !== '');
@@ -54,9 +50,15 @@ export default function WriteRecord({ dateYear, dateMonth, dateDay }: WriteRecor
       description: description.trim(),
     };
 
-    // 날짜별 키로 로컬 스토리지에 저장
     localStorage.setItem(dateKey, JSON.stringify(recordData));
     router.push(`/record?year=${dateYear}&month=${dateMonth}&day=${dateDay}`);
+  };
+
+  const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const inputText = e.target.value;
+    if (inputText.length <= 500) {
+      setDescription(inputText);
+    }
   };
 
   return (
@@ -92,15 +94,20 @@ export default function WriteRecord({ dateYear, dateMonth, dateDay }: WriteRecor
           onClick={() => handleIconClick('exercise')}
         />
       </div>
+      
       <p className="font-hakgyoansimR text-2xl mt-7">오늘의 한 줄 일기</p>
-      <div className="bg-main4 w-full h-60 rounded-xl border-2 border-main1 p-4">
+      <div className="bg-main4 w-full h-60 rounded-xl border-2 border-main1 p-4 relative">
         <textarea
           placeholder="글을 입력하세요..."
           className="w-full h-full bg-transparent outline-none resize-none"
           value={description}
-          onChange={e => setDescription(e.target.value)}
+          onChange={handleDescriptionChange}
         />
+        <div className="absolute bottom-2 right-4 text-gray-500 text-sm">
+          {description.length}/500
+        </div>
       </div>
+
       <Button label="기록하기" disabled={!isButtonEnabled} onClick={handleAddDailyRecord} />
     </div>
   );
