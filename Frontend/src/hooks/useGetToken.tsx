@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+
+import { setAuthData } from '../store/authSlice';
 
 /** 토큰 정보(토큰, 유저 이름, 유저id) */
 const useAuth = () => {
+  const dispatch = useDispatch();
   const [token, setToken] = useState<Token | null>(null);
   const [userName, setUserName] = useState<Name | null>(null);
   const [userId, setUserId] = useState<UserId | null>(null);
@@ -25,6 +29,8 @@ const useAuth = () => {
           setUserName(content.userName);
           setToken(content.token);
           setUserId(content.userId);
+          // Redux에 토큰과 사용자 정보 저장
+          dispatch(setAuthData({ token: content.token, userName: content.userName, userId: content.userId }));
         }
       } catch (e) {
         console.error('Failed to handle message:', e);
@@ -37,7 +43,7 @@ const useAuth = () => {
     return () => {
       window.removeEventListener('message', handleMessage);
     };
-  }, [token, userName, userId]);
+  }, [dispatch, token, userName, userId]);
 
   return { token, userName, userId };
 };
