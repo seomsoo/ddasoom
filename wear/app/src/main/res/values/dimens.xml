@@ -1,0 +1,4 @@
+<resources>
+    <dimen name="box_inset_layout_padding">16dp</dimen>
+    <dimen name="inner_frame_layout_padding">8dp</dimen>
+</resources>
