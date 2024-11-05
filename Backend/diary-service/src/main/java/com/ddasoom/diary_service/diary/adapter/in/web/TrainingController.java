@@ -3,6 +3,7 @@ package com.ddasoom.diary_service.diary.adapter.in.web;
 import com.ddasoom.diary_service.common.annotation.WebAdapter;
 import com.ddasoom.diary_service.diary.adapter.in.web.request.TrainingRecordSaveRequest;
 import com.ddasoom.diary_service.diary.adapter.in.web.response.GetContinuousTrainingDaysResponse;
+import com.ddasoom.diary_service.diary.adapter.out.training.statistics.TrainingStatisticsSchedulerAdapter;
 import com.ddasoom.diary_service.diary.application.port.in.TrainingUseCase;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TrainingController {
 
     private final TrainingUseCase trainingUseCase;
+    private final TrainingStatisticsSchedulerAdapter trainingStatisticsSchedulerAdapter;
 
     @PostMapping("/api/diary/training")
     @ResponseStatus(HttpStatus.CREATED)
@@ -32,5 +34,10 @@ public class TrainingController {
     public GetContinuousTrainingDaysResponse getContinuousTrainingDays(
             @RequestHeader("X-Authenticated-User") Long userId) {
         return trainingUseCase.getContinuousTrainingDays(userId);
+    }
+
+    @PostMapping("/api/diary/training/continuous-day/validation")
+    public void checkValidAndUpdateContinuousTrainingDays() {
+        trainingStatisticsSchedulerAdapter.checkValidAndUpdate();
     }
 }
