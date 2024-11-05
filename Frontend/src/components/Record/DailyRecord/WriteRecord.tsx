@@ -1,13 +1,16 @@
 'use client';
+import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
+import { putDailyData } from '@/api/recordAPI';
 import Button from '@/components/Button';
 import RecordItem from '@/components/Record/DailyRecord/RecordItem';
 import AlcoholSvg from '@/svgs/alcohol.svg';
 import CaffeineSvg from '@/svgs/caffeine.svg';
 import CigaretteSvg from '@/svgs/cigarette.svg';
 import ExerciseSvg from '@/svgs/exercise.svg';
+import { DiaryRequestBody } from '@/types/http/request';
 
 interface WriteRecordProps {
   dateYear?: string;
@@ -27,6 +30,17 @@ export default function WriteRecord({ dateYear, dateMonth, dateDay }: WriteRecor
 
   const [description, setDescription] = useState('');
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
+  
+  const mutation = useMutation({
+    mutationFn: (data: DiaryRequestBody) => putDailyData(data),
+    onSuccess: () => {
+      console.log('데이터 전송 성공');
+      router.push(`/record?year=${dateYear}&month=${dateMonth}&day=${dateDay}`);
+    },
+    onError: (error) => {
+      console.error('데이터 전송 실패:', error);
+    },
+  });
 
   const handleIconClick = (iconId: string) => {
     setSelectedIcons(prevSelected => ({
@@ -43,15 +57,16 @@ export default function WriteRecord({ dateYear, dateMonth, dateDay }: WriteRecor
   }, [selectedIcons, description]);
 
   const handleAddDailyRecord = () => {
-    const dateKey = `dailyRecord-${formattedDate}`;
-    const recordData = {
-      date: `${formattedDate}`,
-      selectedIcons: Object.keys(selectedIcons).filter(icon => selectedIcons[icon]),
+    const recordData: DiaryRequestBody = {
+      date: formattedDate,
+      alcohol: selectedIcons.alcohol,
+      caffeine: selectedIcons.caffeine,
+      smoking: selectedIcons.cigarette,
+      exercise: selectedIcons.exercise,
       description: description.trim(),
     };
 
-    localStorage.setItem(dateKey, JSON.stringify(recordData));
-    router.push(`/record?year=${dateYear}&month=${dateMonth}&day=${dateDay}`);
+    mutation.mutate(recordData);
   };
 
   const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
