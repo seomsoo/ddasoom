@@ -14,5 +14,4 @@ public interface TrainingRecordPort {
     List<String> getTrainingRecord(Long userId, int year, int month, int day);
 
     List<Integer> getTrainingThreeContinuousDay(Long userId, int year, int month);
-
 }

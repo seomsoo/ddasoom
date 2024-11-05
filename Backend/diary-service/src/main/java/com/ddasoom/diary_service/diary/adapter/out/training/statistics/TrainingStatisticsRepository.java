@@ -10,4 +10,6 @@ public interface TrainingStatisticsRepository extends JpaRepository<TrainingStat
     @Query("SELECT s.trainingContinuousDay FROM TrainingStatisticsJpaEntity s "
             + "WHERE s.userId = :userId")
     Optional<Integer> findTrainingContinuousDayByUserId(@Param("userId") Long userId);
+
+    Optional<TrainingStatisticsJpaEntity> findByUserId(Long userId);
 }
