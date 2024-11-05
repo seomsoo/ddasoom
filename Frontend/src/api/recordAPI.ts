@@ -15,6 +15,19 @@ export const getMonthlyData = async (year: string, month: string) => {
   }
 };
 
+// 캘린더 일별 조회(기록 상세)
+export const getDailyData = async (year: string, month: string, day:string) => {
+  try {
+    // const response = await axiosInstance.get('/diary/calendars', {
+    const response = await axiosInstance.get('/record', {
+      params: { year, month, day },
+    });
+    return response.data.data;
+  } catch (error) {
+    console.error('데이터 패치 실패:', error);
+    throw error;
+  }
+};
 
 // 일상 기록 저장
 export const putDailyData = async (data: DiaryRequestBody) => {
