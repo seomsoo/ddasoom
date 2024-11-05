@@ -7,7 +7,7 @@ import four from '/public/images/4.png';
 import five from '/public/images/5.png';
 import seven from '/public/images/7.png';
 import eight from '/public/images/8.png';
-import Dot from '/public/images/Dot2.png';
+import Dot from '/public/images/dot2.png';
 
 export default function BreathSelector() {
   const router = useRouter();
