@@ -2,7 +2,7 @@ package com.ddasoom.diary_service.diary.application.service;
 
 import com.ddasoom.diary_service.common.annotation.UseCase;
 import com.ddasoom.diary_service.diary.adapter.in.web.response.ReportResponse;
-import com.ddasoom.diary_service.diary.application.domain.GetDailyReport;
+import com.ddasoom.diary_service.diary.application.domain.GetDailyReportDto;
 import com.ddasoom.diary_service.diary.application.domain.GetPanicReport;
 import com.ddasoom.diary_service.diary.application.domain.PanicReportInfo;
 import com.ddasoom.diary_service.diary.application.port.in.ReportQuery;
@@ -25,7 +25,7 @@ public class ReportService implements ReportQuery {
     @Override
     public ReportResponse getReport(Long userId, int year, int month) {
         GetPanicReport panicReport = getPanicReport(panicRecordPort.getPanicReport(userId, year, month));
-        GetDailyReport dailyReport = dailyRecordPort.getDailyReport(userId, year, month);
+        GetDailyReportDto dailyReport = dailyRecordPort.getDailyReport(userId, year, month);
         int trainingContinuousDay = calculateContinuousTrainingDay(
                 trainingRecordPort.getTrainingThreeContinuousDay(userId, year, month));
 
