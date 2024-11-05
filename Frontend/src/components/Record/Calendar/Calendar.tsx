@@ -1,6 +1,7 @@
 'use client';
 import React, { useEffect, useMemo, useState } from 'react';
 
+import { getDailyData } from '@/api/recordAPI';
 import CustomCalendar from '@/components/Record/Calendar/CustomCalendar';
 
 import PanicRecord from './PanicRecord';
@@ -81,10 +82,21 @@ export default function Calendar({ searchParams }: CalendarProps) {
 
   useEffect(() => {
     if (selectedDate) {
-      const formattedDate = `${selectedDate.getFullYear()}-${String(selectedDate.getMonth() + 1).padStart(2, '0')}-${String(
-        selectedDate.getDate(),
-      ).padStart(2, '0')}`;
+      const year = String(selectedDate.getFullYear());
+      const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
+      const day = String(selectedDate.getDate()).padStart(2, '0');
 
+      // getDailyData 호출하여 데이터 가져오기
+      getDailyData(year, month, day)
+        .then((data) => {
+          console.log('Fetched Data:', data);
+          // 받아온 데이터로 상태 업데이트 가능
+        })
+        .catch((error) => {
+          console.error('데이터 가져오기 실패:', error);
+        });
+
+      const formattedDate = `${year}-${month}-${day}`;
       const dateKey = `dailyRecord-${formattedDate}`;
       const storedRecord = localStorage.getItem(dateKey);
 
