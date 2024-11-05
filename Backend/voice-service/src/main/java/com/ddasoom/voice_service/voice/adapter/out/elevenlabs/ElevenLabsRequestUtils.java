@@ -1,30 +1,33 @@
 package com.ddasoom.voice_service.voice.adapter.out.elevenlabs;
 
-import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static lombok.AccessLevel.PRIVATE;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA;
 
 import com.ddasoom.voice_service.voice.adapter.out.elevenlabs.request.TextToSpeechRequest;
 import com.ddasoom.voice_service.voice.adapter.out.elevenlabs.request.TrainAiVoiceRequest;
-import com.ddasoom.voice_service.voice.adapter.out.elevenlabs.response.TextToSpeechResponse;
 import com.ddasoom.voice_service.voice.adapter.out.elevenlabs.response.TrainAiVoiceResponse;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import lombok.NoArgsConstructor;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClient;
 
-@Component
-@RequiredArgsConstructor
-public class ElevenLabsRequestUtils {
+@NoArgsConstructor(access = PRIVATE)
+public abstract class ElevenLabsRequestUtils {
 
-    private final RestClient restClient;
+    private static final RestClient restClient;
 
-    public TrainAiVoiceResponse sendRequest(TrainAiVoiceRequest request) {
+    static {
+        restClient = RestClient.builder()
+                .baseUrl("https://api.elevenlabs.io")
+                .defaultHeader("xi-api-key", "sk_2ff2c593c65116b4f22f94c7ae2a77b77986f005c314683e")
+                .build();
+    }
+
+    public static TrainAiVoiceResponse sendRequest(TrainAiVoiceRequest request) {
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
         body.add("name", request.getName());
-        request.getFiles().stream()
-                .forEach(file -> body.add("files", file));
+        request.getFiles().forEach(file -> body.add("files", file));
 
         return restClient.post()
                 .uri("/v1/voices/add")
@@ -34,12 +37,12 @@ public class ElevenLabsRequestUtils {
                 .body(TrainAiVoiceResponse.class);
     }
 
-    public TextToSpeechResponse sendRequest(String voiceKey, TextToSpeechRequest request) {
+    public static byte[] sendRequest(String voiceKey, TextToSpeechRequest request) {
         return restClient.post()
                 .uri("/v1/text-to-speech/" + voiceKey)
-                .header(CONTENT_TYPE, APPLICATION_JSON_VALUE)
+                .contentType(APPLICATION_JSON)
                 .body(request)
                 .retrieve()
-                .body(TextToSpeechResponse.class);
+                .body(byte[].class);
     }
 }
