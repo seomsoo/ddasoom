@@ -3,7 +3,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
-import useAuth from '@/hooks/useGetToken';
+// import useAuth from '@/hooks/useGetToken';
 import ReactQueryProvider from '@/utils/reactQueryProvider';
 import ReduxProvider from '@/utils/reduxProvider';
 
@@ -48,8 +48,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  useAuth();
-  
+  // useAuth();
+
   return (
     <html lang="ko-KR">
       <body
