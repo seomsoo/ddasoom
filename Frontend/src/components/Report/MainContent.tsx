@@ -1,10 +1,23 @@
+import { useQuery } from '@tanstack/react-query';
+
+import queryKeys from '@/api/querykeys';
+import { getReportData } from '@/api/recordAPI';
 import DiaryItem from '@/components/Record/ResultItem';
 import Ddasom2 from '@/svgs/greensunglass.svg';
 
 import SummaryBox from './SummaryBox';
 
-export default function MainContent() {
-  const daysData = [7, 14, 23];
+interface MainContentProps {
+  year: string;
+  month: string;
+}
+
+export default function MainContent({ year, month }: MainContentProps) {
+  const { data: ReportData } = useQuery({
+    queryKey: [queryKeys.REPORT, year, month],
+    queryFn: () => getReportData(year, month),
+  });
+  console.log('ReportData:', ReportData);
 
   return (
     <main className="w-full max-w-md mt-8 flex flex-col font-nanumExtraBold">
@@ -16,14 +29,14 @@ export default function MainContent() {
           <span className="flex items-baseline mt-1">
             <p className="text-lg text-main1 mr-1">평균 30초</p> 동안 공황증상이 발현됐어요.
           </span>
-          <div
+          {/* <div
             className={`grid gap-4 mt-6 w-full justify-items-center ${daysData.length === 3 ? 'grid-cols-3' : 'grid-cols-4'}`}>
             {daysData.map((day, index) => (
               <div key={index} className="bg-main2 w-12 h-12 rounded-full opacity-40 flex justify-center items-center">
                 <p className="opacity-100 text-black">{day}일</p>
               </div>
             ))}
-          </div>
+          </div> */}
         </div>
       </SummaryBox>
 

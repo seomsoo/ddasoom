@@ -1,5 +1,5 @@
-import { RandomPraise } from '@/components/Training/RandomPraise';
-import ResultButton from '@/components/Training/ResultButton';
+import { RandomPraise } from '@/components/Training/Result/RandomPraise';
+import ResultButton from '@/components/Training/Result/ResultButton';
 
 interface TrainingResultPageProps {
   searchParams: { trainingType: string };

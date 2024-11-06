@@ -38,8 +38,6 @@ export default function Calendar({ searchParams }: CalendarProps) {
     enabled: !!year && !!month && !!day,
   });
 
-  console.log('dailyData:', dailyData);
-
   const handleDateSelect = (date: Date) => {
     setSelectedDate(date);
   };
