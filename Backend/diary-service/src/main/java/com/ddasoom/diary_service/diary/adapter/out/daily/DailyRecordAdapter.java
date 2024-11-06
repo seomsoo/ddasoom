@@ -2,7 +2,7 @@ package com.ddasoom.diary_service.diary.adapter.out.daily;
 
 import com.ddasoom.diary_service.common.annotation.PersistenceAdapter;
 import com.ddasoom.diary_service.diary.application.domain.DailyRecordInfo;
-import com.ddasoom.diary_service.diary.application.domain.GetDailyReport;
+import com.ddasoom.diary_service.diary.application.domain.GetDailyReportDto;
 import com.ddasoom.diary_service.diary.application.port.in.DailyRecordCommand;
 import com.ddasoom.diary_service.diary.application.port.out.DailyRecordPort;
 import java.time.LocalDate;
@@ -35,7 +35,7 @@ public class DailyRecordAdapter implements DailyRecordPort {
     }
 
     @Override
-    public GetDailyReport getDailyReport(Long userId, int year, int month) {
+    public GetDailyReportDto getDailyReport(Long userId, int year, int month) {
         return queryRepository.getDailyReport(userId, year, month);
     }
 }
