@@ -10,23 +10,8 @@ import { router } from "expo-router";
 import { unlink } from "@react-native-kakao/user";
 
 const SignupModal = () => {
-  const { userName, userEmail } = useAuthStore();
-  const [isLoading, setIsLoading] = useState(false);
-
   const handleSignup = async () => {
-    // 회원가입
-    console.log(`회원가입 시도. 이름 : ${userName}, 이메일 : ${userEmail}`);
     router.push("/initBreathModal");
-
-    // try {
-    //   setIsLoading(true);
-    //   await signUp({ name: userName, email: userEmail });
-    //   router.push("/");
-    // } catch (e: unknown) {
-    //   ToastAndroid.show("로그인 오류가 발생했습니다.", 3000);
-    // } finally {
-    //   setIsLoading(false);
-    // }
   };
 
   return (
@@ -42,11 +27,7 @@ const SignupModal = () => {
           <ContentText>아직 등록되지 않은 회원입니다.{"\n"}가입하시겠습니까?</ContentText>
         </Content>
         <Button onPress={handleSignup} color={theme.color.MAIN1}>
-          {!isLoading ? (
-            <Text style={{ fontSize: 20, color: "white" }}>가입하기</Text>
-          ) : (
-            <ActivityIndicator size={"large"} />
-          )}
+          <Text style={{ fontSize: 20, color: "white" }}>가입하기</Text>
         </Button>
       </InnerContainer>
     </Container>
