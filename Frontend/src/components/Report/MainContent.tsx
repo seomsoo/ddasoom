@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import queryKeys from '@/api/querykeys';
 import { getReportData } from '@/api/recordAPI';
 import DiaryItem from '@/components/Report/ResultItem';
-import {reportMessageStyles} from '@/constants/ReportMessageStyles'
+import {reportMessageStyles} from '@/constants/ReportMessageStyles';
 import SummaryBox from './SummaryBox';
 
 interface MainContentProps {
@@ -40,7 +40,6 @@ export default function MainContent({ year, month }: MainContentProps) {
     queryFn: () => getReportData(year, month),
   });
   
-  console.log('ReportData:', reportData);
 
   const trainingStyles = reportData ? reportMessageStyles(reportData.continuousTrainingCount) : null;
 

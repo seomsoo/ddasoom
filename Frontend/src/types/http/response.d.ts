@@ -55,7 +55,7 @@ export interface DailyReport {
 
 export interface ReportData {
   totalRecordCount: number;
-  panicReport: PanicReport[] | null;
-  dailyReport: DailyReport[] | null;
+  panicReport: PanicReport | null;
+  dailyReport: DailyReport | null;
   continuousTrainingCount: number;
 }

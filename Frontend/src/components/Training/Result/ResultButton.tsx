@@ -1,11 +1,10 @@
 'use client';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import React, { useEffect } from 'react';
 
 import { postTrainingData } from '@/api/recordAPI';
 import { TrainingRequestBody } from '@/types/http/request';
-import Button from '@/components/Button'
+import Button from '@/components/Button';
 
 interface ResultButtonProps {
   trainingType: string;
