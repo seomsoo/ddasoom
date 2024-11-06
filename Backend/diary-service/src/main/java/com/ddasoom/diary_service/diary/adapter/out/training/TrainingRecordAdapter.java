@@ -28,6 +28,11 @@ public class TrainingRecordAdapter implements TrainingRecordPort {
     }
 
     @Override
+    public boolean existTrainingBy(Long userId, LocalDate date) {
+        return trainingRepository.existsByUserIdAndDate(userId, date);
+    }
+
+    @Override
     public List<String> getTrainingRecord(Long userId, int year, int month, int day) {
         return trainingRepository.findAllByUserIdAndDay(userId, year, month, day);
     }
