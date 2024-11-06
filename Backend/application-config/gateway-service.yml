@@ -107,6 +107,11 @@ spring:
           predicates:
             - Path=/api/voices/**
 
+        - id: panic-attack-service
+          uri: http://panic-attack-service:10000
+          predicates:
+            - Path=/api/panic-attack/**
+
 jwt:
   issuer: DDASOOM
   client-secret: asdfasdfasdfadadfa
