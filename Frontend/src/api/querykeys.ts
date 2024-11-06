@@ -1,6 +1,6 @@
-const queryKey = {
+const queryKeys = {
   MONTHLY_RECORD: 'monthlyRecord',
   DAILY_RECORD: 'dailyRecord',
 };
 
-export default queryKey;
+export default queryKeys;

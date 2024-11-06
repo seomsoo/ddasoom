@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { format, isSameDay, isToday } from 'date-fns';
 
-import queryKey from '@/api/querykeys';
+import queryKeys from '@/api/querykeys';
 import { getMonthlyData } from '@/api/recordAPI';
 import { Calendars } from '@/types/http/response';
 
@@ -19,7 +19,7 @@ export default function CalendarGrid({ date, selectedDate, onDateSelect }: Calen
 
   // 월별 데이터를 가져오는 쿼리
   const { data: monthlyData } = useQuery({
-    queryKey: [queryKey.MONTHLY_RECORD, year, month + 1],
+    queryKey: [queryKeys.MONTHLY_RECORD, year, month + 1],
     queryFn: () => getMonthlyData(year.toString(), (month + 1).toString()),
   });
 

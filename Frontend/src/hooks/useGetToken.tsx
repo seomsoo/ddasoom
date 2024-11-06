@@ -66,7 +66,7 @@ import { setAuthData } from '../store/authSlice';
 
 // 테스트용 초기 토큰 데이터
 const initialTestToken =
-  'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJEREFTT09NIiwiaWF0IjoxNzMwODcwNjU5LCJleHAiOjE3MzA4NzI0NTksInVzZXJJZCI6MSwidXNlck5hbWUiOiLquYDrkZDsl7QifQ.1wsDvqRDtqTlzwJ91UDtYZ1LOupAdrklAWca6XhZMSwiFyWr9ku82Qb6zcl4xR16oQxY2LLmH8LNznKgqrpKnw';
+  'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJEREFTT09NIiwiaWF0IjoxNzMwODgwMDEwLCJleHAiOjE3MzA4ODE4MTAsInVzZXJJZCI6MSwidXNlck5hbWUiOiLquYDrkZDsl7QifQ.D9agrKpIvWxTecUvgZT6-eIo6X1-aqvaLwgEkwal-kXRL8Po2wJfnsDR-OfU5VXOrZOKj7BTIJg_rI47-ItKQg';
 
 const useAuth = () => {
   const dispatch = useDispatch();

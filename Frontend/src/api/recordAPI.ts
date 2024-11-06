@@ -13,11 +13,11 @@ export const getMonthlyData = async (year: string, month: string): Promise<BaseR
 };
 
 // 캘린더 일별 조회(기록 상세)
-export const getDailyData = async (year: string, month: string, day: string): Promise<BaseResponse<DailyData>> => {
-  const response = await axiosInstance.get<BaseResponse<DailyData>>('/diary/calendars', {
+export const getDailyData = async (year: string, month: string, day: string): Promise<DailyData> => {
+  const response = await axiosInstance.get<BaseResponse<DailyData>>('/diary/calendar', {
     params: { year, month, day },
   });
-  return response.data;
+  return response.data.data;
 };
 
 // 일상 기록 저장

@@ -6,7 +6,7 @@ export interface DiaryRequestBody {
   caffeine: boolean;
   smoking: boolean;
   exercise: boolean;
-  description: string; // 500자 제한
+  description: string | null; // 500자 제한
   date: string;
 }
 
