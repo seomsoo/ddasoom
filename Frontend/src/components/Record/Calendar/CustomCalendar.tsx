@@ -11,16 +11,9 @@ import CalendarModal from './CalendarModal';
 interface CustomCalendarProps {
   selectedDate: Date | null;
   onDateSelect: (date: Date) => void;
-  isPanicList: string[];
-  isTrainingList: { date: string; trainingCount: number }[];
 }
 
-export default function CustomCalendar({
-  selectedDate,
-  onDateSelect,
-  isPanicList,
-  isTrainingList,
-}: CustomCalendarProps) {
+export default function CustomCalendar({ selectedDate, onDateSelect }: CustomCalendarProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [isModal, setIsModal] = useState(false);
   const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
@@ -97,34 +90,16 @@ export default function CustomCalendar({
           }}
           initialSlide={1}>
           <SwiperSlide>
-            <CalendarGrid
-              date={subMonths(currentDate, 1)}
-              selectedDate={selectedDate}
-              onDateSelect={onDateSelect}
-              isPanicList={isPanicList}
-              isTrainingList={isTrainingList}
-            />
+            <CalendarGrid date={subMonths(currentDate, 1)} selectedDate={selectedDate} onDateSelect={onDateSelect} />
           </SwiperSlide>
           <SwiperSlide>
-            <CalendarGrid
-              date={currentDate}
-              selectedDate={selectedDate}
-              onDateSelect={onDateSelect}
-              isPanicList={isPanicList}
-              isTrainingList={isTrainingList}
-            />
+            <CalendarGrid date={currentDate} selectedDate={selectedDate} onDateSelect={onDateSelect} />
           </SwiperSlide>
           {addMonths(currentDate, 1).getFullYear() < new Date().getFullYear() ||
           (addMonths(currentDate, 1).getFullYear() === new Date().getFullYear() &&
             addMonths(currentDate, 1).getMonth() <= new Date().getMonth()) ? (
             <SwiperSlide>
-              <CalendarGrid
-                date={addMonths(currentDate, 1)}
-                selectedDate={selectedDate}
-                onDateSelect={onDateSelect}
-                isPanicList={isPanicList}
-                isTrainingList={isTrainingList}
-              />
+              <CalendarGrid date={addMonths(currentDate, 1)} selectedDate={selectedDate} onDateSelect={onDateSelect} />
             </SwiperSlide>
           ) : null}
         </Swiper>
