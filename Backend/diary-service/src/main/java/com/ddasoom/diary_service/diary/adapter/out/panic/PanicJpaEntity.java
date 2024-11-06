@@ -33,8 +33,10 @@ public class PanicJpaEntity {
 
     private int duration;
 
+    @Column(precision = 10, scale = 6)
     private BigDecimal latitude;
 
+    @Column(precision = 10, scale = 6)
     private BigDecimal longitude;
 
     private String address;
