@@ -127,6 +127,15 @@ export default function BreathCircle({ breathType }: BreathCircleProps) {
     }
   }, [isCycleComplete, router]);
 
+  useEffect(() => {
+    window.ReactNativeWebView.postMessage(
+      JSON.stringify({
+        title: 'VIBRATEOFF',
+        content: null,
+      }),
+    );
+  }, []);
+
   return (
     <div className="flex flex-col relative">
       <div className="flex mt-5 -left-2 absolute">
