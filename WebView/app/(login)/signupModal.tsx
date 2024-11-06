@@ -34,7 +34,7 @@ const SignupModal = () => {
       <InnerContainer>
         <Header>
           <HeaderText>회원가입</HeaderText>
-          <Pressable onPress={() => router.back()} style={{ position: "absolute", right: 10 }}>
+          <Pressable onPress={() => router.back()} style={{ position: "absolute", right: 1 }}>
             <CloseBtn source={closeButton} width={10} height={10}></CloseBtn>
           </Pressable>
         </Header>
@@ -89,6 +89,7 @@ const Content = styled(View)`
 
 const HeaderText = styled(Text)`
   font-size: 24px;
+  font-weight: 600;
 `;
 
 const CloseBtn = styled(Image)`
@@ -98,4 +99,6 @@ const CloseBtn = styled(Image)`
 
 const ContentText = styled(Text)`
   font-size: 20px;
+  text-align: center;
+  margin-bottom: 20px;
 `;
