@@ -2,6 +2,7 @@ import useSendToken from "@/hooks/useSendToken";
 import useVoiceRecord from "@/hooks/useVoiceRecord";
 import { vibrate, vibrateOff } from "@/utils/vibrate";
 import useAuthStore from "@/zustand/authStore";
+import { router } from "expo-router";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { BackHandler, Platform, StatusBar, ToastAndroid, Vibration } from "react-native";
 // import {
@@ -60,6 +61,8 @@ const AuthedScreen = () => {
         return;
 
       // 아두이노
+      case "ARDSETTING":
+        router.push("ble");
       case "ARD":
         if (content === "ON") {
           console.log("아두이노 작동");
