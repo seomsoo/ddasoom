@@ -31,12 +31,22 @@ export default function BreathCircle({ breathType }: BreathCircleProps) {
 
   const sequence = useMemo(() => breathData[breathType].stages, [breathType]);
 
+  // 진동 요청 함수
+  const sendVibrateRequest = (duration: number) => {
+    window.ReactNativeWebView.postMessage(
+      JSON.stringify({
+        title: 'VIBRATE',
+        content: duration,
+      }),
+    );
+  };
+
   useEffect(() => {
     setIsPreparing(true);
     setPreparationIndex(0);
 
     const interval = setInterval(() => {
-      setPreparationIndex((prev) => prev + 1);
+      setPreparationIndex(prev => prev + 1);
     }, 1000);
 
     setTimeout(() => {
@@ -59,11 +69,11 @@ export default function BreathCircle({ breathType }: BreathCircleProps) {
     const segmentProgress = (circumference - gapLength * sequence.length) / sequence.length;
 
     const countdownInterval = setInterval(() => {
-      setTimer((prevTime) => prevTime + 1);
+      setTimer(prevTime => prevTime + 1);
     }, 1000);
 
     const progressInterval = setInterval(() => {
-      setStageProgress((prevStageProgress) => {
+      setStageProgress(prevStageProgress => {
         const newProgress = [...prevStageProgress];
         newProgress[currentStage] += segmentProgress / (duration / 50);
         return newProgress;
@@ -71,10 +81,15 @@ export default function BreathCircle({ breathType }: BreathCircleProps) {
     }, 50);
 
     const stepTimeout = setTimeout(() => {
-      setCurrentStage((prevStage) => {
+      setCurrentStage(prevStage => {
         const nextStage = (prevStage + 1) % sequence.length;
         setDescription(sequence[nextStage].description);
         setTimer(1);
+
+        // 진동 요청을 "들이마시기"와 "내쉬기"에만 추가
+        if (sequence[nextStage].description === '들이마시기' || sequence[nextStage].description === '내쉬기') {
+          sendVibrateRequest(sequence[nextStage].duration); // 단계의 duration 값을 진동 시간으로 사용
+        }
 
         // 다음 단계가 첫 번째 단계로 돌아갈 때 stageProgress 초기화
         if (nextStage === 0) {
@@ -95,7 +110,7 @@ export default function BreathCircle({ breathType }: BreathCircleProps) {
 
   useEffect(() => {
     if (isCycleComplete) {
-      setCurrentCycle((prevCycle) => {
+      setCurrentCycle(prevCycle => {
         const newCycle = prevCycle + 1;
         if (newCycle > totalCycles) {
           router.push('/training/result');
@@ -108,14 +123,13 @@ export default function BreathCircle({ breathType }: BreathCircleProps) {
   }, [isCycleComplete, router]);
 
   return (
-    <div className='flex flex-col relative'>
-      <div className='flex mt-5 -left-2 absolute'>
-        <Header label=""/>
+    <div className="flex flex-col relative">
+      <div className="flex mt-5 -left-2 absolute">
+        <Header label="" />
       </div>
 
-
       <div className="flex flex-col items-center justify-center gap-5 mt-24">
-        <div className='h-20'>
+        <div className="h-20">
           {isPreparing && (
             <div className="flex space-x-3 mt-3">
               {[...Array(3)].map((_, idx) => (
@@ -134,9 +148,8 @@ export default function BreathCircle({ breathType }: BreathCircleProps) {
               <p className="font-hakgyoansimR text-[40px]">숨 {description}</p>
               <p className="text-2xl">{`${timer}초`}</p>
             </div>
-          )}          
+          )}
         </div>
-
 
         <BreathCircleAnimation
           sequenceLength={sequence.length}
@@ -147,7 +160,6 @@ export default function BreathCircle({ breathType }: BreathCircleProps) {
           currentStage={currentStage}
         />
 
-        {/* 현재 반복 횟수 표시 */}
         <div className="mt-4 text-center font-hakgyoansimR text-3xl">{`${currentCycle} / ${totalCycles}`}</div>
 
         <BreathStageDisplay sequence={sequence} currentStage={currentStage} />
