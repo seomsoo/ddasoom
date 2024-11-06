@@ -20,7 +20,7 @@ spring:
         cors-configurations:
           '[/**]':
             allowedOrigins:
-              - "https://k11c103.p.ssafy.io"
+              - "*"
             allow-credentials: true
             allowedHeaders:
               - X-Authenticated-User
