@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class GetDailyReport {
+public class GetDailyReportDto {
 
     private int caffeine;
     private int smoking;
@@ -18,7 +18,7 @@ public class GetDailyReport {
     private Long totalRecordCount;
 
     @QueryProjection
-    public GetDailyReport(int caffeine, int smoking, int alcohol, int exercise, Long totalRecordCount) {
+    public GetDailyReportDto(int caffeine, int smoking, int alcohol, int exercise, Long totalRecordCount) {
         this.caffeine = caffeine;
         this.smoking = smoking;
         this.alcohol = alcohol;

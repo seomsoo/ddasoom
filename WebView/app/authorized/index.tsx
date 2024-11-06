@@ -1,6 +1,10 @@
 import useSendToken from "@/hooks/useSendToken";
+import useVoiceRecord from "@/hooks/useVoiceRecord";
+import { vibrate, vibrateOff } from "@/utils/vibrate";
+import useAuthStore from "@/zustand/authStore";
+import { router } from "expo-router";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { BackHandler, Platform, StatusBar, ToastAndroid } from "react-native";
+import { BackHandler, Platform, StatusBar, ToastAndroid, Vibration } from "react-native";
 // import {
 //   Button,
 //   NativeEventEmitter,
@@ -15,6 +19,8 @@ import WebView, { WebViewMessageEvent } from "react-native-webview";
 import type { WebView as WebViewType } from "react-native-webview";
 
 const AuthedScreen = () => {
+  const { startRecording, stopRecording, sendRecording } = useVoiceRecord();
+  const { userName } = useAuthStore();
   const statusBarHeight = Platform.OS === "android" ? StatusBar.currentHeight : 0;
   const webViewRef = useRef<WebViewType | null>(null);
   const sendTokenToWeb = useSendToken(webViewRef);
@@ -25,31 +31,38 @@ const AuthedScreen = () => {
     const { title, content }: WebMessageDto = JSON.parse(data);
 
     switch (title) {
+      // 로그인 & 회원가입 & 로그아웃
       case "GETTOKEN":
         console.log("웹에서 토큰 요청함");
         sendTokenToWeb(); // 토큰 보내기
         return;
-
       case "LOGOUT":
         console.log("로그아웃 됨");
         return;
 
+      // 음성 녹음
       case "RECORD":
-        console.log(content);
-        return;
-
-      case "VIBRATE":
-        console.log(content, " 로 진동");
-        return;
-
-      case "RECORD":
-        if (content === "ONAIR") {
-          console.log("녹음 시작");
-        } else {
-          console.log("녹음 중지");
+        if (content === "ONAIR" && userName) {
+          startRecording();
+        } else if (content === "STOPAIR" && userName) {
+          stopRecording();
+        } else if (content === "OFFAIR" && userName) {
+          stopRecording();
+          sendRecording(userName);
         }
         return;
 
+      // 진동
+      case "VIBRATE":
+        vibrate(content as string);
+        return;
+      case "VIBRATEOFF":
+        vibrateOff();
+        return;
+
+      // 아두이노
+      case "ARDSETTING":
+        router.push("ble");
       case "ARD":
         if (content === "ON") {
           console.log("아두이노 작동");

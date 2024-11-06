@@ -10,10 +10,14 @@ spring:
     port: 5672
 
   datasource:
-    url: jdbc:h2:mem:~/DiaryServiceApplication
-    username: sa
-    password:
-
+    diary:
+      jdbc-url: jdbc:h2:mem:~/DiaryServiceApplication
+      username: sa
+      password:
+    users:
+      jdbc-url: jdbc:mysql://k11c103.p.ssafy.io:3306/ddasoom?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+      username: ddasoom
+      password: ssafygwangjuc103
   jpa:
     hibernate:
       ddl-auto: create
