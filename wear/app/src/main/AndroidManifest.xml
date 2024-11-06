@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" >
 
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+    <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.BODY_SENSORS" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
     <uses-feature android:name="android.hardware.type.watch" />
 
+    <queries>
+        <package android:name="com.google.android.gms" />
+    </queries>
     <application
         android:allowBackup="true"
         android:icon="@drawable/ddasomi_24"
@@ -45,6 +50,15 @@
                 <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
             </intent-filter>
         </service>
+
+        <!-- SleepReceiver 등록 -->
+        <receiver
+            android:name=".receiver.SleepReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.gms.location.SLEEP_SEGMENT_EVENT" />
+            </intent-filter>
+        </receiver>
 
     </application>
 
