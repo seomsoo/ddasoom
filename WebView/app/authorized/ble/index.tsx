@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Button, FlatList, TouchableOpacity, PermissionsAndroid, Platform, Alert } from "react-native";
 import { BleManager, Device } from "react-native-ble-plx";
-import { requestPermissions } from "../../utils/ble"; // 권한 요청 함수 import
+import { requestPermissions } from "../../../utils/ble"; // 권한 요청 함수 import
 
 const bleManager = new BleManager();
 
@@ -70,8 +70,8 @@ const BleScreen = () => {
   }, []);
 
   return (
-    <View style={{ flex: 1, padding: 16 }}>
-      <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 16 }}>BLE Devices</Text>
+    <View style={{ height: 100, padding: 16, backgroundColor: "black" }}>
+      {/* <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 16 }}>BLE Devices</Text>
       {connectedDevice ? (
         <View>
           <Text>Connected to: {connectedDevice.name}</Text>
@@ -91,7 +91,7 @@ const BleScreen = () => {
             )}
           />
         </View>
-      )}
+      )} */}
     </View>
   );
 };
