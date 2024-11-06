@@ -1,11 +1,30 @@
-import { View, Text, Pressable, TouchableOpacity } from "react-native";
-import React from "react";
+import { View, Text, Pressable, TouchableOpacity, ActivityIndicator, ToastAndroid } from "react-native";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Button from "@/components/common/Button";
 import { router } from "expo-router";
 import theme from "@/styles/Theme";
+import useAuthStore from "@/zustand/authStore";
+import { signUp } from "@/services/auth";
 
 const InitBreathModal = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const { userName, userEmail } = useAuthStore();
+
+  const handleSkip = async () => {
+    router.push("/");
+    try {
+      setIsLoading(true);
+      await signUp({ name: userName, email: userEmail });
+      console.log("회원가입 성공");
+      router.push("/");
+    } catch (e: unknown) {
+      ToastAndroid.show("회원가입 오류가 발생했습니다.", 3000);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <Container>
       <InnerContainer>
@@ -20,12 +39,12 @@ const InitBreathModal = () => {
           <SmallButton onPress={() => router.push("measureBpm")} style={{}}>
             <Text style={{ fontSize: 20, color: "white" }}>측정하기</Text>
           </SmallButton>
-          <SmallButton
-            onPress={() => {
-              router.push("/");
-            }}
-            style={{}}>
-            <Text style={{ fontSize: 20, color: "white" }}>건너뛰기</Text>
+          <SmallButton onPress={handleSkip} style={{}}>
+            {!isLoading ? (
+              <Text style={{ fontSize: 20, color: "white" }}>건너뛰기</Text>
+            ) : (
+              <ActivityIndicator size={"large"} />
+            )}
           </SmallButton>
         </ButtonBox>
       </InnerContainer>

@@ -1,5 +1,7 @@
 import useSendToken from "@/hooks/useSendToken";
+import useVoiceRecord from "@/hooks/useVoiceRecord";
 import { vibrate } from "@/utils/vibrate";
+import useAuthStore from "@/zustand/authStore";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { BackHandler, Platform, StatusBar, ToastAndroid, Vibration } from "react-native";
 // import {
@@ -16,6 +18,8 @@ import WebView, { WebViewMessageEvent } from "react-native-webview";
 import type { WebView as WebViewType } from "react-native-webview";
 
 const AuthedScreen = () => {
+  const { startRecording, stopRecording, sendRecording } = useVoiceRecord();
+  const { userName } = useAuthStore();
   const statusBarHeight = Platform.OS === "android" ? StatusBar.currentHeight : 0;
   const webViewRef = useRef<WebViewType | null>(null);
   const sendTokenToWeb = useSendToken(webViewRef);
@@ -36,7 +40,14 @@ const AuthedScreen = () => {
         return;
 
       case "RECORD":
-        console.log(content);
+        if (content === "ONAIR" && userName) {
+          startRecording();
+        } else if (content === "STOPAIR" && userName) {
+          stopRecording();
+        } else if (content === "OFFAIR" && userName) {
+          stopRecording();
+          sendRecording(userName);
+        }
         return;
 
       case "VIBRATE":
