@@ -5,3 +5,7 @@ export const vibrate = (timeString: string) => {
 
   Vibration.vibrate(time);
 };
+
+export const vibrateOff = () => {
+  Vibration.cancel();
+};

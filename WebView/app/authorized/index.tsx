@@ -1,6 +1,6 @@
 import useSendToken from "@/hooks/useSendToken";
 import useVoiceRecord from "@/hooks/useVoiceRecord";
-import { vibrate } from "@/utils/vibrate";
+import { vibrate, vibrateOff } from "@/utils/vibrate";
 import useAuthStore from "@/zustand/authStore";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { BackHandler, Platform, StatusBar, ToastAndroid, Vibration } from "react-native";
@@ -30,15 +30,16 @@ const AuthedScreen = () => {
     const { title, content }: WebMessageDto = JSON.parse(data);
 
     switch (title) {
+      // 로그인 & 회원가입 & 로그아웃
       case "GETTOKEN":
         console.log("웹에서 토큰 요청함");
         sendTokenToWeb(); // 토큰 보내기
         return;
-
       case "LOGOUT":
         console.log("로그아웃 됨");
         return;
 
+      // 음성 녹음
       case "RECORD":
         if (content === "ONAIR" && userName) {
           startRecording();
@@ -50,18 +51,15 @@ const AuthedScreen = () => {
         }
         return;
 
+      // 진동
       case "VIBRATE":
         vibrate(content as string);
         return;
-
-      case "RECORD":
-        if (content === "ONAIR") {
-          console.log("녹음 시작");
-        } else {
-          console.log("녹음 중지");
-        }
+      case "VIBRATEOFF":
+        vibrateOff();
         return;
 
+      // 아두이노
       case "ARD":
         if (content === "ON") {
           console.log("아두이노 작동");
