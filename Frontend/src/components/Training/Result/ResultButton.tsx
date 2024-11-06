@@ -5,8 +5,7 @@ import React, { useEffect } from 'react';
 
 import { postTrainingData } from '@/api/recordAPI';
 import { TrainingRequestBody } from '@/types/http/request';
-
-import Button from '../Button';
+import Button from '@/components/Button'
 
 interface ResultButtonProps {
   trainingType: string;
@@ -32,14 +31,8 @@ export default function ResultButton({ trainingType }: ResultButtonProps) {
       trainingType,
     };
 
-    console.log(trainingRecord);
-    // PUT 요청 실행
     mutation.mutate(trainingRecord);
   };
-
-  useEffect(() => {
-    console.log('로드');
-  }, []);
 
   return (
     <div className="w-full">

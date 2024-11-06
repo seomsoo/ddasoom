@@ -48,7 +48,7 @@ export default function Header({ year, month }: HeaderProps) {
           style={{
             textShadow: '2px 2px 6px #8EBB5B',
           }}>
-          {isLoading ? '로딩 중...' : headerData?.data.totalRecordCount || 0}
+          {isLoading ? '로딩 중...' : headerData?.totalRecordCount || 0}
         </p>
         번의 기록
       </span>
