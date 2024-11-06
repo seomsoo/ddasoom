@@ -10,12 +10,16 @@ interface CalendarHeaderProps {
 }
 
 export default function CalendarHeader({ currentDate, onOpenModal }: CalendarHeaderProps) {
+  // 년도와 월만 추출하여 파라미터로 사용할 값 생성
+  const year = format(currentDate, 'yyyy', { locale: ko });
+  const month = format(currentDate, 'MM', { locale: ko });
+
   return (
     <div className="flex justify-between items-center mb-6 px-3">
       <div className="text-left" onClick={onOpenModal}>
-        <p className="text-lg font-hakgyoansimR">{format(currentDate, 'yyyy년', { locale: ko })}</p>
+        <p className="text-lg font-hakgyoansimR">{`${year}년`}</p>
         <p className="text-3xl font-hakgyoansimR">
-          {format(currentDate, 'MM월', { locale: ko })}
+          {`${month}월`}
           <button className="ml-3">
             <CalendarListIcon className="mb-1" />
           </button>
@@ -25,7 +29,7 @@ export default function CalendarHeader({ currentDate, onOpenModal }: CalendarHea
         <Link href="/record/selfDiagnosis">
           <button>자가진단</button>
         </Link>
-        <Link href="/record/report">
+        <Link href={`/record/report?year=${year}&month=${month}`}>
           <button>리포트</button>
         </Link>
       </div>

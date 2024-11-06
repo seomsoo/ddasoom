@@ -3,6 +3,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
+import ClientComponent from '@/components/ClientComponent';
 import ReactQueryProvider from '@/utils/reactQueryProvider';
 import ReduxProvider from '@/utils/reduxProvider';
 
@@ -53,7 +54,9 @@ export default function RootLayout({
         className={`${nanumRegular.variable} ${nanumLight.variable} ${nanumBold.variable} ${nanumExtraBold.variable} ${nanumHeavy.variable} ${hakgyoansimR.variable} ${hakgyoansimB.variable} antialiased  flex justify-center items-center min-h-screen`}>
         <div className="w-full max-w-[390px] min-h-screen p-4">
           <ReduxProvider>
-            <ReactQueryProvider>{children}</ReactQueryProvider>
+            <ReactQueryProvider>
+              <ClientComponent>{children}</ClientComponent>
+            </ReactQueryProvider>
           </ReduxProvider>
         </div>
       </body>
