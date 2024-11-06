@@ -75,6 +75,10 @@ dependencies {
   // Health Connect 라이브러리
   implementation("androidx.health.connect:connect-client:1.0.0-alpha10")
 
+  // Sleep API
+  implementation("com.google.android.gms:play-services-location:21.0.1")
+
   implementation("com.google.android.gms:play-services-wearable:18.0.0")
   implementation("com.google.android.gms:play-services-base:18.0.0")
+  implementation("androidx.localbroadcastmanager:localbroadcastmanager:1.1.0")
 }

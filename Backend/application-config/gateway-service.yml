@@ -16,6 +16,28 @@ spring:
 
   cloud:
     gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins:
+              - "http://localhost:3000"
+              - "https://k11c103.p.ssafy.io"
+            allow-credentials: true
+            allowedHeaders:
+              - X-Authenticated-User
+              - x-requested-with
+              - authorization
+              - content-type
+              - credential
+              - X-AUTH-TOKEN
+              - X-CSRF-TOKEN
+            allowedMethods:
+              - POST
+              - GET
+              - PUT
+              - PATCH
+              - OPTIONS
+              - DELETE
       routes:
         - id: user-service
           uri: lb://USER-SERVICE
@@ -84,6 +106,11 @@ spring:
           uri: lb://VOICE-SERVICE
           predicates:
             - Path=/api/voices/**
+
+        - id: panic-attack-service
+          uri: http://panic-attack-service:10000
+          predicates:
+            - Path=/api/panic-attack/**
 
 jwt:
   issuer: DDASOOM
