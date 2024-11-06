@@ -57,6 +57,11 @@ export default function BreathCircle({ breathType }: BreathCircleProps) {
       setStageProgress(Array(sequence.length).fill(0));
       setTimer(1);
       setCurrentStage(0);
+
+      // 진동 요청을 "들이마시기"와 "내쉬기"에만 추가
+      if (sequence[0].description === '들이마시기' || sequence[0].description === '내쉬기') {
+        sendVibrateRequest(sequence[0].duration); // 단계의 duration 값을 진동 시간으로 사용
+      }
     }, 3000);
 
     return () => clearInterval(interval);
