@@ -2,6 +2,8 @@ import { View, Text, Image, TouchableOpacity, StatusBar, Alert, ImageBackground,
 import React, { useEffect } from "react";
 import backGroundImg from "@/assets/images/first.png";
 import logoImage from "@/assets/images/logo.png";
+import mini from "@/assets/images/mini_Ddasom.png";
+import kakaoIcon from "@/assets/images/kakao_icon.png";
 import styled from "styled-components/native";
 import Button from "@/components/common/Button";
 import { login, me, unlink } from "@react-native-kakao/user";
@@ -17,6 +19,7 @@ const Main = () => {
   const { userName, setToken, setUserEmail, setUserName, setUserId } = useAuthStore();
 
   const handleKaKaoLogin = async () => {
+    router.push("authorized");
     const { accessToken, refreshToken } = await login();
 
     if (!accessToken || !refreshToken) {
@@ -65,13 +68,15 @@ const Main = () => {
     <Container>
       <ImageBackground source={backGroundImg} style={{ width: "100%", height: "100%" }}>
         <FloatingView>
-          <LogoView>
-            <Image source={logoImage} style={{ width: 200 }} resizeMode="contain" />
-          </LogoView>
-          <Button color="yellow" textColor="black" onPress={handleKaKaoLogin}>
+          <Header>
+            <HeaderText>따 숨</HeaderText>
+          </Header>
+          <LogoView>{/* <Image source={logoImage} style={{ width: 200 }} resizeMode="contain" /> */}</LogoView>
+
+          <Button color="yellow" textColor="black" onPress={handleKaKaoLogin} icon={kakaoIcon} iconPosition="left16">
             카카오 로그인
           </Button>
-          <Button color="white" textColor="black" onPress={handleUnauthorized}>
+          <Button color="white" textColor="black" onPress={handleUnauthorized} icon={mini} iconPosition="bottomLeft">
             따숨 둘러보기
           </Button>
           <Button color="white" textColor="black" onPress={() => router.push("ble")}>
@@ -105,4 +110,12 @@ const FloatingView = styled.View`
   padding-bottom: 30px;
 `;
 
+const Header = styled.View`
+  position: absolute;
+  top: 150px;
+`;
+const HeaderText = styled(Text)`
+  font-size: 72px;
+  font-weight: 600;
+`;
 const LogoView = styled.View``;

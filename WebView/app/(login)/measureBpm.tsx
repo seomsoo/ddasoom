@@ -2,11 +2,10 @@ import { View, Text, TouchableOpacity, Animated, Easing } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { router } from "expo-router";
-import Heart from "@/assets/svgs/heart.svg";
+import BreathWatch from "@/components/breath/BreathWatch";
 import { useHeartRate } from "@/hooks/useHeartRate";
 
 const MeasureBpm = () => {
-  const scaleAnim = useRef(new Animated.Value(1)).current;
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const [seconds, setSeconds] = useState(20);
   const [isCompleted, setIsCompleted] = useState(false);
@@ -20,35 +19,9 @@ const MeasureBpm = () => {
   };
 
   useHeartRate(heartRate => {
-    console.log(heartRate);
     setBpm(Number(heartRate));
   });
 
-  // 하트 애니메이션
-  useEffect(() => {
-    const pulseAnimation = Animated.loop(
-      Animated.sequence([
-        Animated.timing(scaleAnim, {
-          toValue: 0.7,
-          duration: 1000,
-          useNativeDriver: true,
-          easing: Easing.ease,
-        }),
-        Animated.timing(scaleAnim, {
-          toValue: 1,
-          duration: 1000,
-          useNativeDriver: true,
-          easing: Easing.ease,
-        }),
-      ]),
-    );
-
-    pulseAnimation.start();
-
-    return () => pulseAnimation.stop();
-  }, []);
-
-  // 타이머
   useEffect(() => {
     if (seconds > 0 && !isCompleted) {
       intervalRef.current = setInterval(() => {
@@ -81,17 +54,12 @@ const MeasureBpm = () => {
         {!isCompleted && (
           <Content>
             <ContentText>편안한 상태를 유지해주세요.</ContentText>
-            <ContentText>{seconds}초</ContentText>
+            <ContentText2>{seconds}초</ContentText2>
           </Content>
         )}
         <BpmContainer>
           {!isCompleted ? (
-            <>
-              <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
-                <Heart />
-              </Animated.View>
-              <Text style={{ fontSize: 20, color: "black" }}>{bpm}</Text>
-            </>
+            <BreathWatch bpm={bpm} />
           ) : (
             <Animated.View style={{ opacity: fadeAnim }}>
               <Text style={{ fontSize: 20, color: "black" }}>측정 완료!</Text>
@@ -132,48 +100,54 @@ interface InnerContainerProps {
 
 const InnerContainer = styled(View)<InnerContainerProps>`
   width: 320px;
-  height: ${props => (props.isCompleted ? "300px" : "600px")};
+  height: ${props => (props.isCompleted ? "300px" : "420px")};
   background-color: ${props => props.theme.color.BACKGROUND};
   border-radius: 16px;
   align-items: center;
-  justify-content: space-between;
-  padding: 20px;
-  padding-bottom: 30px;
+  justify-content: space-evenly;
 `;
 
 const Header = styled(View)`
   width: 100%;
   align-items: center;
-  height: 60px;
   justify-content: center;
 `;
 
 const Content = styled(View)`
+  margin-bottom: 20px;
   width: 280px;
-  gap: 40px;
+  gap: 5px;
   justify-content: center;
   align-items: center;
 `;
 
 const HeaderText = styled(Text)`
   font-size: 24px;
+  font-weight: 600;
 `;
 
-const BpmContainer = styled(View)``;
+const BpmContainer = styled(View)`
+  margin-bottom: 10px;
+`;
 
 const ContentText = styled(Text)`
   font-size: 20px;
 `;
 
+const ContentText2 = styled(Text)`
+  font-size: 30px;
+  font-weight: 500;
+`;
+
 const ButtonBox = styled(View)`
   flex-direction: row;
   width: 100%;
-  gap: 10px;
+  margin-top: 25px;
   justify-content: center;
 `;
 
 const SmallButton = styled(TouchableOpacity)`
   background-color: ${props => props.theme.color.MAIN1};
-  padding: 10px 24px 10px 24px;
+  padding: 10px 24px 13px 24px;
   border-radius: 8px;
 `;
