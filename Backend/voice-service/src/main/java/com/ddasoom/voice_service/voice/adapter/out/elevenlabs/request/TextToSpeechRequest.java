@@ -1,4 +1,4 @@
-package com.ddasoom.voice_service.voice.adapter.out.elevenlabs;
+package com.ddasoom.voice_service.voice.adapter.out.elevenlabs.request;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies.SnakeCaseStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
