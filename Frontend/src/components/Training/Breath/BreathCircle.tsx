@@ -18,6 +18,7 @@ const gapLength = 20;
 const totalCycles = 4;
 
 export default function BreathCircle({ breathType }: BreathCircleProps) {
+  const BREATH = 'BREATH';
   const router = useRouter();
   const [description, setDescription] = useState('');
   const [timer, setTimer] = useState(1);
@@ -36,7 +37,7 @@ export default function BreathCircle({ breathType }: BreathCircleProps) {
     setPreparationIndex(0);
 
     const interval = setInterval(() => {
-      setPreparationIndex((prev) => prev + 1);
+      setPreparationIndex(prev => prev + 1);
     }, 1000);
 
     setTimeout(() => {
@@ -59,11 +60,11 @@ export default function BreathCircle({ breathType }: BreathCircleProps) {
     const segmentProgress = (circumference - gapLength * sequence.length) / sequence.length;
 
     const countdownInterval = setInterval(() => {
-      setTimer((prevTime) => prevTime + 1);
+      setTimer(prevTime => prevTime + 1);
     }, 1000);
 
     const progressInterval = setInterval(() => {
-      setStageProgress((prevStageProgress) => {
+      setStageProgress(prevStageProgress => {
         const newProgress = [...prevStageProgress];
         newProgress[currentStage] += segmentProgress / (duration / 50);
         return newProgress;
@@ -71,7 +72,7 @@ export default function BreathCircle({ breathType }: BreathCircleProps) {
     }, 50);
 
     const stepTimeout = setTimeout(() => {
-      setCurrentStage((prevStage) => {
+      setCurrentStage(prevStage => {
         const nextStage = (prevStage + 1) % sequence.length;
         setDescription(sequence[nextStage].description);
         setTimer(1);
@@ -95,10 +96,10 @@ export default function BreathCircle({ breathType }: BreathCircleProps) {
 
   useEffect(() => {
     if (isCycleComplete) {
-      setCurrentCycle((prevCycle) => {
+      setCurrentCycle(prevCycle => {
         const newCycle = prevCycle + 1;
         if (newCycle > totalCycles) {
-          router.push('/training/result');
+          router.push(`/training/result?trainingType=${BREATH}`);
           return prevCycle;
         }
         return newCycle;
@@ -108,14 +109,13 @@ export default function BreathCircle({ breathType }: BreathCircleProps) {
   }, [isCycleComplete, router]);
 
   return (
-    <div className='flex flex-col relative'>
-      <div className='flex mt-5 -left-2 absolute'>
-        <Header label=""/>
+    <div className="flex flex-col relative">
+      <div className="flex mt-5 -left-2 absolute">
+        <Header label="" />
       </div>
 
-
       <div className="flex flex-col items-center justify-center gap-5 mt-24">
-        <div className='h-20'>
+        <div className="h-20">
           {isPreparing && (
             <div className="flex space-x-3 mt-3">
               {[...Array(3)].map((_, idx) => (
@@ -134,9 +134,8 @@ export default function BreathCircle({ breathType }: BreathCircleProps) {
               <p className="font-hakgyoansimR text-[40px]">숨 {description}</p>
               <p className="text-2xl">{`${timer}초`}</p>
             </div>
-          )}          
+          )}
         </div>
-
 
         <BreathCircleAnimation
           sequenceLength={sequence.length}

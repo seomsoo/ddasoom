@@ -10,6 +10,7 @@ import Footprint from '@/svgs/footPrint.svg';
 import Mic from '@/svgs/groundingMic.svg';
 
 export default function GroundingTrainingPage() {
+  const GROUNDING = 'GROUNDING ';
   const [step, setStep] = useState(1);
   const router = useRouter();
 
@@ -37,7 +38,7 @@ export default function GroundingTrainingPage() {
     if (step < stepContent.length) {
       setStep(step + 1);
     } else {
-      router.push('/training/result');
+      router.push(`/training/result?trainingType=${GROUNDING}`);
     }
   };
 
