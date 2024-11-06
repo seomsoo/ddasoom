@@ -4,48 +4,29 @@ import axiosInstance from './axiosInstance';
 
 // 캘린더 월별 조회
 export const getMonthlyData = async (year: string, month: string) => {
-  try {
-    const response = await axiosInstance.get('/diary/calendars', {
-      params: { year, month },
-    });
-    return response.data;
-  } catch (error) {
-    console.error('데이터 패치 실패:', error);
-    throw error;
-  }
+  const response = await axiosInstance.get('/diary/calendars', {
+    params: { year, month },
+  });
+  return response.data;
 };
 
 // 캘린더 일별 조회(기록 상세)
 export const getDailyData = async (year: string, month: string, day: string) => {
-  try {
-    const response = await axiosInstance.get('/diary/calendars', {
-      params: { year, month, day },
-    });
-    return response.data.data;
-  } catch (error) {
-    console.error('데이터 패치 실패:', error);
-    throw error;
-  }
+  const response = await axiosInstance.get('/diary/calendars', {
+    params: { year, month, day },
+  });
+  return response.data.data;
 };
 
 // 일상 기록 저장
-export const putDailyData = async (data: DiaryRequestBody) => {
-  try {
-    const response = await axiosInstance.put('/diary/daily', data);
-    return response.data;
-  } catch (error) {
-    console.error('데이터 전송 실패:', error);
-    throw error;
-  }
+export const postDailyData = async (data: DiaryRequestBody) => {
+  const response = await axiosInstance.post('/diary/daily', data);
+  return response.data;
 };
 
 // 훈련 종료(기록 저장)
-export const putTrainingData = async (data: TrainingRequestBody) => {
-  try {
-    const response = await axiosInstance.put('/diary/training', data);
-    return response.data;
-  } catch (error) {
-    console.error('데이터 전송 실패:', error);
-    throw error;
-  }
+export const postTrainingData = async (data: TrainingRequestBody) => {
+  const response = await axiosInstance.post('/diary/training', data);
+  console.log('훈련 기록 저장 성공');
+  return response.data;
 };
