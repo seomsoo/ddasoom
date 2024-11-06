@@ -20,7 +20,7 @@ public class LoadUserAdapter implements LoadUserPort {
         UserJpaEntity user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
 
-        GetTrainingContinuousDaysResponse diaryClientResponse = diaryServiceClient.getContinuousTrainingDays();
+        GetTrainingContinuousDaysResponse diaryClientResponse = diaryServiceClient.getContinuousTrainingDays(userId);
 
         return new User(
                 user.getId(),
@@ -35,7 +35,8 @@ public class LoadUserAdapter implements LoadUserPort {
         UserJpaEntity user = userRepository.findByEmail(email)
                 .orElseThrow(UserNotFoundException::new);
 
-        GetTrainingContinuousDaysResponse diaryClientResponse = diaryServiceClient.getContinuousTrainingDays();
+        GetTrainingContinuousDaysResponse diaryClientResponse = diaryServiceClient.getContinuousTrainingDays(
+                user.getId());
 
         return new User(
                 user.getId(),
