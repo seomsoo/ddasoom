@@ -10,6 +10,8 @@ public interface TrainingRepository extends JpaRepository<TrainingJpaEntity, Lon
 
     boolean existsByUserIdAndTrainingTypeAndDate(Long userId, String trainingType, LocalDate date);
 
+    boolean existsByUserIdAndDate(Long userId, LocalDate date);
+
     @Query("SELECT t.trainingType FROM TrainingJpaEntity t "
             + "WHERE t.userId = :userId "
             + "AND FUNCTION('YEAR', t.date) = :year "
@@ -25,4 +27,18 @@ public interface TrainingRepository extends JpaRepository<TrainingJpaEntity, Lon
             + "GROUP BY(t.date)")
     List<Integer> findAllContinuousDay(@Param("userId") Long userId, @Param("year") int year,
             @Param("month") int month);
+
+    @Query("SELECT t.date FROM TrainingJpaEntity t "
+            + "WHERE t.userId = :userId "
+            + "AND t.date != :date "
+            + "GROUP BY t.date "
+            + "ORDER BY t.date DESC")
+    List<LocalDate> findTrainingDateBy(@Param("userId") Long userId, @Param("date") LocalDate date);
+
+    @Query("SELECT t.date FROM TrainingJpaEntity t "
+            + "WHERE t.userId = :userId "
+            + "AND t.date != :date "
+            + "ORDER BY t.date DESC "
+            + "LIMIT 1")
+    LocalDate findLastTrainingDateBy(@Param("userId") Long userId, @Param("date") LocalDate date);
 }

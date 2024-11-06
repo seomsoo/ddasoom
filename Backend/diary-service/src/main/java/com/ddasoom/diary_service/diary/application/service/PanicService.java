@@ -1,7 +1,9 @@
 package com.ddasoom.diary_service.diary.application.service;
 
 import com.ddasoom.diary_service.common.annotation.UseCase;
+import com.ddasoom.diary_service.diary.adapter.in.web.response.PanicSimpleResponse;
 import com.ddasoom.diary_service.diary.application.domain.PanicRecordInfo;
+import com.ddasoom.diary_service.diary.application.domain.PanicSimple;
 import com.ddasoom.diary_service.diary.application.port.in.PanicCommand;
 import com.ddasoom.diary_service.diary.application.port.in.PanicDescriptionCommand;
 import com.ddasoom.diary_service.diary.application.port.in.PanicUseCase;
@@ -33,5 +35,17 @@ public class PanicService implements PanicUseCase {
     @Override
     public void savePanicDescription(PanicDescriptionCommand command) {
         panicRecordPort.savePanicDescription(command);
+    }
+
+    @Override
+    public PanicSimpleResponse getPanicSimple(Long userId) {
+        PanicSimple panicSimple = panicRecordPort.getPanicSimple(userId);
+
+        return new PanicSimpleResponse(
+                panicSimple.panicId(),
+                panicSimple.starDate(),
+                panicSimple.duration(),
+                panicSimple.address()
+        );
     }
 }
