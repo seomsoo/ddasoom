@@ -1,5 +1,5 @@
 // src/app/training/calmdown/[videoType]/page.tsx
-import VideoPlayer from '@/components/Training/VideoPlayer';
+import VideoPlayer from '@/components/Training/CalmDown/VideoPlayer';
 
 type PageProps = {
   params: {

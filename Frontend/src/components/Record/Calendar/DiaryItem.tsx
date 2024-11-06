@@ -4,7 +4,7 @@ import CigaretteSvg from '@/svgs/DiaryCigarette.svg';
 import ExerciseSvg from '@/svgs/DiaryExercise.svg';
 
 interface RecordItemProps {
-  labels: string[] | null;
+  labels: string[];
 }
 
 export default function DiaryItem({ labels = [] }: RecordItemProps) {

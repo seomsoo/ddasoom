@@ -18,6 +18,7 @@ const gapLength = 20;
 const totalCycles = 4;
 
 export default function BreathCircle({ breathType }: BreathCircleProps) {
+  const BREATH = 'BREATH';
   const router = useRouter();
   const [description, setDescription] = useState('');
   const [timer, setTimer] = useState(1);
@@ -124,7 +125,7 @@ export default function BreathCircle({ breathType }: BreathCircleProps) {
       setCurrentCycle(prevCycle => {
         const newCycle = prevCycle + 1;
         if (newCycle > totalCycles) {
-          router.push('/training/result');
+          router.push(`/training/result?trainingType=${BREATH}`);
           return prevCycle;
         }
         return newCycle;
