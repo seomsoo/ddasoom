@@ -1,4 +1,9 @@
+import { useQuery } from '@tanstack/react-query';
 import { format, isSameDay, isToday } from 'date-fns';
+
+import queryKey from '@/api/querykeys';
+import { getMonthlyData } from '@/api/recordAPI';
+import { Calendars } from '@/types/http/response';
 
 import DdasomiIcon from './DdasomiIcon';
 
@@ -6,22 +11,23 @@ interface CalendarGridProps {
   date: Date;
   selectedDate: Date | null;
   onDateSelect: (date: Date) => void;
-  isPanicList: string[];
-  isTrainingList: { date: string; trainingCount: number }[];
 }
 
-export default function CalendarGrid({
-  date,
-  selectedDate,
-  onDateSelect,
-  isPanicList,
-  isTrainingList,
-}: CalendarGridProps) {
-  const startOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
-  const endOfMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+export default function CalendarGrid({ date, selectedDate, onDateSelect }: CalendarGridProps) {
+  const year = date.getFullYear();
+  const month = date.getMonth();
+
+  // 월별 데이터를 가져오는 쿼리
+  const { data: monthlyData } = useQuery({
+    queryKey: [queryKey.MONTHLY_RECORD, year, month + 1],
+    queryFn: () => getMonthlyData(year.toString(), (month + 1).toString()),
+  });
+
+  const startOfMonth = new Date(year, month, 1);
+  const endOfMonth = new Date(year, month + 1, 0);
 
   // 시작 빈 칸을 이전 달의 마지막 날짜로 채우기
-  const prevMonthLastDate = new Date(date.getFullYear(), date.getMonth(), 0);
+  const prevMonthLastDate = new Date(year, month, 0);
   const blankDaysStart = Array.from(
     { length: startOfMonth.getDay() },
     (_, idx) => prevMonthLastDate.getDate() - startOfMonth.getDay() + idx + 1,
@@ -41,17 +47,22 @@ export default function CalendarGrid({
         </div>
       ))}
       {daysInMonth.map(day => {
-        const currentDay = new Date(date.getFullYear(), date.getMonth(), day);
+        const currentDay = new Date(year, month, day);
         const isTodayDate = isToday(currentDay);
         const isSelected = selectedDate && isSameDay(currentDay, selectedDate);
         const dateString = format(currentDay, 'yyyy-MM-dd');
-        const isPanicDay = isPanicList.includes(dateString);
-        const trainingData = isTrainingList.find(item => item.date === dateString);
-        const trainingCount = trainingData ? trainingData.trainingCount : 0;
+
+        // 월별 데이터에서 현재 날짜에 해당하는 데이터를 찾기
+        const dayData: Calendars | undefined = monthlyData?.data.calendars.find(
+          (item: Calendars) => item.date === dateString,
+        );
+
+        const isPanicDay = dayData?.panicStatus || false;
+        const trainingCount = dayData?.trainingCount || 0;
         const isFutureDate = currentDay > new Date();
 
         return (
-          <div key={day} className="flex flex-col items-center text-gray5 ">
+          <div key={day} className="flex flex-col items-center text-gray5">
             <div
               onClick={() => {
                 if (!isFutureDate) {
