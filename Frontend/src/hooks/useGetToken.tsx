@@ -4,10 +4,12 @@ import { useDispatch } from 'react-redux';
 
 import { setAuthData } from '../store/authSlice';
 
+const initialTestToken =
+  'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJEREFTT09NIiwiaWF0IjoxNzMwODU2NTY5LCJleHAiOjE3MzA4NTgzNjksInVzZXJJZCI6MSwidXNlck5hbWUiOiLquYDrkZDsl7QifQ.K0crhqPwbMUsUd0w0Ju7N9OXPAnHQD6SiuSEqEkBviQrKwcawRh50t4iMTiO732OcIk7od4mYMmnKok2K3UJHQ';
 /** 토큰 정보(토큰, 유저 이름, 유저id) */
 const useAuth = () => {
   const dispatch = useDispatch();
-  const [token, setToken] = useState<Token | null>(null);
+  const [token, setToken] = useState<Token | null>(initialTestToken);
   const [userName, setUserName] = useState<Name | null>(null);
   const [userId, setUserId] = useState<UserId | null>(null);
 

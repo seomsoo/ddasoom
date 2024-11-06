@@ -1,9 +1,9 @@
 'use client';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { useEffect } from 'react';
 
-import { putTrainingData } from '@/api/recordAPI';
+import { postTrainingData } from '@/api/recordAPI';
 import { TrainingRequestBody } from '@/types/http/request';
 
 import Button from '../Button';
@@ -16,9 +16,9 @@ export default function ResultButton({ trainingType }: ResultButtonProps) {
   const router = useRouter();
 
   const mutation = useMutation({
-    mutationFn: (data: TrainingRequestBody) => putTrainingData(data),
+    mutationFn: (data: TrainingRequestBody) => postTrainingData(data),
     onSuccess: () => {
-      console.log('데이터 전송 성공');
+      console.log('훈련 기록 전송 성공');
       router.push('/training');
     },
     onError: error => {
@@ -32,9 +32,14 @@ export default function ResultButton({ trainingType }: ResultButtonProps) {
       trainingType,
     };
 
+    console.log(trainingRecord);
     // PUT 요청 실행
     mutation.mutate(trainingRecord);
   };
+
+  useEffect(() => {
+    console.log('로드');
+  }, []);
 
   return (
     <div className="w-full">

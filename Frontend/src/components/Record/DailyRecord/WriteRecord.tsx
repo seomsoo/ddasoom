@@ -3,7 +3,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
-import { putDailyData } from '@/api/recordAPI';
+import { postDailyData } from '@/api/recordAPI';
 import Button from '@/components/Button';
 import RecordItem from '@/components/Record/DailyRecord/RecordItem';
 import AlcoholSvg from '@/svgs/alcohol.svg';
@@ -30,15 +30,15 @@ export default function WriteRecord({ dateYear, dateMonth, dateDay }: WriteRecor
 
   const [description, setDescription] = useState('');
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
-  
+
   const mutation = useMutation({
-    mutationFn: (data: DiaryRequestBody) => putDailyData(data),
+    mutationFn: (data: DiaryRequestBody) => postDailyData(data),
     onSuccess: () => {
-      console.log('데이터 전송 성공');
+      console.log('일기 전송 성공');
       router.push(`/record?year=${dateYear}&month=${dateMonth}&day=${dateDay}`);
     },
-    onError: (error) => {
-      console.error('데이터 전송 실패:', error);
+    onError: error => {
+      console.error('일기 전송 실패:', error);
     },
   });
 
@@ -109,7 +109,7 @@ export default function WriteRecord({ dateYear, dateMonth, dateDay }: WriteRecor
           onClick={() => handleIconClick('exercise')}
         />
       </div>
-      
+
       <p className="font-hakgyoansimR text-2xl mt-7">오늘의 한 줄 일기</p>
       <div className="bg-main4 w-full h-60 rounded-xl border-2 border-main1 p-4 relative">
         <textarea
@@ -118,9 +118,7 @@ export default function WriteRecord({ dateYear, dateMonth, dateDay }: WriteRecor
           value={description}
           onChange={handleDescriptionChange}
         />
-        <div className="absolute bottom-2 right-4 text-gray-500 text-sm">
-          {description.length}/500
-        </div>
+        <div className="absolute bottom-2 right-4 text-gray-500 text-sm">{description.length}/500</div>
       </div>
 
       <Button label="기록하기" disabled={!isButtonEnabled} onClick={handleAddDailyRecord} />

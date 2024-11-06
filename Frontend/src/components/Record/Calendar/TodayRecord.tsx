@@ -43,7 +43,6 @@ export default function TodayRecord({ training, date, record }: TodayRecordProps
 
     router.push(`/record/dailyRecord?year=${year}&month=${month}&day=${day}`);
   };
-  console.log('record:', record);
 
   return (
     <div className="relative bg-main4 rounded-2xl border border-main1 p-3 shadow-sm mt-10 min-h-60 flex">

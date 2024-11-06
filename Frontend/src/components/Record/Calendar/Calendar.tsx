@@ -88,12 +88,11 @@ export default function Calendar({ searchParams }: CalendarProps) {
 
       // getDailyData 호출하여 데이터 가져오기
       getDailyData(year, month, day)
-        .then((data) => {
-          console.log('Fetched Data:', data);
-          // 받아온 데이터로 상태 업데이트 가능
+        .then(data => {
+          console.log('받은 하루 일기 데이터:', data);
         })
-        .catch((error) => {
-          console.error('데이터 가져오기 실패:', error);
+        .catch(error => {
+          console.error('하루 일기 데이터 받아오기 실패:', error);
         });
 
       const formattedDate = `${year}-${month}-${day}`;
