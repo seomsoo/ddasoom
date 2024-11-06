@@ -1,6 +1,7 @@
 import useSendToken from "@/hooks/useSendToken";
+import { vibrate } from "@/utils/vibrate";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { BackHandler, Platform, StatusBar, ToastAndroid } from "react-native";
+import { BackHandler, Platform, StatusBar, ToastAndroid, Vibration } from "react-native";
 // import {
 //   Button,
 //   NativeEventEmitter,
@@ -39,7 +40,7 @@ const AuthedScreen = () => {
         return;
 
       case "VIBRATE":
-        console.log(content, " 로 진동");
+        vibrate(content as string);
         return;
 
       case "RECORD":
