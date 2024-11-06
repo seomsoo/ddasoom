@@ -1,5 +1,5 @@
 import { View, Text, Image, TouchableOpacity, StatusBar, Alert, ImageBackground, ToastAndroid } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import backGroundImg from "@/assets/images/first.png";
 import logoImage from "@/assets/images/logo.png";
 import styled from "styled-components/native";
@@ -10,9 +10,11 @@ import { signIn, signUp } from "@/services/auth";
 import useAuthStore from "@/zustand/authStore";
 import { AxiosError } from "axios";
 import theme from "@/styles/Theme";
+import useVoiceRecord from "@/hooks/useVoiceRecord";
 
 const Main = () => {
-  const { setToken, setUserEmail, setUserName, setUserId } = useAuthStore();
+  const { startRecording, stopRecording, sendRecording, recordUri } = useVoiceRecord();
+  const { userName, setToken, setUserEmail, setUserName, setUserId } = useAuthStore();
 
   const handleKaKaoLogin = async () => {
     const { accessToken, refreshToken } = await login();
@@ -47,8 +49,8 @@ const Main = () => {
       const errorCode = error.response?.data.error.status;
 
       if (errorCode === 404) {
-        // router.push("signupModal");
-        router.push("authorized");
+        router.push("signupModal");
+        // router.push("authorized");
       } else {
         ToastAndroid.show("로그인 오류가 발생했습니다.", 3000);
       }
