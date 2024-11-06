@@ -33,7 +33,7 @@ export const postTrainingData = async (data: TrainingRequestBody): Promise<BaseR
 };
 
 // 월별 리포트 조회
-export const getReportData = async (year: string, month: string): Promise<BaseResponse<ReportData>> => {
+export const getReportData = async (year: string, month: string): Promise<ReportData> => {
   const response = await axiosInstance.get<BaseResponse<ReportData>>(`/diary/report/${year}/${month}`);
-  return response.data;
+  return response.data.data;
 };
