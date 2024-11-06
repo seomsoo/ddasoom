@@ -1,4 +1,4 @@
-import { DiaryRequestBody } from '@/types/http/request';
+import { DiaryRequestBody, TrainingRequestBody } from '@/types/http/request';
 
 import axiosInstance from './axiosInstance';
 
@@ -16,10 +16,9 @@ export const getMonthlyData = async (year: string, month: string) => {
 };
 
 // 캘린더 일별 조회(기록 상세)
-export const getDailyData = async (year: string, month: string, day:string) => {
+export const getDailyData = async (year: string, month: string, day: string) => {
   try {
-    // const response = await axiosInstance.get('/diary/calendars', {
-    const response = await axiosInstance.get('/record', {
+    const response = await axiosInstance.get('/diary/calendars', {
       params: { year, month, day },
     });
     return response.data.data;
@@ -32,9 +31,18 @@ export const getDailyData = async (year: string, month: string, day:string) => {
 // 일상 기록 저장
 export const putDailyData = async (data: DiaryRequestBody) => {
   try {
-    // const response = await axiosInstance.put('/diary/daily', data);
-    const response = await axiosInstance.put('/record', data);
+    const response = await axiosInstance.put('/diary/daily', data);
+    return response.data;
+  } catch (error) {
+    console.error('데이터 전송 실패:', error);
+    throw error;
+  }
+};
 
+// 훈련 종료(기록 저장)
+export const putTrainingData = async (data: TrainingRequestBody) => {
+  try {
+    const response = await axiosInstance.put('/diary/training', data);
     return response.data;
   } catch (error) {
     console.error('데이터 전송 실패:', error);

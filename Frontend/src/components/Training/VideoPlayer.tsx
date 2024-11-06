@@ -12,6 +12,7 @@ type VideoPlayerProps = {
 };
 
 export default function VideoPlayer({ videoType }: VideoPlayerProps) {
+  const COMEDOWN = 'COMEDOWN';
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [isMuted, setIsMuted] = useState(true);
   const [visibleText, setVisibleText] = useState('');
@@ -47,7 +48,7 @@ export default function VideoPlayer({ videoType }: VideoPlayerProps) {
   };
 
   const handleCancel = () => {
-    router.push('/training/result');
+    router.push(`/training/result?trainingType=${COMEDOWN}`);
   };
 
   return (
