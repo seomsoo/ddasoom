@@ -63,6 +63,9 @@ dependencies {
     //kafka
     implementation 'org.springframework.kafka:spring-kafka'
 
+    // SMS
+    implementation 'net.nurigo:sdk:4.3.0'
+
     //Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
