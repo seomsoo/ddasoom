@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@expo/metro-config": "^0.18.11",
+    "@ffmpeg/ffmpeg": "^0.12.10",
     "@react-native-async-storage/async-storage": "^2.0.0",
     "@react-native-kakao/core": "^2.2.6",
     "@react-native-kakao/user": "^2.2.6",
@@ -36,6 +37,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@types/ffmpeg": "^1.0.7",
     "@types/react": "~18.2.45",
     "@types/styled-components": "^5.1.34",
     "@types/styled-components-react-native": "^5.2.5",
