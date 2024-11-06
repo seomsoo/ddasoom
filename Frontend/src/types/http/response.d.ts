@@ -38,3 +38,24 @@ export interface DailyData {
   trainingRecord: string[];
   dailyRecord: DailyRecord | null;
 }
+
+// 월별 리포트 조회
+export interface PanicReport {
+  panicCount: number;
+  panicDurationAverage: number;
+  panicOccurDay: number[];
+}
+
+export interface DailyReport {
+  caffeine: number;
+  smoking: number;
+  alcohol: number;
+  exercise: number;
+}
+
+export interface ReportData {
+  totalRecordCount: number;
+  panicReport: PanicReport[] | null;
+  dailyReport: DailyReport[] | null;
+  continuousTrainingCount: number;
+}

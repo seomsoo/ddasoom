@@ -1,6 +1,6 @@
 import { BaseResponse } from '@/types/http/baseResponse';
 import { DiaryRequestBody, TrainingRequestBody } from '@/types/http/request';
-import { DailyData, MonthlyData } from '@/types/http/response';
+import { DailyData, MonthlyData, ReportData } from '@/types/http/response';
 
 import axiosInstance from './axiosInstance';
 
@@ -29,6 +29,11 @@ export const postDailyData = async (data: DiaryRequestBody): Promise<BaseRespons
 // 훈련 종료(기록 저장)
 export const postTrainingData = async (data: TrainingRequestBody): Promise<BaseResponse<null>> => {
   const response = await axiosInstance.post<BaseResponse<null>>('/diary/training', data);
-  console.log('훈련 기록 저장 성공');
+  return response.data;
+};
+
+// 월별 리포트 조회
+export const getReportData = async (year: string, month: string): Promise<BaseResponse<ReportData>> => {
+  const response = await axiosInstance.get<BaseResponse<ReportData>>(`/diary/report/${year}/${month}`);
   return response.data;
 };
