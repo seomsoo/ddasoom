@@ -2,6 +2,8 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
+import ErrorModal from '@/components/Common/ErrorModal';
+
 import { setAuthData } from '../store/authSlice';
 
 const useAuth = () => {
@@ -9,6 +11,8 @@ const useAuth = () => {
   const [token, setToken] = useState<Token | null>(null);
   const [userName, setUserName] = useState<Name | null>(null);
   const [userId, setUserId] = useState<UserId | null>(null);
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false); // 에러 모달 상태
+  const [errorContext, setErrorContext] = useState(''); // 에러 메시지 상태
 
   const sendMessageToApp = () => {
     window.ReactNativeWebView?.postMessage(JSON.stringify({ title: 'GETTOKEN', content: null }));
@@ -21,7 +25,10 @@ const useAuth = () => {
 
     const handleMessage = (event: MessageEvent) => {
       try {
-        const { title, content } = JSON.parse(event.data);
+        // JSON 파싱을 시도하기 전에, event.data가 문자열인지 확인
+        const messageData = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
+
+        const { title, content } = messageData;
 
         if (title === 'TOKEN') {
           console.log('앱에서 받아온 토큰 정보들 저장 완료');
@@ -36,6 +43,8 @@ const useAuth = () => {
         }
       } catch (e) {
         console.error('Failed to handle message:', e);
+        setErrorContext(e instanceof Error ? e.message : '에러 메시지 읽기 실패');
+        setIsErrorModalOpen(true); // 에러 발생 시 모달 표시
       }
     };
 
@@ -47,7 +56,19 @@ const useAuth = () => {
     };
   }, [dispatch, token, userName, userId]);
 
-  return { token, userName, userId };
+  const handleRetry = () => {
+    setIsErrorModalOpen(false);
+    sendMessageToApp(); // 메시지 다시 전송
+  };
+
+  return {
+    token,
+    userName,
+    userId,
+    ErrorModalComponent: isErrorModalOpen ? (
+      <ErrorModal onClose={() => setIsErrorModalOpen(false)} onRetry={handleRetry} context={errorContext} />
+    ) : null,
+  };
 };
 
 export default useAuth;

@@ -38,11 +38,13 @@ export interface ReportData {
 
 export default function MainContent({ year, month }: MainContentProps) {
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+  const [errorContext, setErrorContext] = useState<string>('');
 
   const {
     data: reportData,
     isLoading,
     isError,
+    error,
     refetch,
   } = useQuery<ReportData>({
     queryKey: [queryKeys.REPORT, year, month],
@@ -51,10 +53,11 @@ export default function MainContent({ year, month }: MainContentProps) {
   });
 
   useEffect(() => {
-    if (isError) {
+    if (isError && error) {
+      setErrorContext(error instanceof Error ? error.message : '에러 메시지 읽기 실패');
       setIsErrorModalOpen(true);
     }
-  }, [isError]);
+  }, [isError, error]);
 
   const handleRetry = () => {
     setIsErrorModalOpen(false);
@@ -67,7 +70,9 @@ export default function MainContent({ year, month }: MainContentProps) {
 
   return (
     <div className="w-full max-w-md mt-8 flex flex-col font-nanumExtraBold">
-      {isErrorModalOpen && <ErrorModal onClose={() => setIsErrorModalOpen(false)} onRetry={handleRetry} />}
+      {isErrorModalOpen && (
+        <ErrorModal onClose={() => setIsErrorModalOpen(false)} onRetry={handleRetry} context={errorContext} />
+      )}
 
       <SummaryBox>
         <div>

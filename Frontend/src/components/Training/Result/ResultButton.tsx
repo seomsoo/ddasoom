@@ -15,6 +15,7 @@ interface ResultButtonProps {
 export default function ResultButton({ trainingType }: ResultButtonProps) {
   const router = useRouter();
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+  const [errorContext, setErrorContext] = useState<string>('');
 
   const mutation = useMutation({
     mutationFn: (data: TrainingRequestBody) => postTrainingData(data),
@@ -24,6 +25,7 @@ export default function ResultButton({ trainingType }: ResultButtonProps) {
     },
     onError: error => {
       console.error('훈련 기록 전송 실패:', error);
+      setErrorContext(error.message || '에러 메시지 읽기 실패');
       setIsErrorModalOpen(true);
     },
   });
@@ -44,7 +46,9 @@ export default function ResultButton({ trainingType }: ResultButtonProps) {
 
   return (
     <div className="w-full">
-      {isErrorModalOpen && <ErrorModal onClose={() => setIsErrorModalOpen(false)} onRetry={handleRetry} />}
+      {isErrorModalOpen && (
+        <ErrorModal onClose={() => setIsErrorModalOpen(false)} onRetry={handleRetry} context={errorContext} />
+      )}
       <Button label="완료" onClick={handlePostTrainingRecord} />
     </div>
   );
