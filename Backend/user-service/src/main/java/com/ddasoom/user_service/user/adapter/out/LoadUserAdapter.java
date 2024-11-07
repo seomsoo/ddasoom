@@ -5,6 +5,7 @@ import com.ddasoom.user_service.user.adapter.out.diary.DiaryServiceClient;
 import com.ddasoom.user_service.user.adapter.out.diary.GetTrainingContinuousDaysResponse;
 import com.ddasoom.user_service.user.application.domain.User;
 import com.ddasoom.user_service.user.application.port.out.LoadUserPort;
+import com.ddasoom.user_service.user.error.DdasomiInfoNotFoundException;
 import com.ddasoom.user_service.user.error.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 
@@ -14,11 +15,15 @@ public class LoadUserAdapter implements LoadUserPort {
 
     private final UserRepository userRepository;
     private final DiaryServiceClient diaryServiceClient;
+    private final DdasomiInfoRepository ddasomiInfoRepository;
 
     @Override
     public User loadUser(Long userId) {
         UserJpaEntity user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
+
+        DdasomiInfoJpaEntity ddasomi = ddasomiInfoRepository.findByUser(user)
+                .orElseThrow(DdasomiInfoNotFoundException::new);
 
         GetTrainingContinuousDaysResponse diaryClientResponse = diaryServiceClient.getContinuousTrainingDays(userId);
 
@@ -26,7 +31,8 @@ public class LoadUserAdapter implements LoadUserPort {
                 user.getId(),
                 user.getEmail(),
                 user.getName(),
-                diaryClientResponse.continuousTrainingDays()
+                diaryClientResponse.continuousTrainingDays(),
+                ddasomi.getExperience()
         );
     }
 
@@ -35,6 +41,9 @@ public class LoadUserAdapter implements LoadUserPort {
         UserJpaEntity user = userRepository.findByEmail(email)
                 .orElseThrow(UserNotFoundException::new);
 
+        DdasomiInfoJpaEntity ddasomi = ddasomiInfoRepository.findByUser(user)
+                .orElseThrow(DdasomiInfoNotFoundException::new);
+
         GetTrainingContinuousDaysResponse diaryClientResponse = diaryServiceClient.getContinuousTrainingDays(
                 user.getId());
 
@@ -42,7 +51,8 @@ public class LoadUserAdapter implements LoadUserPort {
                 user.getId(),
                 user.getEmail(),
                 user.getName(),
-                diaryClientResponse.continuousTrainingDays()
+                diaryClientResponse.continuousTrainingDays(),
+                ddasomi.getExperience()
         );
     }
 }
