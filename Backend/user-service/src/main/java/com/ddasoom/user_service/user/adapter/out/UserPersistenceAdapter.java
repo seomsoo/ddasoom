@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 public class UserPersistenceAdapter implements CreateUserPort {
 
     private final UserRepository userRepository;
+    private final DdasomiInfoRepository ddasomiInfoRepository;
 
     @Override
     public void createUser(User user) {
@@ -18,7 +19,8 @@ public class UserPersistenceAdapter implements CreateUserPort {
             throw new DuplicatedUserException();
         }
 
-        userRepository.save(createUserJpaEntity(user));
+        UserJpaEntity userJpaEntity = userRepository.save(createUserJpaEntity(user));
+        ddasomiInfoRepository.save(createDdasomiInfoJpaEntity(userJpaEntity));
     }
 
     private boolean isDuplicated(User user) {
@@ -29,6 +31,13 @@ public class UserPersistenceAdapter implements CreateUserPort {
         return UserJpaEntity.builder()
                 .email(user.email())
                 .name(user.name())
+                .build();
+    }
+
+    private static DdasomiInfoJpaEntity createDdasomiInfoJpaEntity(UserJpaEntity userJpaEntity) {
+        return DdasomiInfoJpaEntity.builder()
+                .user(userJpaEntity)
+                .experience(0)
                 .build();
     }
 }
