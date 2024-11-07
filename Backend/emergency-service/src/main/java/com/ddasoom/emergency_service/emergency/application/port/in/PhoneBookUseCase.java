@@ -8,4 +8,6 @@ public interface PhoneBookUseCase {
     void addPhoneBook(PhoneBookCommand phoneBookCommand);
 
     List<PhoneBookResponse> findPhoneBookList(Long userId);
+
+    void sendMessage(Long userId, String username);
 }
