@@ -22,7 +22,7 @@ interface WriteRecordProps {
 export default function WriteRecord({ dateYear, dateMonth, dateDay }: WriteRecordProps) {
   const router = useRouter();
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
-
+  const [errorContext, setErrorContext] = useState('');
   const [selectedIcons, setSelectedIcons] = useState<{ [key: string]: boolean }>({
     caffeine: false,
     cigarette: false,
@@ -41,6 +41,7 @@ export default function WriteRecord({ dateYear, dateMonth, dateDay }: WriteRecor
     },
     onError: error => {
       console.error('일기 전송 실패:', error);
+      setErrorContext(error.message || '에러 메시지 전송 안 됨');
       setIsErrorModalOpen(true);
     },
   });
@@ -86,7 +87,9 @@ export default function WriteRecord({ dateYear, dateMonth, dateDay }: WriteRecor
 
   return (
     <div className="flex flex-col gap-4 justify-center">
-      {isErrorModalOpen && <ErrorModal onClose={() => setIsErrorModalOpen(false)} onRetry={handleRetry} />}
+      {isErrorModalOpen && (
+        <ErrorModal onClose={() => setIsErrorModalOpen(false)} onRetry={handleRetry} context={errorContext} />
+      )}
       <p className="font-hakgyoansimR text-2xl">
         오늘 하루 <br />
         어떤 활동을 하셨나요?
