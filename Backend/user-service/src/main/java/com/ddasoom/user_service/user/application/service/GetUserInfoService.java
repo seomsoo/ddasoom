@@ -21,7 +21,8 @@ public class GetUserInfoService implements GetUserInfoQuery {
 
         return new GetUserInfoResponse(
                 user.name(),
-                user.continuousTrainingDays()
+                user.continuousTrainingDays(),
+                user.experience()
         );
     }
 }
