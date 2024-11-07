@@ -3,7 +3,7 @@ import axios from 'axios';
 import { store } from '@/store';
 
 const axiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
+  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || 'https://k11c103.p.ssafy.io/api',
   withCredentials: true, // 쿠키 필요 시 설정
 });
 axiosInstance.interceptors.request.use(config => {
