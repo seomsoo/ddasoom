@@ -1,6 +1,7 @@
 package com.ddasoom.diary_service.diary.adapter.out.daily;
 
 import com.ddasoom.diary_service.common.annotation.PersistenceAdapter;
+import com.ddasoom.diary_service.diary.adapter.out.ddasomiInfo.DdasomiInfoServiceClient;
 import com.ddasoom.diary_service.diary.application.domain.DailyRecordInfo;
 import com.ddasoom.diary_service.diary.application.domain.GetDailyReportDto;
 import com.ddasoom.diary_service.diary.application.port.in.DailyRecordCommand;
@@ -14,12 +15,14 @@ public class DailyRecordAdapter implements DailyRecordPort {
 
     private final DailyRepository dailyRepository;
     private final DailyQueryRepository queryRepository;
+    private final DdasomiInfoServiceClient ddasomiInfoServiceClient;
 
     @Override
     public void saveDailyRecord(Long userId, DailyRecordCommand command) {
         dailyRepository.save(
                 DailyJpaEntity.of(userId, command)
         );
+        ddasomiInfoServiceClient.updateDdasomiExperience(userId);
     }
 
     @Override
