@@ -1,11 +1,11 @@
 package com.ddasoom.emergency_service.emergency.adapter.out.client;
 
-import com.ddasoom.emergency_service.common.annotation.WebAdapter;
+import com.ddasoom.emergency_service.common.annotation.ApiAdapter;
 import com.ddasoom.emergency_service.emergency.application.domain.PanicSimple;
 import com.ddasoom.emergency_service.emergency.application.port.out.PanicPort;
 import lombok.RequiredArgsConstructor;
 
-@WebAdapter
+@ApiAdapter
 @RequiredArgsConstructor
 public class PanicClientAdapter implements PanicPort {
 

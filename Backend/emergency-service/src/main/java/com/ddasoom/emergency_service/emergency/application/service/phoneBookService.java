@@ -6,6 +6,7 @@ import com.ddasoom.emergency_service.emergency.application.domain.PhoneBook;
 import com.ddasoom.emergency_service.emergency.application.port.in.PhoneBookCommand;
 import com.ddasoom.emergency_service.emergency.application.port.in.PhoneBookUseCase;
 import com.ddasoom.emergency_service.emergency.application.port.out.PhoneBookPort;
+import com.ddasoom.emergency_service.emergency.application.port.out.SendPhoneBookPort;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class phoneBookService implements PhoneBookUseCase {
 
     private final PhoneBookPort phoneBookPort;
+    private final SendPhoneBookPort sendPhoneBookPort;
 
     @Override
     public void addPhoneBook(PhoneBookCommand command) {
@@ -39,5 +41,13 @@ public class phoneBookService implements PhoneBookUseCase {
                         phoneBook.phoneNumber(),
                         phoneBook.alias())
         ).toList();
+    }
+
+    @Override
+    public void sendMessage(Long userId, String username) {
+        List<PhoneBook> phoneBookList = phoneBookPort.findPhoneBookList(userId);
+        String text = username + "님이 공황 발작이 발생한\n 지 15분이 경과했습니다.\n\n" +
+                "한번 연락해 보세요!";
+        sendPhoneBookPort.sendMessage(phoneBookList, text);
     }
 }

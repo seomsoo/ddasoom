@@ -2,6 +2,7 @@ package com.ddasoom.emergency_service.emergency.adapter.in.web;
 
 import static com.ddasoom.emergency_service.common.util.ApiUtils.success;
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.OK;
 
 import com.ddasoom.emergency_service.common.annotation.WebAdapter;
 import com.ddasoom.emergency_service.common.util.ApiUtils.ApiResult;
@@ -47,5 +48,12 @@ public class PhoneBookController {
         response.put("userId", userId);
         response.put("phoneBooks", phoneBookList);
         return success(response);
+    }
+
+    @ResponseStatus(OK)
+    @PostMapping("api/emergency/send-message")
+    public void sendMessage(@RequestHeader("X-Authenticated-User") Long userId,
+            @RequestBody String username) {
+        phoneBookUseCase.sendMessage(userId, username);
     }
 }
