@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import Navbar from '@/components/Navbar';
+import Navbar from '@/components/Common/Navbar';
 import Setting from '@/svgs/setting.svg';
 import Sos from '@/svgs/SOS.svg';
 import SoundOn from '@/svgs/soundOn.svg';
