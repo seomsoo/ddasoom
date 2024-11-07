@@ -42,4 +42,12 @@ if __name__ == "__main__":
     env = os.environ.copy()
     env["RANDOM_PORT"] = str(random_port)
 
-    subprocess.run(["uvicorn", "main:app", "--port", str(random_port)], env=env)
+    subprocess.run(
+            [
+                "uvicorn",
+                "main:app",
+                "--host", "panic-attack-service",
+                "--port", str(random_port)
+            ],
+            env=env
+    )
