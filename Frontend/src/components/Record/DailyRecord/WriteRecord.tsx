@@ -39,6 +39,7 @@ export default function WriteRecord({ dateYear, dateMonth, dateDay }: WriteRecor
     },
     onError: error => {
       console.error('일기 전송 실패:', error);
+      router.push(`/record?year=${dateYear}&month=${dateMonth}&day=${dateDay}`);
     },
   });
 
