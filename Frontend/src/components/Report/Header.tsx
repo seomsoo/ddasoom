@@ -1,3 +1,6 @@
+'use client';
+import { useRouter } from 'next/navigation';
+
 import background from '@/components/BackGround/Background.module.css';
 import Back from '@/svgs/backIcon.svg';
 import Ddasom from '@/svgs/ddasomi.svg';
@@ -9,6 +12,8 @@ interface HeaderProps {
 }
 
 export default function Header({ year, month, day }: HeaderProps) {
+  const router = useRouter();
+
   return (
     <header
       style={{
