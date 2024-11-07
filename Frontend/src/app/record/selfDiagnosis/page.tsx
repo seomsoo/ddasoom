@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import Header from '@/components/Header';
+import Header from '@/components/Common/Header';
 import Ddasomi from '@/svgs/shadowDdasomi.svg';
 
 export default function SelfDiagnosisPage() {

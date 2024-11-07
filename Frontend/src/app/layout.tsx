@@ -3,7 +3,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
-import ClientComponent from '@/components/ClientComponent';
+import ClientComponent from '@/components/Common/ClientComponent';
 import ReactQueryProvider from '@/utils/reactQueryProvider';
 import ReduxProvider from '@/utils/reduxProvider';
 

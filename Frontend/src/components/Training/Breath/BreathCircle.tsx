@@ -2,7 +2,7 @@
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
-import Header from '@/components/Header';
+import Header from '@/components/Common/Header';
 import breathData from '@/constants/BreathData';
 
 import BreathCircleAnimation from './BreathCircleAnimation';
