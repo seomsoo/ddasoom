@@ -2,8 +2,8 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-import Button from '@/components/Button';
-import Header from '@/components/Header';
+import Button from '@/components/Common/Button';
+import Header from '@/components/Common/Header';
 import AppleSvg from '@/svgs/apple.svg';
 import EarSound from '@/svgs/earSound.svg';
 import Footprint from '@/svgs/footPrint.svg';

@@ -1,6 +1,6 @@
 import background from '@/components/BackGround/Background.module.css';
 import WaveAnimation from '@/components/BackGround/WaveAnimation';
-import Header from '@/components/Header';
+import Header from '@/components/Common/Header';
 import VoiceRecorder from '@/components/Main/VoiceSetting/VoiceRecorder';
 
 export default function VoiceRecordingPage() {

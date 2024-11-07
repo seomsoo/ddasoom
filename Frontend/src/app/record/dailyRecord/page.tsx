@@ -1,4 +1,4 @@
-import Header from '@/components/Header';
+import Header from '@/components/Common/Header';
 import WriteRecord from '@/components/Record/DailyRecord/WriteRecord';
 
 type SearchParmas = Record<string, string | string | undefined>;

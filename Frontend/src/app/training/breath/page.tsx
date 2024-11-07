@@ -1,5 +1,5 @@
 import background from '@/components/BackGround/Background.module.css';
-import Header from '@/components/Header';
+import Header from '@/components/Common/Header';
 import BreathSelector from '@/components/Training/Breath/BreathSelector';
 import Backcloud from '@/svgs/backcloud.svg';
 export default function BreathTrainingPage() {

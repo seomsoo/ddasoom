@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
-import Button from '@/components/Button';
+import Button from '@/components/Common/Button';
 import ProgressBar from '@/components/Record/SelfDiagnosis/ProgressBar';
 import QuestionText from '@/components/Record/SelfDiagnosis/QuestionText';
 import { questions } from '@/constants/SelfDiagnosisData';

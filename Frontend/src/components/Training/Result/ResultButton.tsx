@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 
 import { postTrainingData } from '@/api/recordAPI';
 import { TrainingRequestBody } from '@/types/http/request';
-import Button from '@/components/Button';
+import Button from '@/components/Common/Button';
 
 interface ResultButtonProps {
   trainingType: string;

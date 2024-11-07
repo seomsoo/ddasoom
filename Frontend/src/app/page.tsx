@@ -1,7 +1,7 @@
 import React from 'react';
 
-import Header from '@/components/Header';
-import Navbar from '@/components/Navbar';
+import Header from '@/components/Common/Header';
+import Navbar from '@/components/Common/Navbar';
 const Home = () => {
   console.log('hi');
   console.log('hi');
