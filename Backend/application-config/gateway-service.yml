@@ -18,7 +18,7 @@ spring:
     gateway:
       globalcors:
         cors-configurations:
-          '[/**]':
+          "[/**]":
             allowedOrigins:
               - "http://localhost:3000"
               - "https://k11c103.p.ssafy.io"
@@ -108,14 +108,13 @@ spring:
             - Path=/api/voices/**
 
         - id: panic-attack-service
-          uri: http://panic-attack-service:10000
+          uri: lb://PANIC-ATTACK-SERVICE
           predicates:
             - Path=/api/panic-attack/**
 
 jwt:
   issuer: DDASOOM
   client-secret: asdfasdfasdfadadfa
-
 
 ---
 spring:
@@ -133,7 +132,6 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://localhost:8761/eureka
-
 
 ---
 spring:
