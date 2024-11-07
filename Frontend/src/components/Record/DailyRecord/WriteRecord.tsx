@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 
 import { postDailyData } from '@/api/recordAPI';
 import Button from '@/components/Common/Button';
+import ErrorModal from '@/components/Common/ErrorModal';
 import RecordItem from '@/components/Record/DailyRecord/RecordItem';
 import AlcoholSvg from '@/svgs/alcohol.svg';
 import CaffeineSvg from '@/svgs/caffeine.svg';
@@ -20,6 +21,7 @@ interface WriteRecordProps {
 
 export default function WriteRecord({ dateYear, dateMonth, dateDay }: WriteRecordProps) {
   const router = useRouter();
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
 
   const [selectedIcons, setSelectedIcons] = useState<{ [key: string]: boolean }>({
     caffeine: false,
@@ -39,6 +41,7 @@ export default function WriteRecord({ dateYear, dateMonth, dateDay }: WriteRecor
     },
     onError: error => {
       console.error('일기 전송 실패:', error);
+      setIsErrorModalOpen(true);
     },
   });
 
@@ -76,8 +79,14 @@ export default function WriteRecord({ dateYear, dateMonth, dateDay }: WriteRecor
     }
   };
 
+  const handleRetry = () => {
+    setIsErrorModalOpen(false);
+    handleAddDailyRecord();
+  };
+
   return (
     <div className="flex flex-col gap-4 justify-center">
+      {isErrorModalOpen && <ErrorModal onClose={() => setIsErrorModalOpen(false)} onRetry={handleRetry} />}
       <p className="font-hakgyoansimR text-2xl">
         오늘 하루 <br />
         어떤 활동을 하셨나요?

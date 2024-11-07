@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import Button from './Common/Button';
+import Button from '@/components/Common/Button';
 
 const TempComp = () => {
   // React Native WebView로 메시지 보내기
