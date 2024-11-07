@@ -38,7 +38,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
-EUREKA_SERVER = "http://k11c103.p.ssafy.io:8761/eureka"
+EUREKA_SERVER = "http://service-discovery:8761/eureka"
 APP_NAME = "panic-attack-service"
 INSTANCE_ID = f"{APP_NAME}:{str(uuid.uuid4()).replace('-', '')}"
 
