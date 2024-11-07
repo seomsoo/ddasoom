@@ -7,9 +7,10 @@ import Cancel from '@/svgs/cancel.svg';
 interface ErrorModalProps {
   onClose: () => void;
   onRetry: () => void;
+  context: string;
 }
 
-export default function ErrorModal({ onClose, onRetry }: ErrorModalProps) {
+export default function ErrorModal({ onClose, onRetry, context }: ErrorModalProps) {
   const router = useRouter();
 
   const handleClose = () => {
@@ -34,6 +35,9 @@ export default function ErrorModal({ onClose, onRetry }: ErrorModalProps) {
         <p className="text-gray-700 text-lg mb-6">
           일시적인 오류가 발생했습니다. <br /> 잠시 후 다시 시도해주세요.
         </p>
+        <div>
+          에러 내용 :<span>{context}</span>
+        </div>
 
         <button onClick={onRetry} className="bg-yellow-300 text-black text-lg font-nanumBold py-2 px-8 rounded-full">
           다시 시도
