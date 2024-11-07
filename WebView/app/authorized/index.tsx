@@ -62,7 +62,8 @@ const AuthedScreen = () => {
 
       // 아두이노
       case "ARDSETTING":
-        router.push("ble");
+        router.push("authorized/ble");
+        return;
       case "ARD":
         if (content === "ON") {
           console.log("아두이노 작동");

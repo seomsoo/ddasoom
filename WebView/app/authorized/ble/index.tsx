@@ -9,6 +9,8 @@ const BleScreen = () => {
   const [devices, setDevices] = useState<Device[]>([]);
   const [connectedDevice, setConnectedDevice] = useState<Device | null>(null);
   const [isScanning, setIsScanning] = useState(false);
+  const ledServiceUUID = "1234"; // Arduino와 동일한 서비스 UUID
+  const ledCharacteristicUUID = "5678"; // Arduino와 동일한 특성 UUID
 
   // 권한 요청 및 스캔 시작
   const startScan = async () => {
@@ -25,7 +27,6 @@ const BleScreen = () => {
         return;
       }
 
-      // 발견된 장치 중 이름이 있는 장치를 필터링하여 추가
       if (device && device.name) {
         setDevices(prevDevices => {
           const exists = prevDevices.some(d => d.id === device.id);
@@ -63,6 +64,25 @@ const BleScreen = () => {
     }
   };
 
+  // Arduino로 메시지 전송
+  const sendMessageToArduino = async () => {
+    if (connectedDevice) {
+      try {
+        const message = "1"; // 전송할 메시지 (명령어)
+        await bleManager.writeCharacteristicWithoutResponseForDevice(
+          connectedDevice.id,
+          ledServiceUUID,
+          ledCharacteristicUUID,
+          message,
+        );
+        Alert.alert("Message Sent", "Message sent to Arduino.");
+      } catch (error) {
+        console.log("Write error:", error);
+        Alert.alert("Failed to Send Message", "Could not send message to Arduino.");
+      }
+    }
+  };
+
   useEffect(() => {
     return () => {
       bleManager.destroy(); // 컴포넌트가 언마운트될 때 BLE 매니저 정리
@@ -70,12 +90,13 @@ const BleScreen = () => {
   }, []);
 
   return (
-    <View style={{ height: 100, padding: 16, backgroundColor: "black" }}>
-      {/* <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 16 }}>BLE Devices</Text>
+    <View style={{ padding: 16 }}>
+      <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 16 }}>BLE Devices</Text>
       {connectedDevice ? (
         <View>
           <Text>Connected to: {connectedDevice.name}</Text>
           <Button title="Disconnect" onPress={disconnectFromDevice} />
+          <Button title="Send Message to Arduino" onPress={sendMessageToArduino} />
         </View>
       ) : (
         <View>
@@ -91,7 +112,7 @@ const BleScreen = () => {
             )}
           />
         </View>
-      )} */}
+      )}
     </View>
   );
 };
