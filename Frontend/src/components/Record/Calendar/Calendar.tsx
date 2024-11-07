@@ -5,6 +5,8 @@ import React, { useEffect, useState } from 'react';
 
 import queryKeys from '@/api/querykeys';
 import { getDailyData } from '@/api/recordAPI';
+import ErrorModal from '@/components/Common/ErrorModal';
+import LoadingModal from '@/components/Common/LoadingModal';
 import CustomCalendar from '@/components/Record/Calendar/CustomCalendar';
 import { DailyData, DailyRecord } from '@/types/http/response';
 
@@ -16,6 +18,7 @@ interface CalendarProps {
 }
 
 export default function Calendar({ searchParams }: CalendarProps) {
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
   // 초기 날짜 설정
@@ -32,11 +35,30 @@ export default function Calendar({ searchParams }: CalendarProps) {
   const month = selectedDate ? (selectedDate.getMonth() + 1).toString().padStart(2, '0') : '';
   const day = selectedDate ? selectedDate.getDate().toString().padStart(2, '0') : '';
 
-  const { data: dailyData } = useQuery<DailyData>({
+  const {
+    data: dailyData,
+    isLoading,
+    isError,
+    refetch,
+  } = useQuery<DailyData>({
     queryKey: [queryKeys.DAILY_RECORD, year, month, day],
     queryFn: () => getDailyData(year, month, day),
     enabled: !!year && !!month && !!day,
+    retry: false,
   });
+
+  useEffect(() => {
+    if (isError) {
+      setIsErrorModalOpen(true);
+    }
+  }, [isError]);
+
+  const handleRetry = () => {
+    setIsErrorModalOpen(false);
+    refetch(); // 요청 다시 시도
+  };
+
+  if (isLoading) return <LoadingModal />;
 
   const handleDateSelect = (date: Date) => {
     setSelectedDate(date);
@@ -53,6 +75,7 @@ export default function Calendar({ searchParams }: CalendarProps) {
 
   return (
     <div className="pb-32">
+      {isErrorModalOpen && <ErrorModal onClose={() => setIsErrorModalOpen(false)} onRetry={handleRetry} />}
       <CustomCalendar selectedDate={selectedDate} onDateSelect={handleDateSelect} />
       {dailyData?.panicRecord && dailyData.panicRecord.length > 0 && <PanicRecord panicList={dailyData.panicRecord} />}
       <TodayRecord
