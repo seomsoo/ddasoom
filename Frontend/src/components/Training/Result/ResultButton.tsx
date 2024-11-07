@@ -1,10 +1,12 @@
 'use client';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 import { postTrainingData } from '@/api/recordAPI';
-import { TrainingRequestBody } from '@/types/http/request';
 import Button from '@/components/Common/Button';
+import ErrorModal from '@/components/Common/ErrorModal';
+import { TrainingRequestBody } from '@/types/http/request';
 
 interface ResultButtonProps {
   trainingType: string;
@@ -12,6 +14,7 @@ interface ResultButtonProps {
 
 export default function ResultButton({ trainingType }: ResultButtonProps) {
   const router = useRouter();
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
 
   const mutation = useMutation({
     mutationFn: (data: TrainingRequestBody) => postTrainingData(data),
@@ -21,6 +24,7 @@ export default function ResultButton({ trainingType }: ResultButtonProps) {
     },
     onError: error => {
       console.error('훈련 기록 전송 실패:', error);
+      setIsErrorModalOpen(true);
     },
   });
 
@@ -33,8 +37,14 @@ export default function ResultButton({ trainingType }: ResultButtonProps) {
     mutation.mutate(trainingRecord);
   };
 
+  const handleRetry = () => {
+    setIsErrorModalOpen(false);
+    handlePostTrainingRecord();
+  };
+
   return (
     <div className="w-full">
+      {isErrorModalOpen && <ErrorModal onClose={() => setIsErrorModalOpen(false)} onRetry={handleRetry} />}
       <Button label="완료" onClick={handlePostTrainingRecord} />
     </div>
   );
