@@ -15,11 +15,13 @@ const useAuth = () => {
   };
 
   useEffect(() => {
-    if (!token || !userName || !userId) {
-      sendMessageToApp();
-    }
+    const fetchTokenData = async () => {
+      if (!token || !userName || !userId) {
+        sendMessageToApp();
+      }
+    };
 
-    const handleMessage = (event: MessageEvent) => {
+    const handleMessage = async (event: MessageEvent) => {
       try {
         const { title, content } = JSON.parse(event.data);
 
@@ -38,6 +40,8 @@ const useAuth = () => {
         console.error('Failed to handle message:', e);
       }
     };
+
+    fetchTokenData(); // 비동기 함수 실행
 
     window.addEventListener('message', handleMessage);
 
