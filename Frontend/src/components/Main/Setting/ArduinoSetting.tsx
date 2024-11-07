@@ -14,8 +14,8 @@ const ArduinoSetting = () => {
   };
 
   return (
-    <button className="bg-main3 p-4 rounded-full font-nanumBold text-2xl" onClick={sendArduinoRequest}>
-      따소미 설정
+    <button className=" bg-main4 p-5 rounded-full text-left" onClick={sendArduinoRequest}>
+      <span>따솜키링 연결</span>
     </button>
   );
 };
