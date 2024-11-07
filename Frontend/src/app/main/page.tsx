@@ -1,5 +1,6 @@
 import Link from 'next/link';
 
+import Navbar from '@/components/Common/Navbar';
 import Setting from '@/svgs/setting.svg';
 import Sos from '@/svgs/SOS.svg';
 import SoundOn from '@/svgs/soundOn.svg';
@@ -9,7 +10,7 @@ const Main = () => {
       <header className="flex w-full items-center justify-between">
         <div className="flex gap-6">
           <SoundOn />
-          <Link href="/main/voicesetting">
+          <Link href="/main/setting">
             <Setting />
           </Link>
         </div>
@@ -21,6 +22,7 @@ const Main = () => {
         <br />
         메인 페이지 입니다
       </main>
+      <Navbar />
     </>
   );
 };
