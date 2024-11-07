@@ -11,8 +11,7 @@ const useAuth = () => {
   const [userId, setUserId] = useState<UserId | null>(null);
 
   const sendMessageToApp = () => {
-    const message = 'GETTOKEN';
-    window.ReactNativeWebView?.postMessage(message);
+    window.ReactNativeWebView?.postMessage(JSON.stringify({ title: 'GETTOKEN', content: null }));
   };
 
   useEffect(() => {
