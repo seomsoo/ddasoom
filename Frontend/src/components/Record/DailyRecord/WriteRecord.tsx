@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 import { postDailyData } from '@/api/recordAPI';
-import Button from '@/components/Button';
+import Button from '@/components/Common/Button';
 import RecordItem from '@/components/Record/DailyRecord/RecordItem';
 import AlcoholSvg from '@/svgs/alcohol.svg';
 import CaffeineSvg from '@/svgs/caffeine.svg';
