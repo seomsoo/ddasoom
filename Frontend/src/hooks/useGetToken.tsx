@@ -15,8 +15,12 @@ const useAuth = () => {
   const [userId, setUserId] = useState<number | null>(null); // 초기값 설정
 
   const sendMessageToApp = () => {
-    const message = 'GETTOKEN';
-    window.ReactNativeWebView?.postMessage(message);
+    window.ReactNativeWebView?.postMessage(
+      JSON.stringify({
+        title: 'GETTOKEN',
+        content: null,
+      }),
+    );
   };
 
   useEffect(() => {
