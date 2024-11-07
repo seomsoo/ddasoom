@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import Navbar from '@/components/Navbar';
+import Navbar from '@/components/Common/Navbar';
 import DdasomiSvg from '@/svgs/ddasomi.svg';
 import SunglassDasomiSvg from '@/svgs/sunglassDdasomi.svg';
 

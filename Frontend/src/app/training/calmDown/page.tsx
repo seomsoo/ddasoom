@@ -1,5 +1,5 @@
 import background from '@/components/BackGround/Background.module.css';
-import Header from '@/components/Header';
+import Header from '@/components/Common/Header';
 import VideoSelector from '@/components/Training/CalmDown/VideoSelector';
 import Hill from '@/svgs/hill.svg';
 export default function CalmDownTrainingPage() {

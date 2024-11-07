@@ -1,10 +1,6 @@
 'use client';
-
-import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
-import queryKeys from '@/api/querykeys';
-import { getReportData } from '@/api/recordAPI';
 import background from '@/components/BackGround/Background.module.css';
 import Back from '@/svgs/backIcon.svg';
 import Ddasom from '@/svgs/ddasomi.svg';
@@ -12,15 +8,11 @@ import Ddasom from '@/svgs/ddasomi.svg';
 interface HeaderProps {
   year: string;
   month: string;
+  day: string;
 }
 
-export default function Header({ year, month }: HeaderProps) {
+export default function Header({ year, month, day }: HeaderProps) {
   const router = useRouter();
-
-  const { data: headerData, isLoading } = useQuery({
-    queryKey: [queryKeys.REPORT, year, month],
-    queryFn: () => getReportData(year, month),
-  });
 
   return (
     <header
@@ -48,9 +40,9 @@ export default function Header({ year, month }: HeaderProps) {
           style={{
             textShadow: '2px 2px 6px #8EBB5B',
           }}>
-          {isLoading ? '로딩 중...' : headerData?.totalRecordCount || 0}
+          {day}
         </p>
-        번의 기록
+        번째의 기록
       </span>
     </header>
   );

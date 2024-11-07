@@ -1,4 +1,4 @@
-import Header from '@/components/Header';
+import Header from '@/components/Common/Header';
 import CheckList from '@/components/Record/SelfDiagnosis/CheckList';
 
 export default function SelfDiagnosisDetailPage() {
