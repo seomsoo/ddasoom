@@ -20,6 +20,7 @@ interface CalendarProps {
 export default function Calendar({ searchParams }: CalendarProps) {
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [errorContext, setErrorContext] = useState<string>('');
 
   // 초기 날짜 설정
   useEffect(() => {
@@ -39,6 +40,7 @@ export default function Calendar({ searchParams }: CalendarProps) {
     data: dailyData,
     isLoading,
     isError,
+    error,
     refetch,
   } = useQuery<DailyData>({
     queryKey: [queryKeys.DAILY_RECORD, year, month, day],
@@ -48,10 +50,11 @@ export default function Calendar({ searchParams }: CalendarProps) {
   });
 
   useEffect(() => {
-    if (isError) {
+    if (isError && error) {
+      setErrorContext(error instanceof Error ? error.message : '에러 메시지 읽기 실패');
       setIsErrorModalOpen(true);
     }
-  }, [isError]);
+  }, [isError, error]);
 
   const handleRetry = () => {
     setIsErrorModalOpen(false);
@@ -75,7 +78,9 @@ export default function Calendar({ searchParams }: CalendarProps) {
 
   return (
     <div className="pb-32">
-      {isErrorModalOpen && <ErrorModal onClose={() => setIsErrorModalOpen(false)} onRetry={handleRetry} />}
+      {isErrorModalOpen && (
+        <ErrorModal onClose={() => setIsErrorModalOpen(false)} onRetry={handleRetry} context={errorContext} />
+      )}
       <CustomCalendar selectedDate={selectedDate} onDateSelect={handleDateSelect} />
       {dailyData?.panicRecord && dailyData.panicRecord.length > 0 && <PanicRecord panicList={dailyData.panicRecord} />}
       <TodayRecord
