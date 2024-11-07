@@ -26,7 +26,7 @@ const AuthedScreen = () => {
   const sendTokenToWeb = useSendToken(webViewRef);
 
   // 웹에서 메시지 받기
-  const handleMessage = (event: WebViewMessageEvent) => {
+  const handleMessage = async (event: WebViewMessageEvent) => {
     const data = event.nativeEvent.data;
     const { title, content }: WebMessageDto = JSON.parse(data);
 
@@ -34,7 +34,7 @@ const AuthedScreen = () => {
       // 로그인 & 회원가입 & 로그아웃
       case "GETTOKEN":
         console.log("웹에서 토큰 요청함");
-        sendTokenToWeb(); // 토큰 보내기
+        await sendTokenToWeb(); // 토큰 보내기
         return;
       case "LOGOUT":
         console.log("로그아웃 됨");
@@ -43,26 +43,26 @@ const AuthedScreen = () => {
       // 음성 녹음
       case "RECORD":
         if (content === "ONAIR" && userName) {
-          startRecording();
+          await startRecording();
         } else if (content === "STOPAIR" && userName) {
-          stopRecording();
+          await stopRecording();
         } else if (content === "OFFAIR" && userName) {
-          stopRecording();
-          sendRecording(userName);
+          await stopRecording();
+          await sendRecording(userName);
         }
         return;
 
       // 진동
       case "VIBRATE":
-        vibrate(content as string);
+        await vibrate(content as string);
         return;
       case "VIBRATEOFF":
-        vibrateOff();
+        await vibrateOff();
         return;
 
       // 아두이노
       case "ARDSETTING":
-        router.push("authorized/ble");
+        await router.push("authorized/ble");
         return;
       case "ARD":
         if (content === "ON") {
