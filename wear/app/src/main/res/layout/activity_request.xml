@@ -1,0 +1,91 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_background">
+
+    <!-- Background Circle -->
+    <FrameLayout
+        android:layout_width="320dp"
+        android:layout_height="320dp"
+        android:color="@color/main_background"
+        android:layout_centerInParent="true">
+        <ImageView
+            android:id="@+id/image_request_heart"
+            android:layout_width="207dp"
+            android:layout_height="167dp"
+            android:layout_gravity="center|center_horizontal"
+            android:layout_marginBottom="-10dp"
+            android:contentDescription="Example Image"
+            android:src="@drawable/request_heart" />
+
+        <TextView
+            android:id="@+id/request_text_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="심박수가 올라갔어요.\n 도움이 필요하신가요?"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/request_text_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="90dp"
+            android:text="160"
+            android:textAlignment="center"
+            android:textColor="#ffffff"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/request_text_bpm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="120dp"
+            android:text="BPM"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:layout_marginTop="60dp"
+            android:gravity="bottom|center"
+            android:orientation="horizontal">
+
+
+            <Button
+                android:id="@+id/btn_request_yes"
+                android:layout_width="80dp"
+                android:layout_height="36dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/eval_button_background"
+                android:gravity="center"
+                android:text="네"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/btn_request_no"
+                android:layout_width="80dp"
+                android:layout_height="36dp"
+                android:background="@drawable/rounded_button_background"
+                android:gravity="center"
+                android:text="아니오"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+
+    </FrameLayout>
+
+</RelativeLayout>

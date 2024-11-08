@@ -1,3 +1,13 @@
 <resources>
-    <color name="splash_background">#B6D89A</color> <!-- 원하는 헥사코드 -->
+<!--    메인 화면 배경 색-->
+    <color name="main_background">#EBF4E3</color>
+    <color name="secondary_background">#9FBF97</color>
+
+<!--    프로그레스 바 색상-->
+    <color name="progress_bar">#8EBB5B</color>
+
+    <color name="white_button">#F8FCF6</color>
+
+    <color name="emergency_text">#E03C18</color>
+
 </resources>
