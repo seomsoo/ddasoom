@@ -2,6 +2,7 @@ import useSendToken from "@/hooks/useSendToken";
 import useVoiceRecord from "@/hooks/useVoiceRecord";
 import { vibrate, vibrateOff } from "@/utils/vibrate";
 import useAuthStore from "@/zustand/authStore";
+import { logout } from "@react-native-kakao/user";
 import { router } from "expo-router";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { BackHandler, Platform, StatusBar, ToastAndroid, Vibration } from "react-native";
@@ -37,7 +38,9 @@ const AuthedScreen = () => {
         await sendTokenToWeb(); // 토큰 보내기
         return;
       case "LOGOUT":
+        await logout();
         console.log("로그아웃 됨");
+        router.push("/");
         return;
 
       // 음성 녹음
@@ -59,6 +62,15 @@ const AuthedScreen = () => {
       case "VIBRATEOFF":
         await vibrateOff();
         return;
+
+      // 푸시 알림 설정
+      case "NOTI":
+        if (content === "yes") {
+          // 푸시 알림 권한 설정
+          // 푸시 알림 설정
+        } else if (content === "no") {
+          // 푸시 알림 권한 해제
+        }
 
       // 아두이노
       case "ARDSETTING":
