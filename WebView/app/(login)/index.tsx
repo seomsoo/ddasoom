@@ -1,25 +1,20 @@
-import { View, Text, Image, TouchableOpacity, StatusBar, Alert, ImageBackground, ToastAndroid } from "react-native";
-import React, { useEffect } from "react";
+import { Text, ImageBackground, ToastAndroid, Pressable } from "react-native";
+import React from "react";
 import backGroundImg from "@/assets/images/first.png";
-import logoImage from "@/assets/images/logo.png";
 import mini from "@/assets/images/mini_Ddasom.png";
 import kakaoIcon from "@/assets/images/kakao_icon.png";
 import styled from "styled-components/native";
 import Button from "@/components/common/Button";
 import { login, me, unlink } from "@react-native-kakao/user";
 import { router } from "expo-router";
-import { signIn, signUp } from "@/services/auth";
+import { signIn } from "@/services/auth";
 import useAuthStore from "@/zustand/authStore";
-import { AxiosError } from "axios";
-import theme from "@/styles/Theme";
-import useVoiceRecord from "@/hooks/useVoiceRecord";
 
 const Main = () => {
-  const { startRecording, stopRecording, sendRecording, recordUri } = useVoiceRecord();
-  const { userName, setToken, setUserEmail, setUserName, setUserId } = useAuthStore();
+  const { setToken, setUserEmail, setUserName, setUserId } = useAuthStore();
 
   const handleKaKaoLogin = async () => {
-    router.push("authorized");
+    // router.push("authorized");
     const { accessToken, refreshToken } = await login();
 
     if (!accessToken || !refreshToken) {
@@ -79,12 +74,9 @@ const Main = () => {
           <Button color="white" textColor="black" onPress={handleUnauthorized} icon={mini} iconPosition="bottomLeft">
             따숨 둘러보기
           </Button>
-          <Button color="white" textColor="black" onPress={() => router.push("ble")}>
-            임시 BLE 이동
-          </Button>
-          <Button onPress={() => unlink()} color={theme.color.MAIN1}>
-            언링크 임시
-          </Button>
+          <Pressable
+            style={{ width: 100, height: 50, position: "absolute", top: 20, right: 0 }}
+            onPress={() => unlink()}></Pressable>
         </FloatingView>
       </ImageBackground>
     </Container>
