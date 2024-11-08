@@ -1,0 +1,59 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E9F3E4">
+
+    <!-- Background Circle -->
+    <FrameLayout
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:color="@color/main_background"
+        android:layout_centerInParent="true">
+
+        <!-- First Button -->
+
+        <!-- Second Button -->
+
+        <Button
+            android:id="@+id/btn_basic_breath"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|center_horizontal"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/rounded_button_background"
+            android:gravity="center"
+            android:text="4·7·8\n기본 호흡"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="16sp" />
+
+        <!-- Third Button -->
+        <Button
+            android:id="@+id/btn_short_breath"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/rounded_button_background"
+            android:gravity="center"
+            android:text="4·4·4·4\n짧은 호흡"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:radius="20dp" />
+
+        <Button
+            android:id="@+id/btn_long_breath"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/rounded_button_background"
+            android:gravity="center"
+            android:text="5·7·3\n긴 호흡"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="16sp" />
+    </FrameLayout>
+
+</RelativeLayout>
