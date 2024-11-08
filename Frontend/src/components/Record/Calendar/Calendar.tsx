@@ -38,7 +38,6 @@ export default function Calendar({ searchParams }: CalendarProps) {
 
   const {
     data: dailyData,
-    isLoading,
     isError,
     error,
     refetch,
@@ -60,8 +59,6 @@ export default function Calendar({ searchParams }: CalendarProps) {
     setIsErrorModalOpen(false);
     refetch(); // 요청 다시 시도
   };
-
-  if (isLoading) return <LoadingModal />;
 
   const handleDateSelect = (date: Date) => {
     setSelectedDate(date);
