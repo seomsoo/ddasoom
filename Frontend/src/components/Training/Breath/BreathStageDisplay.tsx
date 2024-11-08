@@ -6,7 +6,7 @@ interface BreathStageDisplayProps {
 }
 
 const BreathStageDisplay: React.FC<BreathStageDisplayProps> = ({ sequence, currentStage }) => (
-  <div className="flex justify-center gap-4 mt-4">
+  <div className="flex justify-center gap-4 mt-12">
     {sequence.map((stage, index) => (
       <div key={index} className="text-center font-hakgyoansimR p-2 rounded-full">
         <p className={index === currentStage ? 'font-bold text-main1' : ''}>{stage.description}</p>
