@@ -42,12 +42,8 @@ public class PhoneBookController {
     }
 
     @GetMapping("/api/emergency/phone-books")
-    public ApiResult<Map<String, Object>> getPhoneBooks(@RequestHeader("X-Authenticated-User") Long userId) {
-        Map<String, Object> response = new HashMap<>();
-        List<PhoneBookResponse> phoneBookList = phoneBookUseCase.findPhoneBookList(userId);
-        response.put("userId", userId);
-        response.put("phoneBooks", phoneBookList);
-        return success(response);
+    public ApiResult<List<PhoneBookResponse>> getPhoneBooks(@RequestHeader("X-Authenticated-User") Long userId) {
+        return success(phoneBookUseCase.findPhoneBookList(userId));
     }
 
     @ResponseStatus(OK)
