@@ -1,0 +1,65 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_background">
+
+    <!-- Main Circular Background -->
+    <FrameLayout
+        android:layout_width="320dp"
+        android:layout_height="320dp"
+        android:layout_centerInParent="true">
+
+        <!-- Heart Background Image -->
+        <ImageView
+            android:id="@+id/image_request_heart"
+            android:layout_width="207dp"
+            android:layout_height="167dp"
+            android:layout_gravity="center|center_horizontal"
+            android:layout_marginBottom="-10dp"
+            android:contentDescription="Example Image"
+            android:src="@drawable/request_heart" />
+
+        <!-- Current Heart Rate Text -->
+        <TextView
+            android:id="@+id/text_current_label"
+            android:layout_width="61px"
+            android:layout_height="37px"
+            android:layout_gravity="center"
+            android:layout_marginBottom="15dp"
+            android:layout_marginEnd="25dp"
+            android:text="현재"
+            android:textSize="15sp"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:textAlignment="center" />
+
+        <!-- Heart Rate Value -->
+        <TextView
+            android:id="@+id/text_heart_rate_value"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="18dp"
+            android:layout_marginEnd="20dp"
+            android:text="81"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <!-- BPM Label -->
+        <TextView
+            android:id="@+id/text_bpm_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="23dp"
+            android:layout_marginStart="22dp"
+            android:text="BPM"
+            android:textSize="17sp"
+            android:textColor="@android:color/black"
+            android:textAlignment="center" />
+    </FrameLayout>
+
+</RelativeLayout>
