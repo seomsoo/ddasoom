@@ -40,9 +40,9 @@ export default function Header({ year, month, day }: HeaderProps) {
           style={{
             textShadow: '2px 2px 6px #8EBB5B',
           }}>
-          {day}
+          {/* {day} */}이 달
         </p>
-        번째의 기록
+        의 기록
       </span>
     </header>
   );

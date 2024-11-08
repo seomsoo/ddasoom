@@ -5,6 +5,7 @@ export interface Calendars {
   date: string;
   trainingCount: number;
   panicStatus: boolean;
+  dailyStatus: boolean;
 }
 
 export interface MonthlyData {

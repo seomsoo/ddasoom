@@ -1,12 +1,11 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 
 import queryKeys from '@/api/querykeys';
 import { getDailyData } from '@/api/recordAPI';
 import ErrorModal from '@/components/Common/ErrorModal';
-import LoadingModal from '@/components/Common/LoadingModal';
 import CustomCalendar from '@/components/Record/Calendar/CustomCalendar';
 import { DailyData, DailyRecord } from '@/types/http/response';
 
@@ -18,6 +17,7 @@ interface CalendarProps {
 }
 
 export default function Calendar({ searchParams }: CalendarProps) {
+  const queryClient = useQueryClient();
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [errorContext, setErrorContext] = useState<string>('');
@@ -47,6 +47,12 @@ export default function Calendar({ searchParams }: CalendarProps) {
     enabled: !!year && !!month && !!day,
     retry: false,
   });
+  // dailyData가 변경될 때마다 쿼리 무효화
+  useEffect(() => {
+    if (dailyData) {
+      queryClient.invalidateQueries({ queryKey: [queryKeys.DAILY_RECORD, year, month, day] });
+    }
+  }, [dailyData, queryClient, year, month, day]);
 
   useEffect(() => {
     if (isError && error) {
