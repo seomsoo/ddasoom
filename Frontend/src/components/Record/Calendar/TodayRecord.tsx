@@ -3,12 +3,12 @@ import { useRouter } from 'next/navigation';
 import React from 'react';
 
 import DiaryItem from '@/components/Record/Calendar/DiaryItem';
-import GreenSomi from '@/svgs/greenSomi.svg';
-import HerongSomi from '@/svgs/herongSomi.svg';
-import OrangeSomi from '@/svgs/orangeSomi.svg';
+import GreenSomi from '@/svgs/Ddasomiz/greenSomi.svg';
+import OrangeSomi from '@/svgs/Ddasomiz/orangeSomi.svg';
+import WhiteSomi from '@/svgs/Ddasomiz/whiteSomi.svg';
+import YellowSomi from '@/svgs/Ddasomiz/yellowSomi.svg';
 import AddIcon from '@/svgs/plusCircle.svg';
 import Seed from '@/svgs/seedling.svg';
-import YellowSomi from '@/svgs/yellowSomi.svg';
 
 interface TrainingRecord {
   date: string;
@@ -38,9 +38,9 @@ export default function TodayRecord({ training, date, record }: TodayRecordProps
   };
 
   const renderSomiIcon = () => {
-    const somiIcons = [HerongSomi, YellowSomi, OrangeSomi, GreenSomi];
+    const somiIcons = [WhiteSomi, YellowSomi, OrangeSomi, GreenSomi];
     const Icon = somiIcons[Math.min(training?.trainingList.length || 0, 3)];
-    return <Icon className="mb-2" />;
+    return <Icon />;
   };
 
   const getTrainingLabel = (label: string) => {
