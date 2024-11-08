@@ -15,7 +15,7 @@ module.exports = {
     '@typescript-eslint/no-require-imports': 'off',
     'import/default': 'off', // import 규칙 중 기본 내보내기 오류 비활성화
     'simple-import-sort/imports': 'warn', // import 구문을 알파벳 순서로 정렬 (경고)
-    'simple-import-sort/exports': 'error', // export 구문을 알파벳 순서로 정렬 (에러)
+    'simple-import-sort/exports': 'warn', // export 구문을 알파벳 순서로 정렬 (에러)
     'react/no-unescaped-entities': 'off', // JSX에서 escape되지 않은 문자열 에러 비활성화
     '@next/next/no-page-custom-font': 'off', // Next.js에서 커스텀 폰트 사용 허용
     'react/self-closing-comp': [
@@ -27,7 +27,7 @@ module.exports = {
     ],
     // 'react/jsx-first-prop-new-line': 'error', // JSX 첫 번째 속성을 새 줄에 배치 (에러)
     'comma-dangle': [
-      'error',
+      'warn',
       {
         arrays: 'always-multiline', // 배열에서 항상 쉼표 사용 (줄바꿈 시)
         objects: 'always-multiline', // 객체에서 항상 쉼표 사용 (줄바꿈 시)
@@ -37,7 +37,7 @@ module.exports = {
       },
     ],
     indent: ['warn', 2], // 들여쓰기를 2칸으로 설정 (에러)
-    quotes: ['error', 'single'], // 문자열을 single quote로 설정 (에러)
+    quotes: ['warn', 'single'], // 문자열을 single quote로 설정 (에러)
     'eol-last': 'error', // 파일 끝에 줄바꿈이 필요함 (에러)
     semi: ['error', 'always'], // 세미콜론을 항상 사용 (에러)
     '@typescript-eslint/no-unused-vars': [
