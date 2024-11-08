@@ -14,11 +14,13 @@ public class PanicCalendarInfo {
     private LocalDateTime date;
     private int trainingCount;
     private boolean panicStatus;
+    private boolean dailyStatus;
 
     @QueryProjection
-    public PanicCalendarInfo(LocalDateTime date, int trainingCount, boolean panicStatus) {
+    public PanicCalendarInfo(LocalDateTime date, int trainingCount, boolean panicStatus, boolean dailyStatus) {
         this.date = date;
         this.trainingCount = trainingCount;
         this.panicStatus = panicStatus;
+        this.dailyStatus = dailyStatus;
     }
 }
