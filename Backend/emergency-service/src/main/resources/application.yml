@@ -4,8 +4,6 @@ server:
 spring:
   application:
     name: emergency-service
-  profiles:
-    include: secret
 
   rabbitmq:
     host: localhost
@@ -37,3 +35,8 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://localhost:8761/eureka
+
+msg:
+  api-key: ${MSG_KEY}
+  api-secret: ${MSG_SECRET}
+  send-number: ${MSG_SEND_NUMBER}
