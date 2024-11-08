@@ -15,3 +15,9 @@ type WebMessageDto = {
   title: string;
   content: string | number | object;
 };
+
+/** 위치 정보 타입 */
+type LocationType = {
+  latitude: number;
+  longitude: number;
+};
