@@ -14,11 +14,13 @@ public class CalendarsDto {
     private LocalDate date;
     private int trainingCount;
     private boolean panicStatus;
+    private boolean dailyStatus;
 
     @QueryProjection
-    public CalendarsDto(LocalDate date, int trainingCount, boolean panicStatus) {
+    public CalendarsDto(LocalDate date, int trainingCount, boolean panicStatus, boolean dailyStatus) {
         this.date = date;
         this.trainingCount = trainingCount;
         this.panicStatus = panicStatus;
+        this.dailyStatus = dailyStatus;
     }
 }
