@@ -1,11 +1,4 @@
-import {
-  View,
-  Text,
-  Animated,
-  TouchableOpacity,
-  Image,
-  Vibration,
-} from "react-native";
+import { View, Text, Animated, TouchableOpacity, Image, Vibration } from "react-native";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import styled from "styled-components";
 import HeartSvg from "@/assets/svgs/heart.svg";
@@ -13,6 +6,7 @@ import HeartLineSvg from "@/assets/svgs/heartLine.svg";
 import Ddasomi from "@/assets/svgs/ddasomi.svg";
 import Button from "../common/Button";
 import theme from "@/styles/Theme";
+import { router } from "expo-router";
 
 interface BreathHeartProps {
   timing: "shortTime" | "basicTime" | "longTime";
@@ -64,16 +58,14 @@ const BreathHeart = ({ timing }: BreathHeartProps) => {
     setTimer(0);
     setIsAnimating(false);
     Vibration.cancel(); // 진동 취소
+
+    router.push("breath/breathEndModal");
   };
 
   useEffect(() => {
     if (!isAnimating) return;
 
-    const {
-      duration,
-      scale: targetScale,
-      description,
-    } = sequence[currentStage];
+    const { duration, scale: targetScale, description } = sequence[currentStage];
 
     setDescription(description);
     setTimer(1);
@@ -94,7 +86,7 @@ const BreathHeart = ({ timing }: BreathHeartProps) => {
     }).start();
 
     const stepTimeout = setTimeout(() => {
-      setCurrentStage((prevStage) => (prevStage + 1) % sequence.length);
+      setCurrentStage(prevStage => (prevStage + 1) % sequence.length);
     }, duration);
 
     return () => clearTimeout(stepTimeout);
@@ -103,8 +95,8 @@ const BreathHeart = ({ timing }: BreathHeartProps) => {
   useEffect(() => {
     if (isAnimating) {
       const countdown = setInterval(() => {
-        setTimer((prevTime) => prevTime + 1);
-        setElapsedTime((prevElapsed) => prevElapsed + 1);
+        setTimer(prevTime => prevTime + 1);
+        setElapsedTime(prevElapsed => prevElapsed + 1);
       }, 1000);
 
       return () => clearInterval(countdown);
@@ -128,12 +120,8 @@ const BreathHeart = ({ timing }: BreathHeartProps) => {
           </HeartLineWrapper>
           <AnimatedHeartWrapper
             style={{
-              transform: [
-                { scale: scale },
-                { translateY: Animated.multiply(scale, -14) },
-              ],
-            }}
-          >
+              transform: [{ scale: scale }, { translateY: Animated.multiply(scale, -14) }],
+            }}>
             <HeartSvg width={120} height={120} />
           </AnimatedHeartWrapper>
           <DdasomiWrapper>
