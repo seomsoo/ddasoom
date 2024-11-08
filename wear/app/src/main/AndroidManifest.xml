@@ -37,6 +37,12 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".activity.SelectActivity"
+            android:exported="true"
+            android:taskAffinity=""
+            android:theme="@style/MainActivityTheme.Starting" />
+
         <service
             android:name=".service.ForegroundService"
             android:foregroundServiceType="dataSync"
