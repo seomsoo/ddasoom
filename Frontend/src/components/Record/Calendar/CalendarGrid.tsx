@@ -1,5 +1,7 @@
-import { useQuery } from '@tanstack/react-query';
+'use client';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { format, isSameDay, isToday } from 'date-fns';
+import { useEffect } from 'react';
 
 import queryKeys from '@/api/querykeys';
 import { getMonthlyData } from '@/api/recordAPI';
@@ -14,6 +16,7 @@ interface CalendarGridProps {
 }
 
 export default function CalendarGrid({ date, selectedDate, onDateSelect }: CalendarGridProps) {
+  const queryClient = useQueryClient();
   const year = date.getFullYear();
   const month = date.getMonth();
 
@@ -25,6 +28,12 @@ export default function CalendarGrid({ date, selectedDate, onDateSelect }: Calen
 
   const startOfMonth = new Date(year, month, 1);
   const endOfMonth = new Date(year, month + 1, 0);
+
+  useEffect(() => {
+    if (monthlyData) {
+      queryClient.invalidateQueries({ queryKey: [queryKeys.MONTHLY_RECORD, year, month + 1] });
+    }
+  }, [monthlyData, queryClient, year, month]);
 
   // 시작 빈 칸을 이전 달의 마지막 날짜로 채우기
   const prevMonthLastDate = new Date(year, month, 0);
@@ -58,6 +67,7 @@ export default function CalendarGrid({ date, selectedDate, onDateSelect }: Calen
         );
 
         const isPanicDay = dayData?.panicStatus || false;
+        const isDiary = dayData?.dailyStatus || false;
         const trainingCount = dayData?.trainingCount || 0;
         const isFutureDate = currentDay > new Date();
 
@@ -71,7 +81,7 @@ export default function CalendarGrid({ date, selectedDate, onDateSelect }: Calen
               }}
               className={`relative h-11 w-11 flex items-center justify-center rounded-full ${
                 isFutureDate ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer'
-              } ${isPanicDay ? 'bg-black' : 'bg-[#d6f0bf]'}`}>
+              } ${isPanicDay ? 'bg-black' : 'bg-[#d6f0bf]'} ${isDiary ? 'border border-main2 border-2' : ''}`}>
               {trainingCount > 0 && <DdasomiIcon trainingCount={trainingCount} />}
             </div>
             <span
