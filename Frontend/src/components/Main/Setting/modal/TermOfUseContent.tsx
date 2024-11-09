@@ -9,7 +9,7 @@ export default function TermsOfUseContent() {
       <section>
         <h3 className="text-xl font-nanumBold mb-2">제1조 (목적)</h3>
         <p>
-          본 약관은 SSAFY(이하 '회사')가 제공하는 따솜 서비스(이하 '서비스')의 이용과 관련하여 회사와 이용자의 권리,
+          본 약관은 SSAFY(이하 '회사')가 제공하는 따숨 서비스(이하 '서비스')의 이용과 관련하여 회사와 이용자의 권리,
           의무 및 책임사항을 규정함을 목적으로 합니다.
         </p>
       </section>
@@ -18,7 +18,7 @@ export default function TermsOfUseContent() {
         <h3 className="text-xl font-nanumBold mb-2">제2조 (용어의 정의)</h3>
         <p>이 약관에서 사용하는 용어의 정의는 다음과 같습니다.</p>
         <ul className="list-disc ml-6 space-y-1">
-          <li>‘서비스’란 회사가 제공하는 따솜의 모든 기능과 콘텐츠를 의미합니다.</li>
+          <li>‘서비스’란 회사가 제공하는 따숨의 모든 기능과 콘텐츠를 의미합니다.</li>
           <li>‘이용자’란 본 약관에 따라 회사와 이용 계약을 체결하고 서비스를 이용하는 모든 고객을 말합니다.</li>
           <li>
             ‘회원’이란 회사에 개인정보를 제공하여 회원등록을 한 자로서, 회사가 제공하는 정보를 지속적으로 제공받으며,
@@ -51,7 +51,7 @@ export default function TermsOfUseContent() {
         <h3 className="text-xl font-nanumBold mb-2">제5조 (서비스의 제공 및 변경)</h3>
         <p>1. 회사는 이용자에게 다음과 같은 서비스를 제공합니다.</p>
         <ul className="list-disc ml-6 space-y-1">
-          <li>따솜 서비스 관련 기능 제공</li>
+          <li>따숨 서비스 관련 기능 제공</li>
           <li>기타 회사가 추가 개발하거나 다른 회사와 협력 계약 등을 통해 제공하는 일체의 서비스</li>
         </ul>
         <p>2. 회사는 서비스 운영상 필요한 경우 서비스 내용을 변경할 수 있으며, 변경된 내용은 사전에 공지합니다.</p>
