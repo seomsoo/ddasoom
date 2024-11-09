@@ -14,3 +14,14 @@ export interface DiaryRequestBody {
 export interface TrainingRequestBody {
   trainingType: string;
 }
+
+// 비상 연락처 저장
+export interface SavePhoneRequestBody {
+  phoneNumber: string;
+  alias: string;
+}
+
+// 비상 연락처로 문자
+export interface SendMessageRequestBody {
+  alias: string;
+}

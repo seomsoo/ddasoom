@@ -60,3 +60,10 @@ export interface ReportData {
   dailyReport: DailyReport | null;
   continuousTrainingCount: number;
 }
+
+// 비상 연락처 목록 조회
+export interface PhoneListData {
+  PhoneBookId: number;
+  PhoneNumber: string;
+  alias: string;
+}
