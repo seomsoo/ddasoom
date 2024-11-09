@@ -1,9 +1,11 @@
 import Link from 'next/link';
 
+import EmergencyModal from '@/components/Main/Setting/modal/EmergencyModal';
+
 import Navbar from '@/components/Common/Navbar';
 import Setting from '@/svgs/setting.svg';
-import Sos from '@/svgs/SOS.svg';
 import SoundOn from '@/svgs/soundOn.svg';
+import EmergencyContent from '@/components/Main/Setting/modal/EmergencyContent';
 const Main = () => {
   return (
     <>
@@ -15,7 +17,7 @@ const Main = () => {
           </Link>
         </div>
 
-        <Sos />
+        <EmergencyModal ContentComponent={EmergencyContent} />
       </header>
       <main className="flex flex-col items-center mt-72 text-3xl font-hakgyoansimB">
         따솜이 키우기가 들어갈

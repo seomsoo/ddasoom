@@ -65,14 +65,14 @@ export default function BreathCircle({ breathType }: BreathCircleProps) {
   const stepTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
   // 진동 요청 함수
-  // const sendVibrateRequest = (duration: number) => {
-  //   window.ReactNativeWebView.postMessage(
-  //     JSON.stringify({
-  //       title: 'VIBRATE',
-  //       content: duration,
-  //     }),
-  //   );
-  // };
+  const sendVibrateRequest = (duration: number) => {
+    window.ReactNativeWebView.postMessage(
+      JSON.stringify({
+        title: 'VIBRATE',
+        content: duration,
+      }),
+    );
+  };
 
   useEffect(() => {
     setIsPreparing(true);
@@ -93,7 +93,7 @@ export default function BreathCircle({ breathType }: BreathCircleProps) {
       setCurrentCycle(1);
 
       if (sequence[0].description === '들이마시기' || sequence[0].description === '내쉬기') {
-        // sendVibrateRequest(sequence[0].duration);
+        sendVibrateRequest(sequence[0].duration);
       }
     }, 3000);
 
@@ -135,7 +135,7 @@ export default function BreathCircle({ breathType }: BreathCircleProps) {
         setTimer(sequence[nextStage].duration); // 다음 단계의 duration으로 timer 재설정
 
         if (sequence[nextStage].description === '들이마시기' || sequence[nextStage].description === '내쉬기') {
-          // sendVibrateRequest(sequence[nextStage].duration);
+          sendVibrateRequest(sequence[nextStage].duration);
         }
 
         if (nextStage === 0) {

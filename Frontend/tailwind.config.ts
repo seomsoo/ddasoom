@@ -9,6 +9,10 @@ const config: Config = {
   theme: {
     extend: {
       keyframes: {
+        sirenPulse: {
+          '0%, 100%': { transform: 'scale(1)', filter: 'drop-shadow(0 0 10px red)' },
+          '50%': { transform: 'scale(1.1)', filter: 'drop-shadow(0 0 20px red)' },
+        },
         fadein: {
           '0%': {
             opacity: '0',
@@ -23,11 +27,11 @@ const config: Config = {
           },
           '100%': {
             opacity: '0',
-           
           },
         },
       },
       animation: {
+        'siren-pulse': 'sirenPulse 1s infinite ease-in-out',
         fadein: 'fadein 2s ease-out forwards',
         fadeout: 'fadeout 1s ease-out forwards',
       },
