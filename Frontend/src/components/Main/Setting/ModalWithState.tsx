@@ -9,7 +9,7 @@ import Enter from '@/svgs/enterIcon.svg';
 
 interface ModalWithStateProps {
   label: string;
-  ContentComponent: ComponentType;
+  ContentComponent: ComponentType<{ closeModal: () => void }>;
 }
 
 export default function ModalWithState({ label, ContentComponent }: ModalWithStateProps) {
@@ -45,7 +45,7 @@ export default function ModalWithState({ label, ContentComponent }: ModalWithSta
                 <Cancel />
               </button>
               <div className="max-h-[60vh] overflow-y-auto">
-                <ContentComponent />
+                <ContentComponent closeModal={closeModal} />
               </div>
             </motion.div>
           </motion.div>
