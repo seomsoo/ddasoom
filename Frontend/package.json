@@ -11,6 +11,7 @@
     "format": "prettier --cache --write ."
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.9.1",
     "@reduxjs/toolkit": "^2.3.0",
     "@svgr/webpack": "^8.1.0",
     "@tanstack/react-query": "^5.59.16",
@@ -23,12 +24,15 @@
     "next-videos": "^1.4.1",
     "react": "^18",
     "react-dom": "^18",
+    "react-hook-form": "^7.53.2",
+    "react-input-mask": "^2.0.4",
     "react-kakao-maps-sdk": "^1.1.27",
     "react-lottie-player": "^2.1.0",
     "react-redux": "^9.1.2",
     "react-step-progress-bar": "^1.0.3",
     "react-swipeable": "^7.0.1",
-    "swiper": "^11.1.14"
+    "swiper": "^11.1.14",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^5.59.7",
