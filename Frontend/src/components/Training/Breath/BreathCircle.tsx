@@ -1,15 +1,14 @@
 'use client';
 import 'react-step-progress-bar/styles.css';
 
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ProgressBar, Step } from 'react-step-progress-bar';
 
-import Ddasom from '/public/images/breathddasom.png';
 import Header from '@/components/Common/Header';
 import breathData from '@/constants/BreathData';
 import Footer from '@/svgs/breathfooter.svg';
+import StartBasic from '@/videos/start+478.gif';
 
 import BreathCircleAnimation from './BreathCircleAnimation';
 // import BreathStageDisplay from './BreathStageDisplay';
@@ -210,9 +209,9 @@ export default function BreathCircle({ breathType }: BreathCircleProps) {
             </div>
           )}
         </div>
-        <div className="bg-[#b0e4b7]   rounded-full w-[240px] h-[240px] absolute bottom-14" />
-        <article className="absolute bottom-12  ">
-          <Image src={Ddasom} alt="Ddasom" width={205} height={170} className=" rounded-full " />
+        <div className="bg-[#b0e4b7]   rounded-full w-[230px] h-[230px] absolute bottom-14" />
+        <article className="absolute bottom-14  ">
+          <img src={StartBasic.src} alt="Breath animation" className="w-[230px] h-[230px] rounded-full" />
         </article>
         <BreathCircleAnimation
           sequenceLength={sequence.length}
