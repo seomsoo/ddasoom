@@ -17,10 +17,7 @@ export default function RecodingContent() {
       </main>
       <section className="flex text-nowrap">
         <button onClick={goToRecodingPage} className="bg-main4 p-4 px-4 rounded-full w-full">
-          <span>직접 녹음하기</span>
-        </button>
-        <button onClick={goToRecodingPage} className="bg-main4 p-4 px-4 rounded-full w-full">
-          <span>목소리 받아오기</span>
+          <span>녹음하기</span>
         </button>
       </section>
     </div>

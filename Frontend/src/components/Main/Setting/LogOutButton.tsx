@@ -11,7 +11,9 @@ export default function LogOutButton() {
   };
 
   return (
-    <button onClick={handleLogout} className="p-2 py-3 mt-6 justify-center bg-sub3 text-main4 flex rounded-full">
+    <button
+      onClick={handleLogout}
+      className="p-2 py-3 mt-6 justify-center font-nanumExtraBold bg-sub3 text-main4 flex rounded-full">
       로그아웃
     </button>
   );
