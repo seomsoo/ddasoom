@@ -1,20 +1,21 @@
 'use client';
-
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
-import { postSavePhoneData } from '@/api/emergencyAPI';
+import { getPhoneData, postSavePhoneData } from '@/api/emergencyAPI';
+import queryKeys from '@/api/querykeys';
 import ErrorModal from '@/components/Common/ErrorModal';
 import Character from '@/svgs/Ddasomiz/xEyesSomi.svg';
 import PlusIcon from '@/svgs/PlusIcon.svg';
 import TrashIcon from '@/svgs/TrashIcon.svg';
+import { BaseResponse } from '@/types/http/baseResponse';
 import { SavePhoneRequestBody } from '@/types/http/request';
+import { PhoneListData } from '@/types/http/response';
 
 interface Contact {
-  PhoneBookId: number;
   PhoneNumber: string;
   alias: string;
 }
@@ -22,13 +23,19 @@ interface Contact {
 export default function SosContent() {
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [errorContext, setErrorContext] = useState('');
-  const [contacts, setContacts] = useState<Contact[]>([]);
-  const [idCounter, setIdCounter] = useState(1);
+
+  const { data: phoneListResponse, refetch } = useQuery<BaseResponse<PhoneListData | PhoneListData[]>>({
+    queryKey: [queryKeys.EMERGENCY_PHONE_NUMBER],
+    queryFn: () => getPhoneData(),
+  });
+
+  const phoneData = phoneListResponse?.data;
 
   const mutation = useMutation({
     mutationFn: (data: SavePhoneRequestBody) => postSavePhoneData(data),
     onSuccess: () => {
       console.log('전화번호 전송 성공');
+      refetch(); // 새로운 연락처 추가 후 데이터 새로고침
     },
     onError: error => {
       console.error('전화번호 전송 실패:', error);
@@ -37,29 +44,32 @@ export default function SosContent() {
     },
   });
 
-  // 전화번호를 000-0000-0000 형식으로 포맷팅하는 함수
-  const formatPhoneNumber = (value: string) => {
+  const formatPhoneNumber = (value: string | undefined) => {
+    if (!value) return ''; // value가 undefined인 경우 빈 문자열 반환
     const numbersOnly = value.replace(/\D/g, ''); // 숫자만 남기기
     if (numbersOnly.length <= 3) return numbersOnly;
     if (numbersOnly.length <= 7) return `${numbersOnly.slice(0, 3)}-${numbersOnly.slice(3)}`;
     return `${numbersOnly.slice(0, 3)}-${numbersOnly.slice(3, 7)}-${numbersOnly.slice(7, 11)}`;
   };
 
-  // 유효성 검사 스키마 정의
   const schema = yup.object().shape({
     alias: yup
       .string()
       .required('이름을 입력해주세요.')
       .test('duplicate-alias', '이미 존재하는 이름입니다.', value => {
-        return !contacts.some(contact => contact.alias === value);
+        return Array.isArray(phoneData)
+          ? !phoneData.some(contact => contact.alias === value)
+          : phoneData?.alias !== value;
       }),
     PhoneNumber: yup
       .string()
       .matches(/^\d{3}-\d{4}-\d{4}$/, '유효한 전화번호 형식이 아닙니다.')
       .required('전화번호를 입력해주세요.')
       .test('duplicate-phone', '이미 존재하는 전화번호입니다.', value => {
-        const normalizedValue = value?.replace(/-/g, ''); // 입력된 번호에서 '-' 제거
-        return !contacts.some(contact => contact.PhoneNumber === normalizedValue);
+        const normalizedValue = value?.replace(/-/g, '');
+        return Array.isArray(phoneData)
+          ? !phoneData.some(contact => contact.PhoneNumber === normalizedValue)
+          : phoneData?.PhoneNumber !== normalizedValue;
       }),
   });
 
@@ -72,25 +82,23 @@ export default function SosContent() {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data: Omit<Contact, 'PhoneBookId'>) => {
-    const formattedPhoneNumber = data.PhoneNumber.replace(/-/g, ''); // '-' 제거
-    setIdCounter(idCounter + 1);
+  const onSubmit = (data: Contact) => {
+    const formattedPhoneNumber = data.PhoneNumber ? data.PhoneNumber.replace(/-/g, '') : '';
     const phoneData: SavePhoneRequestBody = {
       phoneNumber: formattedPhoneNumber,
       alias: data.alias,
     };
-
     mutation.mutate(phoneData);
     reset({ alias: '', PhoneNumber: '' });
-  };
-
-  const handleDelete = (id: number) => {
-    setContacts(contacts.filter(contact => contact.PhoneBookId !== id));
   };
 
   const handleRetry = () => {
     setIsErrorModalOpen(false);
     handleSubmit(onSubmit);
+  };
+
+  const handleDelete = (phoneNumber: number) => {
+    // setContacts(contacts.filter(contact => contact.PhoneNumber !== phoneNumber));
   };
 
   return (
@@ -144,17 +152,19 @@ export default function SosContent() {
       <div
         className="w-full mt-4 space-y-2 overscroll-y"
         style={{ minHeight: '150px', maxHeight: '200px', overflowY: 'auto' }}>
-        {contacts.length === 0 ? (
+        {!phoneData ? (
           <div className="flex flex-col items-center text-center font-nanumBold text-gray4 mt-8">
             <p>저장된 연락처가 없습니다.</p>
             <Character width={84} height={75} className="mb-4" />
           </div>
-        ) : (
+        ) : Array.isArray(phoneData) ? (
           <ul>
-            {contacts.map(contact => (
+            {phoneData.map((contact, index) => (
               <li
                 key={contact.PhoneBookId}
-                className="flex justify-between text-sm items-center bg-main4 rounded-full p-2">
+                className={`flex justify-between text-sm items-center rounded-full p-2 ${
+                  index % 2 === 0 ? 'bg-main4' : ''
+                }`}>
                 <span className="flex-1 ml-2">{contact.alias}</span>
                 <span className="mr-6">{formatPhoneNumber(contact.PhoneNumber)}</span>
                 <button onClick={() => handleDelete(contact.PhoneBookId)}>
@@ -162,6 +172,18 @@ export default function SosContent() {
                 </button>
               </li>
             ))}
+          </ul>
+        ) : (
+          <ul>
+            <li
+              key={phoneData.PhoneBookId}
+              className="flex justify-between text-sm items-center bg-main4 rounded-full p-2">
+              <span className="flex-1 ml-2">{phoneData.alias}</span>
+              <span className="mr-6">{formatPhoneNumber(phoneData.PhoneNumber)}</span>
+              <button onClick={() => handleDelete(phoneData.PhoneBookId)}>
+                <TrashIcon width={20} height={20} />
+              </button>
+            </li>
           </ul>
         )}
       </div>
