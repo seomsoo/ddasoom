@@ -1,13 +1,17 @@
 'use client';
 
-import { useState } from 'react';
-import { useForm, Controller } from 'react-hook-form';
-import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useMutation } from '@tanstack/react-query';
+import { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import * as yup from 'yup';
 
+import { postSavePhoneData } from '@/api/emergencyAPI';
+import ErrorModal from '@/components/Common/ErrorModal';
+import Character from '@/svgs/Ddasomiz/xEyesSomi.svg';
 import PlusIcon from '@/svgs/PlusIcon.svg';
 import TrashIcon from '@/svgs/TrashIcon.svg';
-import Character from '@/svgs/Ddasomiz/xEyesSomi.svg';
+import { SavePhoneRequestBody } from '@/types/http/request';
 
 interface Contact {
   PhoneBookId: number;
@@ -15,9 +19,23 @@ interface Contact {
   alias: string;
 }
 
-export default function ConnectContent() {
+export default function SosContent() {
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+  const [errorContext, setErrorContext] = useState('');
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [idCounter, setIdCounter] = useState(1);
+
+  const mutation = useMutation({
+    mutationFn: (data: SavePhoneRequestBody) => postSavePhoneData(data),
+    onSuccess: () => {
+      console.log('전화번호 전송 성공');
+    },
+    onError: error => {
+      console.error('전화번호 전송 실패:', error);
+      setErrorContext(error.message || '에러 메시지 전송 안 됨');
+      setIsErrorModalOpen(true);
+    },
+  });
 
   // 전화번호를 000-0000-0000 형식으로 포맷팅하는 함수
   const formatPhoneNumber = (value: string) => {
@@ -56,22 +74,31 @@ export default function ConnectContent() {
 
   const onSubmit = (data: Omit<Contact, 'PhoneBookId'>) => {
     const formattedPhoneNumber = data.PhoneNumber.replace(/-/g, ''); // '-' 제거
-    const newContact: Contact = {
-      PhoneBookId: idCounter,
-      alias: data.alias,
-      PhoneNumber: formattedPhoneNumber,
-    };
-    setContacts([...contacts, newContact]);
     setIdCounter(idCounter + 1);
-    reset({ alias: '', PhoneNumber: '' }); // 폼 초기화
+    const phoneData: SavePhoneRequestBody = {
+      phoneNumber: formattedPhoneNumber,
+      alias: data.alias,
+    };
+
+    mutation.mutate(phoneData);
+    reset({ alias: '', PhoneNumber: '' });
   };
 
   const handleDelete = (id: number) => {
     setContacts(contacts.filter(contact => contact.PhoneBookId !== id));
   };
 
+  const handleRetry = () => {
+    setIsErrorModalOpen(false);
+    handleSubmit(onSubmit);
+  };
+
   return (
     <div className="flex flex-col items-center w-full p-4 max-w-sm mx-auto space-y-4">
+      {isErrorModalOpen && (
+        <ErrorModal onClose={() => setIsErrorModalOpen(false)} onRetry={handleRetry} context={errorContext} />
+      )}
+
       <h2 className="text-2xl font-semibold">비상 연락처</h2>
       <p className="text-sm opacity-50 text-center mb-4">
         공황발작 10분 이상 경과시,
