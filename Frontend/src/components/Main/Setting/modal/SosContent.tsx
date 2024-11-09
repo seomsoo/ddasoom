@@ -1,18 +1,18 @@
 'use client';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
-import { getPhoneData, postSavePhoneData } from '@/api/emergencyAPI';
+import { getPhoneData, postSavePhoneData, postSendMessageData } from '@/api/emergencyAPI';
 import queryKeys from '@/api/querykeys';
 import ErrorModal from '@/components/Common/ErrorModal';
 import Character from '@/svgs/Ddasomiz/xEyesSomi.svg';
 import PlusIcon from '@/svgs/PlusIcon.svg';
 import TrashIcon from '@/svgs/TrashIcon.svg';
 import { BaseResponse } from '@/types/http/baseResponse';
-import { SavePhoneRequestBody } from '@/types/http/request';
+import { SavePhoneRequestBody, SendMessageRequestBody } from '@/types/http/request';
 import { PhoneListData } from '@/types/http/response';
 
 interface Contact {
@@ -31,6 +31,7 @@ export default function SosContent() {
 
   const phoneData = phoneListResponse?.data;
 
+  // 비상 전화번호 기록
   const mutation = useMutation({
     mutationFn: (data: SavePhoneRequestBody) => postSavePhoneData(data),
     onSuccess: () => {
@@ -43,6 +44,44 @@ export default function SosContent() {
       setIsErrorModalOpen(true);
     },
   });
+
+  // 비상 메시지 전송
+  const sendEmergencyMessage = useMutation({
+    mutationFn: (data: SendMessageRequestBody) => postSendMessageData(data),
+    onSuccess: () => {
+      console.log('비상 메시지 전송 성공');
+    },
+    onError: error => {
+      console.error('비상 메시지 전송 실패:', error);
+      setErrorContext(error.message || '에러 메시지 전송 안 됨');
+      setIsErrorModalOpen(true);
+    },
+  });
+
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      const receivedMessage = event.data;
+      console.log('Message received from WebView:', receivedMessage);
+
+      // content가 true인 경우 비상 메시지 전송
+      if (receivedMessage?.title === 'EMERGENCY' && receivedMessage?.content === true) {
+        const emergencyContacts = Array.isArray(phoneData) ? phoneData : [phoneData];
+        emergencyContacts.forEach(contact => {
+          if (contact) {
+            sendEmergencyMessage.mutate({
+              alias: contact.alias,
+            });
+          }
+        });
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
+
+    return () => {
+      window.removeEventListener('message', handleMessage);
+    };
+  }, [phoneData]);
 
   const formatPhoneNumber = (value: string | undefined) => {
     if (!value) return ''; // value가 undefined인 경우 빈 문자열 반환
