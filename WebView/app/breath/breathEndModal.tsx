@@ -1,17 +1,68 @@
-import { View, Text, TouchableOpacity, TextInput, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  TextInput,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+  ToastAndroid,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components/native";
 import useGeocoding from "@/hooks/useGeocoding";
 import useLocation from "@/hooks/useLocation";
+import { router, useLocalSearchParams } from "expo-router";
+import { timeFormat } from "@/utils/timeFormat";
+import useNotificationStore from "@/zustand/notificationStore";
+import { scheduleLocalNotification, sendPushNotification } from "@/utils/notifications";
+import { savePanicInfoToStorage } from "@/services/storage";
 
 const BreathEndModal = () => {
+  const { expoPushToken } = useNotificationStore();
+  const { totalTime } = useLocalSearchParams();
   const { location } = useLocation();
   const { reverseGeocode, address } = useGeocoding();
-  const [pannicSpot, setPannicSpot] = useState("");
+  const [panicSpot, setPanicSpot] = useState("");
   const [inputText, setInputText] = useState("");
 
-  const handleSave = () => {
-    console.log(inputText);
+  const nowTime = new Date().toTimeString().split(" ")[0].split(":").splice(0, 2);
+
+  const handleSave = async () => {
+    const panicInfo: PanicFirstForm = {
+      duration: +totalTime,
+      address: panicSpot,
+      description: inputText,
+      latitude: location?.latitude ?? 0,
+      longitude: location?.longitude ?? 0,
+      time: new Date().toISOString(),
+    };
+
+    // panicInfo를 기기의 메모리에 저장
+    await savePanicInfoToStorage(panicInfo);
+    router.push("/");
+  };
+
+  const handleSkip = async () => {
+    // 10분 뒤 다시 작성할 수 있게 하는 로컬 알림
+
+    const panicInfo: PanicFirstForm = {
+      duration: +totalTime,
+      address: panicSpot,
+      description: inputText,
+      latitude: location?.latitude ?? 0,
+      longitude: location?.longitude ?? 0,
+      time: new Date().toISOString(),
+    };
+
+    // panicInfo를 기기의 메모리에 저장 + 로컬 푸시 알림 예약
+    await savePanicInfoToStorage(panicInfo);
+
+    if (expoPushToken) {
+      scheduleLocalNotification({ title: "따 숨", body: "진정이 됐나요? 오늘 상황을 기록해보세요.", seconds: 5 });
+    }
+
+    router.push("/");
   };
 
   useEffect(() => {
@@ -22,9 +73,9 @@ const BreathEndModal = () => {
 
   useEffect(() => {
     if (address) {
-      setPannicSpot(address?.split(" ").splice(1).join(" "));
+      setPanicSpot(address?.split(" ").splice(1).join(" "));
     } else {
-      setPannicSpot("위치를 받아오는 중 입니다...");
+      setPanicSpot("위치를 받아오는 중 입니다...");
     }
   }, [address]);
 
@@ -43,15 +94,17 @@ const BreathEndModal = () => {
           <InfoBox>
             <InfoContent>
               <InfoTextLeft>{"발생 시각   :   "}</InfoTextLeft>
-              <InfoTextRight>17시 59분</InfoTextRight>
+              <InfoTextRight>
+                {nowTime[0]}시 {nowTime[1]}분
+              </InfoTextRight>
             </InfoContent>
             <InfoContent>
               <InfoTextLeft>{"경과 시간   :   "}</InfoTextLeft>
-              <InfoTextRight>3분</InfoTextRight>
+              <InfoTextRight>{timeFormat(+totalTime)}</InfoTextRight>
             </InfoContent>
             <InfoContent>
               <InfoTextLeft>{"장       소    :   "}</InfoTextLeft>
-              <InfoTextRight>{address}</InfoTextRight>
+              <InfoTextRight>{panicSpot}</InfoTextRight>
             </InfoContent>
           </InfoBox>
           <InputContainer>
@@ -70,7 +123,7 @@ const BreathEndModal = () => {
           <Button onPress={handleSave}>
             <ButtonText>저장</ButtonText>
           </Button>
-          <CancelBox>
+          <CancelBox onPress={handleSkip}>
             <CancelText>건너뛰기</CancelText>
             <CancelText>(30분 뒤 다시 작성할 수 있어요.)</CancelText>
           </CancelBox>
@@ -81,16 +134,6 @@ const BreathEndModal = () => {
 };
 
 export default BreathEndModal;
-
-// Styled Components
-
-const Container = styled(View)`
-  flex: 1;
-  background-color: #ebf4e3;
-  align-items: center;
-  padding: 20px;
-  justify-content: space-between;
-`;
 
 const KeyboardAvoidingContainer = styled(KeyboardAvoidingView)`
   flex: 1;

@@ -12,7 +12,7 @@ import com.facebook.react.ReactHost
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.load
 import com.facebook.react.defaults.DefaultReactNativeHost
 import com.facebook.soloader.SoLoader
-
+import com.google.firebase.FirebaseApp // Firebase 관련 import 추가
 import expo.modules.ApplicationLifecycleDispatcher
 import expo.modules.ReactNativeHostWrapper
 
@@ -43,6 +43,9 @@ class MainApplication : Application(), ReactApplication {
   override fun onCreate() {
     super.onCreate()
     SoLoader.init(this, false)
+
+    // Firebase 초기화 코드 추가
+        FirebaseApp.initializeApp(this) // Firebase 초기화 코드 추가
 
 //    // MessageService 시작
 //    val serviceIntent = Intent(this, MessageService::class.java)

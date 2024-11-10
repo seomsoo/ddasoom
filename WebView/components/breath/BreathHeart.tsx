@@ -1,4 +1,4 @@
-import { View, Text, Animated, TouchableOpacity, Image, Vibration } from "react-native";
+import { View, Text, Animated, TouchableOpacity, Vibration } from "react-native";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import styled from "styled-components";
 import HeartSvg from "@/assets/svgs/heart.svg";
@@ -7,6 +7,7 @@ import Ddasomi from "@/assets/svgs/ddasomi.svg";
 import Button from "../common/Button";
 import theme from "@/styles/Theme";
 import { router } from "expo-router";
+import useBreathStore from "@/zustand/breathStore";
 
 interface BreathHeartProps {
   timing: "shortTime" | "basicTime" | "longTime";
@@ -19,6 +20,9 @@ const BreathHeart = ({ timing }: BreathHeartProps) => {
   const [isAnimating, setIsAnimating] = useState(false);
   const [goalTime, setGoalTime] = useState(0); // 목표 시간
   const scale = useRef(new Animated.Value(1)).current; // Animated 값으로 하트 크기 설정
+  const [totalTime, setTotalTime] = useState(0); // 전체 경과 시간
+  const { setBreathTime } = useBreathStore();
+  const totalTimeInterval = useRef<NodeJS.Timeout | null>(null); // totalTime 타이머 관리
 
   const sequence = useMemo(() => {
     if (timing === "shortTime") {
@@ -59,7 +63,16 @@ const BreathHeart = ({ timing }: BreathHeartProps) => {
     setIsAnimating(false);
     Vibration.cancel(); // 진동 취소
 
-    router.push("breath/breathEndModal");
+    // totalTimeInterval 정리 및 전역 상태에 저장
+    if (totalTimeInterval.current) {
+      clearInterval(totalTimeInterval.current);
+    }
+    // setBreathTime(totalTime);
+
+    router.push({
+      pathname: "breath/breathEndModal",
+      params: { totalTime },
+    });
   };
 
   useEffect(() => {
@@ -94,12 +107,22 @@ const BreathHeart = ({ timing }: BreathHeartProps) => {
 
   useEffect(() => {
     if (isAnimating) {
+      totalTimeInterval.current = setInterval(() => {
+        setTotalTime(prevTotal => prevTotal + 1);
+      }, 1000);
+
       const countdown = setInterval(() => {
         setTimer(prevTime => prevTime + 1);
         setElapsedTime(prevElapsed => prevElapsed + 1);
       }, 1000);
 
-      return () => clearInterval(countdown);
+      return () => {
+        clearInterval(countdown);
+        if (totalTimeInterval.current) {
+          clearInterval(totalTimeInterval.current);
+        }
+        setBreathTime(totalTime); // 페이지가 종료될 때 totalTime을 전역 상태에 저장
+      };
     }
   }, [isAnimating]);
 
@@ -140,11 +163,14 @@ const BreathHeart = ({ timing }: BreathHeartProps) => {
           <ButtonText>종료하기</ButtonText>
         </Button>
       )}
+      <TimerText>전체 경과 시간: {totalTime}초</TimerText>
     </Container>
   );
 };
 
 export default BreathHeart;
+
+// Styled Components
 
 const Container = styled(View)`
   flex: 1;
