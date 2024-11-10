@@ -4,7 +4,7 @@
     <color name="secondary_background">#9FBF97</color>
 
 <!--    프로그레스 바 색상-->
-    <color name="progress_bar">#8EBB5B</color>
+    <color name="progress_bar">#808EBB5B</color>
 
     <color name="white_button">#F8FCF6</color>
 
