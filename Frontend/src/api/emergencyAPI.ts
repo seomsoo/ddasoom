@@ -21,3 +21,9 @@ export const getPhoneData = async (): Promise<BaseResponse<PhoneListData>> => {
   const response = await axiosInstance.get<BaseResponse<PhoneListData>>('/emergency/phone-books');
   return response.data;
 };
+
+// 비상 연락처 삭제
+export const deletePhoneData = async (phoneBookId: number): Promise<BaseResponse<null>> => {
+  const response = await axiosInstance.delete<BaseResponse<null>>(`/emergency/phone-book/${phoneBookId}`);
+  return response.data;
+};

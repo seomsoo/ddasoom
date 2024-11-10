@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
-import { getPhoneData, postSavePhoneData, postSendMessageData } from '@/api/emergencyAPI';
+import { deletePhoneData, getPhoneData, postSavePhoneData, postSendMessageData } from '@/api/emergencyAPI';
 import queryKeys from '@/api/querykeys';
 import ErrorModal from '@/components/Common/ErrorModal';
 import Character from '@/svgs/Ddasomiz/xEyesSomi.svg';
@@ -53,6 +53,20 @@ export default function SosContent() {
     },
     onError: error => {
       console.error('비상 메시지 전송 실패:', error);
+      setErrorContext(error.message || '에러 메시지 전송 안 됨');
+      setIsErrorModalOpen(true);
+    },
+  });
+
+  // 비상 연락처 삭제
+  const deleteMutation = useMutation({
+    mutationFn: (phoneBookId: number) => deletePhoneData(phoneBookId),
+    onSuccess: () => {
+      console.log('연락처 삭제 성공');
+      refetch();
+    },
+    onError: error => {
+      console.error('연락처 삭제 실패:', error);
       setErrorContext(error.message || '에러 메시지 전송 안 됨');
       setIsErrorModalOpen(true);
     },
@@ -136,8 +150,8 @@ export default function SosContent() {
     handleSubmit(onSubmit);
   };
 
-  const handleDelete = (phoneNumber: number) => {
-    // setContacts(contacts.filter(contact => contact.PhoneNumber !== phoneNumber));
+  const handleDelete = (phoneBookId: number) => {
+    deleteMutation.mutate(phoneBookId);
   };
 
   return (
@@ -200,7 +214,7 @@ export default function SosContent() {
           <ul>
             {phoneData.map((contact, index) => (
               <li
-                key={contact.PhoneBookId}
+                key={index}
                 className={`flex justify-between text-sm items-center rounded-full p-2 ${
                   index % 2 === 0 ? 'bg-main4' : ''
                 }`}>
