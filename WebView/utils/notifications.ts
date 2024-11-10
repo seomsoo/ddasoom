@@ -4,9 +4,11 @@ import Constants from "expo-constants";
 import { Platform } from "react-native";
 import * as Device from "expo-device";
 
+const CHNNEL_ID = "ddasoom";
+
 export async function registerForPushNotificationsAsync() {
   if (Platform.OS === "android") {
-    await Notifications.setNotificationChannelAsync("default", {
+    await Notifications.setNotificationChannelAsync(CHNNEL_ID, {
       name: "default",
       importance: Notifications.AndroidImportance.MAX,
       vibrationPattern: [0, 250, 250, 250],

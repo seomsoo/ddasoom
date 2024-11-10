@@ -9,8 +9,7 @@ import useNotificationStore from "@/zustand/notificationStore";
 
 const Root = () => {
   useNotification(); // Initialize notification setup on app load
-  const expoPushToken = useNotificationStore(state => state.expoPushToken);
-  const notification = useNotificationStore(state => state.notification);
+  const { expoPushToken, notification } = useNotificationStore();
 
   const statusBarHeight = Platform.OS === "android" ? StatusBar.currentHeight : 0;
 
