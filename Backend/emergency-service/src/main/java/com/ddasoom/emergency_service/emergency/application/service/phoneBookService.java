@@ -52,8 +52,7 @@ public class phoneBookService implements PhoneBookUseCase {
     }
 
     @Override
-    public List<PhoneBookResponse> deletePhoneBook(Long phoneBookId, Long userId) {
+    public void deletePhoneBook(Long phoneBookId) {
         phoneBookPort.deletePhoneBook(phoneBookId);
-        return findPhoneBookList(userId);
     }
 }

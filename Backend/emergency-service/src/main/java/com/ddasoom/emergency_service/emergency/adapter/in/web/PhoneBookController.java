@@ -45,9 +45,9 @@ public class PhoneBookController {
         phoneBookUseCase.sendMessage(userId, username);
     }
 
+    @ResponseStatus(NO_CONTENT)
     @DeleteMapping("api/emergency/phone-book/{phoneBookId}")
-    public ApiResult<List<PhoneBookResponse>> deletePhoneBook(@RequestHeader("X-Authenticated-User") Long userId,
-                                @PathVariable Long phoneBookId) {
-        return success(phoneBookUseCase.deletePhoneBook(phoneBookId, userId));
+    public void deletePhoneBook(@PathVariable Long phoneBookId) {
+        phoneBookUseCase.deletePhoneBook(phoneBookId);
     }
 }
