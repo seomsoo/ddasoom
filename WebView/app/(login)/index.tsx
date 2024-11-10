@@ -14,7 +14,6 @@ const Main = () => {
   const { setToken, setUserEmail, setUserName, setUserId } = useAuthStore();
 
   const handleKaKaoLogin = async () => {
-    // router.push("authorized");
     const { accessToken, refreshToken } = await login();
 
     if (!accessToken || !refreshToken) {
@@ -41,7 +40,6 @@ const Main = () => {
       console.log("로그인 성공. 토큰 : ", token);
 
       router.push("authorized");
-      // router.push("signupModal");
     } catch (e: unknown) {
       const error = e as DdasoomError;
       const errorCode = error.response?.data.error.status;
