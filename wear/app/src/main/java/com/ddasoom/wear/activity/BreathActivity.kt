@@ -1,9 +1,11 @@
 package com.ddasoom.wear.activity
 
 import android.animation.ObjectAnimator
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import com.ddasoom.wear.R
@@ -18,6 +20,7 @@ class BreathActivity : AppCompatActivity() {
         val progressBar = findViewById<ProgressBar>(R.id.circularProgressBar)
         val phaseTextView = findViewById<TextView>(R.id.phaseTextView)
         val timerTextView = findViewById<TextView>(R.id.timerTextView)
+        val stopButton = findViewById<Button>(R.id.breath_stop)
 
         // 선택된 모드 가져오기
         val mode = intent.getStringExtra("breath_mode")
@@ -76,6 +79,13 @@ class BreathActivity : AppCompatActivity() {
             }, totalTime * 1000L)
 
             totalTime += duration
+        }
+
+        // "상황 종료" 버튼 클릭 이벤트
+        stopButton.setOnClickListener {
+            val intent = Intent(this, EndActivity::class.java)
+            startActivity(intent)
+            finish() // 현재 액티비티 종료
         }
     }
 }
