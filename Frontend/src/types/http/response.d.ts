@@ -67,3 +67,9 @@ export interface PhoneListData {
   PhoneNumber: string;
   alias: string;
 }
+
+// 목소리 내역 조회
+export interface AiVoiceData {
+  voiceName: string;
+  voiceKey: string;
+}
