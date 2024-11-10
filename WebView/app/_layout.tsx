@@ -4,13 +4,20 @@ import { ThemeProvider } from "styled-components/native";
 import theme from "@/styles/Theme";
 import { getKeyHashAndroid, initializeKakaoSDK } from "@react-native-kakao/core";
 import { Platform, StatusBar, View } from "react-native";
+import useNotification from "@/hooks/useNotification";
+import useNotificationStore from "@/zustand/notificationStore";
 
 const Root = () => {
+  useNotification(); // Initialize notification setup on app load
+  const expoPushToken = useNotificationStore(state => state.expoPushToken);
+  const notification = useNotificationStore(state => state.notification);
+
   const statusBarHeight = Platform.OS === "android" ? StatusBar.currentHeight : 0;
 
   useEffect(() => {
     // getKeyHashAndroid().then(console.log);
     initializeKakaoSDK(`${process.env.EXPO_PUBLIC_KAKAO_NATIVE_KEY}`);
+    console.log("엑스포 푸시 토큰 : ", expoPushToken);
   });
 
   return (
