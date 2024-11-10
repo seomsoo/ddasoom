@@ -31,6 +31,7 @@ public class phoneBookService implements PhoneBookUseCase {
         phoneBookPort.addPhoneBook(phoneBook);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<PhoneBookResponse> findPhoneBookList(Long userId) {
         List<PhoneBook> phoneBookList = phoneBookPort.findPhoneBookList(userId);
@@ -43,6 +44,7 @@ public class phoneBookService implements PhoneBookUseCase {
         ).toList();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public void sendMessage(Long userId, String username) {
         List<PhoneBook> phoneBookList = phoneBookPort.findPhoneBookList(userId);
