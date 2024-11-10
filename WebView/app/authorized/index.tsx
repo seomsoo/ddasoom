@@ -11,6 +11,11 @@ import { BackHandler, Platform, StatusBar, ToastAndroid, View } from "react-nati
 import WebView, { WebViewMessageEvent } from "react-native-webview";
 import type { WebView as WebViewType } from "react-native-webview";
 import PanicDataModal from "@/components/authorized/PanicDataModal"; // 모달 컴포넌트 가져오기
+import {
+  checkPushNotificationPermission,
+  promptDisablePushNotification,
+  requestPushNotificationPermission,
+} from "@/utils/permissions";
 
 const AuthedScreen = () => {
   const { startRecording, stopRecording, sendRecording } = useVoiceRecord();
@@ -35,6 +40,7 @@ const AuthedScreen = () => {
       case "LOGOUT":
         await logout();
         console.log("로그아웃 됨");
+        BackHandler.removeEventListener("hardwareBackPress", backPress);
         router.push("/");
         return;
       case "RECORD":
@@ -54,16 +60,26 @@ const AuthedScreen = () => {
         await vibrateOff();
         return;
       case "NOTI":
+        checkPushPermission(); // 푸시 권한 여부 전송
         if (content === "yes") {
+          requestPushNotificationPermission();
         } else if (content === "no") {
+          promptDisablePushNotification();
         }
         return;
       case "ARDSETTING":
+        BackHandler.removeEventListener("hardwareBackPress", backPress);
         await router.push("authorized/ble");
         return;
       case "ARD":
         console.log(content === "ON" ? "아두이노 작동" : "아두이노 끄기");
         return;
+      case "SOS":
+        BackHandler.removeEventListener("hardwareBackPress", backPress);
+        router.push("breath");
+        return;
+      default:
+        console.log(title, " : ", content);
     }
   };
 
@@ -119,9 +135,19 @@ const AuthedScreen = () => {
     await deletePanicInfoFromStorage();
   };
 
+  const checkPushPermission = async () => {
+    const isPermission = await checkPushNotificationPermission();
+    const data = JSON.stringify({ title: "ISPUSH", content: isPermission });
+    webViewRef.current?.injectJavaScript(`
+      window.postMessage(${data});
+    `);
+    console.log("앱->웹 [푸시 알림 여부] 전송 완료");
+  };
+
   useEffect(() => {
     BackHandler.addEventListener("hardwareBackPress", backPress);
     fetchPanicData();
+    checkPushPermission(); // 푸시 알림 설정 여부
     return () => {
       BackHandler.removeEventListener("hardwareBackPress", backPress);
     };
