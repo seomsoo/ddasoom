@@ -84,6 +84,7 @@ class BreathActivity : AppCompatActivity() {
         // "상황 종료" 버튼 클릭 이벤트
         stopButton.setOnClickListener {
             val intent = Intent(this, EndActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
             finish() // 현재 액티비티 종료
         }
