@@ -11,5 +11,5 @@ public interface PhoneBookUseCase {
 
     void sendMessage(Long userId, String username);
 
-    List<PhoneBookResponse> deletePhoneBook(Long phoneBookId, Long userId);
+    void deletePhoneBook(Long phoneBookId);
 }
