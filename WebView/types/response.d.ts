@@ -3,3 +3,10 @@ interface SignInResponseDto {
   name: Name;
   token: Token;
 }
+
+interface GetPanicInfoDto {
+  panicId: number;
+  startDate: string;
+  duration: number;
+  address: string;
+}

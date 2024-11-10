@@ -10,6 +10,13 @@ interface AuthStore {
   clearToken: () => void;
 }
 
+interface BreathStore {
+  breathType: BreathType;
+  breathTime: number;
+  setBreathType: (breathType: BreathType) => void;
+  setBreathTime: (time: number) => void;
+}
+
 interface ContactStore {
   phoneNumbers: EmergencyPhoneNumber[];
   setPhoneNumbers: (phoneNumber: EmergencyPhoneNumber) => void;
