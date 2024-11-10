@@ -18,7 +18,7 @@ const useSendToken = (webViewRef: React.RefObject<WebViewType>) => {
     webViewRef.current?.injectJavaScript(`
       window.postMessage(${data});
     `);
-    console.log("앱->웹 토큰 전송 완료");
+    console.log("앱->웹 [액세스 토큰] 전송 완료");
   };
 
   return sendMessageToWeb;
