@@ -23,3 +23,12 @@ interface SignupForm {
 interface LoginForm {
   email: Email;
 }
+
+interface PanicFirstForm {
+  duration: number;
+  latitude: number;
+  longitude: number;
+  address: string;
+  description: string;
+  time: string;
+}
