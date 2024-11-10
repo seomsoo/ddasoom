@@ -8,4 +8,6 @@ public interface PhoneBookPort {
     void addPhoneBook(PhoneBook phoneBook);
 
     List<PhoneBook> findPhoneBookList(Long userId);
+
+    void deletePhoneBook(Long phoneBookId);
 }

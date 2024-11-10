@@ -50,4 +50,10 @@ public class phoneBookService implements PhoneBookUseCase {
                 "한번 연락해 보세요!";
         sendPhoneBookPort.sendMessage(phoneBookList, text);
     }
+
+    @Override
+    public List<PhoneBookResponse> deletePhoneBook(Long phoneBookId, Long userId) {
+        phoneBookPort.deletePhoneBook(phoneBookId);
+        return findPhoneBookList(userId);
+    }
 }
