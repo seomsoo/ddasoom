@@ -9,6 +9,8 @@ import Header from '@/components/Common/Header';
 import breathData from '@/constants/BreathData';
 import Footer from '@/svgs/breathfooter.svg';
 import StartBasic from '@/videos/start+478.gif';
+import StartLong from '@/videos/start+573.gif';
+import StartShort from '@/videos/start+4444.gif';
 
 import BreathCircleAnimation from './BreathCircleAnimation';
 // import BreathStageDisplay from './BreathStageDisplay';
@@ -34,6 +36,13 @@ export default function BreathCircle({ breathType }: BreathCircleProps) {
   const [isCycleComplete, setIsCycleComplete] = useState(false);
   const [stageProgress, setStageProgress] = useState<number[]>([]);
   const [preparationIndex, setPreparationIndex] = useState(0);
+
+  const BreathAnimation = useMemo(() => {
+    if (breathType === 'basicTime') return StartBasic.src;
+    if (breathType === 'shortTime') return StartShort.src;
+    if (breathType === 'longTime') return StartLong.src;
+    return '';
+  }, [breathType]);
 
   const sequence = useMemo(() => breathData[breathType].stages, [breathType]);
   // 진행률(%) 계산
@@ -211,7 +220,7 @@ export default function BreathCircle({ breathType }: BreathCircleProps) {
         </div>
         <div className="bg-[#b0e4b7]   rounded-full w-[230px] h-[230px] absolute bottom-14" />
         <article className="absolute bottom-14  ">
-          <img src={StartBasic.src} alt="Breath animation" className="w-[230px] h-[230px] rounded-full" />
+          <img src={BreathAnimation} alt="Breath animation" className="w-[230px] h-[230px] rounded-full" />
         </article>
         <BreathCircleAnimation
           sequenceLength={sequence.length}
