@@ -16,6 +16,9 @@ export default function VoiceRecorder() {
       // 녹음 중지하고 초기화 (메시지 전송 없이)
       setIsRecording(false);
       setCurrentLine(0); // 텍스트 애니메이션을 처음 상태로 초기화
+      if (window.ReactNativeWebView && window.ReactNativeWebView.postMessage) {
+        window.ReactNativeWebView.postMessage(JSON.stringify({ title: 'RECORD', content: 'STOPAIR' }));
+      }
     } else {
       // 녹음 시작 시 메시지 전송
       setIsRecording(true);
