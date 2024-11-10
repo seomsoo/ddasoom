@@ -1,0 +1,39 @@
+.react-clock {
+  width: 68px !important; /* 적당한 크기로 설정 */
+  height: 68px !important;
+  border: 1px solid #d5dbc3 !important;
+  border-radius: 50% !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+.react-clock__face {
+  background: #fdfffb;
+}
+
+.react-clock__hand__hour {
+  background-color: #555;
+  width: 3px;
+  border-radius: 1.5px;
+}
+
+.react-clock__hand__minute {
+  background-color: #777;
+  width: 2px;
+  border-radius: 1px;
+}
+
+.react-clock__hand__second {
+  background-color: #ff5f5f; /* 시침과 분침보다 밝은 색상 */
+  width: 1px;
+}
+
+.react-clock__mark__body {
+  background-color: #aaa;
+  width: 2px;
+  height: 2px;
+  border-radius: 2px;
+}
+
+.react-clock__mark__body:nth-child(3n) {
+  background-color: #e90505;
+}
