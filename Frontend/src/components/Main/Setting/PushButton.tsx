@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function PushButton() {
-  const [isOn, setIsOn] = useState(false);
+  const [isOn, setIsOn] = useState(true);
 
   const toggleSwitch = () => {
     const newState = !isOn;
@@ -17,6 +17,24 @@ export default function PushButton() {
       }),
     );
   };
+
+  useEffect(() => {
+    // 메시지 이벤트 리스너 설정
+    const handleMessage = (event: MessageEvent) => {
+      const receivedMessage = JSON.parse(event.data);
+
+      if (receivedMessage.title === 'ISPUSH') {
+        setIsOn(receivedMessage.content);
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
+
+    // 컴포넌트가 언마운트될 때 리스너를 정리합니다.
+    return () => {
+      window.removeEventListener('message', handleMessage);
+    };
+  }, []);
 
   return (
     <button
