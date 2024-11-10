@@ -1,27 +1,24 @@
 import useSendToken from "@/hooks/useSendToken";
 import useVoiceRecord from "@/hooks/useVoiceRecord";
+import { postPanicAtFirst } from "@/services/panic";
+import { deletePanicInfoFromStorage, loadPanicInfoFromStorage } from "@/services/storage";
 import { vibrate, vibrateOff } from "@/utils/vibrate";
 import useAuthStore from "@/zustand/authStore";
 import { logout } from "@react-native-kakao/user";
 import { router } from "expo-router";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { BackHandler, Platform, StatusBar, ToastAndroid, Vibration } from "react-native";
-// import {
-//   Button,
-//   NativeEventEmitter,
-//   NativeModules,
-//   SafeAreaView,
-//   ScrollView,
-//   StatusBar,
-//   Text,
-//   View,
-// } from "react-native";
+import { BackHandler, Platform, StatusBar, ToastAndroid, View } from "react-native";
 import WebView, { WebViewMessageEvent } from "react-native-webview";
 import type { WebView as WebViewType } from "react-native-webview";
+import PanicDataModal from "@/components/authorized/PanicDataModal"; // 모달 컴포넌트 가져오기
 
 const AuthedScreen = () => {
   const { startRecording, stopRecording, sendRecording } = useVoiceRecord();
   const { userName } = useAuthStore();
+  const [modalVisible, setModalVisible] = useState(false);
+  const [panicData, setPanicData] = useState<PanicFirstForm | null>(null);
+  const [inputText, setInputText] = useState(""); // 모달 입력 상태 추가
+
   const statusBarHeight = Platform.OS === "android" ? StatusBar.currentHeight : 0;
   const webViewRef = useRef<WebViewType | null>(null);
   const sendTokenToWeb = useSendToken(webViewRef);
@@ -30,20 +27,16 @@ const AuthedScreen = () => {
   const handleMessage = async (event: WebViewMessageEvent) => {
     const data = event.nativeEvent.data;
     const { title, content }: WebMessageDto = JSON.parse(data);
-
     switch (title) {
-      // 로그인 & 회원가입 & 로그아웃
       case "GETTOKEN":
         console.log("웹에서 토큰 요청함");
-        await sendTokenToWeb(); // 토큰 보내기
+        await sendTokenToWeb();
         return;
       case "LOGOUT":
         await logout();
         console.log("로그아웃 됨");
         router.push("/");
         return;
-
-      // 음성 녹음
       case "RECORD":
         if (content === "ONAIR" && userName) {
           await startRecording();
@@ -54,63 +47,81 @@ const AuthedScreen = () => {
           await sendRecording(userName);
         }
         return;
-
-      // 진동
       case "VIBRATE":
         await vibrate(content as string);
         return;
       case "VIBRATEOFF":
         await vibrateOff();
         return;
-
-      // 푸시 알림 설정
       case "NOTI":
         if (content === "yes") {
-          // 푸시 알림 권한 설정
-          // 푸시 알림 설정
         } else if (content === "no") {
-          // 푸시 알림 권한 해제
         }
-
-      // 아두이노
+        return;
       case "ARDSETTING":
         await router.push("authorized/ble");
         return;
       case "ARD":
-        if (content === "ON") {
-          console.log("아두이노 작동");
-        } else {
-          console.log("아두이노 끄기");
-        }
+        console.log(content === "ON" ? "아두이노 작동" : "아두이노 끄기");
         return;
     }
   };
 
-  // 웹으로 메시지 보내기
-  const sendMessageToWeb = () => {
-    const data = {
-      title: "Sample Title",
-      content: "Sample Content",
-    };
-    const message = JSON.stringify(data);
-
-    webViewRef?.current?.injectJavaScript(`
-    window.postMessage(${JSON.stringify(message)}, "*");
-  `);
-  };
-
-  // 웹뷰 뒤로가기
   const backPress = useCallback(() => {
     if (webViewRef.current) {
       webViewRef.current.goBack();
-      return true; // prevent default behavior (exit app)
+      return true;
     }
     return false;
   }, []);
 
-  // 뒤로가기 이벤트리스너 붙이기
+  const fetchPanicData = async () => {
+    const data = await loadPanicInfoFromStorage();
+    if (!data) {
+      console.log("저장된 패닉 데이터 없음");
+      return;
+    }
+    setPanicData(data);
+    if (!data.description || data.description === "") {
+      setModalVisible(true);
+    } else {
+      try {
+        await postPanicAtFirst(data);
+        console.log("저장되어 있던 패닉 데이터 저장 함");
+        await deletePanicInfoFromStorage();
+      } catch (e) {
+        console.log("패닉 데이터 저장 요청 실패");
+      }
+    }
+  };
+
+  const handleSave = async () => {
+    if (panicData) {
+      try {
+        // 기존 panicData에 inputText로 description 업데이트
+        const updatedPanicData = { ...panicData, description: inputText };
+
+        // 업데이트된 데이터로 요청 보내기
+        await postPanicAtFirst(updatedPanicData);
+        console.log("패닉 데이터 저장 완료");
+
+        // 저장 후, 데이터 삭제 및 모달 닫기
+        await deletePanicInfoFromStorage();
+        setModalVisible(false);
+      } catch (error) {
+        console.log("패닉 데이터 저장 실패", error);
+      }
+    }
+  };
+
+  const handleCancel = async () => {
+    setModalVisible(false);
+    await deletePanicInfoFromStorage();
+  };
+
   useEffect(() => {
     BackHandler.addEventListener("hardwareBackPress", backPress);
+    fetchPanicData();
     return () => {
       BackHandler.removeEventListener("hardwareBackPress", backPress);
     };
@@ -126,8 +137,17 @@ const AuthedScreen = () => {
         onMessage={handleMessage}
         javaScriptEnabled={true}
         domStorageEnabled={true}
-        mediaPlaybackRequiresUserAction={false} // 미디어 자동 재생 허용
+        mediaPlaybackRequiresUserAction={false}
         startInLoadingState={true}
+      />
+      <PanicDataModal
+        panicData={panicData}
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        inputText={inputText}
+        setInputText={setInputText}
+        handleSave={handleSave}
+        handleCancel={handleCancel}
       />
     </>
   );
