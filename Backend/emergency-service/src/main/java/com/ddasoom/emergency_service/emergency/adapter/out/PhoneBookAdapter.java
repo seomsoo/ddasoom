@@ -33,4 +33,9 @@ public class PhoneBookAdapter implements PhoneBookPort {
                         phoneBook.getAlias())
         ).toList();
     }
+
+    @Override
+    public void deletePhoneBook(Long phoneBookId) {
+        phoneBookRepository.deleteById(phoneBookId);
+    }
 }

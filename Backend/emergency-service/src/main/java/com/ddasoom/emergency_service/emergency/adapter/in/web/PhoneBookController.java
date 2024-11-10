@@ -1,8 +1,7 @@
 package com.ddasoom.emergency_service.emergency.adapter.in.web;
 
 import static com.ddasoom.emergency_service.common.util.ApiUtils.success;
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.*;
 
 import com.ddasoom.emergency_service.common.annotation.WebAdapter;
 import com.ddasoom.emergency_service.common.util.ApiUtils.ApiResult;
@@ -10,16 +9,9 @@ import com.ddasoom.emergency_service.emergency.adapter.in.web.request.AddPhoneRe
 import com.ddasoom.emergency_service.emergency.adapter.in.web.response.PhoneBookResponse;
 import com.ddasoom.emergency_service.emergency.application.port.in.PhoneBookCommand;
 import com.ddasoom.emergency_service.emergency.application.port.in.PhoneBookUseCase;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @WebAdapter
 @RestController
@@ -51,5 +43,11 @@ public class PhoneBookController {
     public void sendMessage(@RequestHeader("X-Authenticated-User") Long userId,
             @RequestBody String username) {
         phoneBookUseCase.sendMessage(userId, username);
+    }
+
+    @DeleteMapping("api/emergency/phone-book/{phoneBookId}")
+    public ApiResult<List<PhoneBookResponse>> deletePhoneBook(@RequestHeader("X-Authenticated-User") Long userId,
+                                @PathVariable Long phoneBookId) {
+        return success(phoneBookUseCase.deletePhoneBook(phoneBookId, userId));
     }
 }
