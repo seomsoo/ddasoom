@@ -1,5 +1,7 @@
 package com.ddasoom.user_service.user.adapter.out;
 
+import com.ddasoom.user_service.user.error.DdasomeInfoInteractionBadRequest;
+import com.ddasoom.user_service.user.error.DdasomeInfoInteractionConflict;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -43,11 +45,11 @@ public class DdasomiInfoJpaEntity {
         this.experience = experience;
     }
 
-    void updateExperience() {
+    public void updateExperience() {
         this.experience += 5;
     }
 
-    void updateInteraction(String trainingType) {
+    public void updateInteraction(String trainingType) {
         switch (trainingType) {
             case "BREATH":
                 strokeCount += 5;
@@ -59,5 +61,31 @@ public class DdasomiInfoJpaEntity {
                 playCount += 5;
                 break;
         }
+    }
+
+    public void executeInteraction(String interactionType) {
+        switch (interactionType) {
+            case "STROKE":
+                if (strokeCount <= 0) {
+                    throw new DdasomeInfoInteractionConflict();
+                }
+                strokeCount--;
+                break;
+            case "HUG":
+                if (hugCount <= 0) {
+                    throw new DdasomeInfoInteractionConflict();
+                }
+                hugCount--;
+                break;
+            case "PLAY":
+                if (playCount <= 0) {
+                    throw new DdasomeInfoInteractionConflict();
+                }
+                playCount--;
+                break;
+            default:
+                throw new DdasomeInfoInteractionBadRequest();
+        }
+        this.experience += 2;
     }
 }

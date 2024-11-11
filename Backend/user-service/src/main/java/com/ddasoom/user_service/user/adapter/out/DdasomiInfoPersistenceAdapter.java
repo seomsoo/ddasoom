@@ -12,16 +12,24 @@ public class DdasomiInfoPersistenceAdapter implements UpdateDdasomiInfoPort {
     private final DdasomiInfoRepository ddasomiInfoRepository;
 
     @Override
-    public void updateDdasomiInfo(Long userId) {
+    public void updateDdasomiExperienceDaily(Long userId) {
         ddasomiInfoRepository.findByUserId(userId)
                 .orElseThrow(DdasomiInfoNotFoundException::new)
                 .updateExperience();
     }
 
     @Override
-    public void updateDdasomiInfo(Long userId, String trainingType) {
+    public void updateDdasomiExperienceTraining(Long userId, String trainingType) {
+        DdasomiInfoJpaEntity ddasomiInfoJpaEntity = ddasomiInfoRepository.findByUserId(userId)
+                .orElseThrow(DdasomiInfoNotFoundException::new);
+        ddasomiInfoJpaEntity.updateExperience();
+        ddasomiInfoJpaEntity.updateInteraction(trainingType);
+    }
+
+    @Override
+    public void executeInteraction(Long userId, String interactionType) {
         ddasomiInfoRepository.findByUserId(userId)
                 .orElseThrow(DdasomiInfoNotFoundException::new)
-                .updateInteraction(trainingType);
+                .executeInteraction(interactionType);
     }
 }
