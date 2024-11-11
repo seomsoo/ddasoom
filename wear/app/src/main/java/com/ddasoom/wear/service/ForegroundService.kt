@@ -31,6 +31,7 @@ class ForegroundService : Service(), HeartRateManager.HeartRateListener {
   private lateinit var wakeLock: PowerManager.WakeLock
 
   companion object {
+    var heartRateCallback: ((Int) -> Unit)? = null // 심박수 데이터를 전달하는 콜백
     const val ACTION_START_MONITORING = "action.START_MONITORING"
     const val ACTION_STOP_MONITORING = "action.STOP_MONITORING"
   }
@@ -119,6 +120,9 @@ class ForegroundService : Service(), HeartRateManager.HeartRateListener {
   // 심박수 변경 시 호출되는 메서드
   override fun onHeartRateChanged(heartRate: Int) {
     sendHeartRate(heartRate)
+    // 심박수 데이터 콜백 호출
+    heartRateCallback?.invoke(heartRate)
+
   }
 
   // 심박수 데이터를 전송하는 메서드
@@ -164,7 +168,10 @@ class ForegroundService : Service(), HeartRateManager.HeartRateListener {
     }
     heartRateManager.stopMonitoring()
     Log.d(Constants.TAG, "Foreground service stopped")
+    // 서비스 종료 시 콜백 해제
+    heartRateCallback = null
   }
+
 
   override fun onBind(intent: Intent?): IBinder? = null
 }
