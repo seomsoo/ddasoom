@@ -4,12 +4,31 @@ import { useEffect, useState } from 'react';
 
 import background from '@/components/BackGround/Background.module.css';
 import Check from '@/svgs/Check.svg';
+import { getCompletedTrainingData } from '@/api/mainAPI';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import queryKeys from '@/api/querykeys';
 
 export default function MissionContent() {
+  const queryClient = useQueryClient();
+  const { data: completedData } = useQuery({
+    queryKey: [queryKeys.COMPLETED_TRAINING],
+    queryFn: () => getCompletedTrainingData(),
+  });
   const [timeLeft, setTimeLeft] = useState('');
   const [isCompleted, setIsCompleted] = useState([false, false, false]); // 훈련 완료 여부를 저장하는 배열
 
   useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: [queryKeys.COMPLETED_TRAINING] });
+
+    if (completedData?.data) {
+      const completionStatus = [
+        completedData?.data.breath, // 호흡 연습
+        completedData?.data.grounding, // 그라운딩
+        completedData?.data.comedown, // 안정화 기법
+      ];
+      setIsCompleted(completionStatus);
+    }
+
     const calculateTimeLeft = () => {
       const now = new Date();
       const nextMidnight = new Date();
@@ -27,15 +46,7 @@ export default function MissionContent() {
     const timerId = setInterval(calculateTimeLeft, 1000);
 
     return () => clearInterval(timerId);
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const completedStatus = [true, false, true]; // 예시 데이터로 완료 상태 설정
-      setIsCompleted(completedStatus);
-    };
-    fetchData();
-  }, []);
+  }, [completedData]);
 
   const missionData = [
     { name: '호흡 연습', reward: '쓰다듬기 X 5', link: '/training/breath' },
@@ -71,7 +82,7 @@ export default function MissionContent() {
               <Check />
             ) : (
               <Link href={mission.link}>
-                <button className="bg-sub5 text-white px-5 py-2 flex flex-col mt-7 justify-center  rounded-full text-sm font-nanumBold">
+                <button className="bg-sub5 text-white px-5 py-2 flex flex-col mt-7 justify-center rounded-full text-sm font-nanumBold">
                   이동
                 </button>
               </Link>
