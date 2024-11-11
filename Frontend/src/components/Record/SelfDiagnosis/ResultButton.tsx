@@ -13,14 +13,19 @@ export default function ResultButton({ isPanicSuspected }: ResultContextProps) {
   const handleMoveMain = () => {
     router.push('/main');
   };
+
   const handleMoveTraining = () => {
     router.push('/training');
+  };
+
+  const handleViewHospitals = () => {
+    router.push('/record/selfDiagnosis/hospitals');
   };
 
   return (
     <div className="felx flex-col text-center w-full">
       {isPanicSuspected ? (
-        <Button label="근처 병원 보기" className="mt-8" />
+        <Button label="근처 병원 보기" className="mt-8" onClick={handleViewHospitals} />
       ) : (
         <Button label="훈련하기" className="mt-3" onClick={handleMoveTraining} />
       )}
