@@ -6,8 +6,10 @@ import { getKeyHashAndroid, initializeKakaoSDK } from "@react-native-kakao/core"
 import { Platform, StatusBar, View } from "react-native";
 import useNotification from "@/hooks/useNotification";
 import useNotificationStore from "@/zustand/notificationStore";
+import { useGlobalFonts } from "@/hooks/useGlobalFonts"; // useGlobalFonts 파일의 경로에 맞게 설정
 
 const Root = () => {
+  const fontsLoaded = useGlobalFonts();
   useNotification(); // Initialize notification setup on app load
   const { expoPushToken, notification } = useNotificationStore();
 
