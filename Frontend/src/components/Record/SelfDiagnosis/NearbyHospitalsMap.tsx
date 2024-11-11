@@ -206,7 +206,7 @@ export default function NearbyHospitalsMap() {
   });
 
   useEffect(() => {
-    const kakaoMapKey = process.env.NEXT_PUBLIC_KAKAOMAP_KEY || '776e8affab113456d6b62b5c1a675605';
+    const kakaoMapKey = '776e8affab113456d6b62b5c1a675605';
     const existingScript = document.getElementById('kakao-map-sdk');
 
     if (!existingScript) {
