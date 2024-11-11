@@ -22,24 +22,48 @@ import { getCharacterData } from '@/api/mainAPI';
 import { RootState } from '@/store';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import queryKeys from '@/api/querykeys';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import ErrorModal from '@/components/Common/ErrorModal';
 
 export default function WithDdasomi() {
   const userId = useSelector((state: RootState) => state.auth.userId);
   const queryClient = useQueryClient();
-  const { data: characterData } = useQuery({
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+  const [errorContext, setErrorContext] = useState<string>('');
+
+  const {
+    data: characterData,
+    isError,
+    error,
+    refetch,
+  } = useQuery({
     queryKey: [queryKeys.CHARACTER, userId],
     queryFn: () => getCharacterData(Number(userId)),
+    retry: false,
   });
 
   const ddasomiData = characterData?.data;
 
   useEffect(() => {
-    queryClient.invalidateQueries({ queryKey: [queryKeys.CHARACTER, userId] });
-  });
+    if (ddasomiData) {
+      queryClient.invalidateQueries({ queryKey: [queryKeys.CHARACTER, userId] });
+    }
+    if (isError && error) {
+      setErrorContext(error instanceof Error ? error.message : '에러 메시지 읽기 실패');
+      setIsErrorModalOpen(true);
+    }
+  }, [ddasomiData, queryClient, userId, isError, error]);
+
+  const handleRetry = () => {
+    setIsErrorModalOpen(false);
+    refetch();
+  };
 
   return (
     <div className="bg-[#C7C0B3] h-screen -m-4">
+      {isErrorModalOpen && (
+        <ErrorModal onClose={() => setIsErrorModalOpen(false)} onRetry={handleRetry} context={errorContext} />
+      )}
       <header className="flex  flex-col w-full h-72 bg-main4 p-6 border-b-8">
         <article className="flex justify-between   w-full ">
           <LevelBar
