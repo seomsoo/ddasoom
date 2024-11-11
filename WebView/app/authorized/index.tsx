@@ -84,7 +84,11 @@ const AuthedScreen = () => {
         if (!location) {
           return;
         }
-        const data = JSON.stringify({ title: "CURRENTLOCATION", content: location });
+        const data = JSON.stringify({
+          title: "CURRENTLOCATION",
+          longitude: location.longitude,
+          latitude: location.latitude,
+        });
         webViewRef.current?.injectJavaScript(`window.postMessage(${data});`);
         return;
       default:
@@ -175,6 +179,7 @@ const AuthedScreen = () => {
         domStorageEnabled={true}
         mediaPlaybackRequiresUserAction={false}
         startInLoadingState={true}
+        mixedContentMode="always"
       />
       <PanicDataModal
         panicData={panicData}
