@@ -22,7 +22,7 @@ public class DailyRecordAdapter implements DailyRecordPort {
         dailyRepository.save(
                 DailyJpaEntity.of(userId, command)
         );
-        ddasomiInfoServiceClient.updateDdasomiExperience(userId);
+        ddasomiInfoServiceClient.updateDdasomiInfo(userId);
     }
 
     @Override

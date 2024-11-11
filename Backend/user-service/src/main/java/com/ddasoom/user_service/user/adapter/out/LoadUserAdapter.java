@@ -32,7 +32,10 @@ public class LoadUserAdapter implements LoadUserPort {
                 user.getEmail(),
                 user.getName(),
                 diaryClientResponse.continuousTrainingDays(),
-                ddasomi.getExperience()
+                ddasomi.getExperience(),
+                ddasomi.getStrokeCount(),
+                ddasomi.getHugCount(),
+                ddasomi.getPlayCount()
         );
     }
 
@@ -52,7 +55,10 @@ public class LoadUserAdapter implements LoadUserPort {
                 user.getEmail(),
                 user.getName(),
                 diaryClientResponse.continuousTrainingDays(),
-                ddasomi.getExperience()
+                ddasomi.getExperience(),
+                ddasomi.getStrokeCount(),
+                ddasomi.getHugCount(),
+                ddasomi.getPlayCount()
         );
     }
 }

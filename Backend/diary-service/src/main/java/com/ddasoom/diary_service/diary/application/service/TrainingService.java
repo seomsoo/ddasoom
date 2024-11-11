@@ -35,7 +35,7 @@ public class TrainingService implements TrainingUseCase {
         }
 
         trainingRecordPort.saveTrainingRecord(userId, trainingType);
-        dasomiInfoServiceClient.updateDdasomiExperience(userId);
+        dasomiInfoServiceClient.updateDdasomiInfo(userId, trainingType);
     }
 
     @Override

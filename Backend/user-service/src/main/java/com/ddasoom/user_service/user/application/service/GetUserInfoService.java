@@ -27,7 +27,10 @@ public class GetUserInfoService implements GetUserInfoQuery {
                 user.continuousTrainingDays(),
                 user.experience(),
                 getNowLevel(user.experience()),
-                getNowPercent(user.experience())
+                getNowPercent(user.experience()),
+                user.strokeCount(),
+                user.hugCount(),
+                user.playCount()
         );
     }
 }
