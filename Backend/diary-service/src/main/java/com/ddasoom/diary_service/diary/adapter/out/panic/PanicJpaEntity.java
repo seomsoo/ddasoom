@@ -10,7 +10,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -49,6 +48,7 @@ public class PanicJpaEntity {
                 .duration(this.duration)
                 .latitude(this.latitude)
                 .longitude(this.longitude)
+                .address(this.address)
                 .description(this.description)
                 .build();
     }
