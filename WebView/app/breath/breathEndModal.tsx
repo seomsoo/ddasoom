@@ -147,10 +147,10 @@ const InnerContainer = styled(View)`
 `;
 
 const Title = styled(Text)`
-  font-size: 32px;
-  font-weight: bold;
+  font-size: 40px;
   color: #333;
   margin: 0px 0px 20px 0px;
+  font-family: hakgyoansimRegular;
 `;
 
 const InfoBox = styled(View)`
@@ -170,17 +170,20 @@ const InfoContent = styled(Text)`
   justify-content: center;
   flex-direction: row;
   gap: 40px;
+  font-family: nanumSquareNeoRegular;
 `;
 
 const InfoTextLeft = styled(Text)`
   font-size: 18px;
   color: #333;
   font-weight: 600;
+  font-family: nanumSquareNeoRegular;
 `;
 const InfoTextRight = styled(Text)`
   font-size: 18px;
   color: #333;
   font-weight: 400;
+  font-family: nanumSquareNeoRegular;
 `;
 
 const InputContainer = styled(View)`
@@ -199,11 +202,13 @@ const LabelContainer = styled(View)`
 
 const InputLabel = styled(Text)`
   font-size: 18px;
+  font-family: nanumSquareNeoRegular;
 `;
 
 const OptionalText = styled(Text)`
   color: #a8a8a8;
   font-size: 18px;
+  font-family: nanumSquareNeoRegular;
 `;
 
 const TextInputBox = styled(TextInput)`
@@ -213,6 +218,7 @@ const TextInputBox = styled(TextInput)`
   border: 1.5px solid ${(props: any) => props.theme.color.MAIN1};
   font-size: 16px;
   color: #333;
+  font-family: nanumSquareNeoRegular;
 `;
 
 const ButtonBox = styled(View)`
@@ -232,7 +238,7 @@ const Button = styled(TouchableOpacity)`
 const ButtonText = styled(Text)`
   color: white;
   font-size: 20px;
-  font-weight: bold;
+  font-family: nanumSquareNeoRegular;
 `;
 
 const CancelBox = styled(TouchableOpacity)`
@@ -242,4 +248,5 @@ const CancelBox = styled(TouchableOpacity)`
 const CancelText = styled(Text)`
   color: #9c9c9c;
   font-size: 16px;
+  font-family: nanumSquareNeoRegular;
 `;

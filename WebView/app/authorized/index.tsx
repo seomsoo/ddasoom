@@ -16,6 +16,7 @@ import {
   promptDisablePushNotification,
   requestPushNotificationPermission,
 } from "@/utils/permissions";
+import useLocation from "@/hooks/useLocation";
 
 const AuthedScreen = () => {
   const { startRecording, stopRecording, sendRecording } = useVoiceRecord();
@@ -23,6 +24,7 @@ const AuthedScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [panicData, setPanicData] = useState<PanicFirstForm | null>(null);
   const [inputText, setInputText] = useState(""); // 모달 입력 상태 추가
+  const { location } = useLocation();
 
   const statusBarHeight = Platform.OS === "android" ? StatusBar.currentHeight : 0;
   const webViewRef = useRef<WebViewType | null>(null);
@@ -77,6 +79,13 @@ const AuthedScreen = () => {
       case "SOS":
         BackHandler.removeEventListener("hardwareBackPress", backPress);
         router.push("breath");
+        return;
+      case "GPS":
+        if (!location) {
+          return;
+        }
+        const data = JSON.stringify({ title: "CURRENTLOCATION", content: location });
+        webViewRef.current?.injectJavaScript(`window.postMessage(${data});`);
         return;
       default:
         console.log(title, " : ", content);
