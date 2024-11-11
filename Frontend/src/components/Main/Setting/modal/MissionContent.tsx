@@ -37,11 +37,6 @@ export default function MissionContent() {
     ];
     setIsCompleted(completionStatus);
 
-    if (isError && error) {
-      setErrorContext(error instanceof Error ? error.message : '에러 메시지 읽기 실패');
-      setIsErrorModalOpen(true);
-    }
-
     const calculateTimeLeft = () => {
       const now = new Date();
       const nextMidnight = new Date();
@@ -59,7 +54,14 @@ export default function MissionContent() {
     const timerId = setInterval(calculateTimeLeft, 1000);
 
     return () => clearInterval(timerId);
-  }, [completedData, queryClient, isError, error]);
+  }, [completedData, queryClient]);
+
+  useEffect(() => {
+    if (isError && error) {
+      setErrorContext(error instanceof Error ? error.message : '에러 메시지 읽기 실패');
+      setIsErrorModalOpen(true);
+    }
+  }, [isError, error]);
 
   const missionData = [
     { name: '호흡 연습', reward: '쓰다듬기 X 5', link: '/training/breath' },

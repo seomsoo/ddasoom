@@ -47,13 +47,17 @@ export default function WithDdasomi() {
   useEffect(() => {
     if (!ddasomiData) return;
 
-    queryClient.invalidateQueries({ queryKey: [queryKeys.CHARACTER, Number(userId)] });
+    if (userId) {
+      queryClient.invalidateQueries({ queryKey: [queryKeys.CHARACTER, userId] });
+    }
+  }, [ddasomiData, queryClient, userId]);
 
+  useEffect(() => {
     if (isError && error) {
       setErrorContext(error instanceof Error ? error.message : '에러 메시지 읽기 실패');
       setIsErrorModalOpen(true);
     }
-  }, [ddasomiData, queryClient, userId, isError, error]);
+  }, [isError, error]);
 
   const handleRetry = () => {
     setIsErrorModalOpen(false);
