@@ -7,6 +7,7 @@ import Hug from '@/svgs/Ddasomiz/yellowSomi.svg';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { putInteractionData } from '@/api/mainAPI';
 import queryKeys from '@/api/querykeys';
+import ErrorModal from '@/components/Common/ErrorModal';
 
 type IconComponentType = React.FC<{ className?: string }>;
 interface InteractionProps {
@@ -18,9 +19,15 @@ interface InteractionProps {
 
 export default function Interaction({ continuousTrainingDays, strokeCount, hugCount, playCount }: InteractionProps) {
   const queryClient = useQueryClient();
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+  const [errorContext, setErrorContext] = useState<string>('');
   const [isInProgress, setIsInProgress] = useState(false);
   const [progress, setProgress] = useState(0);
   const [SelectedIcon, setSelectedIcon] = useState<IconComponentType | null>(null);
+  const [lastInteraction, setLastInteraction] = useState<{
+    IconComponent: IconComponentType;
+    interactionType: string;
+  } | null>(null);
 
   // 상호작용 요청을 처리하는 mutation
   const interactionMutation = useMutation({
@@ -29,7 +36,9 @@ export default function Interaction({ continuousTrainingDays, strokeCount, hugCo
       queryClient.invalidateQueries({ queryKey: [queryKeys.CHARACTER] }); // 캐시된 데이터를 갱신 (예시)
     },
     onError: error => {
-      console.error('Interaction failed', error);
+      console.error('상호작용 전송 실패:', error);
+      setErrorContext(error.message || '에러 메시지 전송 안 됨');
+      setIsErrorModalOpen(true);
     },
   });
 
@@ -38,6 +47,7 @@ export default function Interaction({ continuousTrainingDays, strokeCount, hugCo
     setIsInProgress(true);
     setSelectedIcon(() => IconComponent);
     setProgress(0);
+    setLastInteraction({ IconComponent, interactionType });
 
     // 경험치 추가 요청
     interactionMutation.mutate({ interactionType });
@@ -59,9 +69,18 @@ export default function Interaction({ continuousTrainingDays, strokeCount, hugCo
     if (continuousTrainingDays <= 7) return 'text-[#7caeff]';
     return 'text-[#FF4E4E]';
   };
+  const handleRetry = () => {
+    setIsErrorModalOpen(false);
+    if (lastInteraction) {
+      handleButtonClick(lastInteraction.IconComponent, lastInteraction.interactionType);
+    }
+  };
 
   return (
     <>
+      {isErrorModalOpen && (
+        <ErrorModal onClose={() => setIsErrorModalOpen(false)} onRetry={handleRetry} context={errorContext} />
+      )}
       <div className="mb-2">
         <span className="font-hakgyoansimR items-baseline text-xl flex text-gray1">
           연속 <p className={`ml-1 font-hakgyoansimB ${getTextColor()}`}>{continuousTrainingDays}일</p>째 훈련 중 🔥
