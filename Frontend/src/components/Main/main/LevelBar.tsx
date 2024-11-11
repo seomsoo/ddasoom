@@ -3,7 +3,7 @@
 import Ddasomi from '@/svgs/Ddasomiz/whiteSomi.svg';
 
 export default function LevelBar() {
-  const experience = 40; // 테스트용으로 고정된 경험치 값
+  const experience = 40.44; // 테스트용으로 고정된 경험치 값
 
   return (
     <div className="relative flex items-center mt-2 w-64 px-3 min-w-48 py-1 rounded-full font-nanumExtraBold bg-main3 shadow-md">
