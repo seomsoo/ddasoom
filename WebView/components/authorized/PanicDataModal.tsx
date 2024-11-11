@@ -98,9 +98,11 @@ const ModalContent = styled(View)`
 `;
 
 const ModalText = styled(Text)`
-  font-size: 22px;
+  font-size: 24px;
+  padding-top: 8px;
   margin-bottom: 15px;
   text-align: center;
+  font-family: hakgyoansimRegular;
 `;
 
 const CloseButton = styled(TouchableOpacity)`
@@ -129,7 +131,7 @@ const ModalButton = styled(TouchableOpacity)`
 const ButtonText = styled(Text)`
   color: white;
   font-size: 18px;
-  font-weight: 700;
+  font-family: nanumSquareNeoRegular;
   padding-bottom: 2px;
 `;
 const InfoBox = styled(View)`
@@ -149,17 +151,20 @@ const InfoContent = styled(Text)`
   justify-content: center;
   flex-direction: row;
   gap: 40px;
+  font-family: nanumSquareNeoRegular;
 `;
 
 const InfoTextLeft = styled(Text)`
   font-size: 18px;
   color: #333;
   font-weight: 600;
+  font-family: nanumSquareNeoRegular;
 `;
 const InfoTextRight = styled(Text)`
   font-size: 18px;
   color: #333;
   font-weight: 400;
+  font-family: nanumSquareNeoRegular;
 `;
 
 const InputContainer = styled(View)`
@@ -178,11 +183,13 @@ const LabelContainer = styled(View)`
 
 const InputLabel = styled(Text)`
   font-size: 18px;
+  font-family: nanumSquareNeoRegular;
 `;
 
 const OptionalText = styled(Text)`
   color: #a8a8a8;
   font-size: 18px;
+  font-family: nanumSquareNeoRegular;
 `;
 
 const TextInputBox = styled(TextInput)`
@@ -192,4 +199,5 @@ const TextInputBox = styled(TextInput)`
   border: 1.5px solid ${(props: any) => props.theme.color.MAIN1};
   font-size: 16px;
   color: #333;
+  font-family: nanumSquareNeoRegular;
 `;
