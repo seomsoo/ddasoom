@@ -75,14 +75,38 @@ interface InfoWindowOptions {
   content: string;
 }
 
+// interface KakaoPlacesService {
+//   keywordSearch: (keyword: string, callback: (result: PlaceSearchResult[], status: string) => void) => void;
+// }
 interface KakaoPlacesService {
-  keywordSearch: (keyword: string, callback: (result: PlaceSearchResult[], status: string) => void) => void;
+  keywordSearch: (
+    keyword: string,
+    callback: (result: kakao.maps.services.PlacesSearchResult[], status: kakao.maps.services.Status) => void,
+  ) => void;
+  categorySearch: (
+    category: string,
+    callback: (result: kakao.maps.services.PlacesSearchResult[], status: kakao.maps.services.Status) => void,
+    options?: { location?: kakao.maps.LatLng; radius?: number },
+  ) => void;
 }
-
 interface PlaceSearchResult {
   id: string;
   place_name: string;
   y: string;
   x: string;
+  distance: string;
+}
+
+interface PlacesSearchResultItem {
+  id: string;
+  place_name: string;
+  category_name: string;
+  category_group_name: string;
+  category_group_code: string;
+  phone: string;
+  address_name: string;
+  road_address_name: string;
+  x: string;
+  y: string;
   distance: string;
 }
