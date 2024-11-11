@@ -4,6 +4,9 @@ import { useState } from 'react';
 import Stroke from '@/svgs/Ddasomiz/greenSomi.svg';
 import Play from '@/svgs/Ddasomiz/blueDdasom.svg';
 import Hug from '@/svgs/Ddasomiz/yellowSomi.svg';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { putInteractionData } from '@/api/mainAPI';
+import queryKeys from '@/api/querykeys';
 
 type IconComponentType = React.FC<{ className?: string }>;
 interface InteractionProps {
@@ -12,15 +15,32 @@ interface InteractionProps {
   hugCount: number;
   playCount: number;
 }
+
 export default function Interaction({ continuousTrainingDays, strokeCount, hugCount, playCount }: InteractionProps) {
+  const queryClient = useQueryClient();
   const [isInProgress, setIsInProgress] = useState(false);
   const [progress, setProgress] = useState(0);
   const [SelectedIcon, setSelectedIcon] = useState<IconComponentType | null>(null);
 
-  const handleButtonClick = (IconComponent: IconComponentType) => {
+  // 상호작용 요청을 처리하는 mutation
+  const interactionMutation = useMutation({
+    mutationFn: (data: { interactionType: string }) => putInteractionData(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [queryKeys.CHARACTER] }); // 캐시된 데이터를 갱신 (예시)
+    },
+    onError: error => {
+      console.error('Interaction failed', error);
+    },
+  });
+
+  // 버튼 클릭 시 실행되는 핸들러
+  const handleButtonClick = (IconComponent: IconComponentType, interactionType: string) => {
     setIsInProgress(true);
     setSelectedIcon(() => IconComponent);
     setProgress(0);
+
+    // 경험치 추가 요청
+    interactionMutation.mutate({ interactionType });
 
     const interval = setInterval(() => {
       setProgress(prev => {
@@ -34,7 +54,6 @@ export default function Interaction({ continuousTrainingDays, strokeCount, hugCo
     }, 150); // 3초 동안 진행
   };
 
-  // 연속 훈련 일수에 따른 텍스트 색상 결정 함수
   const getTextColor = () => {
     if (continuousTrainingDays <= 3) return 'text-[#ffde84]';
     if (continuousTrainingDays <= 7) return 'text-[#7caeff]';
@@ -67,7 +86,7 @@ export default function Interaction({ continuousTrainingDays, strokeCount, hugCo
         ) : (
           <>
             <button
-              onClick={() => handleButtonClick(Hug)}
+              onClick={() => handleButtonClick(Hug, 'HUG')}
               className="bg-[#ffde84] flex flex-col justify-end rounded-2xl w-[105px] h-32 shadow-lg transform transition duration-100 active:translate-y-1 active:shadow-none">
               <div className="relative bg-[#ffffe4] rounded-xl text-center h-24 flex w-full flex-col justify-center">
                 <div className="absolute -top-5 left-7">
@@ -79,7 +98,7 @@ export default function Interaction({ continuousTrainingDays, strokeCount, hugCo
             </button>
 
             <button
-              onClick={() => handleButtonClick(Play)}
+              onClick={() => handleButtonClick(Play, 'PLAY')}
               className="bg-[#7caeff] flex flex-col justify-end rounded-2xl w-[105px] h-32 shadow-lg transform transition duration-100 active:translate-y-1 active:shadow-none">
               <div className="relative w-full bg-[#f3f8ff] rounded-xl text-center h-24 flex flex-col justify-center">
                 <div className="absolute -top-5 left-7">
@@ -91,7 +110,7 @@ export default function Interaction({ continuousTrainingDays, strokeCount, hugCo
             </button>
 
             <button
-              onClick={() => handleButtonClick(Stroke)}
+              onClick={() => handleButtonClick(Stroke, 'STROKE')}
               className="bg-[#30cc81] flex flex-col justify-end rounded-2xl w-[105px] h-32 shadow-lg transform transition duration-100 active:translate-y-1 active:shadow-none">
               <div className="relative w-full bg-[#dcffee] rounded-2xl text-center h-24 flex flex-col justify-center">
                 <div className="absolute -top-5 left-7">
