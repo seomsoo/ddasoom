@@ -28,15 +28,14 @@ export default function MissionContent() {
   const [isCompleted, setIsCompleted] = useState([false, false, false]); // 훈련 완료 여부를 저장하는 배열
 
   useEffect(() => {
-    if (completedData) {
-      queryClient.invalidateQueries({ queryKey: [queryKeys.COMPLETED_TRAINING] });
-      const completionStatus = [
-        completedData?.data.breath, // 호흡 연습
-        completedData?.data.grounding, // 그라운딩
-        completedData?.data.comedown, // 안정화 기법
-      ];
-      setIsCompleted(completionStatus);
-    }
+    if (!completedData) return;
+    queryClient.invalidateQueries({ queryKey: [queryKeys.COMPLETED_TRAINING] });
+    const completionStatus = [
+      completedData.data.breath, // 호흡 연습
+      completedData.data.grounding, // 그라운딩
+      completedData.data.comedown, // 안정화 기법
+    ];
+    setIsCompleted(completionStatus);
 
     if (isError && error) {
       setErrorContext(error instanceof Error ? error.message : '에러 메시지 읽기 실패');
