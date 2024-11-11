@@ -13,7 +13,9 @@ import HelpModal from '@/components/Main/Setting/modal/HelpModal';
 import MissionContent from '@/components/Main/Setting/modal/MissionContent';
 import MissionModal from '@/components/Main/Setting/modal/MissionModal';
 import Setting from '@/svgs/setting.svg';
+import Bed from '@/svgs/bed.svg';
 import SoundOn from '@/svgs/soundOn.svg';
+import Bookcase from '@/svgs/bookcase.svg';
 const Main = () => {
   return (
     <div className="bg-[#C7C0B3] h-screen -m-4">
@@ -30,7 +32,7 @@ const Main = () => {
           <div className="mt-8 mr-14">
             <Watch />
           </div>
-          <div className="absolute gap-6 right-6 top-40 flex flex-col">
+          <div className="absolute gap-6 right-6 top-40 z-10 flex flex-col">
             <HelpModal ContentComponent={HelpContent} />
             <Link href="/main/setting">
               <Setting />
@@ -41,7 +43,13 @@ const Main = () => {
         </div>
       </header>
 
-      <main className="flex flex-col bg-[#D8D1C3] items-center  h-56 ">
+      <main className="flex flex-col bg-[#D8D1C3] items-center h-52">
+        <div className="absolute left-7 top-56 ">
+          <Bed />
+        </div>
+        <div className="absolute right-16 z-0 top-52">
+          <Bookcase />
+        </div>
         <div>
           <Character />
         </div>

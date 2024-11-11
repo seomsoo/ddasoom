@@ -9,6 +9,15 @@ const config: Config = {
   theme: {
     extend: {
       keyframes: {
+        wave: {
+          '0%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
+          '100%': { backgroundPosition: '0% 50%' },
+        },
+        grow: {
+          '0%': { width: '0%' },
+          '100%': { width: '100%' },
+        },
         sirenPulse: {
           '0%, 100%': { transform: 'scale(1)', filter: 'drop-shadow(0 0 10px red)' },
           '50%': { transform: 'scale(1.1)', filter: 'drop-shadow(0 0 20px red)' },
@@ -31,6 +40,8 @@ const config: Config = {
         },
       },
       animation: {
+        'progress-wave': 'wave 1s ease-in-out infinite',
+        'progress-grow': 'grow 3s linear forwards',
         'siren-pulse': 'sirenPulse 1s infinite ease-in-out',
         fadein: 'fadein 2s ease-out forwards',
         fadeout: 'fadeout 1s ease-out forwards',
