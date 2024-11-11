@@ -25,3 +25,7 @@ export interface SavePhoneRequestBody {
 export interface SendMessageRequestBody {
   alias: string;
 }
+
+export interface IInteractionRequestBody {
+  interactionType: string;
+}
