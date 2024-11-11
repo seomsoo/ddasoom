@@ -4,4 +4,5 @@ public interface UpdateDdasomiInfoPort {
 
     void updateDdasomiInfo(Long userId);
 
+    void updateDdasomiInfo(Long userId, String trainingType);
 }

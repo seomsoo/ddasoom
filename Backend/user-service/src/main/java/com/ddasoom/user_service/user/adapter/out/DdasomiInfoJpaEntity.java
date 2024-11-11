@@ -31,6 +31,12 @@ public class DdasomiInfoJpaEntity {
 
     private Integer experience;
 
+    private Integer strokeCount = 0;
+
+    private Integer hugCount = 0;
+
+    private Integer playCount = 0;
+
     @Builder
     private DdasomiInfoJpaEntity(UserJpaEntity user, Integer experience) {
         this.user = user;
@@ -39,5 +45,19 @@ public class DdasomiInfoJpaEntity {
 
     void updateExperience() {
         this.experience += 5;
+    }
+
+    void updateInteraction(String trainingType) {
+        switch (trainingType) {
+            case "BREATH":
+                strokeCount += 5;
+                break;
+            case "GROUNDING":
+                hugCount += 5;
+                break;
+            case "COMEDOWN":
+                playCount += 5;
+                break;
+        }
     }
 }

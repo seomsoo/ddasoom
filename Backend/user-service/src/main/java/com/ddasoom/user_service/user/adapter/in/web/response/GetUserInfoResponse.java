@@ -5,7 +5,10 @@ public record GetUserInfoResponse(
         Integer continuousTrainingDays,
         int experience,
         int level,
-        double experiencePercent
+        double experiencePercent,
+        int strokeCount,
+        int hugCount,
+        int playCount
 ) {
 
 }
