@@ -26,6 +26,7 @@ export interface SendMessageRequestBody {
   alias: string;
 }
 
+// 상호작용 발동 시 경험치 추가
 export interface IInteractionRequestBody {
   interactionType: string;
 }
