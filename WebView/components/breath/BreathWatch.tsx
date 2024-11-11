@@ -104,7 +104,7 @@ const Tick = styled.View`
 
 const BPM = styled.Text`
   font-size: 18px;
-  font-weight: 600;
+  font-family: nanumSquareNeoRegular;
   color: #ffecec;
   position: absolute;
   top: 20px;
