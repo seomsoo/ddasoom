@@ -29,21 +29,26 @@ export default function NearbyHospitalsMap() {
         content: null,
       }),
     );
+
+    // setTimeout(() => {
+    //   setReceivedLocation({ latitude: 35.2052474, longitude: 126.8117694 });
+    // }, 5000);
   }, []);
 
   // WebView에서 GPS 메시지 수신
   useEffect(() => {
-    const handleMessage = (event: MessageEvent) => {
-      if (typeof event.data !== 'string') {
-        console.error('Received non-string data:', event.data);
-        return;
-      }
+    const handleMessage = async (event: MessageEvent) => {
+      // if (typeof event.data !== 'string') {
+      //   console.error('Received non-string data:', event.data);
+      //   return;
+      // }
 
       try {
-        const parsedMessage = JSON.parse(event.data);
+        const parsedMessage = await JSON.parse(event.data);
         if (parsedMessage.title === 'CURRENTLOCATION' && parsedMessage.content) {
           const { latitude, longitude } = parsedMessage.content;
           setReceivedLocation({ latitude, longitude });
+          // setReceivedLocation({ latitude: 35.2052474, longitude: 126.8117694 });
           console.log('Received GPS Data - latitude:', latitude, 'longitude:', longitude);
         }
       } catch (error) {
@@ -114,7 +119,7 @@ export default function NearbyHospitalsMap() {
   return (
     <div>
       <h1>근처 병원, 응급실, 정신건강의학과 의원 (가까운 순서 5개)</h1>
-      <div ref={mapRef} style={{ width: '100%', height: '500px' }} />
+      <div ref={mapRef} style={{ width: '200px', height: '500px' }} />
       <div>
         {places.map(place => (
           <div key={`${place.id}-${place.distance}`}>

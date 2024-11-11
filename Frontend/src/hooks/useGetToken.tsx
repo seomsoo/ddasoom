@@ -42,6 +42,14 @@ const useAuth = () => {
           dispatch(setAuthData({ token: content.token, userName: content.userName, userId: content.userId }));
         } else {
           console.log('title이 TOKEN 아님');
+          dispatch(
+            setAuthData({
+              token:
+                'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJEREFTT09NIiwiaWF0IjoxNzMxMjQwMzgyLCJleHAiOjE3MzEyNDIxODIsInVzZXJJZCI6MSwidXNlck5hbWUiOiLquYDrkZDsl7QifQ.tFCuIKsRmcPD-R8smdEVyzZ5AMoRmPwd3ElVYEjYaicYPLBHiQniSXM5Pj5PuHhW-N9SmdmHI8cfC-ex_PsFWw',
+              userName: 'content.userName',
+              userId: 5,
+            }),
+          );
         }
       } catch (e) {
         console.error('Failed to handle message:', e);
