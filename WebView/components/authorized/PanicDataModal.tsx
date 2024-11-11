@@ -2,7 +2,7 @@ import React from "react";
 import { Modal, View, Text, TouchableOpacity, TextInput, Image } from "react-native";
 import styled from "styled-components";
 import cancelImg from "@/assets/images/octicon_x-12.png";
-import { timeFormat } from "@/utils/timeFormat";
+import { convertToKST, timeFormat } from "@/utils/timeFormat";
 
 interface PanicDataModalProps {
   modalVisible: boolean;
@@ -23,7 +23,9 @@ const PanicDataModal = ({
   handleSave,
   handleCancel,
 }: PanicDataModalProps) => {
-  const thatTime = panicData?.startDate ? panicData.startDate.split("T")[1].split(":").splice(0, 2) : null;
+  const thatTime = panicData?.startDate
+    ? convertToKST(panicData.startDate).split("T")[1].split(":").splice(0, 2)
+    : null;
 
   return (
     <Modal
