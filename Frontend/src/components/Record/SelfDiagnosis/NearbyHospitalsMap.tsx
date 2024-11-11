@@ -185,7 +185,6 @@
 //   );
 // }
 'use client';
-
 import React, { useEffect, useRef, useState } from 'react';
 
 interface Place {
@@ -213,11 +212,14 @@ interface PlacesSearchResultItem {
 export default function NearbyHospitalsMap() {
   const mapRef = useRef<HTMLDivElement>(null);
   const [places, setPlaces] = useState<Place[]>([]);
-  const [receivedLocation, setReceivedLocation] = useState<{ latitude: number; longitude: number }>({
-    latitude: 35.2052474,
-    longitude: 126.8117694,
-  });
+  const [receivedLocation, setReceivedLocation] = useState<{ latitude: number; longitude: number } | null>(null);
 
+  const kakaoMapKey = '776e8affab113456d6b62b5c1a675605';
+
+  // 기본 위치 설정
+  const defaultLocation = { latitude: 35.2052474, longitude: 126.8117694 };
+
+  // WebView에서 GPS 요청 메시지 보내기
   useEffect(() => {
     window.ReactNativeWebView?.postMessage(
       JSON.stringify({
@@ -227,28 +229,24 @@ export default function NearbyHospitalsMap() {
     );
   }, []);
 
+  // WebView에서 GPS 위치 메시지 수신
   useEffect(() => {
     const handleMessage = async (event: MessageEvent) => {
       try {
         const parsedMessage = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
-        console.log('파싱된 메시지: ', parsedMessage.title);
 
-        if (parsedMessage.source?.startsWith('devtools') || parsedMessage.source?.startsWith('@devtools')) {
-          console.log('DevTools 메시지 무시');
-          return;
-        }
-
-        if (parsedMessage.title === 'CURRENTLOCATION') {
+        if (parsedMessage.title === 'CURRENTLOCATION' && parsedMessage.latitude && parsedMessage.longitude) {
           setReceivedLocation({
             latitude: parsedMessage.latitude,
             longitude: parsedMessage.longitude,
           });
-          console.log('Received GPS Data - latitude:', parsedMessage.latitude, 'longitude:', parsedMessage.longitude);
         } else {
           console.log('필요한 title이 아님 또는 content 없음');
+          setReceivedLocation(defaultLocation); // 기본 위치 사용
         }
       } catch (error) {
         console.error('Failed to parse message:', error);
+        setReceivedLocation(defaultLocation); // 파싱 오류 시 기본 위치 사용
       }
     };
 
@@ -259,44 +257,43 @@ export default function NearbyHospitalsMap() {
     };
   }, []);
 
+  // 지도 스크립트 로드 및 초기화
   useEffect(() => {
-    const kakaoMapKey = process.env.NEXT_PUBLIC_KAKAOMAP_KEY || '776e8affab113456d6b62b5c1a675605';
     const existingScript = document.getElementById('kakao-map-sdk');
+
+    const loadMap = () => {
+      if (window.kakao && window.kakao.maps) {
+        window.kakao.maps.load(() => {
+          initializeMap();
+        });
+      }
+    };
 
     if (!existingScript) {
       const script = document.createElement('script');
       script.id = 'kakao-map-sdk';
       script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${kakaoMapKey}&autoload=false&libraries=services`;
-      script.onload = () => {
-        if (window.kakao && window.kakao.maps) {
-          window.kakao.maps.load(() => {
-            console.log('Kakao Maps SDK loaded');
-            initializeMap();
-          });
-        }
-      };
+      script.onload = loadMap;
       document.head.appendChild(script);
-    } else if (window.kakao && window.kakao.maps) {
-      window.kakao.maps.load(() => {
-        console.log('Kakao Maps SDK already loaded');
-        initializeMap();
-      });
+    } else {
+      loadMap();
     }
-  }, []);
+  }, [receivedLocation]);
 
   const initializeMap = () => {
     if (!mapRef.current || !window.kakao) return;
 
+    const location = receivedLocation || defaultLocation;
+
     const map = new window.kakao.maps.Map(mapRef.current, {
-      center: new window.kakao.maps.LatLng(receivedLocation.latitude, receivedLocation.longitude),
+      center: new window.kakao.maps.LatLng(location.latitude, location.longitude),
       level: 4,
     });
 
     new window.kakao.maps.Marker({
-      position: new window.kakao.maps.LatLng(receivedLocation.latitude, receivedLocation.longitude),
+      position: new window.kakao.maps.LatLng(location.latitude, location.longitude),
       map: map as kakao.maps.Map,
     });
-    console.log('map:', map);
 
     const placesService = new window.kakao.maps.services.Places();
     let allPlaces: Place[] = [];
@@ -316,8 +313,8 @@ export default function NearbyHospitalsMap() {
                   lat: parseFloat(place.y),
                   lng: parseFloat(place.x),
                   distance: calculateDistance(
-                    receivedLocation.latitude,
-                    receivedLocation.longitude,
+                    location.latitude,
+                    location.longitude,
                     parseFloat(place.y),
                     parseFloat(place.x),
                   ),
@@ -339,7 +336,7 @@ export default function NearbyHospitalsMap() {
             resolve();
           },
           {
-            location: new window.kakao.maps.LatLng(receivedLocation.latitude, receivedLocation.longitude),
+            location: new window.kakao.maps.LatLng(location.latitude, location.longitude),
             radius: 5000,
           },
         );
