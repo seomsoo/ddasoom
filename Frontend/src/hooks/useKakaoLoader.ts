@@ -8,7 +8,7 @@ export const useKakaoLoader = () => {
     if (!existingScript) {
       const script = document.createElement('script');
       script.id = 'kakao-map-sdk';
-      script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAOMAP_KEY}&autoload=false&libraries=clusterer,drawing,services`;
+      script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAOMAP_KEY ?? '776e8affab113456d6b62b5c1a675605'}&autoload=false&libraries=clusterer,drawing,services`;
       script.onload = () => {
         if (window.kakao && window.kakao.maps) {
           window.kakao.maps.load(() => {
