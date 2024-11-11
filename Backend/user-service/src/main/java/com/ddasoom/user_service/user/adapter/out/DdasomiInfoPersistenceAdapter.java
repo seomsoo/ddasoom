@@ -17,4 +17,11 @@ public class DdasomiInfoPersistenceAdapter implements UpdateDdasomiInfoPort {
                 .orElseThrow(DdasomiInfoNotFoundException::new)
                 .updateExperience();
     }
+
+    @Override
+    public void updateDdasomiInfo(Long userId, String trainingType) {
+        ddasomiInfoRepository.findByUserId(userId)
+                .orElseThrow(DdasomiInfoNotFoundException::new)
+                .updateInteraction(trainingType);
+    }
 }

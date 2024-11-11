@@ -17,4 +17,13 @@ public class DdasomiInfoService implements DdasomiInfoUseCase {
     public void updateDdasomiExperience(Long userId) {
         updateDdasomiInfoPort.updateDdasomiInfo(userId);
     }
+
+    @Override
+    public void updateDdasomiInteraction(Long userId, String trainingType) {
+        if (trainingType == null) {
+            return;
+        }
+
+        updateDdasomiInfoPort.updateDdasomiInfo(userId, trainingType);
+    }
 }
