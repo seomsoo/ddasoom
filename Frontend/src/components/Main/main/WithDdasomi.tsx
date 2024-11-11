@@ -45,9 +45,10 @@ export default function WithDdasomi() {
   const ddasomiData = characterData?.data;
 
   useEffect(() => {
-    if (ddasomiData) {
-      queryClient.invalidateQueries({ queryKey: [queryKeys.CHARACTER, userId] });
-    }
+    if (!ddasomiData) return;
+
+    queryClient.invalidateQueries({ queryKey: [queryKeys.CHARACTER, Number(userId)] });
+
     if (isError && error) {
       setErrorContext(error instanceof Error ? error.message : '에러 메시지 읽기 실패');
       setIsErrorModalOpen(true);
