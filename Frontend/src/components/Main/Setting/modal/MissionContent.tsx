@@ -47,7 +47,7 @@ export default function MissionContent() {
     <div className="flex flex-col items-center min-h-96">
       <div className={`${background.background2} flex flex-col justify-center w-full h-24 border-y-8 font-nanumBold`}>
         <span className="text-3xl ml-5 flex justify-between items-baseline text-main4">
-          오늘의 훈련 <span className="text-xs font-nanumLight mr-5">- {timeLeft} 후 리셋</span>
+          오늘의 훈련 <span className="text-xs mr-5">- {timeLeft} 후 리셋</span>
         </span>
       </div>
 

@@ -21,9 +21,9 @@ export default function Character() {
   const getCharacterSvg = () => {
     switch (level) {
       case 1:
-        return <BabySomi width={100} height={100} />;
+        return <BabySomi width={100} height={120} />;
       case 2:
-        return <Ddasomi width={80} height={90} />;
+        return <Ddasomi width={100} height={120} />;
       case 3:
         return <Level3 width={150} height={150} />;
       default:
