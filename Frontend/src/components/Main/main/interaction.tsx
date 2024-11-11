@@ -6,12 +6,16 @@ import Play from '@/svgs/Ddasomiz/blueDdasom.svg';
 import Hug from '@/svgs/Ddasomiz/yellowSomi.svg';
 
 type IconComponentType = React.FC<{ className?: string }>;
-
-export default function Interaction() {
+interface InteractionProps {
+  continuousTrainingDays: number;
+  strokeCount: number;
+  hugCount: number;
+  playCount: number;
+}
+export default function Interaction({ continuousTrainingDays, strokeCount, hugCount, playCount }: InteractionProps) {
   const [isInProgress, setIsInProgress] = useState(false);
   const [progress, setProgress] = useState(0);
   const [SelectedIcon, setSelectedIcon] = useState<IconComponentType | null>(null);
-  const [continuousTrainingDays] = useState(8);
 
   const handleButtonClick = (IconComponent: IconComponentType) => {
     setIsInProgress(true);
@@ -70,7 +74,7 @@ export default function Interaction() {
                   <Hug />
                 </div>
                 <span className="font-hakgyoansimR text-xl w-full">안아주기</span>
-                <span className="text-gray5 text-xs mt-1">5개 보유</span>
+                <span className="text-gray5 text-xs mt-1">{hugCount}개 보유</span>
               </div>
             </button>
 
@@ -82,7 +86,7 @@ export default function Interaction() {
                   <Play />
                 </div>
                 <span className="font-hakgyoansimR text-xl w-full">놀아주기</span>
-                <span className="text-gray5 text-xs mt-1">14개 보유</span>
+                <span className="text-gray5 text-xs mt-1">{playCount}개 보유</span>
               </div>
             </button>
 
@@ -94,7 +98,7 @@ export default function Interaction() {
                   <Stroke />
                 </div>
                 <span className="font-hakgyoansimR text-xl w-full">쓰다듬기</span>
-                <span className="text-gray5 text-xs mt-1">30개 보유</span>
+                <span className="text-gray5 text-xs mt-1">{strokeCount}개 보유</span>
               </div>
             </button>
           </>

@@ -4,6 +4,8 @@ const queryKeys = {
   REPORT: 'report',
   EMERGENCY_PHONE_NUMBER: 'emergencyPhoneNumber',
   AIVOICE: 'aiVoice',
+  CHARACTER: 'character',
+  TODAY_TRAINING: 'todayTraining',
 };
 
 export default queryKeys;
