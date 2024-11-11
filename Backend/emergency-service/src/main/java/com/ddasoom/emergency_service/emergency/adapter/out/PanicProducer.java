@@ -4,6 +4,7 @@ import com.ddasoom.emergency_service.emergency.adapter.in.web.request.SavePanicD
 import com.ddasoom.emergency_service.emergency.adapter.in.web.request.SavePanicRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ public class PanicProducer {
 
     public void send(String topic, SavePanicRequest request) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
         String jsonInString = mapper.writeValueAsString(request);
         kafkaTemplate.send(topic, jsonInString);
     }
