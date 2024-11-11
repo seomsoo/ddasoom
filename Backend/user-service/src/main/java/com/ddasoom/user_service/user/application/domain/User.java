@@ -5,10 +5,13 @@ public record User(
         String email,
         String name,
         int continuousTrainingDays,
-        int experience
+        int experience,
+        int strokeCount,
+        int hugCount,
+        int playCount
 ) {
 
     public User(String email, String name) {
-        this(null, email, name, 0, 0);
+        this(null, email, name, 0, 0, 0, 0, 0);
     }
 }
