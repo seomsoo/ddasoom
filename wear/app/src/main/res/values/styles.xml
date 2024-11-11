@@ -1,6 +1,6 @@
 <resources>
-    <style name="MainActivityTheme.Starting" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">@color/splash_background</item>
+    <style name="MainActivityTheme.Starting" parent="Theme.AppCompat.Light.NoActionBar">
+<!--        <item name="windowSplashScreenBackground">@color/splash_background</item>-->
         <item name="windowSplashScreenAnimatedIcon">@drawable/ddasomi_24</item>
         <item name="postSplashScreenTheme">@android:style/Theme.DeviceDefault</item>
     </style>
