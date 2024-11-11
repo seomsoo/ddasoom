@@ -23,7 +23,7 @@ const PanicDataModal = ({
   handleSave,
   handleCancel,
 }: PanicDataModalProps) => {
-  const thatTime = panicData?.time.split("T")[1].split(".")[0].split(":").splice(1, 2);
+  const thatTime = panicData?.startDate ? panicData.startDate.split("T")[1].split(":").splice(0, 2) : null;
 
   return (
     <Modal
