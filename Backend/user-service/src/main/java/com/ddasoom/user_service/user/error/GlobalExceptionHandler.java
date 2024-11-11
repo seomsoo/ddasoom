@@ -35,6 +35,16 @@ public class GlobalExceptionHandler {
         return newResponse(e, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(DdasomeInfoInteractionConflict.class)
+    public ResponseEntity<?> DdasomeInfoInteractionConflict(Exception e) {
+        return newResponse(e, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(DdasomeInfoInteractionBadRequest.class)
+    public ResponseEntity<?> DdasomeInfoInteractionBadRequest(Exception e) {
+        return newResponse(e, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(HttpMediaTypeException.class)
     public ResponseEntity<?> handleHttpMediaTypeException(Exception e) {
         return newResponse(e, HttpStatus.UNSUPPORTED_MEDIA_TYPE);
