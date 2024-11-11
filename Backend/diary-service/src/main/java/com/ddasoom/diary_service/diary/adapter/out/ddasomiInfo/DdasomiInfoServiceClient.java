@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestHeader;
 @FeignClient(name = "USER-SERVICE")
 public interface DdasomiInfoServiceClient {
 
-    @PutMapping("/api/users/exp-up")
+    @PutMapping("/api/users/daily/exp-up")
     void updateDdasomiInfo(@RequestHeader("X-Authenticated-User") Long userId);
 
-    @PutMapping("/api/users/exp-up")
+    @PutMapping("/api/users/training/exp-up")
     void updateDdasomiInfo(@RequestHeader("X-Authenticated-User") Long userId, @RequestBody String trainingType);
 }
