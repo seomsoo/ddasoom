@@ -1,10 +1,11 @@
 // Character Component
 'use client';
 
-import { useState, useEffect } from 'react';
-import Ddasomi from '@/svgs/Ddasomiz/ddasomi.svg';
+import { useEffect, useState } from 'react';
+
 import BabySomi from '@/svgs/Ddasomiz/babySomi.svg';
 import Level3 from '@/svgs/Ddasomiz/level3.svg';
+import Ddasomi from '@/svgs/Ddasomiz/LV1.svg';
 
 export default function Character() {
   const [level, setLevel] = useState(1);
@@ -44,9 +45,9 @@ export default function Character() {
   };
 
   return (
-    <div className="relative flex flex-col items-center justify-center">
+    <div className="flex flex-col items-center mt-10">
       {/* 말풍선 */}
-      <div className="relative bg-gray1 p-4 rounded-2xl shadow-md text-center text-sm max-w-72 mb-4">
+      <div className="absolute bg-gray1 p-4 rounded-2xl shadow-md text-center text-sm max-w-72 top-64">
         <span>{getBalloonText()}</span>
         {/* 말풍선 꼬리 */}
         <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 translate-y-full w-4 h-4 bg-gray1 rotate-45 " />

@@ -1,17 +1,19 @@
 import Link from 'next/link';
 
-import EmergencyModal from '@/components/Main/Setting/modal/EmergencyModal';
-import HelpModal from '@/components/Main/Setting/modal/HelpModal';
-
 import Navbar from '@/components/Common/Navbar';
+import Character from '@/components/Main/main/Character';
+import Interaction from '@/components/Main/main/interaction';
+import LevelBar from '@/components/Main/main/LevelBar';
+import Watch from '@/components/Main/main/Watch';
+import Window from '@/components/Main/main/Window';
+import EmergencyContent from '@/components/Main/Setting/modal/EmergencyContent';
+import EmergencyModal from '@/components/Main/Setting/modal/EmergencyModal';
+import HelpContent from '@/components/Main/Setting/modal/HelpContent';
+import HelpModal from '@/components/Main/Setting/modal/HelpModal';
+import MissionContent from '@/components/Main/Setting/modal/MissionContent';
+import MissionModal from '@/components/Main/Setting/modal/MissionModal';
 import Setting from '@/svgs/setting.svg';
 import SoundOn from '@/svgs/soundOn.svg';
-import EmergencyContent from '@/components/Main/Setting/modal/EmergencyContent';
-import Watch from '@/components/Main/main/Watch';
-import Character from '@/components/Main/main/Character';
-import Window from '@/components/Main/main/Window';
-import LevelBar from '@/components/Main/main/LevelBar';
-import HelpContent from '@/components/Main/Setting/modal/HelpContent';
 const Main = () => {
   return (
     <div className="bg-[#C7C0B3] h-screen -m-4">
@@ -28,26 +30,24 @@ const Main = () => {
           <div className="mt-8 mr-14">
             <Watch />
           </div>
-          <div className="absolute gap-6 right-4 top-48 flex flex-col">
+          <div className="absolute gap-6 right-6 top-40 flex flex-col">
+            <HelpModal ContentComponent={HelpContent} />
             <Link href="/main/setting">
               <Setting />
             </Link>
             <SoundOn />
-            <HelpModal ContentComponent={HelpContent} />
+            <MissionModal ContentComponent={MissionContent} />
           </div>
         </div>
       </header>
 
       <main className="flex flex-col bg-[#D8D1C3] items-center  h-56 ">
-        <div className="mt-11">
+        <div>
           <Character />
         </div>
       </main>
       <section className="flex flex-col p-3">
-        <div className="mb-2">
-          <span className="font-nanumExtraBold text-lg ">따솜이 키우기</span>
-        </div>
-        <div className="bg-white p-24 rounded-3xl" />
+        <Interaction />
       </section>
       <Navbar />
     </div>

@@ -73,3 +73,20 @@ export interface AiVoiceData {
   voiceName: string;
   voiceKey: string;
 }
+
+export interface ICompletedTraining {
+  breath: boolean;
+  grounding: true;
+  comedown: false;
+}
+
+export interface ICharacterData {
+  name: string;
+  continuousTrainingDays: number;
+  experience: number;
+  level: number;
+  experiencePercent: number;
+  strokeCount: number;
+  hugCount: number;
+  playCount: number;
+}
