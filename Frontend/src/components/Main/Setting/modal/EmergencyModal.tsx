@@ -1,7 +1,7 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { useState, ComponentType } from 'react';
+import { ComponentType, useState } from 'react';
 
 import Cancel from '@/svgs/cancel.svg';
 import Sos from '@/svgs/SOS.svg';
@@ -18,8 +18,8 @@ export default function EmergencyModal({ ContentComponent }: ModalWithStateProps
 
   return (
     <>
-      <button onClick={openModal} className="">
-        <Sos />
+      <button onClick={openModal}>
+        <Sos className="transform transition duration-75 active:translate-y-1" />
       </button>
 
       <AnimatePresence>
