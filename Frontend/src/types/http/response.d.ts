@@ -74,12 +74,14 @@ export interface AiVoiceData {
   voiceKey: string;
 }
 
+// 오늘 완료한 훈련 기록 조회
 export interface ICompletedTraining {
   breath: boolean;
-  grounding: true;
-  comedown: false;
+  grounding: boolean;
+  comedown: boolean;
 }
 
+// 메인 화면 조회
 export interface ICharacterData {
   name: string;
   continuousTrainingDays: number;

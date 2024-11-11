@@ -4,19 +4,53 @@ import { useState } from 'react';
 import Stroke from '@/svgs/Ddasomiz/greenSomi.svg';
 import Play from '@/svgs/Ddasomiz/blueDdasom.svg';
 import Hug from '@/svgs/Ddasomiz/yellowSomi.svg';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { putInteractionData } from '@/api/mainAPI';
+import queryKeys from '@/api/querykeys';
+import ErrorModal from '@/components/Common/ErrorModal';
 
 type IconComponentType = React.FC<{ className?: string }>;
+interface InteractionProps {
+  continuousTrainingDays: number;
+  strokeCount: number;
+  hugCount: number;
+  playCount: number;
+}
 
-export default function Interaction() {
+export default function Interaction({ continuousTrainingDays, strokeCount, hugCount, playCount }: InteractionProps) {
+  const queryClient = useQueryClient();
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+  const [errorContext, setErrorContext] = useState<string>('');
   const [isInProgress, setIsInProgress] = useState(false);
   const [progress, setProgress] = useState(0);
   const [SelectedIcon, setSelectedIcon] = useState<IconComponentType | null>(null);
-  const [continuousTrainingDays] = useState(8);
+  const [lastInteraction, setLastInteraction] = useState<{
+    IconComponent: IconComponentType;
+    interactionType: string;
+  } | null>(null);
 
-  const handleButtonClick = (IconComponent: IconComponentType) => {
+  // 상호작용 요청을 처리하는 mutation
+  const interactionMutation = useMutation({
+    mutationFn: (data: { interactionType: string }) => putInteractionData(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [queryKeys.CHARACTER] }); // 캐시된 데이터를 갱신 (예시)
+    },
+    onError: error => {
+      console.error('상호작용 전송 실패:', error);
+      setErrorContext(error.message || '에러 메시지 전송 안 됨');
+      setIsErrorModalOpen(true);
+    },
+  });
+
+  // 버튼 클릭 시 실행되는 핸들러
+  const handleButtonClick = (IconComponent: IconComponentType, interactionType: string) => {
     setIsInProgress(true);
     setSelectedIcon(() => IconComponent);
     setProgress(0);
+    setLastInteraction({ IconComponent, interactionType });
+
+    // 경험치 추가 요청
+    interactionMutation.mutate({ interactionType });
 
     const interval = setInterval(() => {
       setProgress(prev => {
@@ -30,15 +64,23 @@ export default function Interaction() {
     }, 150); // 3초 동안 진행
   };
 
-  // 연속 훈련 일수에 따른 텍스트 색상 결정 함수
   const getTextColor = () => {
     if (continuousTrainingDays <= 3) return 'text-[#ffde84]';
     if (continuousTrainingDays <= 7) return 'text-[#7caeff]';
     return 'text-[#FF4E4E]';
   };
+  const handleRetry = () => {
+    setIsErrorModalOpen(false);
+    if (lastInteraction) {
+      handleButtonClick(lastInteraction.IconComponent, lastInteraction.interactionType);
+    }
+  };
 
   return (
     <>
+      {isErrorModalOpen && (
+        <ErrorModal onClose={() => setIsErrorModalOpen(false)} onRetry={handleRetry} context={errorContext} />
+      )}
       <div className="mb-2">
         <span className="font-hakgyoansimR items-baseline text-xl flex text-gray1">
           연속 <p className={`ml-1 font-hakgyoansimB ${getTextColor()}`}>{continuousTrainingDays}일</p>째 훈련 중 🔥
@@ -63,38 +105,38 @@ export default function Interaction() {
         ) : (
           <>
             <button
-              onClick={() => handleButtonClick(Hug)}
+              onClick={() => handleButtonClick(Hug, 'HUG')}
               className="bg-[#ffde84] flex flex-col justify-end rounded-2xl w-[105px] h-32 shadow-lg transform transition duration-100 active:translate-y-1 active:shadow-none">
               <div className="relative bg-[#ffffe4] rounded-xl text-center h-24 flex w-full flex-col justify-center">
                 <div className="absolute -top-5 left-7">
                   <Hug />
                 </div>
                 <span className="font-hakgyoansimR text-xl w-full">안아주기</span>
-                <span className="text-gray5 text-xs mt-1">5개 보유</span>
+                <span className="text-gray5 text-xs mt-1">{hugCount}개 보유</span>
               </div>
             </button>
 
             <button
-              onClick={() => handleButtonClick(Play)}
+              onClick={() => handleButtonClick(Play, 'PLAY')}
               className="bg-[#7caeff] flex flex-col justify-end rounded-2xl w-[105px] h-32 shadow-lg transform transition duration-100 active:translate-y-1 active:shadow-none">
               <div className="relative w-full bg-[#f3f8ff] rounded-xl text-center h-24 flex flex-col justify-center">
                 <div className="absolute -top-5 left-7">
                   <Play />
                 </div>
                 <span className="font-hakgyoansimR text-xl w-full">놀아주기</span>
-                <span className="text-gray5 text-xs mt-1">14개 보유</span>
+                <span className="text-gray5 text-xs mt-1">{playCount}개 보유</span>
               </div>
             </button>
 
             <button
-              onClick={() => handleButtonClick(Stroke)}
+              onClick={() => handleButtonClick(Stroke, 'STROKE')}
               className="bg-[#30cc81] flex flex-col justify-end rounded-2xl w-[105px] h-32 shadow-lg transform transition duration-100 active:translate-y-1 active:shadow-none">
               <div className="relative w-full bg-[#dcffee] rounded-2xl text-center h-24 flex flex-col justify-center">
                 <div className="absolute -top-5 left-7">
                   <Stroke />
                 </div>
                 <span className="font-hakgyoansimR text-xl w-full">쓰다듬기</span>
-                <span className="text-gray5 text-xs mt-1">30개 보유</span>
+                <span className="text-gray5 text-xs mt-1">{strokeCount}개 보유</span>
               </div>
             </button>
           </>
