@@ -1,6 +1,12 @@
 'use client';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
+import { getCharacterData } from '@/api/mainAPI';
+import queryKeys from '@/api/querykeys';
+import ErrorModal from '@/components/Common/ErrorModal';
 import Navbar from '@/components/Common/Navbar';
 import Character from '@/components/Main/main/Character';
 import Interaction from '@/components/Main/main/interaction';
@@ -13,17 +19,11 @@ import HelpContent from '@/components/Main/Setting/modal/HelpContent';
 import HelpModal from '@/components/Main/Setting/modal/HelpModal';
 import MissionContent from '@/components/Main/Setting/modal/MissionContent';
 import MissionModal from '@/components/Main/Setting/modal/MissionModal';
-import Setting from '@/svgs/setting.svg';
-import Bed from '@/svgs/bed.svg';
-import SoundOn from '@/svgs/soundOn.svg';
-import Bookcase from '@/svgs/bookcase.svg';
-import { useSelector } from 'react-redux';
-import { getCharacterData } from '@/api/mainAPI';
 import { RootState } from '@/store';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import queryKeys from '@/api/querykeys';
-import { useEffect, useState } from 'react';
-import ErrorModal from '@/components/Common/ErrorModal';
+import Bed from '@/svgs/bed.svg';
+import Bookcase from '@/svgs/bookcase.svg';
+import Setting from '@/svgs/setting.svg';
+import SoundOn from '@/svgs/soundOn.svg';
 
 export default function WithDdasomi() {
   const userId = useSelector((state: RootState) => state.auth.userId);

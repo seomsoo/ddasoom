@@ -1,13 +1,13 @@
 'use client';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-import background from '@/components/BackGround/Background.module.css';
-import Check from '@/svgs/Check.svg';
 import { getCompletedTrainingData } from '@/api/mainAPI';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
 import queryKeys from '@/api/querykeys';
+import background from '@/components/BackGround/Background.module.css';
 import ErrorModal from '@/components/Common/ErrorModal';
+import Check from '@/svgs/Check.svg';
 
 export default function MissionContent() {
   const queryClient = useQueryClient();
