@@ -2,7 +2,9 @@ package com.ddasoom.user_service.user.application.port.in;
 
 public interface DdasomiInfoUseCase {
 
-    void updateDdasomiExperience(Long userId);
+    void updateDdasomiExperienceDaily(Long userId);
 
-    void updateDdasomiInteraction(Long userId, String trainingType);
+    void updateDdasomiExperienceTraining(Long userId, String trainingType);
+
+    void executeInteraction(Long userId, String interactionType);
 }

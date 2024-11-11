@@ -14,16 +14,17 @@ public class DdasomiInfoService implements DdasomiInfoUseCase {
     private final UpdateDdasomiInfoPort updateDdasomiInfoPort;
 
     @Override
-    public void updateDdasomiExperience(Long userId) {
-        updateDdasomiInfoPort.updateDdasomiInfo(userId);
+    public void updateDdasomiExperienceDaily(Long userId) {
+        updateDdasomiInfoPort.updateDdasomiExperienceDaily(userId);
     }
 
     @Override
-    public void updateDdasomiInteraction(Long userId, String trainingType) {
-        if (trainingType == null) {
-            return;
-        }
+    public void updateDdasomiExperienceTraining(Long userId, String trainingType) {
+        updateDdasomiInfoPort.updateDdasomiExperienceTraining(userId, trainingType);
+    }
 
-        updateDdasomiInfoPort.updateDdasomiInfo(userId, trainingType);
+    @Override
+    public void executeInteraction(Long userId, String interactionType) {
+        updateDdasomiInfoPort.executeInteraction(userId, interactionType);
     }
 }
