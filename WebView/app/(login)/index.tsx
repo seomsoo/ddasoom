@@ -106,6 +106,6 @@ const Header = styled.View`
 `;
 const HeaderText = styled(Text)`
   font-size: 72px;
-  font-weight: 600;
+  font-family: hakgyoansimRegular;
 `;
 const LogoView = styled.View``;
