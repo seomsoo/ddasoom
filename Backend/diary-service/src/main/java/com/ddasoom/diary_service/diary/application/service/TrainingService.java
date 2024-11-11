@@ -4,6 +4,7 @@ import static com.ddasoom.diary_service.diary.application.domain.TrainingType.va
 
 import com.ddasoom.diary_service.common.annotation.UseCase;
 import com.ddasoom.diary_service.diary.adapter.in.web.response.GetContinuousTrainingDaysResponse;
+import com.ddasoom.diary_service.diary.adapter.in.web.response.GetTodayTrainingResponse;
 import com.ddasoom.diary_service.diary.adapter.out.ddasomiInfo.DdasomiInfoServiceClient;
 import com.ddasoom.diary_service.diary.application.port.in.TrainingUseCase;
 import com.ddasoom.diary_service.diary.application.port.out.TrainingRecordPort;
@@ -47,5 +48,13 @@ public class TrainingService implements TrainingUseCase {
             continuousDay++;
         }
         return new GetContinuousTrainingDaysResponse(continuousDay);
+    }
+
+    @Override
+    public GetTodayTrainingResponse getTodayTraining(Long userId, LocalDate today) {
+        return GetTodayTrainingResponse.from(
+                trainingRecordPort.getTrainingRecord(userId, today.getYear(), today.getMonthValue(),
+                        today.getDayOfMonth())
+        );
     }
 }
