@@ -31,9 +31,8 @@ import com.google.android.gms.wearable.Wearable
 
 class MainActivity : Activity() {
 
-    private lateinit var tvHeartRate: TextView
-    private lateinit var btnStart: Button
-    private lateinit var btnStop: Button
+    private lateinit var btnGoBreath: Button
+    private lateinit var btnGoBpm: Button
     private var isMonitoring = false
 
     private lateinit var activityRecognitionClient: ActivityRecognitionClient
@@ -42,8 +41,6 @@ class MainActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        tvHeartRate = findViewById(R.id.tv1)
 
         if (isFirstRun()) {
             showPrivacyPolicyDialog()
@@ -73,28 +70,37 @@ class MainActivity : Activity() {
         checkAndRequestPermissions()
         checkAndRequestActivityRecognitionPermission()
         getNodeId()
+        startHeartRateMonitoring() // 앱 실행 시 자동 호출
     }
 
     // UI 초기화 메서드
     private fun initializeUI() {
-        tvHeartRate = findViewById(R.id.tv1)
-        btnStart = findViewById(R.id.btn1)
-        btnStop = findViewById(R.id.btn2)
+        btnGoBreath = findViewById(R.id.btn_go_breath)
+        btnGoBpm = findViewById(R.id.btn_go_bpm)
 
-        btnStart.visibility = View.VISIBLE
-        btnStop.visibility = View.GONE
-
-        btnStart.setOnClickListener {
-            if (!isMonitoring && checkPermissions()) {
-                startHeartRateMonitoring()
-            } else if (!checkPermissions()) {
-                checkAndRequestPermissions()
-            }
+        // 호흡 버튼 클릭 시 SelectActivity로 이동
+        btnGoBreath.setOnClickListener {
+            val intent = Intent(this, SelectActivity::class.java)
+            startActivity(intent)
         }
 
-        btnStop.setOnClickListener {
-            stopHeartRateMonitoring()
+        // 심박수 버튼 클릭 시 BpmReadyActivity로 이동
+        btnGoBpm.setOnClickListener {
+            val intent = Intent(this, BpmReadyActivity::class.java)
+            startActivity(intent)
         }
+
+//        btnStart.setOnClickListener {
+//            if (!isMonitoring && checkPermissions()) {
+//                startHeartRateMonitoring()
+//            } else if (!checkPermissions()) {
+//                checkAndRequestPermissions()
+//            }
+//        }
+//
+//        btnStop.setOnClickListener {
+//            stopHeartRateMonitoring()
+//        }
     }
 
     // 권한 확인 메서드
@@ -198,13 +204,14 @@ class MainActivity : Activity() {
         override fun onReceive(context: Context?, intent: Intent?) {
             val heartRate = intent?.getIntExtra("heartRate", -1) ?: -1
             if (heartRate != -1) {
-                tvHeartRate.text = "$heartRate BPM"
+                Log.d("HeartRate", "Current heart rate: $heartRate BPM")
             }
         }
     }
 
     // 심박수 모니터링 시작 메서드
     private fun startHeartRateMonitoring() {
+        if (isMonitoring) return // 이미 실행 중인 경우 중복 실행 방지
         isMonitoring = true
         val serviceIntent = Intent(this, ForegroundService::class.java).apply {
             action = ForegroundService.ACTION_START_MONITORING
@@ -214,9 +221,7 @@ class MainActivity : Activity() {
         } else {
             startService(serviceIntent)
         }
-
-        btnStart.visibility = View.GONE
-        btnStop.visibility = View.VISIBLE
+        Log.d(Constants.TAG, "Heart rate monitoring started.")
     }
 
     // 심박수 모니터링 중지 메서드
@@ -226,10 +231,7 @@ class MainActivity : Activity() {
             action = ForegroundService.ACTION_STOP_MONITORING
         }
         startService(serviceIntent)
-
-        btnStart.visibility = View.VISIBLE
-        btnStop.visibility = View.GONE
-        tvHeartRate.text = "-- BPM"
+        Log.d(Constants.TAG, "Heart rate monitoring stopped.")
     }
 
     // 노드 ID를 가져오는 메서드
