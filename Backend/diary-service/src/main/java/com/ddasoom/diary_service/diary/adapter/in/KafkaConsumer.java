@@ -31,7 +31,7 @@ public class KafkaConsumer {
 
         PanicCommand command = new PanicCommand(
                 ((Number) map.get("userId")).longValue(),
-                mapper.convertValue(map.get("time"), LocalDateTime.class),
+                mapper.convertValue(map.get("startDate"), LocalDateTime.class),
                 (Integer) map.get("duration"),
                 new BigDecimal(map.get("latitude").toString()),
                 new BigDecimal(map.get("longitude").toString()),

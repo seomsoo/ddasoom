@@ -15,19 +15,18 @@ public class SavePanicRequest {
     private BigDecimal longitude;
     private String address;
     private String description;
-    private LocalDateTime time;
+    private LocalDateTime startDate;
 
     public SavePanicRequest(int duration, BigDecimal latitude, BigDecimal longitude,
-            String address, String description, Instant time) {
+            String address, String description, Instant startDate) {
         this.duration = duration;
         this.latitude = latitude;
         this.longitude = longitude;
         this.address = address;
         this.description = description;
-        this.time = time.atZone(ZoneId.of("UTC"))
+        this.startDate = startDate.atZone(ZoneId.of("UTC"))
                 .withZoneSameInstant(ZoneId.of("Asia/Seoul"))
                 .toLocalDateTime();
-        System.out.println(this.time);
     }
 
     public void setUserId(Long userId) {
