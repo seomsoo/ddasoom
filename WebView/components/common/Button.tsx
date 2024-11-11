@@ -56,4 +56,5 @@ const ButtonText = styled(Text)<{ textColor: string }>`
   font-size: 18px;
   text-align: center;
   margin-bottom: 3px;
+  font-family: nanumSquareNeoRegular;
 `;
