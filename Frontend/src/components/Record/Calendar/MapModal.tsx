@@ -9,7 +9,7 @@ interface MapModalProps {
 
 const MapModal: React.FC<MapModalProps> = ({ center }) => {
   useKakaoLoaderOrigin({
-    appkey: '776e8affab113456d6b62b5c1a675605',
+    appkey: 'db0dd621cffe4388d2816e641f4242d9',
     libraries: ['clusterer', 'drawing', 'services'],
   });
 

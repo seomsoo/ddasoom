@@ -214,7 +214,6 @@ export default function NearbyHospitalsMap() {
   const [places, setPlaces] = useState<Place[]>([]);
   const [receivedLocation, setReceivedLocation] = useState<{ latitude: number; longitude: number } | null>(null);
 
-  // const kakaoMapKey = '776e8affab113456d6b62b5c1a675605';
   const kakaoMapKey = 'db0dd621cffe4388d2816e641f4242d9';
 
   // 기본 위치 설정
