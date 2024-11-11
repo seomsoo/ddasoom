@@ -75,8 +75,16 @@ interface InfoWindowOptions {
   content: string;
 }
 
+// interface KakaoPlacesService {
+//   keywordSearch: (keyword: string, callback: (result: PlaceSearchResult[], status: string) => void) => void;
+// }
 interface KakaoPlacesService {
   keywordSearch: (keyword: string, callback: (result: PlaceSearchResult[], status: string) => void) => void;
+  categorySearch: (
+    category: string,
+    callback: (result: PlaceSearchResult[], status: string) => void,
+    options?: { location?: kakao.maps.LatLng; radius?: number },
+  ) => void; // categorySearch 메서드 추가
 }
 
 interface PlaceSearchResult {
