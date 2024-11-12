@@ -4,6 +4,8 @@ import static org.springframework.http.HttpStatus.CREATED;
 
 import com.ddasoom.voice_service.common.annotation.WebAdapter;
 import com.ddasoom.voice_service.voice.adapter.in.event.CreateVoiceEvent;
+import com.ddasoom.voice_service.voice.application.domain.Voice;
+import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -28,6 +30,20 @@ public class CreateVoiceController {
             @RequestPart String voiceName,
             @RequestPart List<MultipartFile> files
     ) {
-        eventPublisher.publishEvent(new CreateVoiceEvent(userId, voiceName, files));
+        eventPublisher.publishEvent(new CreateVoiceEvent(userId, voiceName, mapToVoices(files)));
+    }
+
+    private List<Voice> mapToVoices(List<MultipartFile> voices) {
+        return voices.stream()
+                .map(this::mapToVoice)
+                .toList();
+    }
+
+    private Voice mapToVoice(MultipartFile voice) {
+        try {
+            return new Voice(voice.getBytes());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
