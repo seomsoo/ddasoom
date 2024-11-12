@@ -1,10 +1,9 @@
 // Character Component
 'use client';
 
-import BabySomi from '@/svgs/Ddasomiz/babySomi.svg';
-import Level3 from '@/svgs/Ddasomiz/level3.svg';
-import Ddasomi from '@/svgs/Ddasomiz/LV1.svg';
-
+import Level3 from '@/svgs/Ddasomiz/LV3.svg';
+import Babysomi from '@/videos/BabySomi.gif';
+import Lv2 from '@/videos/Lv2Somi.gif';
 interface LevelProps {
   level: number;
 }
@@ -12,11 +11,23 @@ export default function Character({ level }: LevelProps) {
   const getCharacterSvg = () => {
     switch (level) {
       case 1:
-        return <BabySomi width={100} height={120} />;
+        return (
+          <img
+            src={Babysomi.src}
+            className="w-24 h-28  transition-opacity duration-300 ease-in-out opacity-100 animate-grow"
+            alt="LV1 GIF"
+          />
+        );
       case 2:
-        return <Ddasomi width={100} height={120} />;
+        return (
+          <img
+            src={Lv2.src}
+            className="w-24 h-28  transition-opacity duration-300 ease-in-out opacity-100 animate-grow"
+            alt="LV1 GIF"
+          />
+        );
       case 3:
-        return <Level3 width={150} height={150} />;
+        return <Level3 />;
       default:
         return null;
     }
@@ -27,9 +38,9 @@ export default function Character({ level }: LevelProps) {
       case 1:
         return '응애';
       case 2:
-        return '따소미에용~~!';
+        return '안녕 오늘은 기분은 어떄?!';
       case 3:
-        return '료이키텐카잇 따육맨 등장';
+        return '슈퍼 따소미 등장!!';
       default:
         return '';
     }

@@ -1,8 +1,7 @@
 import Link from 'next/link';
 
 import Header from '@/components/Common/Header';
-import Ddasomi from '@/svgs/shadowDdasomi.svg';
-
+import Ddasomi from '@/videos/EyeMouse.gif';
 export default function SelfDiagnosisPage() {
   return (
     <div>
@@ -14,12 +13,16 @@ export default function SelfDiagnosisPage() {
             공황장애 진단 기준에 따른 <br /> 자가진단입니다.
           </h3>
           <p className="text-xs">총 13문항으로, 다음 중 나타난 증상을 모두 골라주세요.</p>
-          <Ddasomi className="mt-4" />
+          <img
+            src={Ddasomi.src}
+            className="w-52 h-64 transition-opacity duration-300 ease-in-out opacity-100 animate-grow"
+            alt="Nav Icon GIF"
+          />
         </section>
 
         <Link
           href="/record/selfDiagnosis/check"
-          className="font-nanumBold text-xl w-full py-3 mt-10 rounded-3xl text-main3 text-center bg-button1">
+          className="font-nanumBold text-xl w-full py-3 mt-24 rounded-3xl text-main3 text-center bg-button1">
           시작하기
         </Link>
       </main>

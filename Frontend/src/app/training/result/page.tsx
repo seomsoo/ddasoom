@@ -9,7 +9,7 @@ export default function TrainingResultPage({ searchParams }: TrainingResultPageP
   const trainingType = searchParams.trainingType;
 
   return (
-    <main className="font-hakgyoansimR flex flex-col items-center gap-10">
+    <main className="font-hakgyoansimR flex flex-col items-center ">
       <div className="flex flex-col items-center mt-16">
         <RandomPraise />
       </div>
