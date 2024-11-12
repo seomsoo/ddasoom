@@ -9,6 +9,10 @@ const config: Config = {
   theme: {
     extend: {
       keyframes: {
+        grow2: {
+          '0%': { transform: 'scale(1)' },
+          '100%': { transform: 'scale(1.1)' },
+        },
         wave: {
           '0%': { backgroundPosition: '0% 50%' },
           '50%': { backgroundPosition: '100% 50%' },
@@ -40,6 +44,7 @@ const config: Config = {
         },
       },
       animation: {
+        grow: 'grow2 0.5s ease-in-out forwards',
         'progress-wave': 'wave 1s ease-in-out infinite',
         'progress-grow': 'grow 3s linear forwards',
         'siren-pulse': 'sirenPulse 1s infinite ease-in-out',

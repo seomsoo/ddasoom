@@ -1,13 +1,14 @@
 'use client';
 
-import { useState } from 'react';
-import Stroke from '@/svgs/Ddasomiz/greenSomi.svg';
-import Play from '@/svgs/Ddasomiz/blueDdasom.svg';
-import Hug from '@/svgs/Ddasomiz/yellowSomi.svg';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
+
 import { putInteractionData } from '@/api/mainAPI';
 import queryKeys from '@/api/querykeys';
 import ErrorModal from '@/components/Common/ErrorModal';
+import Play from '@/svgs/Ddasomiz/blueDdasom.svg';
+import Stroke from '@/svgs/Ddasomiz/greenSomi.svg';
+import Hug from '@/svgs/Ddasomiz/yellowSomi.svg';
 
 type IconComponentType = React.FC<{ className?: string }>;
 interface InteractionProps {
@@ -29,11 +30,10 @@ export default function Interaction({ continuousTrainingDays, strokeCount, hugCo
     interactionType: string;
   } | null>(null);
 
-  // 상호작용 요청을 처리하는 mutation
   const interactionMutation = useMutation({
     mutationFn: (data: { interactionType: string }) => putInteractionData(data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [queryKeys.CHARACTER] }); // 캐시된 데이터를 갱신 (예시)
+      queryClient.invalidateQueries({ queryKey: [queryKeys.CHARACTER] });
     },
     onError: error => {
       console.error('상호작용 전송 실패:', error);
@@ -42,14 +42,11 @@ export default function Interaction({ continuousTrainingDays, strokeCount, hugCo
     },
   });
 
-  // 버튼 클릭 시 실행되는 핸들러
   const handleButtonClick = (IconComponent: IconComponentType, interactionType: string) => {
     setIsInProgress(true);
     setSelectedIcon(() => IconComponent);
     setProgress(0);
     setLastInteraction({ IconComponent, interactionType });
-
-    // 경험치 추가 요청
     interactionMutation.mutate({ interactionType });
 
     const interval = setInterval(() => {
@@ -61,7 +58,7 @@ export default function Interaction({ continuousTrainingDays, strokeCount, hugCo
         }
         return prev + 5;
       });
-    }, 150); // 3초 동안 진행
+    }, 150);
   };
 
   const getTextColor = () => {
@@ -69,6 +66,7 @@ export default function Interaction({ continuousTrainingDays, strokeCount, hugCo
     if (continuousTrainingDays <= 7) return 'text-[#7caeff]';
     return 'text-[#FF4E4E]';
   };
+
   const handleRetry = () => {
     setIsErrorModalOpen(false);
     if (lastInteraction) {
@@ -98,7 +96,7 @@ export default function Interaction({ continuousTrainingDays, strokeCount, hugCo
             </div>
 
             <div className="absolute top-10 flex items-center space-x-2">
-              {SelectedIcon && <SelectedIcon className="w-8 h-8" />} {/* 선택된 아이콘 */}
+              {SelectedIcon && <SelectedIcon className="w-8 h-8" />}
               <span className="text-sm text-gray5 font-hakgyoansimB">{progress}%</span>
             </div>
           </div>
@@ -106,7 +104,10 @@ export default function Interaction({ continuousTrainingDays, strokeCount, hugCo
           <>
             <button
               onClick={() => handleButtonClick(Hug, 'HUG')}
-              className="bg-[#ffde84] flex flex-col justify-end rounded-2xl w-[105px] h-32 shadow-lg transform transition duration-100 active:translate-y-1 active:shadow-none">
+              disabled={hugCount === 0}
+              className={`bg-[#ffde84] flex flex-col justify-end rounded-2xl w-[105px] h-32 shadow-lg transform transition duration-100 active:translate-y-1 active:shadow-none ${
+                hugCount === 0 ? 'opacity-85 cursor-not-allowed' : ''
+              }`}>
               <div className="relative bg-[#ffffe4] rounded-xl text-center h-24 flex w-full flex-col justify-center">
                 <div className="absolute -top-5 left-7">
                   <Hug />
@@ -118,7 +119,10 @@ export default function Interaction({ continuousTrainingDays, strokeCount, hugCo
 
             <button
               onClick={() => handleButtonClick(Play, 'PLAY')}
-              className="bg-[#7caeff] flex flex-col justify-end rounded-2xl w-[105px] h-32 shadow-lg transform transition duration-100 active:translate-y-1 active:shadow-none">
+              disabled={playCount === 0}
+              className={`bg-[#7caeff] flex flex-col justify-end rounded-2xl w-[105px] h-32 shadow-lg transform transition duration-100 active:translate-y-1 active:shadow-none ${
+                playCount === 0 ? 'opacity-85 cursor-not-allowed' : ''
+              }`}>
               <div className="relative w-full bg-[#f3f8ff] rounded-xl text-center h-24 flex flex-col justify-center">
                 <div className="absolute -top-5 left-7">
                   <Play />
@@ -130,7 +134,10 @@ export default function Interaction({ continuousTrainingDays, strokeCount, hugCo
 
             <button
               onClick={() => handleButtonClick(Stroke, 'STROKE')}
-              className="bg-[#30cc81] flex flex-col justify-end rounded-2xl w-[105px] h-32 shadow-lg transform transition duration-100 active:translate-y-1 active:shadow-none">
+              disabled={strokeCount === 0}
+              className={`bg-[#30cc81] flex flex-col justify-end rounded-2xl w-[105px] h-32 shadow-lg transform transition duration-100 active:translate-y-1 active:shadow-none ${
+                strokeCount === 0 ? 'opacity-85 cursor-not-allowed' : ''
+              }`}>
               <div className="relative w-full bg-[#dcffee] rounded-2xl text-center h-24 flex flex-col justify-center">
                 <div className="absolute -top-5 left-7">
                   <Stroke />
