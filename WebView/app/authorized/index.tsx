@@ -17,7 +17,6 @@ import {
   requestPushNotificationPermission,
 } from "@/utils/permissions";
 import useLocation from "@/hooks/useLocation";
-import { BreathData, WebMessageDto } from "@/types/ddasoom";
 import useSendLocation from "@/hooks/useSendLocation";
 import { loadBreathTypeFromStorage, saveBreathTypeToStorage } from "@/storage/breath";
 import { sendMessageToWeb } from "@/utils/sendMessageToWeb";
@@ -27,6 +26,7 @@ const AuthedScreen = () => {
   const { startRecording, stopRecording, sendRecording } = useVoiceRecord();
   const { userName } = useAuthStore();
   const [modalVisible, setModalVisible] = useState(false);
+  const [breathType, setBreathType] = useState<BreathType>("basicTime");
   const [panicData, setPanicData] = useState<PanicFirstForm | null>(null);
   const [inputText, setInputText] = useState(""); // 모달 입력 상태 추가
   const sendLocationToWebView = useSendLocation(webViewRef);
@@ -82,7 +82,7 @@ const AuthedScreen = () => {
         return;
       case "SOS":
         BackHandler.removeEventListener("hardwareBackPress", backPress);
-        router.push("breath");
+        router.push(`breath?breathType=${breathType}`);
         return;
       case "GPS":
         sendLocationToWebView();
@@ -165,6 +165,13 @@ const AuthedScreen = () => {
   };
 
   useEffect(() => {
+    const fetchBreathType = async () => {
+      const breathTypeFromStorage = await loadBreathTypeFromStorage();
+      setBreathType(breathTypeFromStorage);
+    };
+
+    fetchBreathType();
+
     BackHandler.addEventListener("hardwareBackPress", backPress);
     fetchPanicData();
     checkPushPermission(); // 푸시 알림 설정 여부

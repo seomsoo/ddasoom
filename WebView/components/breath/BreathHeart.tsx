@@ -9,6 +9,7 @@ import BreathCircleAnimation from "./BreathCircleAnimation";
 import breathData from "@/constant/BreathData";
 import Header from "./Header";
 import { Image } from "expo-image";
+import { router } from "expo-router";
 
 interface BreathCircleProps {
   breathType: "shortTime" | "basicTime" | "longTime";
@@ -26,19 +27,21 @@ const BreathCircle = ({ breathType }: BreathCircleProps) => {
   const [currentStage, setCurrentStage] = useState(0);
   const [stageProgress, setStageProgress] = useState<number[]>([]);
   const [preparationIndex, setPreparationIndex] = useState(0);
+  const [totalTimer, setTotalTimer] = useState(0);
+  const [animationGIF, setAnimationGIF] = useState(StartBasic); // GIF 소스 상태 관리
 
   const sequence = useMemo(() => breathData[breathType].stages, [breathType]);
-  const BreathAnimation = useMemo(() => {
-    if (breathType === "basicTime") return StartBasic;
-    if (breathType === "shortTime") return StartShort;
-    if (breathType === "longTime") return StartLong;
-    return "";
+
+  useEffect(() => {
+    // breathType에 따라 초기 GIF 소스를 설정합니다.
+    setAnimationGIF(breathType === "basicTime" ? StartBasic : breathType === "shortTime" ? StartShort : StartLong);
   }, [breathType]);
 
   const preparationIntervalRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const countdownIntervalRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const progressIntervalRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const stepTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
+  const totalTimerIntervalRef = useRef<NodeJS.Timeout | undefined>(undefined); // 총 타이머 기록용 ref
 
   // 초기화 및 준비 단계
   useEffect(() => {
@@ -57,6 +60,11 @@ const BreathCircle = ({ breathType }: BreathCircleProps) => {
       setStageProgress(Array(sequence.length).fill(0));
       setTimer(sequence[0].duration / 1000);
       setCurrentStage(0);
+
+      // 호흡 시작과 동시에 누적 시간 기록 시작
+      totalTimerIntervalRef.current = setInterval(() => {
+        setTotalTimer(prev => prev + 1);
+      }, 1000);
 
       if (sequence[0].description === "들이마시기" || sequence[0].description === "내쉬기") {
         Vibration.vibrate(sequence[0].duration);
@@ -141,6 +149,19 @@ const BreathCircle = ({ breathType }: BreathCircleProps) => {
     };
   }, [isAnimating, isPreparing, currentStage, sequence]);
 
+  // 종료 버튼 누르면 타이머 및 누적 시간 종료
+  const handleStop = () => {
+    if (countdownIntervalRef.current) clearInterval(countdownIntervalRef.current);
+    if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+    if (stepTimeoutRef.current) clearTimeout(stepTimeoutRef.current);
+    if (totalTimerIntervalRef.current) clearInterval(totalTimerIntervalRef.current); // 누적 시간 기록 종료
+
+    Vibration.cancel();
+    setIsAnimating(false);
+    console.log(`총 누적 시간: ${totalTimer}초`);
+    router.push(`/breath/breathEndModal?totalTime=${totalTimer}`);
+  };
+
   return (
     <Container>
       <HeaderContainer>
@@ -169,7 +190,7 @@ const BreathCircle = ({ breathType }: BreathCircleProps) => {
         </TimerContainer>
         <View style={{ position: "absolute", bottom: 200, justifyContent: "center", alignItems: "center" }}>
           <AnimationBackground>
-            <Image source={BreathAnimation} style={{ zIndex: 2, width: 230, height: 230, borderRadius: 115 }} />
+            <Image source={animationGIF} style={{ zIndex: 2, width: 230, height: 230, borderRadius: 115 }} />
           </AnimationBackground>
           <BreathCircleAnimation
             sequenceLength={sequence.length}
@@ -181,11 +202,8 @@ const BreathCircle = ({ breathType }: BreathCircleProps) => {
           />
         </View>
       </ContentContainer>
-      <StopButton
-        onPress={() => {
-          Vibration.cancel();
-        }}>
-        <StopButtonText>종료</StopButtonText>
+      <StopButton onPress={handleStop}>
+        <StopButtonText>괜찮아요</StopButtonText>
       </StopButton>
     </Container>
   );
@@ -222,7 +240,7 @@ const TimerContainer = styled.View`
 const PreparationContainer = styled.View`
   flex-direction: column;
   align-items: center;
-  margin-top: 40px;
+  margin-top: 100px;
 `;
 
 const DotContainer = styled.View`
@@ -239,7 +257,8 @@ const Dot = styled.View<{ active: boolean }>`
 `;
 
 const TextContainer = styled.View`
-  margin-top: 30px;
+  position: absolute;
+  margin-top: 100px;
   align-items: center;
 `;
 
@@ -264,7 +283,8 @@ const AnimationBackground = styled.View`
 
 const StopButton = styled.TouchableOpacity`
   position: absolute;
-  bottom: 50px;
+  bottom: 20px;
+  right: 18px;
   align-self: center;
   background-color: #82e090;
   padding: 10px 20px;
