@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from 'framer-motion';
 import { ComponentType } from 'react';
+
 import Cancel from '@/svgs/cancel.svg';
 
 interface ModalWithStateProps {
@@ -12,7 +13,6 @@ interface ModalWithStateProps {
 
 export default function SettingModal({ ContentComponent, isOpen, onClose }: ModalWithStateProps) {
   if (!isOpen) return null;
-  console.log('ContentComponent:', ContentComponent);
 
   return (
     <AnimatePresence>
