@@ -11,7 +11,15 @@ type EmergencyPhoneNumber = {
 };
 
 // 호흡 타입
-type BreathType = "BASIC" | "SHORT" | "LONG";
+export type BreathStage = {
+  duration: number;
+  description: string;
+};
+
+export type BreathData = {
+  type: "shortTime" | "basicTime" | "longTime";
+  stages: BreathStage[];
+};
 
 // 웹-앱 통신 DTO
 type WebMessageDto = {
