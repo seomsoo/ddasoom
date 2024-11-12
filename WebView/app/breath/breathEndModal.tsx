@@ -16,7 +16,7 @@ import { router, useLocalSearchParams } from "expo-router";
 import { timeFormat } from "@/utils/timeFormat";
 import useNotificationStore from "@/zustand/notificationStore";
 import { scheduleLocalNotification, sendPushNotification } from "@/utils/notifications";
-import { savePanicInfoToStorage } from "@/services/storage";
+import { savePanicInfoToStorage } from "@/storage/panic";
 
 const BreathEndModal = () => {
   const { expoPushToken } = useNotificationStore();
