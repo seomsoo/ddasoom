@@ -13,7 +13,6 @@ export default function CalendarHeader({ currentDate, onOpenModal }: CalendarHea
   // 파라미터로 사용할 값 생성
   const year = format(currentDate, 'yyyy', { locale: ko });
   const month = format(currentDate, 'MM', { locale: ko });
-  const day = format(currentDate, 'dd', { locale: ko });
 
   return (
     <div className="flex justify-between items-center mb-6 px-3">
@@ -30,7 +29,7 @@ export default function CalendarHeader({ currentDate, onOpenModal }: CalendarHea
         <Link href="/record/selfDiagnosis">
           <button>자가진단</button>
         </Link>
-        <Link href={`/record/report?year=${year}&month=${month}&day=${day}`}>
+        <Link href={`/record/report?year=${year}&month=${month}`}>
           <button>리포트</button>
         </Link>
       </div>

@@ -46,7 +46,7 @@ export default function CheckList() {
             <button
               key={index}
               onClick={() => handleOptionClick(option)}
-              className={`flex items-center justify-between w-full h-20 px-4 py-3 rounded-2xl shadow-md text-2xl ${
+              className={`flex items-center justify-between w-72 h-20 px-4 py-3 rounded-2xl shadow-md text-2xl ${
                 selectedOption === option ? 'bg-main2 border-2 border-main1' : 'bg-main4 border border-gray3'
               }`}>
               <span>{option}</span>

@@ -1,3 +1,6 @@
+import Blue from '@/svgs/Ddasomiz/blueDdasom.svg';
+import White from '@/svgs/Ddasomiz/whiteSomi.svg';
+import Yellow from '@/svgs/Ddasomiz/yellowSomi.svg';
 import Ddasom2 from '@/svgs/greensunglass.svg';
 
 export const reportMessageStyles = (count: number) => {
@@ -22,7 +25,16 @@ export const reportMessageStyles = (count: number) => {
     </>
   );
 
-  const icon = count > 7 ? <Ddasom2 /> : count > 5 ? <Ddasom2 /> : count > 3 ? <Ddasom2 /> : <Ddasom2 />;
+  const icon =
+    count > 7 ? (
+      <Ddasom2 />
+    ) : count > 5 ? (
+      <Blue className="w-32 h-24" />
+    ) : count > 3 ? (
+      <Yellow className="w-36 h-28" />
+    ) : (
+      <White className="w-36 h-28" />
+    );
 
   return { message, messageColor, icon };
 };
