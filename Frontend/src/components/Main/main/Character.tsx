@@ -4,6 +4,7 @@
 import BabySomi from '@/svgs/Ddasomiz/babySomi.svg';
 import Level3 from '@/svgs/Ddasomiz/level3.svg';
 import Ddasomi from '@/svgs/Ddasomiz/LV1.svg';
+
 interface LevelProps {
   level: number;
 }
