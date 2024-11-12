@@ -35,7 +35,7 @@ const BreathEndModal = () => {
       description: inputText,
       latitude: location?.latitude ?? 0,
       longitude: location?.longitude ?? 0,
-      time: new Date().toISOString(),
+      startDate: new Date().toISOString(), // 한국 시간으로 변환
     };
 
     // panicInfo를 기기의 메모리에 저장
@@ -52,7 +52,7 @@ const BreathEndModal = () => {
       description: inputText,
       latitude: location?.latitude ?? 0,
       longitude: location?.longitude ?? 0,
-      time: new Date().toISOString(),
+      startDate: new Date().toISOString(),
     };
 
     // panicInfo를 기기의 메모리에 저장 + 로컬 푸시 알림 예약

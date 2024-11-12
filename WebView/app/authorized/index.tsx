@@ -7,7 +7,7 @@ import useAuthStore from "@/zustand/authStore";
 import { logout } from "@react-native-kakao/user";
 import { router } from "expo-router";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { BackHandler, Platform, StatusBar, ToastAndroid, View } from "react-native";
+import { BackHandler, Platform, StatusBar } from "react-native";
 import WebView, { WebViewMessageEvent } from "react-native-webview";
 import type { WebView as WebViewType } from "react-native-webview";
 import PanicDataModal from "@/components/authorized/PanicDataModal"; // 모달 컴포넌트 가져오기
@@ -84,7 +84,11 @@ const AuthedScreen = () => {
         if (!location) {
           return;
         }
-        const data = JSON.stringify({ title: "CURRENTLOCATION", content: location });
+        const data = JSON.stringify({
+          title: "CURRENTLOCATION",
+          longitude: location.longitude,
+          latitude: location.latitude,
+        });
         webViewRef.current?.injectJavaScript(`window.postMessage(${data});`);
         return;
       default:
@@ -129,6 +133,7 @@ const AuthedScreen = () => {
         // 업데이트된 데이터로 요청 보내기
         await postPanicAtFirst(updatedPanicData);
         console.log("패닉 데이터 저장 완료");
+        console.log(updatedPanicData);
 
         // 저장 후, 데이터 삭제 및 모달 닫기
         await deletePanicInfoFromStorage();
@@ -174,6 +179,7 @@ const AuthedScreen = () => {
         domStorageEnabled={true}
         mediaPlaybackRequiresUserAction={false}
         startInLoadingState={true}
+        mixedContentMode="always"
       />
       <PanicDataModal
         panicData={panicData}
