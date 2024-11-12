@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Button, FlatList, TouchableOpacity, PermissionsAndroid, Platform, Alert } from "react-native";
 import { BleManager, Device } from "react-native-ble-plx";
-import { requestPermissions } from "../../../utils/ble"; // 권한 요청 함수 import
+import { requestPermissions } from "@/utils/ble"; // 권한 요청 함수 import
 
 const bleManager = new BleManager();
 

@@ -1,7 +1,7 @@
 import useSendToken from "@/hooks/useSendToken";
 import useVoiceRecord from "@/hooks/useVoiceRecord";
 import { postPanicAtFirst } from "@/services/panic";
-import { deletePanicInfoFromStorage, loadPanicInfoFromStorage } from "@/services/storage";
+import { deletePanicInfoFromStorage, loadPanicInfoFromStorage } from "@/storage/panic";
 import { vibrate, vibrateOff } from "@/utils/vibrate";
 import useAuthStore from "@/zustand/authStore";
 import { logout } from "@react-native-kakao/user";
@@ -17,17 +17,21 @@ import {
   requestPushNotificationPermission,
 } from "@/utils/permissions";
 import useLocation from "@/hooks/useLocation";
+import { BreathData, WebMessageDto } from "@/types/ddasoom";
+import useSendLocation from "@/hooks/useSendLocation";
+import { loadBreathTypeFromStorage, saveBreathTypeToStorage } from "@/storage/breath";
+import { sendMessageToWeb } from "@/utils/sendMessageToWeb";
 
 const AuthedScreen = () => {
+  const webViewRef = useRef<WebViewType | null>(null);
   const { startRecording, stopRecording, sendRecording } = useVoiceRecord();
   const { userName } = useAuthStore();
   const [modalVisible, setModalVisible] = useState(false);
   const [panicData, setPanicData] = useState<PanicFirstForm | null>(null);
   const [inputText, setInputText] = useState(""); // 모달 입력 상태 추가
-  const { location } = useLocation();
+  const sendLocationToWebView = useSendLocation(webViewRef);
 
   const statusBarHeight = Platform.OS === "android" ? StatusBar.currentHeight : 0;
-  const webViewRef = useRef<WebViewType | null>(null);
   const sendTokenToWeb = useSendToken(webViewRef);
 
   // 웹에서 메시지 받기
@@ -37,7 +41,7 @@ const AuthedScreen = () => {
     switch (title) {
       case "GETTOKEN":
         console.log("웹에서 토큰 요청함");
-        await sendTokenToWeb();
+        sendTokenToWeb();
         return;
       case "LOGOUT":
         await logout();
@@ -56,10 +60,10 @@ const AuthedScreen = () => {
         }
         return;
       case "VIBRATE":
-        await vibrate(content as string);
+        vibrate(content as string);
         return;
       case "VIBRATEOFF":
-        await vibrateOff();
+        vibrateOff();
         return;
       case "NOTI":
         checkPushPermission(); // 푸시 권한 여부 전송
@@ -71,7 +75,7 @@ const AuthedScreen = () => {
         return;
       case "ARDSETTING":
         BackHandler.removeEventListener("hardwareBackPress", backPress);
-        await router.push("authorized/ble");
+        router.push("ble");
         return;
       case "ARD":
         console.log(content === "ON" ? "아두이노 작동" : "아두이노 끄기");
@@ -81,15 +85,17 @@ const AuthedScreen = () => {
         router.push("breath");
         return;
       case "GPS":
-        if (!location) {
+        sendLocationToWebView();
+        return;
+      case "BREATH":
+        if (!content) {
+          // 설정된 목소리 요청
+          const storedBreathType = await loadBreathTypeFromStorage();
+          sendMessageToWeb({ webViewRef, title: "BREATH", content: storedBreathType });
           return;
         }
-        const data = JSON.stringify({
-          title: "CURRENTLOCATION",
-          longitude: location.longitude,
-          latitude: location.latitude,
-        });
-        webViewRef.current?.injectJavaScript(`window.postMessage(${data});`);
+        // 목소리 설정
+        saveBreathTypeToStorage(content as string);
         return;
       default:
         console.log(title, " : ", content);
