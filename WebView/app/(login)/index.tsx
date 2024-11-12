@@ -1,5 +1,5 @@
 import { Text, ImageBackground, ToastAndroid, Pressable } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import backGroundImg from "@/assets/images/first.png";
 import mini from "@/assets/images/mini_Ddasom.png";
 import kakaoIcon from "@/assets/images/kakao_icon.png";
@@ -9,9 +9,11 @@ import { login, me, unlink } from "@react-native-kakao/user";
 import { router } from "expo-router";
 import { signIn } from "@/services/auth";
 import useAuthStore from "@/zustand/authStore";
+import { loadBreathTypeFromStorage } from "@/storage/breath";
 
 const Main = () => {
   const { setToken, setUserEmail, setUserName, setUserId } = useAuthStore();
+  const [breathType, setBreathType] = useState<BreathType>("basicTime");
 
   const handleKaKaoLogin = async () => {
     const { accessToken, refreshToken } = await login();
@@ -54,8 +56,17 @@ const Main = () => {
   };
 
   const handleUnauthorized = () => {
-    router.push("breath");
+    router.push(`/breath?breathType=${breathType}`);
   };
+
+  useEffect(() => {
+    const fetchBreathType = async () => {
+      const breathTypeFromStorage = await loadBreathTypeFromStorage();
+      setBreathType(breathTypeFromStorage);
+    };
+
+    fetchBreathType();
+  }, []);
 
   return (
     <Container>
