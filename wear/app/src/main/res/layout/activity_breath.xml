@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|top"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="30dp"
             android:text="숨 들이마시기"
             android:textAlignment="center"
             android:textColor="#000000"
@@ -37,8 +37,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|top"
-            android:layout_marginTop="65dp"
-            android:text="3초"
+            android:layout_marginTop="50dp"
+            android:text=""
             android:textSize="16sp"
             android:textColor="#000000"
             android:textAlignment="center" />
@@ -55,14 +55,14 @@
         <!-- 상황 종료 버튼 -->
         <Button
             android:id="@+id/breath_stop"
-            android:layout_width="120dp"
-            android:layout_height="30dp"
+            android:layout_width="130dp"
+            android:layout_height="40dp"
             android:layout_gravity="center|bottom"
             android:layout_marginBottom="30dp"
             android:background="@drawable/rounded_button_background"
             android:text="상황종료"
             android:textColor="#FF6347"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
     </FrameLayout>

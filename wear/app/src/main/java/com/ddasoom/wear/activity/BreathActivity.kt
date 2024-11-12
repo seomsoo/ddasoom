@@ -5,16 +5,26 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
-import com.ddasoom.wear.R
 import androidx.appcompat.app.AppCompatActivity
+import com.ddasoom.wear.R
+import com.google.android.gms.wearable.DataMapItem
+import com.google.android.gms.wearable.Wearable
 
 class BreathActivity : AppCompatActivity() {
+
+    private var mode: String? = null
+    private var isFromSelectActivity: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_breath)
+
+        // 화면 꺼짐 방지 설정
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         // 프로그레스 바와 텍스트 뷰 연결
         val progressBar = findViewById<ProgressBar>(R.id.circularProgressBar)
@@ -22,71 +32,135 @@ class BreathActivity : AppCompatActivity() {
         val timerTextView = findViewById<TextView>(R.id.timerTextView)
         val stopButton = findViewById<Button>(R.id.breath_stop)
 
-        // 선택된 모드 가져오기
-        val mode = intent.getStringExtra("breath_mode")
+        // 화면 진입 경로 확인
+        if (intent.hasExtra("breath_mode")) {
+            mode = intent.getStringExtra("breath_mode")
+            isFromSelectActivity = true
+            setupBreathing(progressBar, phaseTextView, timerTextView, stopButton)
+        } else {
+            retrieveBreathModeFromWatch { retrievedMode ->
+                mode = retrievedMode
+                isFromSelectActivity = false
+                setupBreathing(progressBar, phaseTextView, timerTextView, stopButton)
+            }
+        }
+    }
 
-        // 설정값 초기화
+    private fun retrieveBreathModeFromWatch(callback: (String?) -> Unit) {
+        Wearable.getDataClient(this).dataItems.addOnSuccessListener { dataItems ->
+            var retrievedMode: String? = null
+            for (dataItem in dataItems) {
+                if (dataItem.uri.path == "/breath_mode") {
+                    retrievedMode = DataMapItem.fromDataItem(dataItem).dataMap.getString("breath_mode")
+                    break
+                }
+            }
+            callback(retrievedMode ?: "basic")
+        }.addOnFailureListener {
+            callback("basic")
+        }
+    }
+
+    private fun setupBreathing(
+        progressBar: ProgressBar,
+        phaseTextView: TextView,
+        timerTextView: TextView,
+        stopButton: Button
+    ) {
+        progressBar.progress = 0
+
         val intervals: IntArray
         val durations: IntArray
         val phases: Array<String>
 
         when (mode) {
             "basic" -> {
-                intervals = intArrayOf(120, 120, 120) // 3등분
-                durations = intArrayOf(4, 7, 8) // 초 단위
+                intervals = intArrayOf(120, 120, 120)
+                durations = intArrayOf(4, 7, 8)
                 phases = arrayOf("숨 들이마시기", "숨 참기", "숨 내쉬기")
             }
             "short" -> {
-                intervals = intArrayOf(90, 90, 90, 90) // 4등분
-                durations = intArrayOf(4, 4, 4, 4) // 초 단위
+                intervals = intArrayOf(90, 90, 90, 90)
+                durations = intArrayOf(4, 4, 4, 4)
                 phases = arrayOf("숨 들이마시기", "숨 참기", "숨 내쉬기", "숨 참기")
             }
             "long" -> {
-                intervals = intArrayOf(120, 120, 120) // 3등분
-                durations = intArrayOf(5, 7, 3) // 초 단위
+                intervals = intArrayOf(120, 120, 120)
+                durations = intArrayOf(5, 7, 3)
                 phases = arrayOf("숨 들이마시기", "숨 참기", "숨 내쉬기")
             }
-            else -> return
+            else -> {
+                intervals = intArrayOf(120, 120, 120)
+                durations = intArrayOf(4, 7, 8)
+                phases = arrayOf("숨 들이마시기", "숨 참기", "숨 내쉬기")
+            }
         }
 
-        // 프로그레스 바 최대값 설정
-        progressBar.max = 360
+        progressBar.max = intervals.sum()
 
-        // 프로그레스 바와 텍스트 업데이트
+        // 반복 실행
         val handler = Handler(Looper.getMainLooper())
         var totalProgress = 0
-        var totalTime = 0
 
-        for (i in phases.indices) {
-            val phase = phases[i]
-            val duration = durations[i]
-            val interval = intervals[i]
+        fun startBreathingCycle() {
+            var totalTime = 0
 
-            // 각 구간 업데이트
-            handler.postDelayed({
-                // 단계 텍스트 업데이트
-                phaseTextView.text = phase
-                timerTextView.text = "${duration}초"
+            for (i in phases.indices) {
+                val phase = phases[i]
+                val duration = durations[i]
+                val interval = intervals[i]
 
-                // 프로그레스 바 애니메이션
-                ObjectAnimator.ofInt(progressBar, "progress", totalProgress, totalProgress + interval)
-                    .apply {
-                        this.duration = (duration * 1000).toLong() // 밀리초로 변환
-                        start()
+                handler.postDelayed({
+                    // 단계 텍스트 업데이트
+                    phaseTextView.text = phase
+
+                    // 남은 시간 업데이트 로직
+                    var remainingTime = duration
+                    val countdownHandler = Handler(Looper.getMainLooper())
+                    val countdownRunnable = object : Runnable {
+                        override fun run() {
+                            if (remainingTime > 0) {
+                                timerTextView.text = "$remainingTime 초"
+                                remainingTime--
+                                countdownHandler.postDelayed(this, 1000)
+                            } else {
+                                countdownHandler.removeCallbacks(this)
+                            }
+                        }
                     }
+                    countdownHandler.post(countdownRunnable)
 
-                totalProgress += interval
+                    // 프로그레스 바 애니메이션
+                    ObjectAnimator.ofInt(progressBar, "progress", totalProgress, totalProgress + interval)
+                        .apply {
+                            this.duration = (duration * 1000).toLong()
+                            start()
+                        }
+
+                    totalProgress += interval
+                }, totalTime * 1000L)
+
+                totalTime += duration
+            }
+
+            // 모든 단계가 끝난 후 반복
+            handler.postDelayed({
+                totalProgress = 0 // 프로그레스 초기화
+                startBreathingCycle() // 반복 실행
             }, totalTime * 1000L)
-
-            totalTime += duration
         }
+
+        startBreathingCycle()
 
         // "상황 종료" 버튼 클릭 이벤트
         stopButton.setOnClickListener {
+            handler.removeCallbacksAndMessages(null) // 모든 핸들러 작업 중지
             val intent = Intent(this, EndActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
-            finish() // 현재 액티비티 종료
+            Handler(Looper.getMainLooper()).postDelayed({
+                finish()
+            }, 400) // 200ms 딜레이
         }
     }
 }

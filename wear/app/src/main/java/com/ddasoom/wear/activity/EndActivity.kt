@@ -2,6 +2,8 @@ package com.ddasoom.wear.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.ddasoom.wear.R
@@ -18,7 +20,9 @@ class EndActivity : AppCompatActivity() {
             val intent = Intent(this, MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
-            finish() // 현재 액티비티 종료
+            Handler(Looper.getMainLooper()).postDelayed({
+                finish()
+            }, 400) // 200ms 딜레이
         }
     }
 }
