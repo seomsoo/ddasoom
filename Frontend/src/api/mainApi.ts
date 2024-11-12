@@ -16,7 +16,7 @@ export const getCompletedTrainingData = async (): Promise<BaseResponse<IComplete
   return response.data;
 };
 
-// 상호작용 경험치추가
+// 상호작용 경험치 추가
 export const putInteractionData = async (data: IInteractionRequestBody): Promise<BaseResponse<null>> => {
   const response = await axiosInstance.put<BaseResponse<null>>('/users/interaction', data);
   return response.data;
