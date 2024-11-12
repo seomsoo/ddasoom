@@ -40,10 +40,10 @@
             android:layout_width="175dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="심박수를 측정하려면, 측정 버튼을 누르세요."
+            android:text="심박수를 측정하려면, \n측정 버튼을 누르세요."
             android:textAlignment="center"
             android:textColor="#FFFFFF"
-            android:textSize="15sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <!-- Measure Button -->

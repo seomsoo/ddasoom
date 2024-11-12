@@ -43,6 +43,36 @@
             android:taskAffinity=""
             android:theme="@style/MainActivityTheme.Starting" />
 
+        <activity
+            android:name=".activity.BpmMeasureActivity"
+            android:exported="true"
+            android:taskAffinity=""
+            android:theme="@style/MainActivityTheme.Starting" />
+
+        <activity
+            android:name=".activity.BpmReadyActivity"
+            android:exported="true"
+            android:taskAffinity=""
+            android:theme="@style/MainActivityTheme.Starting" />
+
+        <activity
+            android:name=".activity.BreathActivity"
+            android:exported="true"
+            android:taskAffinity=""
+            android:theme="@style/MainActivityTheme.Starting" />
+
+        <activity
+            android:name=".activity.EndActivity"
+            android:exported="true"
+            android:taskAffinity=""
+            android:theme="@style/MainActivityTheme.Starting" />
+
+        <activity
+            android:name=".activity.RequestActivity"
+            android:exported="true"
+            android:taskAffinity=""
+            android:theme="@style/MainActivityTheme.Starting" />
+
         <service
             android:name=".service.ForegroundService"
             android:foregroundServiceType="dataSync"

@@ -8,7 +8,6 @@
     <FrameLayout
         android:layout_width="320dp"
         android:layout_height="320dp"
-        android:color="@color/main_background"
         android:layout_centerInParent="true">
 
         <TextView
