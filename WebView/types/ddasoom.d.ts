@@ -11,13 +11,15 @@ type EmergencyPhoneNumber = {
 };
 
 // 호흡 타입
-export type BreathStage = {
+type BreathStage = {
   duration: number;
   description: string;
 };
 
-export type BreathData = {
-  type: "shortTime" | "basicTime" | "longTime";
+type BreathType = "shortTime" | "basicTime" | "longTime";
+
+type BreathData = {
+  type: BreathType;
   stages: BreathStage[];
 };
 
