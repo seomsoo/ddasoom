@@ -18,6 +18,14 @@ import useNotificationStore from "@/zustand/notificationStore";
 import { scheduleLocalNotification, sendPushNotification } from "@/utils/notifications";
 import { savePanicInfoToStorage } from "@/storage/panic";
 
+// 현지 시간에 맞춘 ISO 문자열 포맷 생성
+function getLocalISOString() {
+  const now = new Date();
+  const offsetMs = now.getTimezoneOffset() * 60 * 1000;
+  const localTime = new Date(now.getTime() - offsetMs);
+  return localTime.toISOString();
+}
+
 const BreathEndModal = () => {
   const { expoPushToken } = useNotificationStore();
   const { totalTime } = useLocalSearchParams();
@@ -26,7 +34,8 @@ const BreathEndModal = () => {
   const [panicSpot, setPanicSpot] = useState("");
   const [inputText, setInputText] = useState("");
 
-  const nowTime = new Date().toTimeString().split(" ")[0].split(":").splice(0, 2);
+  const nowTime = getLocalISOString();
+  const nowTimeArr = nowTime.split("T")[1].split(":");
 
   const handleSave = async () => {
     const panicInfo: PanicFirstForm = {
@@ -35,7 +44,7 @@ const BreathEndModal = () => {
       description: inputText,
       latitude: location?.latitude ?? 0,
       longitude: location?.longitude ?? 0,
-      startDate: new Date().toISOString(), // 한국 시간으로 변환
+      startDate: nowTime, // 한국 시간으로 변환
     };
 
     // panicInfo를 기기의 메모리에 저장
@@ -52,7 +61,7 @@ const BreathEndModal = () => {
       description: inputText,
       latitude: location?.latitude ?? 0,
       longitude: location?.longitude ?? 0,
-      startDate: new Date().toISOString(),
+      startDate: nowTime,
     };
 
     // panicInfo를 기기의 메모리에 저장 + 로컬 푸시 알림 예약
@@ -95,7 +104,7 @@ const BreathEndModal = () => {
             <InfoContent>
               <InfoTextLeft>{"발생 시각   :   "}</InfoTextLeft>
               <InfoTextRight>
-                {nowTime[0]}시 {nowTime[1]}분
+                {nowTimeArr[0]}시 {nowTimeArr[1]}분
               </InfoTextRight>
             </InfoContent>
             <InfoContent>
