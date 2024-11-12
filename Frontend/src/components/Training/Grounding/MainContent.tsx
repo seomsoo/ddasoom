@@ -55,8 +55,8 @@ export default function GroundingTraining() {
           <AnswerInput value={inputValue} onChange={e => setInputValue(e.target.value)} />
         </>
       )}
-      <Mic className="mb-4" />
-      <div className="mt-4 w-[328px]">
+      <Mic className="mb-2 mt-2" />
+      <div className=" w-[328px]">
         <Button label={step < totalSteps ? '다음' : '완료'} onClick={handleNextStep} disabled={!inputValue.trim()} />
       </div>
     </div>

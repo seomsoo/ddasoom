@@ -1,5 +1,5 @@
 import { praiseMessages } from '@/constants/PraiseMessages';
-import DdasomiSvg from '@/svgs/ddasomi.svg';
+import Good from '@/videos/Good.gif';
 
 export function RandomPraise() {
   const randomEncouragement =
@@ -12,7 +12,11 @@ export function RandomPraise() {
     <>
       <span className="text-4xl ">{randomEncouragement}</span>
 
-      <DdasomiSvg className="w-72 h-72 mt-12" />
+      <img
+        src={Good.src}
+        className="w-56 h-72 my-12 transition-opacity duration-300 ease-in-out opacity-100 animate-grow"
+        alt="Good"
+      />
       <div className="text-2xl flex flex-col h-32 space-y-2">
         {reminderLines.map((line, index) => (
           <span key={index} className="text-center">

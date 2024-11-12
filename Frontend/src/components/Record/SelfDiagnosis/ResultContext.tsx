@@ -1,7 +1,7 @@
 import React from 'react';
 
-import DoctorDdasomiSvg from '@/svgs/doctorDdasomi.svg';
-import DdasomiSvg from '@/svgs/shadowDdasomi.svg';
+import DoctorDdasomi from '@/videos/Doctor.gif';
+import Ddasomi from '@/videos/EyeMouse.gif';
 
 interface ResultContextProps {
   isPanicSuspected: boolean;
@@ -14,12 +14,20 @@ export default function ResultContext({ isPanicSuspected }: ResultContextProps) 
         {isPanicSuspected ? (
           <div className="flex flex-col justify-center items-center gap-5">
             <span>괜찮으신가요?</span>
-            <DoctorDdasomiSvg />
+            <img
+              src={DoctorDdasomi.src}
+              className="w-52 h-64 transition-opacity duration-300 ease-in-out opacity-100 animate-grow"
+              alt="Nav Icon GIF"
+            />
           </div>
         ) : (
           <div className="flex flex-col justify-center items-center">
             <span>괜찮습니다!</span>
-            <DdasomiSvg />
+            <img
+              src={Ddasomi.src}
+              className="w-52 h-64 mt-5 transition-opacity duration-300 ease-in-out opacity-100 animate-grow"
+              alt="Nav Icon GIF"
+            />
           </div>
         )}
       </h3>

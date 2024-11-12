@@ -45,7 +45,7 @@ export default function ResultButton({ trainingType }: ResultButtonProps) {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full ">
       {isErrorModalOpen && (
         <ErrorModal onClose={() => setIsErrorModalOpen(false)} onRetry={handleRetry} context={errorContext} />
       )}
