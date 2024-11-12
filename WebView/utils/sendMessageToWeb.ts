@@ -1,12 +1,11 @@
 import { RefObject } from "react";
 import WebViewType from "react-native-webview";
-import { WebMessageDto } from "@/types/ddasoom";
 
-interface useSendMessageToWebProps extends WebMessageDto {
+interface SendMessageToWebProps extends WebMessageDto {
   webViewRef: RefObject<WebViewType>;
 }
 
-export const sendMessageToWeb = ({ webViewRef, title, content }: useSendMessageToWebProps) => {
+export const sendMessageToWeb = ({ webViewRef, title, content }: SendMessageToWebProps) => {
   const data = JSON.stringify({ title, content });
   webViewRef.current?.injectJavaScript(`
       window.postMessage(${data});
