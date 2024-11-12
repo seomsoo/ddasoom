@@ -1,23 +1,13 @@
 // Character Component
 'use client';
 
-import { useEffect, useState } from 'react';
-
 import BabySomi from '@/svgs/Ddasomiz/babySomi.svg';
 import Level3 from '@/svgs/Ddasomiz/level3.svg';
 import Ddasomi from '@/svgs/Ddasomiz/LV1.svg';
-
-export default function Character() {
-  const [level, setLevel] = useState(1);
-
-  useEffect(() => {
-    const levelUp = setInterval(() => {
-      setLevel(prevLevel => (prevLevel % 3) + 1); // 레벨을 1~3 순환
-    }, 5000);
-
-    return () => clearInterval(levelUp);
-  }, []);
-
+interface LevelProps {
+  level: number;
+}
+export default function Character({ level }: LevelProps) {
   const getCharacterSvg = () => {
     switch (level) {
       case 1:

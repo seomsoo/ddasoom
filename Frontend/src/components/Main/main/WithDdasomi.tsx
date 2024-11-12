@@ -105,7 +105,7 @@ export default function WithDdasomi() {
           <Bookcase />
         </div>
         <div>
-          <Character />
+          <Character level={ddasomiData?.level ?? 1} />
         </div>
       </main>
       <section className="flex flex-col p-3">
