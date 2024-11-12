@@ -1,16 +1,12 @@
 package com.ddasoom.voice_service.voice.adapter.in.event;
 
-import com.ddasoom.voice_service.voice.application.domain.Voice;
 import com.ddasoom.voice_service.voice.application.port.in.ConvertTextScriptToSoundUseCase;
 import com.ddasoom.voice_service.voice.application.port.in.CreateVoiceCommand;
 import com.ddasoom.voice_service.voice.application.port.in.CreateVoiceUseCase;
-import java.io.IOException;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
 
 @Component
 @RequiredArgsConstructor
@@ -23,23 +19,9 @@ public class CreateVoiceEventHandler {
     @EventListener
     public void createVoice(CreateVoiceEvent event) {
         String voiceKey = createVoiceUseCase.createVoice(
-                new CreateVoiceCommand(event.userId(), event.voiceName(), mapToVoices(event.voices()))
+                new CreateVoiceCommand(event.userId(), event.voiceName(), event.voices())
         );
 
         convertTextScriptToSoundUseCase.convertTextScriptToSoundUseCase(voiceKey);
-    }
-
-    private List<Voice> mapToVoices(List<MultipartFile> voices) {
-        return voices.stream()
-                .map(this::mapToVoice)
-                .toList();
-    }
-
-    private Voice mapToVoice(MultipartFile voice) {
-        try {
-            return new Voice(voice.getBytes());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 }
