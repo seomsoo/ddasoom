@@ -1,6 +1,7 @@
 'use client';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 import three from '/public/images/3.png';
 import four from '/public/images/4.png';
@@ -11,6 +12,15 @@ import Dot from '/public/images/dot2.png';
 
 export default function BreathSelector() {
   const router = useRouter();
+
+  useEffect(() => {
+    window.ReactNativeWebView?.postMessage(
+      JSON.stringify({
+        title: 'BREATH',
+        content: null,
+      }),
+    );
+  });
 
   const handleBreathSelect = (breathType: string) => {
     router.push(`/training/breath/${breathType}`);
