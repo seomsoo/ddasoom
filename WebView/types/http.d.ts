@@ -30,5 +30,5 @@ interface PanicFirstForm {
   longitude: number;
   address: string;
   description: string;
-  time: string;
+  startDate: string;
 }
