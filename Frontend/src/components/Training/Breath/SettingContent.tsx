@@ -14,9 +14,9 @@ export default function SettingContent({ onClose }: SettingContentProps) {
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
 
   const breathOptions: BreathOption[] = [
-    { id: 1, label: '기본 호흡 (4·7·8)', content: 'basicBreath' },
-    { id: 2, label: '짧은 호흡 (4·4·4·4)', content: 'shortBreath' },
-    { id: 3, label: '긴 호흡 (5·7·3)', content: 'longBreath' },
+    { id: 1, label: '기본 호흡 (4·7·8)', content: 'basicTime' },
+    { id: 2, label: '짧은 호흡 (4·4·4·4)', content: 'shortTime' },
+    { id: 3, label: '긴 호흡 (5·7·3)', content: 'longTime' },
   ];
 
   const handleSelect = (id: number) => {

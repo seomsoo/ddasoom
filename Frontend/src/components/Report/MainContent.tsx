@@ -1,5 +1,5 @@
 'use client';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
 import queryKeys from '@/api/querykeys';
@@ -37,6 +37,7 @@ export interface ReportData {
 }
 
 export default function MainContent({ year, month }: MainContentProps) {
+  const queryClient = useQueryClient();
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [errorContext, setErrorContext] = useState<string>('');
 
@@ -51,6 +52,12 @@ export default function MainContent({ year, month }: MainContentProps) {
     queryFn: () => getReportData(year, month),
     retry: false, // 자동 재시도 비활성화
   });
+
+  useEffect(() => {
+    if (reportData) {
+      queryClient.invalidateQueries({ queryKey: [queryKeys.REPORT, year, month] });
+    }
+  }, [reportData, queryClient, year, month]);
 
   useEffect(() => {
     if (isError && error) {
@@ -114,10 +121,10 @@ export default function MainContent({ year, month }: MainContentProps) {
       </SummaryBox>
 
       <SummaryBox>
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center -mb-4">
           {trainingStyles && (
             <>
-              <span className={`flex font-nanumExtraBold text-2xl mb-4 ${trainingStyles.messageColor}`}>
+              <span className={`flex font-nanumExtraBold text-2xl mb-4  ${trainingStyles.messageColor}`}>
                 {trainingStyles.message}
               </span>
               {trainingStyles.icon}

@@ -97,7 +97,7 @@ export default function WithDdasomi() {
         </div>
       </header>
 
-      <main className="flex flex-col bg-[#D8D1C3] items-center h-52">
+      <main className="flex flex-col bg-[#D8D1C3] items-center h-48">
         <div className="absolute left-7 top-56 ">
           <Bed />
         </div>
