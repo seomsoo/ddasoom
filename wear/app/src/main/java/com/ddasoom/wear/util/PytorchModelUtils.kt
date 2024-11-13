@@ -1,4 +1,4 @@
-package com.ddasoom.wear.service
+package com.ddasoom.wear.util
 
 import org.pytorch.Module
 import org.pytorch.Tensor
@@ -10,11 +10,11 @@ import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 
-class PytorchModelUtils {
+object PytorchModelUtils {
 
     fun runModel(context: Context, inputData: FloatArray): FloatArray {
         // 모델 파일 이름
-        val modelFileName = "panic.pt"
+        val modelFileName = "panic.ptl"
 
         // 파일 경로 확인
         val modelPath = assetFilePath(context, modelFileName)

@@ -11,7 +11,9 @@ import android.content.Intent
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.os.Build
+import android.os.Handler
 import android.os.IBinder
+import android.os.Looper
 import android.os.PowerManager
 import android.util.Log
 import androidx.core.app.NotificationCompat
@@ -20,6 +22,7 @@ import com.ddasoom.wear.R
 import com.ddasoom.wear.activity.MainActivity
 import com.ddasoom.wear.activity.RequestActivity
 import com.ddasoom.wear.constants.Constants
+import com.ddasoom.wear.util.PytorchModelUtils
 import com.google.android.gms.wearable.MessageClient
 import com.google.android.gms.wearable.Wearable
 import org.json.JSONObject
@@ -33,6 +36,7 @@ class ForegroundService : Service(), HeartRateManager.HeartRateListener {
 
   private val bpmData = ArrayList<Float>() // 1분 단위로 BPM 데이터를 저장
   private val hrvCalculator = HrvCalculator()
+  private val handler = Handler(Looper.getMainLooper())
 
   companion object {
     var heartRateCallback: ((Int) -> Unit)? = null // 심박수 데이터를 전달하는 콜백
@@ -132,7 +136,7 @@ class ForegroundService : Service(), HeartRateManager.HeartRateListener {
       bpmData.add(heartRate.toFloat())
 
       // 유효 심박수가 충분히 수집되면 1분 단위로 HRV 지표 계산
-      if (bpmData.size >= 60) {
+      if (bpmData.size >= 30) {
         val hrvMetrics = hrvCalculator.calculateHrvMetrics(bpmData)
         Log.d(Constants.TAG, "HRV Metrics: ${hrvMetrics.joinToString(", ")}")
 
