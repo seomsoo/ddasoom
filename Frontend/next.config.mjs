@@ -20,6 +20,20 @@ const nextConfig = withVideos({
       use: ['@svgr/webpack'],
     });
 
+    // MP3 파일을 import하기 위한 file-loader 설정 추가
+    config.module.rules.push({
+      test: /\.(mp3|ogg|wav|flac)$/i,
+      use: {
+        loader: 'file-loader',
+        options: {
+          publicPath: '/_next/static/sounds',
+          outputPath: 'static/sounds',
+          name: '[name].[ext]',
+          esModule: false,
+        },
+      },
+    });
+
     return config;
   },
   async headers() {
@@ -67,6 +81,16 @@ const nextConfig = withVideos({
       // public/videos/ 경로의 정적 비디오 파일에 대한 장기 캐시 설정
       {
         source: '/videos/(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      // public/sounds/ 경로의 정적 mp3 파일에 대한 장기 캐시 설정
+      {
+        source: '/sounds/(.*)',
         headers: [
           {
             key: 'Cache-Control',
