@@ -82,6 +82,6 @@ dependencies {
   implementation("com.google.android.gms:play-services-base:18.0.0")
   implementation("androidx.localbroadcastmanager:localbroadcastmanager:1.1.0")
 
-  implementation("org.pytorch:pytorch_android_lite:1.9.0")
-  implementation("org.pytorch:pytorch_android_torchvision:1.9.0")
+  // PyTorch Android Lite
+  implementation("org.pytorch:pytorch_android_lite:1.13.1")
 }
