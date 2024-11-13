@@ -1,4 +1,4 @@
-import { Text, ImageBackground, ToastAndroid, Pressable } from "react-native";
+import { Text, ImageBackground, ToastAndroid, Pressable, Alert } from "react-native";
 import React, { useEffect, useState } from "react";
 import backGroundImg from "@/assets/images/first.png";
 import mini from "@/assets/images/mini_Ddasom.png";
@@ -40,14 +40,15 @@ const Main = () => {
       setUserName(name);
       setUserId(userId);
       console.log("로그인 성공. 토큰 : ", token);
-
-      router.push("authorized");
+      Alert.alert("로그인 성공");
+      router.push("/authorized");
     } catch (e: unknown) {
       const error = e as DdasoomError;
       const errorCode = error.response?.data.error.status;
 
       if (errorCode === 404) {
-        router.push("signupModal");
+        Alert.alert("회원가입 필요");
+        router.push("/signupModal");
         // router.push("authorized");
       } else {
         ToastAndroid.show("로그인 오류가 발생했습니다.", 3000);
