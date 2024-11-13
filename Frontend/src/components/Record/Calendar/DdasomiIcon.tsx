@@ -13,7 +13,7 @@ export default function DdasomiIcon({ trainingCount }: DdasomiIconProps) {
     case 2:
       return <OrangeSomi className="w-10 h-10 mt-2" />;
     case 3:
-      return <GreenSomi className="w-10 h-8 ml-1 mb-1" />;
+      return <GreenSomi className="w-10 h-10 " />;
     default:
       return null;
   }
