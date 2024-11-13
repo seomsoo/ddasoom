@@ -31,7 +31,6 @@ export default function SosContent() {
         const { title, content } = messageData;
 
         if (title === 'PHONELIST' && Array.isArray(content)) {
-          // content가 배열일 경우에만 null 값을 제외하고 상태 업데이트
           const filteredContent = content.filter((contact): contact is PhoneListData => contact !== null);
           setPhoneData(filteredContent);
         }
@@ -44,7 +43,7 @@ export default function SosContent() {
     return () => window.removeEventListener('message', handleMessage);
   }, []);
 
-  // 앱에 최신 연락처 목록 전송
+  // 앱으로 연락처 목록 전송
   const sendPhoneListToApp = (data: PhoneListData[]) => {
     window.ReactNativeWebView?.postMessage(
       JSON.stringify({
@@ -58,10 +57,11 @@ export default function SosContent() {
   const mutation = useMutation({
     mutationFn: (data: SavePhoneRequestBody) => postSavePhoneData(data),
     onSuccess: response => {
-      const updatedPhoneData = response.data;
-      const newPhoneData = [...phoneData, updatedPhoneData]; // 새 연락처 추가
-      setPhoneData(newPhoneData); // 업데이트된 목록을 설정
-      sendPhoneListToApp(newPhoneData); // 앱에 전송
+      const updatedPhoneData = response.data; // 추가된 최신 연락처 데이터
+      if (updatedPhoneData && Array.isArray(updatedPhoneData)) {
+        setPhoneData(prev => [...prev, ...updatedPhoneData]); // 기존 상태와 새로운 데이터 병합
+        sendPhoneListToApp([...phoneData, ...updatedPhoneData]); // 앱에 전송
+      }
     },
     onError: error => {
       console.error('비상연락처 추가 실패:', error);
@@ -73,7 +73,7 @@ export default function SosContent() {
   // 비상 연락처 삭제
   const deleteMutation = useMutation({
     mutationFn: (phoneBookId: number) => deletePhoneData(phoneBookId),
-    onSuccess: () => {
+    onSuccess: (_, phoneBookId) => {
       const updatedPhoneData = phoneData.filter(contact => contact.PhoneBookId !== phoneBookId); // 삭제된 연락처 제외
       setPhoneData(updatedPhoneData); // 업데이트된 목록 설정
       sendPhoneListToApp(updatedPhoneData); // 앱에 전송
@@ -133,6 +133,7 @@ export default function SosContent() {
     setIsErrorModalOpen(false);
     handleSubmit(onSubmit);
   };
+
   return (
     <div className="flex flex-col items-center w-full p-4 max-w-sm mx-auto space-y-4">
       {isErrorModalOpen && (
