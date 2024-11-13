@@ -30,7 +30,7 @@ export default function WithDdasomi() {
   const queryClient = useQueryClient();
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [errorContext, setErrorContext] = useState<string>('');
-
+  const [currentInteractionGif, setCurrentInteractionGif] = useState<string | null>(null);
   const {
     data: characterData,
     isError,
@@ -71,11 +71,7 @@ export default function WithDdasomi() {
       )}
       <header className="flex  flex-col w-full h-72 bg-main4 p-6 border-b-8">
         <article className="flex justify-between   w-full ">
-          <LevelBar
-            level={ddasomiData?.level ?? 0}
-            experience={ddasomiData?.experience ?? 0}
-            experiencePercent={ddasomiData?.experiencePercent ?? 0}
-          />
+          <LevelBar level={ddasomiData?.level ?? 0} experiencePercent={ddasomiData?.experiencePercent ?? 0} />
           <EmergencyModal ContentComponent={EmergencyContent} />
         </article>
 
@@ -105,15 +101,17 @@ export default function WithDdasomi() {
           <Bookcase />
         </div>
         <div>
-          <Character level={ddasomiData?.level ?? 1} />
+          <Character level={ddasomiData?.level ?? 1} currentInteractionGif={currentInteractionGif} />
         </div>
       </main>
       <section className="flex flex-col p-3">
         <Interaction
+          level={ddasomiData?.level ?? 1}
           continuousTrainingDays={ddasomiData?.continuousTrainingDays ?? 0}
           strokeCount={ddasomiData?.strokeCount ?? 0}
           hugCount={ddasomiData?.hugCount ?? 0}
           playCount={ddasomiData?.playCount ?? 0}
+          onInteractionStart={setCurrentInteractionGif}
         />
       </section>
       <Navbar />
