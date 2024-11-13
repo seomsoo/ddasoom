@@ -125,19 +125,21 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            storeFile file("credentials/android/keystore.jks")
+            storePassword "50840ee148d91e23b3d5a920ff0ebaf8"
+            keyAlias "84499b064b522e9cea023a46c7fd709c"
+            keyPassword "490007891181cc619bc44b32fbdb5b40"
+        }
     }
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
         }
         release {
-            // Caution! In production, you need to generate your own keystore file.
-            // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
-            shrinkResources (findProperty('android.enableShrinkResourcesInReleaseBuilds')?.toBoolean() ?: false)
-            minifyEnabled enableProguardInReleaseBuilds
-            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-            crunchPngs (findProperty('android.enablePngCrunchInReleaseBuilds')?.toBoolean() ?: true)
+            minifyEnabled false
+            shrinkResources false
+            signingConfig signingConfigs.release
         }
     }
     packagingOptions {
