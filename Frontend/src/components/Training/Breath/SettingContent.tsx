@@ -10,9 +10,10 @@ interface BreathOption {
 interface SettingContentProps {
   onClose: () => void;
   onSave: (breathType: string) => void;
+  selectedBreathType: string;
 }
 
-export default function SettingContent({ onClose, onSave }: SettingContentProps) {
+export default function SettingContent({ onClose, onSave, selectedBreathType }: SettingContentProps) {
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
 
   const breathOptions: BreathOption[] = [
@@ -21,51 +22,26 @@ export default function SettingContent({ onClose, onSave }: SettingContentProps)
     { id: 3, label: '긴 호흡 (5·7·3)', content: 'longTime' },
   ];
 
-  // 앱에서 수신한 메시지를 처리하여 선택된 옵션을 업데이트합니다.
   useEffect(() => {
-    const handleMessage = (event: MessageEvent) => {
-      try {
-        const messageData = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
-        const { title, content } = messageData;
+    const matchingOption = breathOptions.find(option => option.content === selectedBreathType);
+    if (matchingOption) {
+      setSelectedOption(matchingOption.id);
+    }
+  }, [selectedBreathType]);
 
-        if (title === 'BREATH' && content) {
-          const matchingOption = breathOptions.find(option => option.content === content);
-          if (matchingOption) {
-            setSelectedOption(matchingOption.id);
-          }
-        }
-      } catch (e) {
-        console.error('Failed to handle message:', e);
-      }
-    };
-
-    window.addEventListener('message', handleMessage);
-    return () => window.removeEventListener('message', handleMessage);
-  }, [breathOptions]);
-
-  // 선택된 옵션을 업데이트합니다.
   const handleSelect = (id: number) => {
     setSelectedOption(id);
   };
 
-  // 저장 버튼 클릭 시 앱에 선택 사항을 전송하고 부모 컴포넌트의 상태를 업데이트합니다.
   const handleSave = () => {
     if (selectedOption !== null) {
       const selectedBreath = breathOptions.find(option => option.id === selectedOption);
       if (selectedBreath) {
-        onSave(selectedBreath.content); // 부모 컴포넌트에 저장
-
-        window.ReactNativeWebView?.postMessage(
-          JSON.stringify({
-            title: 'BREATH',
-            content: selectedBreath.content,
-          }),
-        );
+        onSave(selectedBreath.content);
         onClose();
       }
     }
   };
-
   return (
     <div className="flex flex-col z-30 items-center min-h-80 gap-5 mt-8 text-black">
       <h1 className="text-4xl mt-5 text-center font-nanumBold">호흡법 설정</h1>
