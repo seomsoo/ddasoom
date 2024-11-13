@@ -187,6 +187,8 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
 
+import ErrorModal from '@/components/Common/ErrorModal';
+
 interface Place {
   id: string;
   name: string;
@@ -210,6 +212,8 @@ interface PlacesSearchResultItem {
 }
 
 export default function NearbyHospitalsMap() {
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+  const [errorContext, setErrorContext] = useState<string>('');
   const mapRef = useRef<HTMLDivElement>(null);
   const [places, setPlaces] = useState<Place[]>([]);
   const [receivedLocation, setReceivedLocation] = useState<{ latitude: number; longitude: number } | null>(null);
@@ -219,22 +223,12 @@ export default function NearbyHospitalsMap() {
   // 기본 위치 설정
   const defaultLocation = { latitude: 35.2052474, longitude: 126.8117694 };
 
-  // WebView에서 GPS 요청 메시지 보내기
-  useEffect(() => {
-    window.ReactNativeWebView?.postMessage(
-      JSON.stringify({
-        title: 'GPS',
-        content: null,
-      }),
-    );
-  }, []);
-
   // WebView에서 GPS 위치 메시지 수신
   useEffect(() => {
     const handleMessage = async (event: MessageEvent) => {
       try {
         const parsedMessage = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
-
+        setErrorContext(`parsedMessage:  ${parsedMessage}`);
         if (parsedMessage.title === 'CURRENTLOCATION' && parsedMessage.latitude && parsedMessage.longitude) {
           setReceivedLocation({
             latitude: parsedMessage.latitude,
@@ -242,10 +236,12 @@ export default function NearbyHospitalsMap() {
           });
         } else {
           console.log('필요한 title이 아님 또는 content 없음');
+          setErrorContext('parsedMessage.title && parsedMessage.latitude && parsedMessage.longitude 실패');
           setReceivedLocation(defaultLocation); // 기본 위치 사용
         }
       } catch (error) {
         console.error('Failed to parse message:', error);
+        setErrorContext('아예 앱으로부터 못 받아옴, 기본 위치 사용');
         setReceivedLocation(defaultLocation); // 파싱 오류 시 기본 위치 사용
       }
     };
@@ -362,8 +358,15 @@ export default function NearbyHospitalsMap() {
     return R * c;
   };
 
+  const handleRetry = () => {
+    return;
+  };
+
   return (
     <div>
+      {isErrorModalOpen && (
+        <ErrorModal onClose={() => setIsErrorModalOpen(false)} onRetry={handleRetry} context={errorContext} />
+      )}
       <h1>근처 병원, 응급실, 정신건강의학과 의원 (가까운 순서 5개)</h1>
       <div ref={mapRef} style={{ width: '100%', height: '500px' }} />
       <div>
