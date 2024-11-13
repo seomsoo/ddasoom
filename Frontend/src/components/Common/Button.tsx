@@ -10,7 +10,7 @@ interface ButtonProps {
 export default function Button({ label, className = '', disabled = false, onClick }: ButtonProps) {
   return (
     <button
-      className={`font-nanumBold text-xl w-full py-3 mt-16 rounded-3xl text-main3
+      className={`font-nanumBold text-xl w-full py-3 rounded-3xl text-main3
         ${disabled ? 'bg-button1 opacity-50 cursor-not-allowed' : 'bg-button1 '}
         ${className}`}
       disabled={disabled}

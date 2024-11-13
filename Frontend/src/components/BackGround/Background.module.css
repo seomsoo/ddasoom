@@ -32,6 +32,13 @@
   animation: backgroundChange 10s ease-in-out infinite;
 }
 
+.background6 {
+  background: linear-gradient(-45deg, #fcfef5, #e5f7d4, #b1eeca, #ede7fc, #fcfef5);
+  background-repeat: no-repeat;
+  background-size: 400% 400%;
+  animation: backgroundChange 10s ease-in-out infinite;
+}
+
 @keyframes backgroundChange {
   0% {
     background-position: 0 50%;
