@@ -13,20 +13,14 @@ import styled from "styled-components/native";
 import useGeocoding from "@/hooks/useGeocoding";
 import useLocation from "@/hooks/useLocation";
 import { router, useLocalSearchParams } from "expo-router";
-import { timeFormat } from "@/utils/timeFormat";
+import { getLocalISOString, timeFormat } from "@/utils/timeFormat";
 import useNotificationStore from "@/zustand/notificationStore";
 import { scheduleLocalNotification, sendPushNotification } from "@/utils/notifications";
 import { savePanicInfoToStorage } from "@/storage/panic";
-
-// 현지 시간에 맞춘 ISO 문자열 포맷 생성
-function getLocalISOString() {
-  const now = new Date();
-  const offsetMs = now.getTimezoneOffset() * 60 * 1000;
-  const localTime = new Date(now.getTime() - offsetMs);
-  return localTime.toISOString();
-}
+import useAuthStore from "@/zustand/authStore";
 
 const BreathEndModal = () => {
+  const { token, userName } = useAuthStore();
   const { expoPushToken } = useNotificationStore();
   const { totalTime } = useLocalSearchParams();
   const { location } = useLocation();
@@ -49,7 +43,11 @@ const BreathEndModal = () => {
 
     // panicInfo를 기기의 메모리에 저장
     await savePanicInfoToStorage(panicInfo);
-    router.push("/");
+    if (token) {
+      router.push("(app)/authorized");
+      return;
+    }
+    router.push("(app)/(login)");
   };
 
   const handleSkip = async () => {
@@ -71,7 +69,11 @@ const BreathEndModal = () => {
       scheduleLocalNotification({ title: "따 숨", body: "진정이 됐나요? 오늘 상황을 기록해보세요.", seconds: 5 });
     }
 
-    router.push("/");
+    if (token) {
+      router.push("(app)/authorized");
+      return;
+    }
+    router.push("(app)/(login)");
   };
 
   useEffect(() => {

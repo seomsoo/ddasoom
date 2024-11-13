@@ -47,7 +47,7 @@ const AuthedScreen = () => {
         await logout();
         console.log("로그아웃 됨");
         BackHandler.removeEventListener("hardwareBackPress", backPress);
-        router.push("/");
+        router.push("(app)/(login)");
         return;
       case "RECORD":
         if (content === "ONAIR" && userName) {
@@ -75,7 +75,7 @@ const AuthedScreen = () => {
         return;
       case "ARDSETTING":
         BackHandler.removeEventListener("hardwareBackPress", backPress);
-        router.push("/ble");
+        router.push("(app)/ble");
         return;
       case "ARD":
         console.log(content === "ON" ? "아두이노 작동" : "아두이노 끄기");
@@ -83,7 +83,7 @@ const AuthedScreen = () => {
       case "SOS":
         BackHandler.removeEventListener("hardwareBackPress", backPress);
         const storedBreathType = await loadBreathTypeFromStorage();
-        router.push(`/breath?breathType=${storedBreathType ?? "basicTime"}`);
+        router.push(`(app)/breath?breathType=${storedBreathType ?? "basicTime"}`);
         return;
       case "GPS":
         sendLocationToWebView();
