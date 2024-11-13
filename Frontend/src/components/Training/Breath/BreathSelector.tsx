@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import three from '/public/images/3.png';
 import four from '/public/images/4.png';
@@ -12,6 +12,7 @@ import Dot from '/public/images/dot2.png';
 
 export default function BreathSelector() {
   const router = useRouter();
+  const [selectedBreathType, setSelectedBreathType] = useState('');
 
   useEffect(() => {
     window.ReactNativeWebView?.postMessage(
@@ -22,13 +23,37 @@ export default function BreathSelector() {
     );
   });
 
+  useEffect(() => {
+    const handleMessage = async (event: MessageEvent) => {
+      try {
+        const messageData = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
+        const { title, content } = messageData;
+
+        if (title === 'BREATH' && content) {
+          setSelectedBreathType(content);
+        }
+      } catch (e) {
+        console.error('Failed to handle message:', e);
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
+    return () => {
+      window.removeEventListener('message', handleMessage);
+    };
+  }, []);
+
   const handleBreathSelect = (breathType: string) => {
     router.push(`/training/breath/${breathType}`);
   };
 
   return (
     <div className="flex flex-col font-nanumBold  text-main4 mt-12  space-y-7 w-72  ">
-      <button onClick={() => handleBreathSelect('basicTime')} className="flex  py-5 text-left bg-[#f3b6c0] rounded-2xl">
+      <button
+        onClick={() => handleBreathSelect('basicTime')}
+        className={`flex py-5 text-left bg-[#f3b6c0] rounded-2xl ${
+          selectedBreathType === 'basicTime' ? 'border-4 border-red-500' : ''
+        }`}>
         <div className="flex w-full flex-col  ">
           <div className=" flex justify-center gap-3">
             <Image
@@ -49,7 +74,11 @@ export default function BreathSelector() {
           <span className="mt-3 flex justify-center opacity-85">- 기본 호흡</span>
         </div>
       </button>
-      <button onClick={() => handleBreathSelect('shortTime')} className="flex  py-5 text-left bg-[#f37f85] rounded-2xl">
+      <button
+        onClick={() => handleBreathSelect('shortTime')}
+        className={`flex items-center justify-between py-5 z-10 text-left bg-[#f37f85] rounded-2xl ${
+          selectedBreathType === 'longTime' ? 'border-4 border-red-500' : ''
+        }`}>
         <div className="flex w-full flex-col  ">
           <div className=" flex justify-center gap-2 filter saturate-[3.2] hue-rotate-[300deg]  sepia-[0.3]  brightness-[1.1]">
             <Image className="w-11 h-14" src={four} alt="four" />
@@ -66,7 +95,9 @@ export default function BreathSelector() {
       </button>
       <button
         onClick={() => handleBreathSelect('longTime')}
-        className="flex items-center justify-between py-5 z-10 text-left  bg-[#8989b3] rounded-2xl">
+        className={`flex items-center justify-between py-5 z-10 text-left bg-[#8989b3] rounded-2xl ${
+          selectedBreathType === 'longTime' ? 'border-4 border-red-500' : ''
+        }`}>
         <div className="flex w-full flex-col  ">
           <div className=" flex justify-center gap-3">
             <Image
