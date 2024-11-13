@@ -52,7 +52,8 @@ public class JwtAuthenticationFilter implements GlobalFilter {
                 .getPath();
 
         return (method.equals(HttpMethod.POST) && path.equals("/api/users/login")) ||
-                (method.equals(HttpMethod.POST) && path.equals("/api/users"));
+                (method.equals(HttpMethod.POST) && path.equals("/api/users")) ||
+                (method.equals(HttpMethod.POST) && path.equals("/api/emergency/send-message"));
     }
 
     private String getTokenFrom(ServerWebExchange exchange) {
