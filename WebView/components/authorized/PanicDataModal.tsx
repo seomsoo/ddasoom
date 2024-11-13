@@ -2,7 +2,7 @@ import React from "react";
 import { Modal, View, Text, TouchableOpacity, TextInput, Image } from "react-native";
 import styled from "styled-components";
 import cancelImg from "@/assets/images/octicon_x-12.png";
-import { convertToKST, timeFormat } from "@/utils/timeFormat";
+import { convertToKST, getLocalISOString, timeFormat } from "@/utils/timeFormat";
 
 interface PanicDataModalProps {
   modalVisible: boolean;
@@ -23,9 +23,8 @@ const PanicDataModal = ({
   handleSave,
   handleCancel,
 }: PanicDataModalProps) => {
-  const thatTime = panicData?.startDate
-    ? convertToKST(panicData.startDate).split("T")[1].split(":").splice(0, 2)
-    : null;
+  const nowTime = getLocalISOString();
+  const nowTimeArr = nowTime.split("T")[1].split(":");
 
   return (
     <Modal
@@ -44,7 +43,7 @@ const PanicDataModal = ({
               <InfoContent>
                 <InfoTextLeft>{"발생 시각   :   "}</InfoTextLeft>
                 <InfoTextRight>
-                  {thatTime?.[0]}시 {thatTime?.[1]}분
+                  {nowTimeArr[0]}시 {nowTimeArr[1]}분
                 </InfoTextRight>
               </InfoContent>
               <InfoContent>
