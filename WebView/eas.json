@@ -2,18 +2,7 @@
   "build": {
     "development": {
       "developmentClient": true,
-      "distribution": "internal",
-      "android": {
-        "buildType": "apk"
-      },
-      "env": {
-        "APP_ICON": "./assets/images/ddasomi_logo/png",
-        "APP_NAME": "따 숨",
-        "EAS_BUILD_INTERNAL_PACKAGE_MANAGER": "yarn",
-        "EXPO_PUBLIC_BASEURL": "https://k11c103.p.ssafy.io",
-        "EXPO_PUBLIC_KAKAO_NATIVE_KEY": "776e8affab113456d6b62b5c1a675605",
-        "EXPO_PUBLIC_MAP_API_KEY": "AIzaSyA6EMSwyx4-oztWIQ7Y9NVSibZolLz_unA"
-      }
+      "distribution": "internal"
     },
     "preview": {
       "android": {
@@ -22,7 +11,6 @@
       "env": {
         "APP_ICON": "./assets/images/ddasomi_logo/png",
         "APP_NAME": "따 숨",
-        "EAS_BUILD_INTERNAL_PACKAGE_MANAGER": "yarn",
         "EXPO_PUBLIC_BASEURL": "https://k11c103.p.ssafy.io",
         "EXPO_PUBLIC_KAKAO_NATIVE_KEY": "776e8affab113456d6b62b5c1a675605",
         "EXPO_PUBLIC_MAP_API_KEY": "AIzaSyA6EMSwyx4-oztWIQ7Y9NVSibZolLz_unA"
@@ -35,7 +23,6 @@
       "env": {
         "APP_ICON": "./assets/images/ddasomi_logo/png",
         "APP_NAME": "따 숨",
-        "EAS_BUILD_INTERNAL_PACKAGE_MANAGER": "yarn",
         "EXPO_PUBLIC_BASEURL": "https://k11c103.p.ssafy.io",
         "EXPO_PUBLIC_KAKAO_NATIVE_KEY": "776e8affab113456d6b62b5c1a675605",
         "EXPO_PUBLIC_MAP_API_KEY": "AIzaSyA6EMSwyx4-oztWIQ7Y9NVSibZolLz_unA"
