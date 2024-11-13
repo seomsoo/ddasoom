@@ -24,7 +24,7 @@ export default function HelpModal({ ContentComponent }: ModalWithStateProps) {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="fixed inset-0 z-30 flex items-center justify-center bg-black bg-opacity-50"
+            className="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-50"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -45,7 +45,7 @@ export default function HelpModal({ ContentComponent }: ModalWithStateProps) {
                 ))}
               </div>
 
-              <div className="max-h-[60vh] overflow-y-auto">
+              <div className="max-h-[70vh]">
                 <ContentComponent />
                 <button onClick={closeModal} className="flex mt-5 items-center justify-center w-full ">
                   <span className="px-24 py-2 bg-button1 text-main4 text-lg rounded-full">확인</span>

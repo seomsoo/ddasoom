@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface BreathOption {
   id: number;
@@ -18,6 +18,36 @@ export default function SettingContent({ onClose }: SettingContentProps) {
     { id: 2, label: '짧은 호흡 (4·4·4·4)', content: 'shortTime' },
     { id: 3, label: '긴 호흡 (5·7·3)', content: 'longTime' },
   ];
+
+  useEffect(() => {
+    window.ReactNativeWebView?.postMessage(
+      JSON.stringify({
+        title: 'BREATH',
+        content: null,
+      }),
+    );
+  });
+
+  useEffect(() => {
+    const handleMessage = async (event: MessageEvent) => {
+      try {
+        const messageData = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
+        const { title, content } = messageData;
+
+        if (title === 'BREATH' && content) {
+          const matchingOption = breathOptions.find(option => option.content === content);
+          setSelectedOption(matchingOption ? matchingOption.id : null);
+        }
+      } catch (e) {
+        console.error('Failed to handle message:', e);
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
+    return () => {
+      window.removeEventListener('message', handleMessage);
+    };
+  }, [breathOptions]);
 
   const handleSelect = (id: number) => {
     setSelectedOption(id);

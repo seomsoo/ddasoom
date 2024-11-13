@@ -44,7 +44,7 @@ export default function ModalWithState({ label, ContentComponent }: ModalWithSta
               <button onClick={closeModal} className="flex w-full justify-end">
                 <Cancel />
               </button>
-              <div className="max-h-[60vh] overflow-y-auto">
+              <div className="max-h-[70vh] overflow-y-auto">
                 <ContentComponent closeModal={closeModal} />
               </div>
             </motion.div>
