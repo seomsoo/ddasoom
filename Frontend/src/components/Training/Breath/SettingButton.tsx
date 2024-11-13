@@ -1,8 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
-import SettingSvg from '@/svgs/setting.svg';
+
 import SettingModal from '@/components/Training/Breath/SettingModal';
+import SettingSvg from '@/svgs/setting.svg';
+
 import SettingContent from './SettingContent';
 
 export default function SettingButton() {
