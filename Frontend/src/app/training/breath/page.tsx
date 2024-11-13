@@ -1,9 +1,10 @@
+import dynamic from 'next/dynamic';
+import React from 'react';
+
 import background from '@/components/BackGround/Background.module.css';
 import Header from '@/components/Common/Header';
 import BreathSelector from '@/components/Training/Breath/BreathSelector';
 import Backcloud from '@/svgs/backcloud.svg';
-import dynamic from 'next/dynamic';
-import React from 'react';
 
 // 클라이언트 전용 설정 버튼을 동적으로 불러옴
 const SettingButton = dynamic(() => import('@/components/Training/Breath/SettingButton'), {
