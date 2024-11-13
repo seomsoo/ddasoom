@@ -11,8 +11,8 @@ export const postSavePhoneData = async (data: SavePhoneRequestBody): Promise<Bas
 };
 
 // 비상 연락처 목록 조회
-export const getPhoneData = async (): Promise<BaseResponse<PhoneListData>> => {
-  const response = await axiosInstance.get<BaseResponse<PhoneListData>>('/emergency/phone-books');
+export const getPhoneData = async (): Promise<BaseResponse<PhoneListData[]>> => {
+  const response = await axiosInstance.get<BaseResponse<PhoneListData[]>>('/emergency/phone-books');
   return response.data;
 };
 
