@@ -2,4 +2,5 @@
   <string name="app_name">ddasoom</string>
   <string name="expo_splash_screen_resize_mode" translatable="false">contain</string>
   <string name="expo_splash_screen_status_bar_translucent" translatable="false">false</string>
+  <string name="kakao_app_key">776e8affab113456d6b62b5c1a675605</string>
 </resources>
