@@ -1,24 +1,24 @@
 {
   "expo": {
     "scheme": "ddasoom",
-    "name": "ddasoom",
+    "name": "따 숨",
     "slug": "ddasoom1",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "/assets/images/ddasomi_logo/png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "/assets/ddasomi_logo.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#EBF4E3"
     },
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "/assets/images/ddasomi_logo/png",
+        "backgroundColor": "#EBF4E3"
       },
       "package": "com.ddasoom.wear",
       "googleServicesFile": "process.env.GOOGLE_SERVICES_JSON",
@@ -34,14 +34,14 @@
       ]
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "/assets/images/ddasomi_logo/png"
     },
     "plugins": [
       "expo-router",
       [
         "expo-notifications",
         {
-          "icon": "./local/path/to/myNotificationIcon.png",
+          "icon": "/assets/images/ddasomi_logo/png",
           "color": "#ffffff",
           "sounds": ["./local/path/to/mySound.wav", "./local/path/to/myOtherSound.wav"],
           "mode": "production"
