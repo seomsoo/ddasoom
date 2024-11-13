@@ -21,6 +21,7 @@ def get_prediction(data):
         model.eval()
 
         output = model(data)
+        print("Prediction:", output.item())
         prediction = output.item() > 0.5
 
         return True if int(prediction) == 1 else False
