@@ -1,3 +1,4 @@
+'use client';
 import React, { useEffect, useState } from 'react';
 
 interface BreathOption {
@@ -8,9 +9,10 @@ interface BreathOption {
 
 interface SettingContentProps {
   onClose: () => void;
+  onSave: (breathType: string) => void;
 }
 
-export default function SettingContent({ onClose }: SettingContentProps) {
+export default function SettingContent({ onClose, onSave }: SettingContentProps) {
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
 
   const breathOptions: BreathOption[] = [
@@ -19,17 +21,9 @@ export default function SettingContent({ onClose }: SettingContentProps) {
     { id: 3, label: '긴 호흡 (5·7·3)', content: 'longTime' },
   ];
 
+  // 앱에서 수신한 메시지를 처리하여 선택된 옵션을 업데이트합니다.
   useEffect(() => {
-    window.ReactNativeWebView?.postMessage(
-      JSON.stringify({
-        title: 'BREATH',
-        content: null,
-      }),
-    );
-  }, []);
-
-  useEffect(() => {
-    const handleMessage = async (event: MessageEvent) => {
+    const handleMessage = (event: MessageEvent) => {
       try {
         const messageData = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
         const { title, content } = messageData;
@@ -46,19 +40,21 @@ export default function SettingContent({ onClose }: SettingContentProps) {
     };
 
     window.addEventListener('message', handleMessage);
-    return () => {
-      window.removeEventListener('message', handleMessage);
-    };
+    return () => window.removeEventListener('message', handleMessage);
   }, [breathOptions]);
 
+  // 선택된 옵션을 업데이트합니다.
   const handleSelect = (id: number) => {
     setSelectedOption(id);
   };
 
+  // 저장 버튼 클릭 시 앱에 선택 사항을 전송하고 부모 컴포넌트의 상태를 업데이트합니다.
   const handleSave = () => {
     if (selectedOption !== null) {
       const selectedBreath = breathOptions.find(option => option.id === selectedOption);
       if (selectedBreath) {
+        onSave(selectedBreath.content); // 부모 컴포넌트에 저장
+
         window.ReactNativeWebView?.postMessage(
           JSON.stringify({
             title: 'BREATH',
