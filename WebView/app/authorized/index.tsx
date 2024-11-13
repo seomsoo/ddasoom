@@ -75,14 +75,15 @@ const AuthedScreen = () => {
         return;
       case "ARDSETTING":
         BackHandler.removeEventListener("hardwareBackPress", backPress);
-        router.push("ble");
+        router.push("/ble");
         return;
       case "ARD":
         console.log(content === "ON" ? "아두이노 작동" : "아두이노 끄기");
         return;
       case "SOS":
         BackHandler.removeEventListener("hardwareBackPress", backPress);
-        router.push(`breath?breathType=${breathType}`);
+        const storedBreathType = await loadBreathTypeFromStorage();
+        router.push(`/breath?breathType=${storedBreathType ?? "basicTime"}`);
         return;
       case "GPS":
         sendLocationToWebView();
@@ -186,7 +187,7 @@ const AuthedScreen = () => {
       <WebView
         ref={webViewRef}
         style={{ paddingTop: statusBarHeight, flex: 1 }}
-        source={{ uri: `${process.env.EXPO_PUBLIC_BASEURL}` }}
+        source={{ uri: "https://k11c103.p.ssafy.io" }}
         onMessage={handleMessage}
         javaScriptEnabled={true}
         domStorageEnabled={true}
