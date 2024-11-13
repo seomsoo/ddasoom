@@ -36,3 +36,8 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+
+credentials.json
+credentials/android/keystore.jks
+./credentials.json
+./credentials/android/keystore.jks

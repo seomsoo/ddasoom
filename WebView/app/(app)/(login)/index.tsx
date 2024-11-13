@@ -40,14 +40,14 @@ const Main = () => {
       setUserName(name);
       setUserId(userId);
       console.log("로그인 성공. 토큰 : ", token);
-      Alert.alert("로그인 성공");
+      // Alert.alert("로그인 성공");
       router.push("/authorized");
     } catch (e: unknown) {
       const error = e as DdasoomError;
       const errorCode = error.response?.data.error.status;
 
       if (errorCode === 404) {
-        Alert.alert("회원가입 필요");
+        // Alert.alert("회원가입 필요");
         router.push("/signupModal");
         // router.push("authorized");
       } else {
