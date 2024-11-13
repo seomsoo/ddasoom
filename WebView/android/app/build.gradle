@@ -170,7 +170,7 @@ android {
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
-
+    
     // wear os 접근 설정
     implementation("com.google.android.gms:play-services-wearable:18.0.0")
     implementation("com.google.android.gms:play-services-base:18.0.0")
