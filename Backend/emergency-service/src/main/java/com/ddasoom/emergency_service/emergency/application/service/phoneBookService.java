@@ -5,6 +5,7 @@ import com.ddasoom.emergency_service.emergency.adapter.in.web.response.PhoneBook
 import com.ddasoom.emergency_service.emergency.application.domain.PhoneBook;
 import com.ddasoom.emergency_service.emergency.application.port.in.PhoneBookCommand;
 import com.ddasoom.emergency_service.emergency.application.port.in.PhoneBookUseCase;
+import com.ddasoom.emergency_service.emergency.application.port.in.SendMsgCommand;
 import com.ddasoom.emergency_service.emergency.application.port.out.PhoneBookPort;
 import com.ddasoom.emergency_service.emergency.application.port.out.SendPhoneBookPort;
 import java.util.List;
@@ -46,11 +47,10 @@ public class phoneBookService implements PhoneBookUseCase {
 
     @Transactional(readOnly = true)
     @Override
-    public void sendMessage(Long userId, String username) {
-        List<PhoneBook> phoneBookList = phoneBookPort.findPhoneBookList(userId);
-        String text = username + "님이 공황 발작이 발생한\n 지 15분이 경과했습니다.\n\n" +
+    public void sendMessage(SendMsgCommand command) {
+        String text = command.username() + "님이 공황 발작이 발생한\n 지 10분이 경과했습니다.\n\n" +
                 "한번 연락해 보세요!";
-        sendPhoneBookPort.sendMessage(phoneBookList, text);
+        sendPhoneBookPort.sendMessage(command.phoneNumbers(), text);
     }
 
     @Override
