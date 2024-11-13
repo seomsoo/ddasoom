@@ -26,7 +26,7 @@ export default function SettingContent({ onClose }: SettingContentProps) {
         content: null,
       }),
     );
-  });
+  }, []);
 
   useEffect(() => {
     const handleMessage = async (event: MessageEvent) => {
@@ -36,7 +36,9 @@ export default function SettingContent({ onClose }: SettingContentProps) {
 
         if (title === 'BREATH' && content) {
           const matchingOption = breathOptions.find(option => option.content === content);
-          setSelectedOption(matchingOption ? matchingOption.id : null);
+          if (matchingOption) {
+            setSelectedOption(matchingOption.id);
+          }
         }
       } catch (e) {
         console.error('Failed to handle message:', e);

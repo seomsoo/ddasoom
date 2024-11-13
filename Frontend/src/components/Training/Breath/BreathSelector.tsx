@@ -15,13 +15,15 @@ export default function BreathSelector() {
   const [selectedBreathType, setSelectedBreathType] = useState('');
 
   useEffect(() => {
-    window.ReactNativeWebView?.postMessage(
-      JSON.stringify({
-        title: 'BREATH',
-        content: null,
-      }),
-    );
-  });
+    if (!selectedBreathType) {
+      window.ReactNativeWebView?.postMessage(
+        JSON.stringify({
+          title: 'BREATH',
+          content: null,
+        }),
+      );
+    }
+  }, [selectedBreathType]);
 
   useEffect(() => {
     const handleMessage = async (event: MessageEvent) => {
@@ -29,7 +31,7 @@ export default function BreathSelector() {
         const messageData = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
         const { title, content } = messageData;
 
-        if (title === 'BREATH' && content) {
+        if (title === 'BREATH' && content && content !== selectedBreathType) {
           setSelectedBreathType(content);
         }
       } catch (e) {
@@ -41,7 +43,7 @@ export default function BreathSelector() {
     return () => {
       window.removeEventListener('message', handleMessage);
     };
-  }, []);
+  }, [selectedBreathType]);
 
   const handleBreathSelect = (breathType: string) => {
     router.push(`/training/breath/${breathType}`);
@@ -52,7 +54,7 @@ export default function BreathSelector() {
       <button
         onClick={() => handleBreathSelect('basicTime')}
         className={`flex py-5 text-left bg-[#f3b6c0] rounded-2xl ${
-          selectedBreathType === 'basicTime' ? 'border-4 border-red-500' : ''
+          selectedBreathType === 'basicTime' ? 'border-2 border-red-500 py-4' : ''
         }`}>
         <div className="flex w-full flex-col  ">
           <div className=" flex justify-center gap-3">
@@ -77,7 +79,7 @@ export default function BreathSelector() {
       <button
         onClick={() => handleBreathSelect('shortTime')}
         className={`flex items-center justify-between py-5 z-10 text-left bg-[#f37f85] rounded-2xl ${
-          selectedBreathType === 'longTime' ? 'border-4 border-red-500' : ''
+          selectedBreathType === 'longTime' ? 'border-2 border-red-500 py-4' : ''
         }`}>
         <div className="flex w-full flex-col  ">
           <div className=" flex justify-center gap-2 filter saturate-[3.2] hue-rotate-[300deg]  sepia-[0.3]  brightness-[1.1]">
@@ -96,7 +98,7 @@ export default function BreathSelector() {
       <button
         onClick={() => handleBreathSelect('longTime')}
         className={`flex items-center justify-between py-5 z-10 text-left bg-[#8989b3] rounded-2xl ${
-          selectedBreathType === 'longTime' ? 'border-4 border-red-500' : ''
+          selectedBreathType === 'longTime' ? 'border-2 border-red-500 py-4' : ''
         }`}>
         <div className="flex w-full flex-col  ">
           <div className=" flex justify-center gap-3">
