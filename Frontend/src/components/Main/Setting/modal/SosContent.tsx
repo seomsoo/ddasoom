@@ -57,10 +57,11 @@ export default function SosContent() {
   const mutation = useMutation({
     mutationFn: (data: SavePhoneRequestBody) => postSavePhoneData(data),
     onSuccess: response => {
-      const updatedPhoneData = response.data; // 추가된 최신 연락처 데이터
-      if (updatedPhoneData && Array.isArray(updatedPhoneData)) {
-        setPhoneData(prev => [...prev, ...updatedPhoneData]); // 기존 상태와 새로운 데이터 병합
-        sendPhoneListToApp([...phoneData, ...updatedPhoneData]); // 앱에 전송
+      const updatedPhoneData = response.data;
+      if (updatedPhoneData) {
+        const newPhoneData = [...phoneData, updatedPhoneData]; // 새로운 데이터 병합
+        setPhoneData(newPhoneData); // 상태 업데이트
+        sendPhoneListToApp(newPhoneData); // 앱에 전송
       }
     },
     onError: error => {
