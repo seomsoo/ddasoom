@@ -1,5 +1,5 @@
 import { BaseResponse } from '@/types/http/baseResponse';
-import { SavePhoneRequestBody, SendMessageRequestBody } from '@/types/http/request';
+import { SavePhoneRequestBody } from '@/types/http/request';
 import { PhoneListData } from '@/types/http/response';
 
 import axiosInstance from './axiosInstance';
@@ -7,12 +7,6 @@ import axiosInstance from './axiosInstance';
 // 비상 연락처 저장
 export const postSavePhoneData = async (data: SavePhoneRequestBody): Promise<BaseResponse<null>> => {
   const response = await axiosInstance.post<BaseResponse<null>>('/emergency/phone-book', data);
-  return response.data;
-};
-
-// 비상 연락처로 문자
-export const postSendMessageData = async (data: SendMessageRequestBody): Promise<BaseResponse<null>> => {
-  const response = await axiosInstance.post<BaseResponse<null>>('/emergency/send-message', data);
   return response.data;
 };
 
