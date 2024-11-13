@@ -16,7 +16,22 @@ import { PhoneListData } from '@/types/http/response';
 export default function SosContent() {
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [errorContext, setErrorContext] = useState('');
-  const [phoneData, setPhoneData] = useState<PhoneListData[]>([]); // 초기값을 빈 배열로 설정
+  const [phoneData, setPhoneData] = useState<PhoneListData[]>([]);
+
+  // 앱으로 연락처 목록 전송
+  const sendPhoneListToApp = (data: PhoneListData[]) => {
+    window.ReactNativeWebView?.postMessage(
+      JSON.stringify({
+        title: 'SETPHONE',
+        content: data,
+      }),
+    );
+  };
+
+  // phoneData가 변경될 때마다 앱에 최신 목록 전송
+  useEffect(() => {
+    sendPhoneListToApp(phoneData);
+  }, [phoneData]);
 
   // 앱에 비상 연락처 목록 조회 요청 전송
   useEffect(() => {
@@ -43,26 +58,15 @@ export default function SosContent() {
     return () => window.removeEventListener('message', handleMessage);
   }, []);
 
-  // 앱으로 연락처 목록 전송
-  const sendPhoneListToApp = (data: PhoneListData[]) => {
-    window.ReactNativeWebView?.postMessage(
-      JSON.stringify({
-        title: 'SETPHONE',
-        content: data,
-      }),
-    );
-  };
-
   // 비상 연락처 추가
   const mutation = useMutation({
     mutationFn: (data: SavePhoneRequestBody) => postSavePhoneData(data),
     onSuccess: response => {
-      const updatedPhoneData = response.data;
-      if (updatedPhoneData) {
-        const newPhoneData = [...phoneData, updatedPhoneData]; // 새로운 데이터 병합
-        setPhoneData(newPhoneData); // 상태 업데이트
-        sendPhoneListToApp(newPhoneData); // 앱에 전송
+      const updatedContact = response.data; // 서버에서 반환된 데이터 사용
+      if (updatedContact) {
+        setPhoneData(prevPhoneData => [...prevPhoneData, updatedContact]); // 서버의 ID 포함하여 추가
       }
+      console.log('비상 연락처 추가 성공');
     },
     onError: error => {
       console.error('비상연락처 추가 실패:', error);
@@ -74,10 +78,8 @@ export default function SosContent() {
   // 비상 연락처 삭제
   const deleteMutation = useMutation({
     mutationFn: (phoneBookId: number) => deletePhoneData(phoneBookId),
-    onSuccess: (_, phoneBookId) => {
-      const updatedPhoneData = phoneData.filter(contact => contact.PhoneBookId !== phoneBookId); // 삭제된 연락처 제외
-      setPhoneData(updatedPhoneData); // 업데이트된 목록 설정
-      sendPhoneListToApp(updatedPhoneData); // 앱에 전송
+    onSuccess: () => {
+      console.log('비상 연락처 삭제 성공'); // 성공 여부 로그만 출력
     },
     onError: error => {
       console.error('비상연락처 삭제 실패:', error);
@@ -127,6 +129,12 @@ export default function SosContent() {
     const formattedPhoneNumber = data.PhoneNumber.replace(/-/g, '');
     mutation.mutate({ phoneNumber: formattedPhoneNumber, alias: data.alias });
     reset({ alias: '', PhoneNumber: '' });
+  };
+
+  // 연락처 삭제 함수
+  const handleDelete = (phoneBookId: number) => {
+    setPhoneData(prevPhoneData => prevPhoneData.filter(contact => contact.PhoneBookId !== phoneBookId)); // 직접 상태 업데이트
+    deleteMutation.mutate(phoneBookId);
   };
 
   // 재시도 핸들러
@@ -199,7 +207,7 @@ export default function SosContent() {
                 }`}>
                 <span className="flex-1 ml-2">{contact.alias}</span>
                 <span className="mr-6">{formatPhoneNumber(contact.PhoneNumber)}</span>
-                <button onClick={() => deleteMutation.mutate(contact.PhoneBookId)}>
+                <button onClick={() => handleDelete(contact.PhoneBookId)}>
                   <TrashIcon width={20} height={20} />
                 </button>
               </li>
