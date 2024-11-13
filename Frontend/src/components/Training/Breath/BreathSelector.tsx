@@ -28,7 +28,7 @@ export default function BreathSelector({ selectedBreathType }: BreathSelectorPro
       <button
         onClick={() => handleBreathSelect('basicTime')}
         className={`flex py-5 text-left bg-[#f3b6c0] rounded-2xl ${
-          selectedBreathType === 'basicTime' ? 'border-2 border-red-500 py-4' : ''
+          selectedBreathType === 'basicTime' ? 'border-2 border-main3 py-4' : ''
         }`}>
         <div className="flex w-full flex-col">
           <div className="flex justify-center gap-3">
@@ -54,7 +54,7 @@ export default function BreathSelector({ selectedBreathType }: BreathSelectorPro
       <button
         onClick={() => handleBreathSelect('shortTime')}
         className={`flex items-center justify-between py-5 z-10 text-left bg-[#f37f85] rounded-2xl ${
-          selectedBreathType === 'shortTime' ? 'border-2 border-red-500 py-4' : ''
+          selectedBreathType === 'shortTime' ? 'border-2 border-main3 py-4' : ''
         }`}>
         <div className="flex w-full flex-col">
           <div className="flex justify-center gap-2 filter saturate-[3.2] hue-rotate-[300deg] sepia-[0.3] brightness-[1.1]">
@@ -74,7 +74,7 @@ export default function BreathSelector({ selectedBreathType }: BreathSelectorPro
       <button
         onClick={() => handleBreathSelect('longTime')}
         className={`flex items-center justify-between py-5 z-10 text-left bg-[#8989b3] rounded-2xl ${
-          selectedBreathType === 'longTime' ? 'border-2 border-red-500 py-4' : ''
+          selectedBreathType === 'longTime' ? 'border-2 border-main3 py-4' : ''
         }`}>
         <div className="flex w-full flex-col">
           <div className="flex justify-center gap-3">
