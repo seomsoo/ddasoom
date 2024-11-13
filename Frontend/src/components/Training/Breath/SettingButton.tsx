@@ -1,28 +1,16 @@
 'use client';
+import React from 'react';
 
-import React, { useState } from 'react';
-
-import SettingModal from '@/components/Training/Breath/SettingModal';
 import SettingSvg from '@/svgs/setting.svg';
 
-import SettingContent from './SettingContent';
+interface SettingButtonProps {
+  onClick: () => void;
+}
 
-export default function SettingButton() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const handleOpenModal = () => setIsModalOpen(true);
-  const handleCloseModal = () => setIsModalOpen(false);
-
+export default function SettingButton({ onClick }: SettingButtonProps) {
   return (
-    <>
-      <button onClick={handleOpenModal}>
-        <SettingSvg />
-      </button>
-      <SettingModal
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        ContentComponent={() => <SettingContent onClose={handleCloseModal} />}
-      />
-    </>
+    <button onClick={onClick}>
+      <SettingSvg />
+    </button>
   );
 }

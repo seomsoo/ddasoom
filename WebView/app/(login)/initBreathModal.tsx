@@ -12,7 +12,6 @@ const InitBreathModal = () => {
   const { userName, userEmail } = useAuthStore();
 
   const handleSkip = async () => {
-    router.push("/");
     try {
       setIsLoading(true);
       await signUp({ name: userName, email: userEmail });
@@ -36,7 +35,7 @@ const InitBreathModal = () => {
           <ContentText2>1분 간 편안한 상태를 유지해주세요.</ContentText2>
         </Content>
         <ButtonBox>
-          <SmallButton onPress={() => router.push("measureBpm")} style={{}}>
+          <SmallButton onPress={() => router.push("/measureBpm")} style={{}}>
             <Text style={{ fontSize: 20, color: "white" }}>측정하기</Text>
           </SmallButton>
           <SmallButton onPress={handleSkip} style={{}}>

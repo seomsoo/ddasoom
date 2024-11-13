@@ -6,9 +6,11 @@ import static org.springframework.http.HttpStatus.*;
 import com.ddasoom.emergency_service.common.annotation.WebAdapter;
 import com.ddasoom.emergency_service.common.util.ApiUtils.ApiResult;
 import com.ddasoom.emergency_service.emergency.adapter.in.web.request.AddPhoneRequest;
+import com.ddasoom.emergency_service.emergency.adapter.in.web.request.SendMsgRequest;
 import com.ddasoom.emergency_service.emergency.adapter.in.web.response.PhoneBookResponse;
 import com.ddasoom.emergency_service.emergency.application.port.in.PhoneBookCommand;
 import com.ddasoom.emergency_service.emergency.application.port.in.PhoneBookUseCase;
+import com.ddasoom.emergency_service.emergency.application.port.in.SendMsgCommand;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -40,9 +42,12 @@ public class PhoneBookController {
 
     @ResponseStatus(OK)
     @PostMapping("api/emergency/send-message")
-    public void sendMessage(@RequestHeader("X-Authenticated-User") Long userId,
-            @RequestBody String username) {
-        phoneBookUseCase.sendMessage(userId, username);
+    public void sendMessage(@RequestBody SendMsgRequest sendMsgRequest) {
+        SendMsgCommand command = new SendMsgCommand(
+                sendMsgRequest.username(),
+                sendMsgRequest.phoneNumbers()
+        );
+        phoneBookUseCase.sendMessage(command);
     }
 
     @ResponseStatus(NO_CONTENT)
