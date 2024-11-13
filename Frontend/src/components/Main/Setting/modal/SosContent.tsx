@@ -16,7 +16,7 @@ import { PhoneListData } from '@/types/http/response';
 export default function SosContent() {
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [errorContext, setErrorContext] = useState('');
-  const [phoneData, setPhoneData] = useState<PhoneListData[] | null>(null);
+  const [phoneData, setPhoneData] = useState<PhoneListData[]>([]); // 초기값을 빈 배열로 설정
 
   // 앱에 비상 연락처 목록 조회 요청 전송
   useEffect(() => {
@@ -30,8 +30,10 @@ export default function SosContent() {
         const messageData = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
         const { title, content } = messageData;
 
-        if (title === 'PHONELIST') {
-          setPhoneData(content);
+        if (title === 'PHONELIST' && Array.isArray(content)) {
+          // content가 배열일 경우에만 null 값을 제외하고 상태 업데이트
+          const filteredContent = content.filter((contact): contact is PhoneListData => contact !== null);
+          setPhoneData(filteredContent);
         }
       } catch (e) {
         console.error('Failed to handle message:', e);
@@ -40,13 +42,26 @@ export default function SosContent() {
 
     window.addEventListener('message', handleMessage);
     return () => window.removeEventListener('message', handleMessage);
-  }, [phoneData]);
+  }, []);
+
+  // 앱에 최신 연락처 목록 전송
+  const sendPhoneListToApp = (data: PhoneListData[]) => {
+    window.ReactNativeWebView?.postMessage(
+      JSON.stringify({
+        title: 'SETPHONE',
+        content: data,
+      }),
+    );
+  };
 
   // 비상 연락처 추가
   const mutation = useMutation({
     mutationFn: (data: SavePhoneRequestBody) => postSavePhoneData(data),
-    onSuccess: () => {
-      sendPhoneListToApp();
+    onSuccess: response => {
+      const updatedPhoneData = response.data;
+      const newPhoneData = [...phoneData, updatedPhoneData]; // 새 연락처 추가
+      setPhoneData(newPhoneData); // 업데이트된 목록을 설정
+      sendPhoneListToApp(newPhoneData); // 앱에 전송
     },
     onError: error => {
       console.error('비상연락처 추가 실패:', error);
@@ -59,7 +74,9 @@ export default function SosContent() {
   const deleteMutation = useMutation({
     mutationFn: (phoneBookId: number) => deletePhoneData(phoneBookId),
     onSuccess: () => {
-      sendPhoneListToApp();
+      const updatedPhoneData = phoneData.filter(contact => contact.PhoneBookId !== phoneBookId); // 삭제된 연락처 제외
+      setPhoneData(updatedPhoneData); // 업데이트된 목록 설정
+      sendPhoneListToApp(updatedPhoneData); // 앱에 전송
     },
     onError: error => {
       console.error('비상연락처 삭제 실패:', error);
@@ -67,16 +84,6 @@ export default function SosContent() {
       setIsErrorModalOpen(true);
     },
   });
-
-  // 앱으로 연락처 목록 전송
-  const sendPhoneListToApp = () => {
-    window.ReactNativeWebView?.postMessage(
-      JSON.stringify({
-        title: 'SETPHONE',
-        content: phoneData,
-      }),
-    );
-  };
 
   // 전화번호 포맷팅 함수
   const formatPhoneNumber = (value: string | undefined) => {
@@ -126,7 +133,6 @@ export default function SosContent() {
     setIsErrorModalOpen(false);
     handleSubmit(onSubmit);
   };
-
   return (
     <div className="flex flex-col items-center w-full p-4 max-w-sm mx-auto space-y-4">
       {isErrorModalOpen && (
@@ -176,7 +182,7 @@ export default function SosContent() {
       </form>
 
       <div className="w-full mt-4 space-y-2 overflow-y-auto" style={{ minHeight: '150px', maxHeight: '200px' }}>
-        {!phoneData ? (
+        {!phoneData.length ? (
           <div className="flex flex-col items-center text-center font-nanumBold text-gray4 mt-8">
             <p>저장된 연락처가 없습니다.</p>
             <Character width={84} height={75} className="mb-4" />
