@@ -2,7 +2,7 @@ import useAuthStore from "@/zustand/authStore";
 import axios from "axios";
 
 export const instance = axios.create({
-  baseURL: process.env.EXPO_PUBLIC_BASEURL,
+  baseURL: "https://k11c103.p.ssafy.io",
   timeout: 2500,
   withCredentials: true,
 });

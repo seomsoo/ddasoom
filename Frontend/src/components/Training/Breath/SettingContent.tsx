@@ -1,3 +1,4 @@
+'use client';
 import React, { useEffect, useState } from 'react';
 
 interface BreathOption {
@@ -8,9 +9,11 @@ interface BreathOption {
 
 interface SettingContentProps {
   onClose: () => void;
+  onSave: (breathType: string) => void;
+  selectedBreathType: string;
 }
 
-export default function SettingContent({ onClose }: SettingContentProps) {
+export default function SettingContent({ onClose, onSave, selectedBreathType }: SettingContentProps) {
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
 
   const breathOptions: BreathOption[] = [
@@ -20,36 +23,11 @@ export default function SettingContent({ onClose }: SettingContentProps) {
   ];
 
   useEffect(() => {
-    window.ReactNativeWebView?.postMessage(
-      JSON.stringify({
-        title: 'BREATH',
-        content: null,
-      }),
-    );
-  }, []);
-
-  useEffect(() => {
-    const handleMessage = async (event: MessageEvent) => {
-      try {
-        const messageData = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
-        const { title, content } = messageData;
-
-        if (title === 'BREATH' && content) {
-          const matchingOption = breathOptions.find(option => option.content === content);
-          if (matchingOption) {
-            setSelectedOption(matchingOption.id);
-          }
-        }
-      } catch (e) {
-        console.error('Failed to handle message:', e);
-      }
-    };
-
-    window.addEventListener('message', handleMessage);
-    return () => {
-      window.removeEventListener('message', handleMessage);
-    };
-  }, [breathOptions]);
+    const matchingOption = breathOptions.find(option => option.content === selectedBreathType);
+    if (matchingOption) {
+      setSelectedOption(matchingOption.id);
+    }
+  }, [selectedBreathType]);
 
   const handleSelect = (id: number) => {
     setSelectedOption(id);
@@ -59,17 +37,11 @@ export default function SettingContent({ onClose }: SettingContentProps) {
     if (selectedOption !== null) {
       const selectedBreath = breathOptions.find(option => option.id === selectedOption);
       if (selectedBreath) {
-        window.ReactNativeWebView?.postMessage(
-          JSON.stringify({
-            title: 'BREATH',
-            content: selectedBreath.content,
-          }),
-        );
+        onSave(selectedBreath.content);
         onClose();
       }
     }
   };
-
   return (
     <div className="flex flex-col z-30 items-center min-h-80 gap-5 mt-8 text-black">
       <h1 className="text-4xl mt-5 text-center font-nanumBold">호흡법 설정</h1>

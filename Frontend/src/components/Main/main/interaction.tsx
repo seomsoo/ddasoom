@@ -1,3 +1,4 @@
+// Interaction Component
 'use client';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -9,16 +10,31 @@ import ErrorModal from '@/components/Common/ErrorModal';
 import Play from '@/svgs/Ddasomiz/blueDdasom.svg';
 import Stroke from '@/svgs/Ddasomiz/greenSomi.svg';
 import Hug from '@/svgs/Ddasomiz/yellowSomi.svg';
+import Lv1Hug from '@/videos/LV1Hug.gif';
+import Lv1Play from '@/videos/LV1Play.gif';
+import Lv1Stroke from '@/videos/LV1Stroke.gif';
+import Lv2Hug from '@/videos/LV2Hug.gif';
+import Lv2Play from '@/videos/LV2Play.gif';
+import Lv2Stroke from '@/videos/LV2Stroke.gif';
 
 type IconComponentType = React.FC<{ className?: string }>;
 interface InteractionProps {
+  level: number;
   continuousTrainingDays: number;
   strokeCount: number;
   hugCount: number;
   playCount: number;
+  onInteractionStart: (gif: string | null) => void;
 }
 
-export default function Interaction({ continuousTrainingDays, strokeCount, hugCount, playCount }: InteractionProps) {
+export default function Interaction({
+  level,
+  continuousTrainingDays,
+  strokeCount,
+  hugCount,
+  playCount,
+  onInteractionStart,
+}: InteractionProps) {
   const queryClient = useQueryClient();
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [errorContext, setErrorContext] = useState<string>('');
@@ -42,7 +58,24 @@ export default function Interaction({ continuousTrainingDays, strokeCount, hugCo
     },
   });
 
+  const getInteractionGif = (type: string) => {
+    if (level === 1) {
+      if (type === 'HUG') return Lv1Hug.src;
+      if (type === 'PLAY') return Lv1Play.src;
+      if (type === 'STROKE') return Lv1Stroke.src;
+    } else if (level === 2) {
+      if (type === 'HUG') return Lv2Hug.src;
+      if (type === 'PLAY') return Lv2Play.src;
+      if (type === 'STROKE') return Lv2Stroke.src;
+    }
+    return null;
+  };
+
   const handleButtonClick = (IconComponent: IconComponentType, interactionType: string) => {
+    const interactionGif = getInteractionGif(interactionType);
+    if (interactionGif) {
+      onInteractionStart(interactionGif); // 상호작용 GIF 시작
+    }
     setIsInProgress(true);
     setSelectedIcon(() => IconComponent);
     setProgress(0);
@@ -54,6 +87,7 @@ export default function Interaction({ continuousTrainingDays, strokeCount, hugCo
         if (prev >= 100) {
           clearInterval(interval);
           setIsInProgress(false);
+          onInteractionStart(null); // 상호작용이 끝나면 기본 캐릭터로 전환
           return 100;
         }
         return prev + 5;

@@ -83,6 +83,17 @@ export default function BreathCircle({ breathType }: BreathCircleProps) {
   };
 
   useEffect(() => {
+    return () => {
+      window.ReactNativeWebView?.postMessage(
+        JSON.stringify({
+          title: 'VIBRATEOFF',
+          content: null,
+        }),
+      );
+    };
+  }, []);
+
+  useEffect(() => {
     setIsPreparing(true);
     setPreparationIndex(0);
 
