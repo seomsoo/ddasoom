@@ -27,7 +27,8 @@
       "@utils": ["src/utils/*"],
       "@/svgs/*": ["public/svgs/*"],
       "@/fonts/*": ["public/fonts/*"],
-      "@/videos/*": ["public/videos/*"]
+      "@/videos/*": ["public/videos/*"],
+      "@/sounds/*": ["public/sounds/*"]
     }
   },
   "include": [

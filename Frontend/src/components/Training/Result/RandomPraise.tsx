@@ -9,21 +9,21 @@ export function RandomPraise() {
   const reminderLines = randomReminder.split(',');
 
   return (
-    <>
+    <div className="flex flex-col items-center">
       <span className="text-4xl ">{randomEncouragement}</span>
 
       <img
         src={Good.src}
-        className="w-56 h-72 my-12 transition-opacity duration-300 ease-in-out opacity-100 animate-grow"
+        className="w-56 h-72 my-5 mt-8 transition-opacity duration-300 ease-in-out opacity-100 animate-grow"
         alt="Good"
       />
-      <div className="text-2xl flex flex-col h-32 space-y-2">
+      <div className="text-2xl flex flex-col h-32  mb-12 space-y-2">
         {reminderLines.map((line, index) => (
           <span key={index} className="text-center">
             {line.trim()}
           </span>
         ))}
       </div>
-    </>
+    </div>
   );
 }
