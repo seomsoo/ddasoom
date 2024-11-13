@@ -2,7 +2,7 @@
   "expo": {
     "scheme": "ddasoom",
     "name": "따 숨",
-    "slug": "ddasoom1",
+    "slug": "ddasoom",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "/assets/images/ddasomi_logo/png",
@@ -91,9 +91,9 @@
         "origin": false
       },
       "eas": {
-        "projectId": "819649e6-d2de-41b4-bfb8-87a4c6ab05e1"
+        "projectId": "83d99f85-34b9-4b19-bcb1-267a83450024"
       }
     },
-    "owner": "ddasoom1"
+    "owner": "c103"
   }
 }
