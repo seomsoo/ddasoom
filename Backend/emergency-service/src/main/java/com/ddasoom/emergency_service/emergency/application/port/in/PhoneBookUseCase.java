@@ -9,7 +9,7 @@ public interface PhoneBookUseCase {
 
     List<PhoneBookResponse> findPhoneBookList(Long userId);
 
-    void sendMessage(Long userId, String username);
+    void sendMessage(SendMsgCommand sendMsgCommand);
 
     void deletePhoneBook(Long phoneBookId);
 }

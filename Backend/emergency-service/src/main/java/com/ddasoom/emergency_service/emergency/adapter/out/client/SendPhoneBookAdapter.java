@@ -31,11 +31,11 @@ public class SendPhoneBookAdapter implements SendPhoneBookPort {
     }
 
     @Override
-    public void sendMessage(List<PhoneBook> phoneBookList, String text) {
-        for(PhoneBook phoneBook : phoneBookList) {
+    public void sendMessage(String[] phoneNumbers, String text) {
+        for(String phoneNumber : phoneNumbers) {
             Message message = new Message();
             message.setFrom(msgApiKey.getSendNumber());
-            message.setTo(phoneBook.phoneNumber());
+            message.setTo(phoneNumber);
             message.setText(text);
 
             try {
