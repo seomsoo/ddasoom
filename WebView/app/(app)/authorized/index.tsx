@@ -165,11 +165,9 @@ const AuthedScreen = () => {
     console.log("앱->웹 [푸시 알림 여부] 전송 완료");
   };
 
-  useLayoutEffect(() => {
-    sendTokenToWeb();
-  }, []);
-
   useEffect(() => {
+    sendTokenToWeb();
+
     const fetchBreathType = async () => {
       const breathTypeFromStorage = await loadBreathTypeFromStorage();
       setBreathType(breathTypeFromStorage);

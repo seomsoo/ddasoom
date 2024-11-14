@@ -25,7 +25,7 @@ import Setting from '@/svgs/setting.svg';
 import SoundOn from '@/svgs/soundOn.svg';
 
 export default function WithDdasomi() {
-  const { userId } = useAuth();
+  const { token, userId } = useAuth();
   // const userId = useSelector((state: RootState) => state.auth.userId);
   const queryClient = useQueryClient();
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
@@ -35,7 +35,6 @@ export default function WithDdasomi() {
     data: characterData,
     isError,
     error,
-    refetch,
   } = useQuery({
     queryKey: [queryKeys.CHARACTER, userId],
     queryFn: () => getCharacterData(Number(userId)),
@@ -47,10 +46,10 @@ export default function WithDdasomi() {
   useEffect(() => {
     if (!ddasomiData) return;
 
-    if (userId) {
+    if (userId && token) {
       queryClient.invalidateQueries({ queryKey: [queryKeys.CHARACTER, userId] });
     }
-  }, [ddasomiData, queryClient, userId]);
+  }, [ddasomiData, queryClient, userId, token]);
 
   useEffect(() => {
     if (isError && error) {
@@ -61,7 +60,9 @@ export default function WithDdasomi() {
 
   const handleRetry = () => {
     setIsErrorModalOpen(false);
-    refetch();
+    if (userId && token) {
+      queryClient.invalidateQueries({ queryKey: [queryKeys.CHARACTER, userId] });
+    }
   };
 
   return (
