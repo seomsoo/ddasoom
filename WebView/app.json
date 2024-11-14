@@ -5,10 +5,10 @@
     "slug": "ddasoom",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "/assets/images/ddasomi_logo/png",
+    "icon": "./assets/images/ddasomi_logo/png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "/assets/ddasomi_logo.png",
+      "image": "./assets/ddasomi_logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#EBF4E3"
     },
