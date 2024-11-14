@@ -23,7 +23,7 @@ export const groundingData = {
     { id: '006', question: '지금 들리는, 소리는 무엇인가요?', gif: GroundingSound.src, sound: '/sounds/rainy.mp3' },
     {
       id: '007',
-      question: '지금 들리는, 소리의 높이는 어떠한가요?',
+      question: '지금 들리는, 소리의 높낮이는 어떠한가요?',
       gif: GroundingSound.src,
       sound: '/sounds/fire.mp3',
     },
