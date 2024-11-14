@@ -43,7 +43,7 @@ const useVoiceRecord = () => {
         console.log("Stopping recording..");
         await recording.stopAndUnloadAsync();
         const uri = recording.getURI();
-        console.log("Recording stopped and stored at", uri);
+        console.log("녹음 완료 및 uri 저장됨", uri);
         setRecordUri(uri);
         setRecording(undefined);
 
@@ -51,23 +51,26 @@ const useVoiceRecord = () => {
         await Audio.setAudioModeAsync({
           allowsRecordingIOS: false,
         });
+
+        return uri; // recordUri를 반환
       }
     } catch (err) {
       console.error("Failed to stop recording", err);
     }
+    return null; // 녹음이 없거나 실패했을 경우
   }
 
-  async function sendRecording(name: string) {
+  async function sendRecording(uri: string, name: string) {
     try {
-      if (!recordUri) {
-        console.log("No recording URI found.");
+      if (!uri) {
+        console.log("녹음된 파일이 없음");
         return;
       }
 
       const formData = new FormData();
       formData.append("voiceName", name);
       formData.append("files", {
-        uri: recordUri, // 수정된 부분: url 대신 uri 사용
+        uri, // 수정된 부분: url 대신 uri 사용
         name: "voice.m4a",
         type: "audio/m4a",
       } as any);
@@ -77,7 +80,7 @@ const useVoiceRecord = () => {
 
       await postVoice(formData); // 비동기 처리 추가
     } catch (err) {
-      console.error("Failed to send recording", err);
+      console.error("녹음 파일 전송 실패", err);
     }
   }
 
