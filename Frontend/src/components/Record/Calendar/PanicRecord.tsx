@@ -46,7 +46,7 @@ export default function PanicRecord({ panicList }: PanicRecordProps) {
           <HerongSomi className="absolute -top-7 right-7 -z-0" />
           <div className="relative bg-main4 rounded-2xl border border-main1 p-3 shadow-sm mt-4 z-0">
             <p className="font-bold text-lg">공황 일지</p>
-            <div className="mt-2">
+            <div className="flex flex-col gap-2 mt-4 ">
               <p className="font-nanumBold">
                 발생 시각 : <span className="font-nanumRegular">{formatTime(record.startDate)}</span>
               </p>
