@@ -11,7 +11,7 @@ import useAuth from '@/hooks/useGetToken';
 import Check from '@/svgs/Check.svg';
 
 export default function MissionContent() {
-  const { token, userId } = useAuth();
+  useAuth();
   const queryClient = useQueryClient();
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [errorContext, setErrorContext] = useState<string>('');
@@ -25,7 +25,6 @@ export default function MissionContent() {
     queryKey: [queryKeys.COMPLETED_TRAINING],
     queryFn: () => getCompletedTrainingData(),
     retry: false,
-    enabled: !!token && !!userId,
   });
   const [timeLeft, setTimeLeft] = useState('');
   const [isCompleted, setIsCompleted] = useState([false, false, false]); // 훈련 완료 여부를 저장하는 배열
