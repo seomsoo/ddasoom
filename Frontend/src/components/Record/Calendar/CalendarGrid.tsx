@@ -81,7 +81,7 @@ export default function CalendarGrid({ date, selectedDate, onDateSelect }: Calen
               }}
               className={`relative h-11 w-11 flex items-center justify-center rounded-full ${
                 isFutureDate ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer'
-              } ${isPanicDay ? 'bg-black' : 'bg-[#d6f0bf]'} ${isDiary ? 'border border-main2 border-2' : ''}`}>
+              } ${isPanicDay ? 'bg-black' : 'bg-[#d6f0bf]'} ${isDiary ? 'border border-button1 border-2' : ''}`}>
               {trainingCount > 0 && <DdasomiIcon trainingCount={trainingCount} />}
             </div>
             <span
