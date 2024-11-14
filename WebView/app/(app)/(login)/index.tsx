@@ -12,7 +12,7 @@ import useAuthStore from "@/zustand/authStore";
 import { loadBreathTypeFromStorage } from "@/storage/breath";
 
 const Main = () => {
-  const { token, setToken, setUserEmail, setUserName, setUserId } = useAuthStore();
+  const { token, userId, setToken, setUserEmail, setUserName, setUserId } = useAuthStore();
   const [breathType, setBreathType] = useState<BreathType>("basicTime");
 
   const handleKaKaoLogin = async () => {
