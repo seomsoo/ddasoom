@@ -1,9 +1,9 @@
 // Character Component
 'use client';
 
-import Level3 from '@/svgs/Ddasomiz/LV3.svg';
 import Babysomi from '@/videos/BabySomi.gif';
 import Lv2 from '@/videos/Lv2Somi.gif';
+import Lv3 from '@/videos/Lv3Somi.gif';
 
 interface LevelProps {
   level: number;
@@ -14,10 +14,14 @@ export default function Character({ level, currentInteractionGif }: LevelProps) 
   const getCharacterSvg = () => {
     // 상호작용 GIF가 있을 경우 우선 표시
     if (currentInteractionGif) {
-      if (level === 2) {
-        return <img src={currentInteractionGif} className="w-32 h-36" alt="Interaction GIF" />;
+      if (currentInteractionGif === 'PLAY') {
+        return <img src={currentInteractionGif} className="w-48 h-44" alt="Interaction GIF" />;
+      } else if (currentInteractionGif === 'STROKE') {
+        return <img src={currentInteractionGif} className="w-44 h-44" alt="Interaction GIF" />;
+      } else {
+        return <img src={currentInteractionGif} className="w-44 h-44" alt="Interaction GIF" />;
       }
-      return <img src={currentInteractionGif} className="w-28 h-32" alt="Interaction GIF" />;
+      // return <img src={currentInteractionGif} className="w-28 h-32" alt="Interaction GIF" />;
     }
 
     // 기본 캐릭터 표시
@@ -28,7 +32,7 @@ export default function Character({ level, currentInteractionGif }: LevelProps) 
       return <img src={Lv2.src} className="w-32 h-36" alt="Level 2 Character" />;
     }
     if (level === 3) {
-      return <Level3 />;
+      return <img src={Lv3.src} className="w-32 h-36" alt="Level 3 Character" />;
     }
     return null;
   };
