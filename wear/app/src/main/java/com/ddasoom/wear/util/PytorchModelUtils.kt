@@ -14,7 +14,7 @@ object PytorchModelUtils {
 
     fun runModel(context: Context, inputData: FloatArray): FloatArray {
         // 모델 파일 이름
-        val modelFileName = "panic.ptl"
+        val modelFileName = "panic_attack_prediction.ptl"
 
         // 파일 경로 확인
         val modelPath = assetFilePath(context, modelFileName)
@@ -32,8 +32,13 @@ object PytorchModelUtils {
         // 모델 로드
         val model: Module = LiteModuleLoader.load(modelPath)
 
+        val mean = floatArrayOf(788.7329f, 785.9198f, 77.0230f, 11.3669f)
+        val scale = floatArrayOf(120.6631f, 124.1078f, 72.2979f, 6.2006f)
+
+        val normalizedInputData = normalizeInput(inputData, mean, scale)
+
         // 입력 텐서 준비
-        val inputTensor = Tensor.fromBlob(inputData, longArrayOf(1, inputData.size.toLong()))
+        val inputTensor = Tensor.fromBlob(normalizedInputData, longArrayOf(1, normalizedInputData.size.toLong()))
 
         // 예측 실행
         val outputTensor: Tensor = model.forward(IValue.from(inputTensor)).toTensor()
@@ -65,5 +70,9 @@ object PytorchModelUtils {
             Log.d("DEBUG", "File already exists in filesDir: ${file.absolutePath}")
         }
         return file.absolutePath
+    }
+
+    fun normalizeInput(inputData: FloatArray, mean: FloatArray, scale: FloatArray): FloatArray {
+        return inputData.mapIndexed { index, value -> (value - mean[index]) / scale[index] }.toFloatArray()
     }
 }
