@@ -62,6 +62,10 @@ spring:
       username: ddasoom
       password: ssafygwangjuc103
 
+  jpa:
+    hibernate:
+      ddl-auto: none
+
   rabbitmq:
     host: rabbitmq
     port: 5672
