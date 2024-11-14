@@ -4,10 +4,12 @@ import com.ddasoom.diary_service.common.annotation.UseCase;
 import com.ddasoom.diary_service.diary.adapter.in.web.response.ReportResponse;
 import com.ddasoom.diary_service.diary.application.domain.GetDailyReportDto;
 import com.ddasoom.diary_service.diary.application.domain.GetPanicReport;
+import com.ddasoom.diary_service.diary.application.domain.GetSelfDiagnosisDto;
 import com.ddasoom.diary_service.diary.application.domain.PanicReportInfo;
 import com.ddasoom.diary_service.diary.application.port.in.ReportQuery;
 import com.ddasoom.diary_service.diary.application.port.out.DailyRecordPort;
 import com.ddasoom.diary_service.diary.application.port.out.PanicRecordPort;
+import com.ddasoom.diary_service.diary.application.port.out.SelfDiagnosisPort;
 import com.ddasoom.diary_service.diary.application.port.out.TrainingRecordPort;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,15 +23,17 @@ public class ReportService implements ReportQuery {
     private final PanicRecordPort panicRecordPort;
     private final DailyRecordPort dailyRecordPort;
     private final TrainingRecordPort trainingRecordPort;
+    private final SelfDiagnosisPort selfDiagnosisPort;
 
     @Override
     public ReportResponse getReport(Long userId, int year, int month) {
         GetPanicReport panicReport = getPanicReport(panicRecordPort.getPanicReport(userId, year, month));
         GetDailyReportDto dailyReport = dailyRecordPort.getDailyReport(userId, year, month);
+        GetSelfDiagnosisDto selfDiagnosis = selfDiagnosisPort.getSelfDiagnosis(userId, year, month);
         int trainingContinuousDay = calculateContinuousTrainingDay(
                 trainingRecordPort.getTrainingThreeContinuousDay(userId, year, month));
 
-        return ReportResponse.of(panicReport, dailyReport, trainingContinuousDay);
+        return ReportResponse.of(panicReport, dailyReport, selfDiagnosis, trainingContinuousDay);
     }
 
     private GetPanicReport getPanicReport(List<PanicReportInfo> panicReportInfos) {
