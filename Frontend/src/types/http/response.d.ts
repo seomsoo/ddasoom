@@ -54,10 +54,16 @@ export interface DailyReport {
   exercise: number;
 }
 
+export interface SelfDiagnosis {
+  progressCount: number;
+  totalPanicDoubtCount: number;
+}
+
 export interface ReportData {
   totalRecordCount: number;
   panicReport: PanicReport | null;
   dailyReport: DailyReport | null;
+  selfDiagnosis: SelfDiagnosis;
   continuousTrainingCount: number;
 }
 
