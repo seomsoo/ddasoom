@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { putInteractionData } from '@/api/mainAPI';
 import queryKeys from '@/api/querykeys';
 import ErrorModal from '@/components/Common/ErrorModal';
+import useAuth from '@/hooks/useGetToken';
 import Play from '@/svgs/Ddasomiz/blueDdasom.svg';
 import Stroke from '@/svgs/Ddasomiz/greenSomi.svg';
 import Hug from '@/svgs/Ddasomiz/yellowSomi.svg';
@@ -45,6 +46,7 @@ export default function Interaction({
     IconComponent: IconComponentType;
     interactionType: string;
   } | null>(null);
+  useAuth();
 
   const interactionMutation = useMutation({
     mutationFn: (data: { interactionType: string }) => putInteractionData(data),
