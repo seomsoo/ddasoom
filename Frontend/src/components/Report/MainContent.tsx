@@ -29,10 +29,16 @@ export interface DailyReport {
   exercise: number;
 }
 
+export interface SelfDiagnosis {
+  progressCount: number;
+  totalPanicDoubtCount: number;
+}
+
 export interface ReportData {
   totalRecordCount: number;
   panicReport: PanicReport | null;
   dailyReport: DailyReport | null;
+  selfDiagnosis: SelfDiagnosis;
   continuousTrainingCount: number;
 }
 
@@ -115,7 +121,25 @@ export default function MainContent({ year, month }: MainContentProps) {
               <DiaryItem label="exercise" count={reportData.dailyReport.exercise} />
             </>
           ) : (
-            <p className="text-gray5 col-span-4">일일 기록 정보가 없습니다.</p>
+            <p className="text-gray5 col-span-4">일일 기록이 없습니다.</p>
+          )}
+        </div>
+      </SummaryBox>
+
+      <SummaryBox>
+        <div>
+          {reportData?.selfDiagnosis ? (
+            <>
+              <span className="flex items-baseline">
+                <p className="text-lg text-main1 mr-1">{reportData.selfDiagnosis.progressCount}번의</p> 자가 진단 중
+              </span>
+              <span className="flex items-baseline mt-1">
+                <p className="text-lg text-main1 mr-1">{reportData.selfDiagnosis.totalPanicDoubtCount}회</p> 공황 증상이
+                의심되었어요.
+              </span>
+            </>
+          ) : (
+            <p className="text-lg text-gray-500">자가 진단 기록이 없습니다.</p>
           )}
         </div>
       </SummaryBox>
