@@ -1,15 +1,16 @@
 import axios from 'axios';
 
 import { store } from '@/store';
+import { setAuthData } from '@/store/authSlice';
+
 const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || 'https://k11c103.p.ssafy.io/api',
-  withCredentials: true, // 쿠키 필요 시 설정
+  withCredentials: true,
 });
 
 // 요청 인터셉터
 axiosInstance.interceptors.request.use(config => {
   const { token } = store.getState().auth; // Redux에서 토큰 가져오기
-  console.log('Current Token:', token);
   if (token) {
     config.headers['Authorization'] = `Bearer ${token}`;
   }
@@ -17,31 +18,64 @@ axiosInstance.interceptors.request.use(config => {
   return config;
 });
 
+// 토큰 요청 함수
+const requestTokenFromApp = (): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const handleMessage = (event: MessageEvent) => {
+      try {
+        const messageData = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
+        if (messageData.title === 'TOKEN') {
+          const { token } = messageData.content;
+          // Redux에 새 토큰 저장
+          store.dispatch(
+            setAuthData({ token, userName: store.getState().auth.userName, userId: store.getState().auth.userId }),
+          );
+          resolve(token);
+        } else {
+          reject(new Error('토큰 요청 실패'));
+        }
+      } catch (error) {
+        reject(error);
+      } finally {
+        window.removeEventListener('message', handleMessage);
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
+
+    if (window.ReactNativeWebView) {
+      window.ReactNativeWebView.postMessage(
+        JSON.stringify({
+          title: 'GETTOKEN',
+          content: null,
+        }),
+      );
+      console.log('GETTOKEN 요청이 전송되었습니다.');
+    } else {
+      console.error('ReactNativeWebView 객체가 정의되지 않았습니다.');
+      reject(new Error('ReactNativeWebView가 정의되지 않음'));
+    }
+  });
+};
+
 // 응답 인터셉터
 axiosInstance.interceptors.response.use(
   response => response,
   async error => {
     const originalRequest = error.config;
 
-    // 401 또는 404 상태 코드에 대해 앱에 토큰 요청만 보내기
     if ((error.response?.status === 401 || error.response?.status === 404) && !originalRequest._retry) {
       originalRequest._retry = true;
 
       try {
-        // 앱에 GETTOKEN 요청 보내기
-        window.ReactNativeWebView?.postMessage(
-          JSON.stringify({
-            title: 'GETTOKEN',
-            content: null,
-          }),
-        );
-
-        // 이후 Redux 상태가 업데이트되기를 기대
-        return Promise.reject(error); // 현재 요청을 중단하고 오류를 호출한 쪽에서 처리
+        const newToken = await requestTokenFromApp();
+        originalRequest.headers['Authorization'] = `Bearer ${newToken}`;
+        return axiosInstance(originalRequest);
       } catch (reissueError) {
         return Promise.reject(reissueError);
       }
     }
+
     return Promise.reject(error);
   },
 );
