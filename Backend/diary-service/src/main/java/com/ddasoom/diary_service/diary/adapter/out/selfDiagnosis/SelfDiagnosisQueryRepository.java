@@ -2,6 +2,7 @@ package com.ddasoom.diary_service.diary.adapter.out.selfDiagnosis;
 
 import com.ddasoom.diary_service.diary.application.domain.GetSelfDiagnosisDto;
 import com.ddasoom.diary_service.diary.application.domain.QGetSelfDiagnosisDto;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -17,7 +18,8 @@ public class SelfDiagnosisQueryRepository {
         return jpaQueryFactory
                 .select(new QGetSelfDiagnosisDto(
                         selfDiagnosis.count().intValue(),
-                        selfDiagnosis.panicDoubtCount.sum()
+                        Expressions.cases().when(selfDiagnosis.panicDoubtCount.goe(4)).then(1).otherwise(0)
+                                .sum()
                 ))
                 .from(selfDiagnosis)
                 .where(selfDiagnosis.userId.eq(userId)
