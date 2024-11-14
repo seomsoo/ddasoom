@@ -8,9 +8,10 @@ import useNotification from "@/hooks/useNotification";
 import useNotificationStore from "@/zustand/notificationStore";
 import { useGlobalFonts } from "@/hooks/useGlobalFonts"; // useGlobalFonts 파일의 경로에 맞게 설정
 import useAuthStore from "@/zustand/authStore";
+import useSendToken from "@/hooks/useSendToken";
 
 const Root = () => {
-  const { token, userName } = useAuthStore();
+  const { token } = useAuthStore();
   const fontsLoaded = useGlobalFonts();
   useNotification(); // Initialize notification setup on app load
   const { expoPushToken, notification } = useNotificationStore();
