@@ -66,29 +66,30 @@ export default function GroundingTraining() {
     }
   }, [step]);
 
-  // groundingURL에 따라 오디오 재생
+  // groundingURL에 따라 한 번만 오디오 재생
   useEffect(() => {
     if (!voiceKey || !currentQA) return;
     const groundingURL = `https://ddasoom.s3.ap-southeast-2.amazonaws.com/${voiceKey}-GROUNDING_${currentQA.id}.mp3`;
-    const audio = new Audio(groundingURL);
-    audio.loop = true;
-    audio.play().catch(error => {
+    const groundingAudio = new Audio(groundingURL);
+
+    groundingAudio.play().catch(error => {
       console.error('Failed to play grounding audio:', error);
       setErrorContext('기본 음성을 재생하는 데 문제가 발생했습니다.');
       setIsErrorModalOpen(true);
     });
 
-    // 단계가 변경될 때마다 기존 오디오 중지 및 새 오디오 시작
     return () => {
-      audio.pause();
-      audio.currentTime = 0;
+      groundingAudio.pause();
+      groundingAudio.currentTime = 0;
     };
   }, [voiceKey, currentQA]);
 
-  // step2의 currentQA.sound 재생
+  // step2의 currentQA.sound를 반복 재생
   useEffect(() => {
     if (step === 2 && currentQA?.sound) {
       const step2Audio = new Audio(currentQA.sound);
+
+      step2Audio.loop = true;
       step2Audio.play().catch(error => {
         console.error('Failed to play step2 audio:', error);
         setErrorContext('음성을 재생하는 데 문제가 발생했습니다.');
@@ -101,21 +102,6 @@ export default function GroundingTraining() {
       };
     }
   }, [currentQA, step]);
-
-  // 사운드 재생
-  // useEffect(() => {
-  //   let audio: HTMLAudioElement | undefined;
-  //   if (currentQA?.sound) {
-  //     audio = new Audio(currentQA.sound);
-  //     audio.play();
-  //   }
-  //   return () => {
-  //     if (audio) {
-  //       audio.pause();
-  //       audio.currentTime = 0;
-  //     }
-  //   };
-  // }, [currentQA]);
 
   // 다음 단계로 이동
   const handleNextStep = () => {
