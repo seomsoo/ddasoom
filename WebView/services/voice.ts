@@ -9,8 +9,8 @@ export const postVoice = async (form: FormData) => {
         "Content-Type": "multipart/form-data",
       },
     });
-    console.log("Voice uploaded successfully:", response);
+    console.log("목소리 저장 API - 저장 성공 : ", response.status);
   } catch (error) {
-    console.error("Error uploading voice:", error);
+    console.error("목소리 저장 API - 저장 실패 : ", error);
   }
 };
