@@ -22,10 +22,10 @@ const Root = () => {
     getKeyHashAndroid().then(console.log);
     initializeKakaoSDK(`${process.env.EXPO_PUBLIC_KAKAO_NATIVE_KEY}`);
     console.log("엑스포 푸시 토큰 : ", expoPushToken);
-    if (token) {
+    if (token && token !== "") {
       router.push("(app)/authorized");
     }
-  }, [token, expoPushToken]);
+  }, [expoPushToken, token]);
 
   return (
     <ThemeProvider theme={theme}>
