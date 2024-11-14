@@ -1,6 +1,6 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -18,6 +18,7 @@ interface RecodingContentProps {
 }
 
 export default function RecodingContent({ closeModal }: RecodingContentProps) {
+  const queryClient = useQueryClient();
   const [selectedVoiceKey, setSelectedVoiceKey] = useState<string | null>(null);
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [errorContext, setErrorContext] = useState<string>('');
@@ -72,6 +73,7 @@ export default function RecodingContent({ closeModal }: RecodingContentProps) {
   // 모달이 열릴 때마다 앱에서 목소리 설정을 요청
   useEffect(() => {
     requestVoiceFromApp();
+    queryClient.invalidateQueries({ queryKey: [queryKeys.AIVOICE] });
   }, []);
 
   const handleRetry = () => {
