@@ -5,7 +5,7 @@ import { deletePanicInfoFromStorage, loadPanicInfoFromStorage } from "@/storage/
 import { vibrate, vibrateOff } from "@/utils/vibrate";
 import useAuthStore from "@/zustand/authStore";
 import { logout } from "@react-native-kakao/user";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { BackHandler, Platform, StatusBar } from "react-native";
 import WebView, { WebViewMessageEvent } from "react-native-webview";
@@ -166,7 +166,9 @@ const AuthedScreen = () => {
   };
 
   useEffect(() => {
-    sendTokenToWeb();
+    if (token) {
+      sendTokenToWeb();
+    }
 
     const fetchBreathType = async () => {
       const breathTypeFromStorage = await loadBreathTypeFromStorage();
@@ -181,22 +183,24 @@ const AuthedScreen = () => {
     return () => {
       BackHandler.removeEventListener("hardwareBackPress", backPress);
     };
-  }, [backPress]);
+  }, [backPress, token]);
 
   return (
     <>
       <StatusBar />
-      <WebView
-        ref={webViewRef}
-        style={{ paddingTop: statusBarHeight, flex: 1 }}
-        source={{ uri: "https://k11c103.p.ssafy.io" }}
-        onMessage={handleMessage}
-        javaScriptEnabled={true}
-        domStorageEnabled={true}
-        mediaPlaybackRequiresUserAction={false}
-        startInLoadingState={true}
-        mixedContentMode="always"
-      />
+      {token && (
+        <WebView
+          ref={webViewRef}
+          style={{ paddingTop: statusBarHeight, flex: 1 }}
+          source={{ uri: "https://k11c103.p.ssafy.io" }}
+          onMessage={handleMessage}
+          javaScriptEnabled={true}
+          domStorageEnabled={true}
+          mediaPlaybackRequiresUserAction={false}
+          startInLoadingState={true}
+          mixedContentMode="always"
+        />
+      )}
       <PanicDataModal
         panicData={panicData}
         modalVisible={modalVisible}
