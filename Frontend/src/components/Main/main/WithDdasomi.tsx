@@ -39,6 +39,7 @@ export default function WithDdasomi() {
     queryKey: [queryKeys.CHARACTER, userId],
     queryFn: () => getCharacterData(Number(userId)),
     retry: false,
+    enabled: !!token && !!userId, // token이 있을 때만 실행
   });
 
   const ddasomiData = characterData?.data;
