@@ -20,12 +20,21 @@ import org.springframework.transaction.PlatformTransactionManager;
         basePackages = {
                 "com.ddasoom.diary_service.diary.adapter.out.daily",
                 "com.ddasoom.diary_service.diary.adapter.out.panic",
-                "com.ddasoom.diary_service.diary.adapter.out.training"
+                "com.ddasoom.diary_service.diary.adapter.out.training",
+                "com.ddasoom.diary_service.diary.adapter.out.selfDiagnosis"
         },
         entityManagerFactoryRef = "primaryEntityManagerFactory",
         transactionManagerRef = "primaryTransactionManager"
 )
 public class DiaryDataSourceConfig {
+
+    private static final String[] PACKAGES = {
+            "com.ddasoom.diary_service.diary.adapter.out.daily",
+            "com.ddasoom.diary_service.diary.adapter.out.panic",
+            "com.ddasoom.diary_service.diary.adapter.out.training",
+            "com.ddasoom.diary_service.diary.adapter.out.selfDiagnosis",
+            "com.ddasoom.diary_service.diary.application.domain"
+    };
 
     @Value("${spring.jpa.hibernate.ddl-auto}")
     private String ddlAuto;
@@ -44,12 +53,7 @@ public class DiaryDataSourceConfig {
     public LocalContainerEntityManagerFactoryBean localPrimaryEntityManager() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(primaryDataSource());
-        em.setPackagesToScan(
-                "com.ddasoom.diary_service.diary.adapter.out.daily",
-                "com.ddasoom.diary_service.diary.adapter.out.panic",
-                "com.ddasoom.diary_service.diary.adapter.out.training",
-                "com.ddasoom.diary_service.diary.application.domain"
-        );
+        em.setPackagesToScan(PACKAGES);
 
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
@@ -70,12 +74,7 @@ public class DiaryDataSourceConfig {
     public LocalContainerEntityManagerFactoryBean deployPrimaryEntityManager() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(primaryDataSource());
-        em.setPackagesToScan(
-                "com.ddasoom.diary_service.diary.adapter.out.daily",
-                "com.ddasoom.diary_service.diary.adapter.out.panic",
-                "com.ddasoom.diary_service.diary.adapter.out.training",
-                "com.ddasoom.diary_service.diary.application.domain"
-        );
+        em.setPackagesToScan(PACKAGES);
 
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
