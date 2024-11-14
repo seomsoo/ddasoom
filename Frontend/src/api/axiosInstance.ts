@@ -10,7 +10,7 @@ const axiosInstance = axios.create({
 
 // 요청 인터셉터
 axiosInstance.interceptors.request.use(config => {
-  const { token } = store.getState().auth; // Redux에서 토큰 가져오기
+  const { token } = store.getState().auth;
   if (token) {
     config.headers['Authorization'] = `Bearer ${token}`;
   }
@@ -19,7 +19,7 @@ axiosInstance.interceptors.request.use(config => {
 });
 
 // 토큰 요청 함수
-const requestTokenFromApp = (): Promise<string> => {
+export const requestTokenFromApp = async (): Promise<string> => {
   return new Promise((resolve, reject) => {
     const handleMessage = (event: MessageEvent) => {
       try {
