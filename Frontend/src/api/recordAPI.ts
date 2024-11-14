@@ -39,7 +39,7 @@ export const getReportData = async (year: string, month: string): Promise<Report
 };
 
 // 자가진단 기록 저장
-export const postSelfDiagnosisRequestBody = async (data: SelfDiagnosisRequestBody): Promise<BaseResponse<null>> => {
+export const postSelfDiagnosisData = async (data: SelfDiagnosisRequestBody): Promise<BaseResponse<null>> => {
   const response = await axiosInstance.post<BaseResponse<null>>('/diary/self-diagnosis', data);
   return response.data;
 };
