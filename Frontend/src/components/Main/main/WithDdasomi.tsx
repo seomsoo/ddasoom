@@ -2,8 +2,9 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { requestTokenFromApp } from '@/api/axiosInstance';
 import { getCharacterData } from '@/api/mainAPI';
 import queryKeys from '@/api/querykeys';
 import ErrorModal from '@/components/Common/ErrorModal';
@@ -20,19 +21,21 @@ import HelpModal from '@/components/Main/Setting/modal/HelpModal';
 import MissionContent from '@/components/Main/Setting/modal/MissionContent';
 import MissionModal from '@/components/Main/Setting/modal/MissionModal';
 import { RootState } from '@/store';
-// import useAuth from '@/hooks/useGetToken';
+import { setAuthData } from '@/store/authSlice';
 import Bed from '@/svgs/bed.svg';
 import Bookcase from '@/svgs/bookcase.svg';
 import Setting from '@/svgs/setting.svg';
 import SoundOn from '@/svgs/soundOn.svg';
 
 export default function WithDdasomi() {
-  // const { token, userId } = useAuth();
-  const { token, userId } = useSelector((state: RootState) => state.auth);
+  const { token, userId, userName } = useSelector((state: RootState) => state.auth);
+  const dispatch = useDispatch();
   const queryClient = useQueryClient();
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [errorContext, setErrorContext] = useState<string>('');
   const [currentInteractionGif, setCurrentInteractionGif] = useState<string | null>(null);
+
+  // 캐릭터 데이터를 불러오는 useQuery
   const {
     data: characterData,
     isError,
@@ -46,8 +49,6 @@ export default function WithDdasomi() {
   const ddasomiData = characterData?.data;
 
   useEffect(() => {
-    if (!ddasomiData) return;
-
     if (userId && token) {
       queryClient.invalidateQueries({ queryKey: [queryKeys.CHARACTER, userId] });
     }
@@ -60,10 +61,23 @@ export default function WithDdasomi() {
     }
   }, [isError, error]);
 
-  const handleRetry = () => {
+  const handleRetry = async () => {
     setIsErrorModalOpen(false);
-    if (userId && token) {
+
+    try {
+      const newToken = await requestTokenFromApp();
+      dispatch(
+        setAuthData({
+          token: newToken,
+          userName: userName,
+          userId: userId,
+        }),
+      );
       queryClient.invalidateQueries({ queryKey: [queryKeys.CHARACTER, userId] });
+    } catch (error) {
+      console.error('새로운 토큰 요청 실패:', error);
+      setErrorContext('토큰 갱신에 실패했습니다.');
+      setIsErrorModalOpen(true);
     }
   };
 
@@ -72,13 +86,13 @@ export default function WithDdasomi() {
       {isErrorModalOpen && (
         <ErrorModal onClose={() => setIsErrorModalOpen(false)} onRetry={handleRetry} context={errorContext} />
       )}
-      <header className="flex  flex-col w-full h-72 bg-main4 p-6 border-b-8">
-        <article className="flex justify-between   w-full ">
+      <header className="flex flex-col w-full h-72 bg-main4 p-6 border-b-8">
+        <article className="flex justify-between w-full">
           <LevelBar level={ddasomiData?.level ?? 0} experiencePercent={ddasomiData?.experiencePercent ?? 0} />
           <EmergencyModal ContentComponent={EmergencyContent} />
         </article>
 
-        <div className="flex justify-between ">
+        <div className="flex justify-between">
           <div className="mt-8 ml-7">
             <Window />
           </div>
@@ -97,7 +111,7 @@ export default function WithDdasomi() {
       </header>
 
       <main className="flex flex-col bg-[#D8D1C3] items-center h-48">
-        <div className="absolute left-7 top-56 ">
+        <div className="absolute left-7 top-56">
           <Bed />
         </div>
         <div className="absolute right-16 z-0 top-52">
