@@ -1,5 +1,5 @@
 import { BaseResponse } from '@/types/http/baseResponse';
-import { DiaryRequestBody, TrainingRequestBody } from '@/types/http/request';
+import { DiaryRequestBody, SelfDiagnosisRequestBody, TrainingRequestBody } from '@/types/http/request';
 import { DailyData, MonthlyData, ReportData } from '@/types/http/response';
 
 import axiosInstance from './axiosInstance';
@@ -36,4 +36,10 @@ export const postTrainingData = async (data: TrainingRequestBody): Promise<BaseR
 export const getReportData = async (year: string, month: string): Promise<ReportData> => {
   const response = await axiosInstance.get<BaseResponse<ReportData>>(`/diary/report/${year}/${month}`);
   return response.data.data;
+};
+
+// 자가진단 기록 저장
+export const postSelfDiagnosisRequestBody = async (data: SelfDiagnosisRequestBody): Promise<BaseResponse<null>> => {
+  const response = await axiosInstance.post<BaseResponse<null>>('/diary/self-diagnosis', data);
+  return response.data;
 };

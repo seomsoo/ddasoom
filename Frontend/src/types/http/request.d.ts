@@ -25,3 +25,8 @@ export interface SavePhoneRequestBody {
 export interface IInteractionRequestBody {
   interactionType: string;
 }
+
+// 자가진단 기록 진단
+export interface SelfDiagnosisRequestBody {
+  panicDoubtCount: number;
+}
