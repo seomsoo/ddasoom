@@ -13,7 +13,12 @@ import White from '@/svgs/Ddasomiz/whiteSomi.svg';
 import Character from '@/svgs/Ddasomiz/xEyesSomi.svg';
 import Yellow from '@/svgs/Ddasomiz/yellowSomi.svg';
 
-export default function RecodingContent() {
+interface RecodingContentProps {
+  closeModal: () => void;
+}
+
+export default function RecodingContent({ closeModal }: RecodingContentProps) {
+  const [selectedVoiceKey, setSelectedVoiceKey] = useState<string | null>(null);
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [errorContext, setErrorContext] = useState<string>('');
   const router = useRouter();
@@ -28,27 +33,70 @@ export default function RecodingContent() {
     queryKey: [queryKeys.AIVOICE],
     queryFn: () => getAiVocieData(),
   });
-  console.log('aiVoiceData:', aiVoiceData);
 
   useEffect(() => {
     if (isError && error) {
-      setErrorContext(error instanceof Error ? error.message : '에러 메시지 읽기 실패');
+      setErrorContext(error instanceof Error ? error.message : '데이터 요청 중 오류가 발생했습니다.');
       setIsErrorModalOpen(true);
     }
   }, [isError, error]);
 
+  const requestVoiceFromApp = () => {
+    window.ReactNativeWebView?.postMessage(
+      JSON.stringify({
+        title: 'AIVOICE',
+        content: null,
+      }),
+    );
+
+    const handleMessage = (event: MessageEvent) => {
+      try {
+        const parsedMessage = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
+        if (parsedMessage.title === 'AIVOICE') {
+          setSelectedVoiceKey(parsedMessage.content);
+        }
+      } catch (error) {
+        console.error('Failed to parse message:', error);
+        setErrorContext('앱으로부터 데이터를 받는 데 실패했습니다.');
+        setIsErrorModalOpen(true);
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
+
+    return () => {
+      window.removeEventListener('message', handleMessage);
+    };
+  };
+
+  // 모달이 열릴 때마다 앱에서 목소리 설정을 요청
+  useEffect(() => {
+    requestVoiceFromApp();
+  }, []);
+
   const handleRetry = () => {
     setIsErrorModalOpen(false);
-    refetch(); // 요청 다시 시도
+    refetch();
   };
-  const [selectedVoiceId, setSelectedVoiceId] = useState<number | null>(null);
 
-  const handleSelect = (id: number) => {
-    setSelectedVoiceId(id);
+  const handleSelect = (voiceKey: string) => {
+    setSelectedVoiceKey(prevKey => (prevKey === voiceKey ? null : voiceKey));
   };
 
   const goToRecodingPage = () => {
     router.push('/main/setting/recoding');
+  };
+
+  const handleSaveVoice = () => {
+    if (selectedVoiceKey) {
+      window.ReactNativeWebView?.postMessage(
+        JSON.stringify({
+          title: 'AIVOICE',
+          content: selectedVoiceKey,
+        }),
+      );
+      closeModal();
+    }
   };
 
   return (
@@ -64,11 +112,11 @@ export default function RecodingContent() {
         {aiVoiceData && aiVoiceData.length > 0 ? (
           aiVoiceData.map((voice, index) => {
             const Icon = icons[index % icons.length];
-            const isSelected = selectedVoiceId === index;
+            const isSelected = selectedVoiceKey === voice.voiceKey;
             return (
               <div
                 key={index}
-                onClick={() => handleSelect(index)}
+                onClick={() => handleSelect(voice.voiceKey)}
                 className={`flex items-center justify-between w-full p-2 my-2 px-5 rounded-full cursor-pointer 
                 ${isSelected ? 'bg-main1 bg-opacity-20 border-main1' : 'border-gray4'}`}>
                 <section className="flex items-center gap-5">
@@ -102,7 +150,9 @@ export default function RecodingContent() {
         )}
       </main>
       <section className="flex gap-4 text-white w-full mt-5">
-        <button className="bg-main1 p-3 px-6 rounded-full flex-1 font-nanumBold">저장하기</button>
+        <button className="bg-main1 p-3 px-6 rounded-full flex-1 font-nanumBold" onClick={handleSaveVoice}>
+          저장하기
+        </button>
         <button onClick={goToRecodingPage} className="bg-button1 p-3 px-6 rounded-full flex-1 font-nanumBold">
           녹음하기
         </button>
