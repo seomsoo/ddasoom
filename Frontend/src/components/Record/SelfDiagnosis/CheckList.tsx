@@ -1,19 +1,36 @@
 'use client';
 
+import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
+import { postSelfDiagnosisData } from '@/api/recordAPI';
 import Button from '@/components/Common/Button';
+import ErrorModal from '@/components/Common/ErrorModal';
 import ProgressBar from '@/components/Record/SelfDiagnosis/ProgressBar';
 import QuestionText from '@/components/Record/SelfDiagnosis/QuestionText';
 import { questions } from '@/constants/SelfDiagnosisData';
+import { SelfDiagnosisRequestBody } from '@/types/http/request';
 
 export default function CheckList() {
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+  const [errorContext, setErrorContext] = useState('');
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [yesCount, setYesCount] = useState(0);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const router = useRouter();
 
+  const mutation = useMutation({
+    mutationFn: (data: SelfDiagnosisRequestBody) => postSelfDiagnosisData(data),
+    onSuccess: data => {
+      console.log('자가진단 기록 전송 성공');
+    },
+    onError: error => {
+      console.error('자가진단 기록 전송 실패:', error);
+      setErrorContext(error.message || '에러 메시지 전송 안 됨');
+      setIsErrorModalOpen(true);
+    },
+  });
   const handleOptionClick = (option: string) => {
     setSelectedOption(option);
   };
@@ -25,6 +42,10 @@ export default function CheckList() {
 
     if (currentQuestionIndex === questions.length - 1) {
       const finalYesCount = yesCount + (selectedOption === '네' ? 1 : 0);
+      const panicDoubt: SelfDiagnosisRequestBody = {
+        panicDoubtCount: finalYesCount,
+      };
+      mutation.mutate(panicDoubt);
       router.push(`/record/selfDiagnosis/result?yesCount=${finalYesCount}`);
     } else {
       setCurrentQuestionIndex(prevIndex => prevIndex + 1);
@@ -35,8 +56,16 @@ export default function CheckList() {
   const currentQuestion = questions[currentQuestionIndex];
   const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
 
+  const handleRetry = () => {
+    setIsErrorModalOpen(false);
+    handleNextClick();
+  };
+
   return (
     <div>
+      {isErrorModalOpen && (
+        <ErrorModal onClose={() => setIsErrorModalOpen(false)} onRetry={handleRetry} context={errorContext} />
+      )}
       <div className=" flex flex-col items-center ">
         <ProgressBar progress={progress} />
         <QuestionText text={currentQuestion.text} />
