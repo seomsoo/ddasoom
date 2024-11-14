@@ -4,7 +4,7 @@ import { createJSONStorage, persist } from "zustand/middleware";
 
 const useAuthStore = create<AuthStore>()(
   persist(
-    (set) => ({
+    set => ({
       token: "",
       userEmail: "",
       userName: "",
@@ -18,8 +18,11 @@ const useAuthStore = create<AuthStore>()(
     {
       name: "auth-storage",
       storage: createJSONStorage(() => AsyncStorage),
-      partialize: (state) => ({
+      partialize: state => ({
         token: state.token,
+        userEmail: state.userEmail,
+        userName: state.userName,
+        userId: state.userId,
       }),
     },
   ),
