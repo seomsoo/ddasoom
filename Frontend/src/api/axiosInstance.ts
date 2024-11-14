@@ -1,10 +1,6 @@
 import axios from 'axios';
 
 import { store } from '@/store';
-import { setAuthData } from '@/store/authSlice';
-
-import { reissueToken } from './authAPI';
-
 const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || 'https://k11c103.p.ssafy.io/api',
   withCredentials: true, // 쿠키 필요 시 설정
@@ -27,25 +23,21 @@ axiosInstance.interceptors.response.use(
   async error => {
     const originalRequest = error.config;
 
-    // 401 또는 404 상태 코드에 대해 토큰 재발급 시도
+    // 401 또는 404 상태 코드에 대해 앱에 토큰 요청만 보내기
     if ((error.response?.status === 401 || error.response?.status === 404) && !originalRequest._retry) {
-      originalRequest._retry = true; // 무한 루프 방지
-      try {
-        // 토큰 재발급 요청
-        const reissueResponse = await reissueToken();
+      originalRequest._retry = true;
 
-        // 새로운 토큰, userName, userId로 Redux 상태 업데이트
-        store.dispatch(
-          setAuthData({
-            token: reissueResponse.data.token,
-            userName: reissueResponse.data.userName,
-            userId: reissueResponse.data.userId,
+      try {
+        // 앱에 GETTOKEN 요청 보내기
+        window.ReactNativeWebView?.postMessage(
+          JSON.stringify({
+            title: 'GETTOKEN',
+            content: null,
           }),
         );
 
-        // 재발급된 토큰으로 원래 요청 재시도
-        originalRequest.headers['Authorization'] = `Bearer ${reissueResponse.data.token}`;
-        return axiosInstance(originalRequest);
+        // 이후 Redux 상태가 업데이트되기를 기대
+        return Promise.reject(error); // 현재 요청을 중단하고 오류를 호출한 쪽에서 처리
       } catch (reissueError) {
         return Promise.reject(reissueError);
       }
