@@ -66,12 +66,25 @@ axiosInstance.interceptors.response.use(
 
     if ((error.response?.status === 401 || error.response?.status === 404) && !originalRequest._retry) {
       originalRequest._retry = true;
+      console.log('토큰 갱신 시도 중...');
 
       try {
         const newToken = await requestTokenFromApp();
+        console.log('새로운 토큰 갱신 성공:', newToken);
+
+        store.dispatch(
+          setAuthData({
+            token: newToken,
+            userName: store.getState().auth.userName,
+            userId: store.getState().auth.userId,
+          }),
+        );
         originalRequest.headers['Authorization'] = `Bearer ${newToken}`;
+
+        // 요청 다시!
         return axiosInstance(originalRequest);
       } catch (reissueError) {
+        console.error('토큰 갱신 실패:', reissueError);
         return Promise.reject(reissueError);
       }
     }
