@@ -17,6 +17,9 @@ import Lv1Stroke from '@/videos/LV1Stroke.gif';
 import Lv2Hug from '@/videos/LV2Hug.gif';
 import Lv2Play from '@/videos/LV2Play.gif';
 import Lv2Stroke from '@/videos/LV2Stroke.gif';
+import Lv3Hug from '@/videos/LV3Hug.gif';
+import Lv3Play from '@/videos/LV3Play.gif';
+import Lv3Stroke from '@/videos/LV3Stroke.gif';
 
 type IconComponentType = React.FC<{ className?: string }>;
 interface InteractionProps {
@@ -69,7 +72,12 @@ export default function Interaction({
       if (type === 'HUG') return Lv2Hug.src;
       if (type === 'PLAY') return Lv2Play.src;
       if (type === 'STROKE') return Lv2Stroke.src;
+    } else {
+      if (type === 'HUG') return Lv3Hug.src;
+      if (type === 'PLAY') return Lv3Play.src;
+      if (type === 'STROKE') return Lv3Stroke.src;
     }
+
     return null;
   };
 
