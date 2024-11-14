@@ -6,7 +6,7 @@ import { vibrate, vibrateOff } from "@/utils/vibrate";
 import useAuthStore from "@/zustand/authStore";
 import { logout } from "@react-native-kakao/user";
 import { router } from "expo-router";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { BackHandler, Platform, StatusBar } from "react-native";
 import WebView, { WebViewMessageEvent } from "react-native-webview";
 import type { WebView as WebViewType } from "react-native-webview";
@@ -24,7 +24,7 @@ import { sendMessageToWeb } from "@/utils/sendMessageToWeb";
 const AuthedScreen = () => {
   const webViewRef = useRef<WebViewType | null>(null);
   const { startRecording, stopRecording, sendRecording } = useVoiceRecord();
-  const { userName } = useAuthStore();
+  const { token, userName, userId, userEmail } = useAuthStore();
   const [modalVisible, setModalVisible] = useState(false);
   const [breathType, setBreathType] = useState<BreathType>("basicTime");
   const [panicData, setPanicData] = useState<PanicFirstForm | null>(null);
@@ -164,6 +164,10 @@ const AuthedScreen = () => {
     `);
     console.log("앱->웹 [푸시 알림 여부] 전송 완료");
   };
+
+  useLayoutEffect(() => {
+    sendTokenToWeb();
+  }, []);
 
   useEffect(() => {
     const fetchBreathType = async () => {

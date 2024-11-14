@@ -2,7 +2,6 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 
 import { getCharacterData } from '@/api/mainAPI';
 import queryKeys from '@/api/querykeys';
@@ -19,14 +18,15 @@ import HelpContent from '@/components/Main/Setting/modal/HelpContent';
 import HelpModal from '@/components/Main/Setting/modal/HelpModal';
 import MissionContent from '@/components/Main/Setting/modal/MissionContent';
 import MissionModal from '@/components/Main/Setting/modal/MissionModal';
-import { RootState } from '@/store';
+import useAuth from '@/hooks/useGetToken';
 import Bed from '@/svgs/bed.svg';
 import Bookcase from '@/svgs/bookcase.svg';
 import Setting from '@/svgs/setting.svg';
 import SoundOn from '@/svgs/soundOn.svg';
 
 export default function WithDdasomi() {
-  const userId = useSelector((state: RootState) => state.auth.userId);
+  const { userId } = useAuth();
+  // const userId = useSelector((state: RootState) => state.auth.userId);
   const queryClient = useQueryClient();
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [errorContext, setErrorContext] = useState<string>('');
