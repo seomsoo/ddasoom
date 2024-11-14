@@ -23,7 +23,7 @@ import { sendMessageToWeb } from "@/utils/sendMessageToWeb";
 
 const AuthedScreen = () => {
   const webViewRef = useRef<WebViewType | null>(null);
-  const { startRecording, stopRecording, sendRecording } = useVoiceRecord();
+  const { recordUri, startRecording, stopRecording, sendRecording } = useVoiceRecord();
   const { token, userName, userId, userEmail } = useAuthStore();
   const [modalVisible, setModalVisible] = useState(false);
   const [breathType, setBreathType] = useState<BreathType>("basicTime");
@@ -52,11 +52,20 @@ const AuthedScreen = () => {
       case "RECORD":
         if (content === "ONAIR" && userName) {
           await startRecording();
-        } else if (content === "STOPAIR" && userName) {
+          return;
+        }
+        if (content === "STOPAIR" && userName) {
           await stopRecording();
-        } else if (content === "OFFAIR" && userName) {
-          await stopRecording();
-          await sendRecording(userName);
+          return;
+        }
+        if (content === "OFFAIR" && userName) {
+          const uri = await stopRecording(); // stopRecording이 완료되면 uri가 반환됨
+          if (uri) {
+            await sendRecording(uri, userName);
+          } else {
+            console.log("녹음 파일이 저장되지 않았습니다.");
+          }
+          return;
         }
         return;
       case "VIBRATE":
