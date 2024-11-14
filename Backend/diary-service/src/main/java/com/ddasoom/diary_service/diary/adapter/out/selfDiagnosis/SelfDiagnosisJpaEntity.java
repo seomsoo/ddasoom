@@ -27,7 +27,7 @@ public class SelfDiagnosisJpaEntity {
     private Long userId;
 
     @CreationTimestamp
-    private LocalDateTime localDateTime;
+    private LocalDateTime date;
 
     private Integer panicDoubtCount;
 
