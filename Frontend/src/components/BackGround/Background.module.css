@@ -37,6 +37,7 @@
   background-repeat: no-repeat;
   background-size: 400% 400%;
   animation: backgroundChange 10s ease-in-out infinite;
+  min-height: 100vh;
 }
 
 @keyframes backgroundChange {

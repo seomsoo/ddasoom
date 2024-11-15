@@ -11,7 +11,7 @@ export default function AnswerInput({ value, onChange }: AnswerInputProps) {
       <span className="text-xl font-nanumBold text-gray5">
         <input
           type="text"
-          className="w-full h-full bg-transparent outline-none resize-none text-center"
+          className="w-full h-full bg-transparent caret-transparent outline-none resize-none text-center"
           placeholder="생각나는 대로 적어주세요"
           value={value}
           onChange={onChange}

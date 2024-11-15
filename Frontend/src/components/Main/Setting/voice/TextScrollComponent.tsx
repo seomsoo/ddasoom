@@ -21,7 +21,7 @@ export default function TextScrollComponent({
   useEffect(() => {
     if (isRecording && currentLine < script.length - 1) {
       const line = script[currentLine];
-      const duration = Math.max(3000, line.length * 100);
+      const duration = Math.max(2500, line.length * 100);
 
       const timeout = setTimeout(() => {
         setCurrentLine(prev => prev + 1);
