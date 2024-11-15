@@ -20,11 +20,13 @@ import useLocation from "@/hooks/useLocation";
 import useSendLocation from "@/hooks/useSendLocation";
 import { loadBreathTypeFromStorage, saveBreathTypeToStorage } from "@/storage/breath";
 import { sendMessageToWeb } from "@/utils/sendMessageToWeb";
+import useVoiceKeyStore from "@/zustand/voiceKeyStore";
 
 const AuthedScreen = () => {
   const webViewRef = useRef<WebViewType | null>(null);
   const { recordUri, startRecording, stopRecording, sendRecording } = useVoiceRecord();
   const { token, userName, userId, userEmail } = useAuthStore();
+  const { voiceKey, setVoiceKey } = useVoiceKeyStore();
   const [modalVisible, setModalVisible] = useState(false);
   const [breathType, setBreathType] = useState<BreathType>("basicTime");
   const [panicData, setPanicData] = useState<PanicFirstForm | null>(null);
@@ -106,6 +108,14 @@ const AuthedScreen = () => {
         }
         // 목소리 설정
         saveBreathTypeToStorage(content as string);
+        return;
+      case "AIVOICE":
+        if (!content) {
+          console.log("웹에서 목소리 요청함. 보내줄 목소리는 ", voiceKey);
+          sendMessageToWeb({ webViewRef, title: "AIVOICE", content: voiceKey });
+          return;
+        }
+        setVoiceKey(content as string);
         return;
       default:
         console.log(title, " : ", content);
