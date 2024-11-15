@@ -18,6 +18,15 @@ export default function ErrorModal({ onClose, onRetry, context }: ErrorModalProp
     router.back();
   };
 
+  const handleMoveHome = () => {
+    window.ReactNativeWebView?.postMessage(
+      JSON.stringify({
+        title: 'LOGOUT',
+        content: null,
+      }),
+    );
+  };
+
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 font-nanumRegular">
       {/* 어두운 배경 오버레이 */}
@@ -39,9 +48,17 @@ export default function ErrorModal({ onClose, onRetry, context }: ErrorModalProp
           에러 내용 :<span>{context}</span>
         </div>
 
-        <button onClick={onRetry} className="bg-yellow-300 text-black text-lg font-nanumBold py-2 px-8 rounded-full">
-          다시 시도
-        </button>
+        {context.includes('Network') ? (
+          <button
+            onClick={handleMoveHome}
+            className="bg-button1 text-black text-lg font-nanumBold py-2 px-8 rounded-full">
+            홈으로
+          </button>
+        ) : (
+          <button onClick={onRetry} className="bg-yellow-300 text-black text-lg font-nanumBold py-2 px-8 rounded-full">
+            다시 시도
+          </button>
+        )}
       </div>
     </div>
   );
