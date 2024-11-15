@@ -141,7 +141,7 @@ export default function SosContent() {
         <ErrorModal onClose={() => setIsErrorModalOpen(false)} onRetry={handleRetry} context={errorContext} />
       )}
 
-      <h2 className="text-2xl font-semibold">비상 연락처</h2>
+      <h2 className="text-2xl font-nanumBold">비상 연락처</h2>
 
       <form onSubmit={handleSubmit(onSubmit)} className="w-full space-y-3">
         <div className="flex items-center border-b border-main2 pb-2 space-x-2">
