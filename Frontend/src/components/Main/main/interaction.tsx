@@ -54,7 +54,7 @@ export default function Interaction({
   const interactionMutation = useMutation({
     mutationFn: (data: { interactionType: string }) => putInteractionData(data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [queryKeys.CHARACTER] });
+      queryClient.invalidateQueries({ queryKey: [queryKeys.MAIN] });
     },
     onError: error => {
       console.error('상호작용 전송 실패:', error);
@@ -113,6 +113,7 @@ export default function Interaction({
 
   const handleRetry = () => {
     setIsErrorModalOpen(false);
+    queryClient.invalidateQueries({ queryKey: [queryKeys.MAIN] });
     if (lastInteraction) {
       handleButtonClick(lastInteraction.IconComponent, lastInteraction.interactionType);
     }
