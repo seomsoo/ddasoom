@@ -1,45 +1,21 @@
 'use client';
+
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
 import queryKeys from '@/api/querykeys';
 import { getReportData } from '@/api/recordAPI';
-import DiaryItem from '@/components/Report/ResultItem';
+import DailyReportSection from '@/components/Report/DailyReportSection';
 import { reportMessageStyles } from '@/constants/ReportMessageStyles';
 
 import ErrorModal from '../Common/ErrorModal';
 import LoadingModal from '../Common/LoadingModal';
+import SelfDiagnosisProgress from './SelfDiagnosisProgress';
 import SummaryBox from './SummaryBox';
 
 interface MainContentProps {
   year: string;
   month: string;
-}
-
-export interface PanicReport {
-  panicCount: number;
-  panicDurationAverage: number;
-  panicOccurDay: number[];
-}
-
-export interface DailyReport {
-  caffeine: number;
-  smoking: number;
-  alcohol: number;
-  exercise: number;
-}
-
-export interface SelfDiagnosis {
-  progressCount: number;
-  totalPanicDoubtCount: number;
-}
-
-export interface ReportData {
-  totalRecordCount: number;
-  panicReport: PanicReport | null;
-  dailyReport: DailyReport | null;
-  selfDiagnosis: SelfDiagnosis;
-  continuousTrainingCount: number;
 }
 
 export default function MainContent({ year, month }: MainContentProps) {
@@ -53,19 +29,16 @@ export default function MainContent({ year, month }: MainContentProps) {
     isError,
     error,
     refetch,
-  } = useQuery<ReportData>({
+  } = useQuery({
     queryKey: [queryKeys.REPORT, year, month],
     queryFn: () => getReportData(year, month),
-    retry: false, // 자동 재시도 비활성화
+    retry: false,
   });
 
-  useEffect(() => {
-    if (reportData) {
-      queryClient.invalidateQueries({ queryKey: [queryKeys.REPORT, year, month] });
-    }
-  }, [reportData, queryClient, year, month]);
+  const trainingStyles = reportData ? reportMessageStyles(reportData.continuousTrainingCount) : null;
 
   useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: [queryKeys.REPORT, year, month] });
     if (isError && error) {
       setErrorContext(error instanceof Error ? error.message : '에러 메시지 읽기 실패');
       setIsErrorModalOpen(true);
@@ -74,12 +47,10 @@ export default function MainContent({ year, month }: MainContentProps) {
 
   const handleRetry = () => {
     setIsErrorModalOpen(false);
-    refetch(); // 요청 다시 시도
+    refetch();
   };
 
   if (isLoading) return <LoadingModal />;
-
-  const trainingStyles = reportData ? reportMessageStyles(reportData.continuousTrainingCount) : null;
 
   return (
     <div className="w-full max-w-md mt-8 flex flex-col font-nanumExtraBold">
@@ -87,12 +58,13 @@ export default function MainContent({ year, month }: MainContentProps) {
         <ErrorModal onClose={() => setIsErrorModalOpen(false)} onRetry={handleRetry} context={errorContext} />
       )}
 
+      {/* 공황 발작 정보 */}
       <SummaryBox>
         <div>
           {reportData?.panicReport ? (
             <>
               <span className="flex items-baseline">
-                <p className="text-lg text-main1 mr-1">{reportData.panicReport.panicCount}번의</p> 공황 발작과
+                <p className="text-lg text-main1 mr-1">{reportData.panicReport.panicCount}번의</p> 공황 발작이
               </span>
               <span className="flex items-baseline mt-1">
                 <p className="text-lg text-main1 mr-1">평균 {reportData.panicReport.panicDurationAverage}초</p> 동안
@@ -105,43 +77,15 @@ export default function MainContent({ year, month }: MainContentProps) {
         </div>
       </SummaryBox>
 
-      <SummaryBox>
-        <div>
-          <span className="flex items-baseline mt-1">이번 달 생활 패턴은 다음과 같아요.</span>
-          <span className="flex items-baseline mt-1 text-xxs text-gray4">
-            공황 발작에 영향을 미칠 수 있는 요인들이에요.
-          </span>
-        </div>
-        <div className="grid grid-cols-4 mt-6 w-full justify-items-center">
-          {reportData?.dailyReport ? (
-            <>
-              <DiaryItem label="caffeine" count={reportData.dailyReport.caffeine} />
-              <DiaryItem label="cigarette" count={reportData.dailyReport.smoking} />
-              <DiaryItem label="alcohol" count={reportData.dailyReport.alcohol} />
-              <DiaryItem label="exercise" count={reportData.dailyReport.exercise} />
-            </>
-          ) : (
-            <p className="text-gray5 col-span-4">일일 기록이 없습니다.</p>
-          )}
-        </div>
-      </SummaryBox>
+      {/* 생활 패턴 */}
+      <DailyReportSection dailyReport={reportData?.dailyReport ?? null} />
 
+      {/* 자가진단 진행 상황 */}
       <SummaryBox>
-        <div>
-          {reportData?.selfDiagnosis ? (
-            <>
-              <span className="flex items-baseline">
-                <p className="text-lg text-main1 mr-1">{reportData.selfDiagnosis.progressCount}번의</p> 자가 진단 중
-              </span>
-              <span className="flex items-baseline mt-1">
-                <p className="text-lg text-main1 mr-1">{reportData.selfDiagnosis.totalPanicDoubtCount}회</p> 공황 증상이
-                의심되었어요.
-              </span>
-            </>
-          ) : (
-            <p className="text-lg text-gray-500">자가 진단 기록이 없습니다.</p>
-          )}
-        </div>
+        <SelfDiagnosisProgress
+          progressCount={reportData?.selfDiagnosis.progressCount ?? 0}
+          totalPanicDoubtCount={reportData?.selfDiagnosis.totalPanicDoubtCount ?? 0}
+        />
       </SummaryBox>
 
       <SummaryBox>
@@ -151,7 +95,7 @@ export default function MainContent({ year, month }: MainContentProps) {
               <span className={`flex font-nanumExtraBold text-2xl mb-4  ${trainingStyles.messageColor}`}>
                 {trainingStyles.message}
               </span>
-              {trainingStyles.icon}
+              {trainingStyles.icon}{' '}
             </>
           )}
         </div>
