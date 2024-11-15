@@ -17,7 +17,7 @@ interface BreathStore {
   setBreathTime: (time: number) => void;
 }
 
-interface ContactStore {
+interface PhoneStore {
   phoneNumbers: EmergencyPhoneNumber[];
   setPhoneNumbers: (phoneNumber: EmergencyPhoneNumber) => void;
 }
