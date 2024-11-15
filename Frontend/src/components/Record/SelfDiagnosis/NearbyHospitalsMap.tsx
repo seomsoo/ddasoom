@@ -307,11 +307,19 @@ export default function NearbyHospitalsMap() {
       center: new window.kakao.maps.LatLng(location.latitude, location.longitude),
       level: 4,
     });
+    // 내 위치 마커 이미지 설정
+    const myLocationMarkerImage = new window.kakao.maps.MarkerImage(
+      '/svgs/marker.svg', // 내 위치 마커 이미지의 URL
+      new window.kakao.maps.Size(64, 64), // 이미지 크기
+      { offset: new window.kakao.maps.Point(32, 64) }, // 중심점 설정
+    );
 
     new window.kakao.maps.Marker({
       position: new window.kakao.maps.LatLng(location.latitude, location.longitude),
       map: map as kakao.maps.Map,
+      image: myLocationMarkerImage, // 커스텀 마커 이미지 사용
     });
+    // 다른 위치에 대한 마커 추가
 
     const placesService = new window.kakao.maps.services.Places();
     let allPlaces: Place[] = [];
@@ -383,13 +391,16 @@ export default function NearbyHospitalsMap() {
   const handleRetry = () => {
     return;
   };
+  const handleMapClick = () => {
+    setIsExpanded(false);
+  };
 
   return (
     <div>
       {isErrorModalOpen && (
         <ErrorModal onClose={() => setIsErrorModalOpen(false)} onRetry={handleRetry} context={errorContext} />
       )}
-      <div className="relative" ref={mapRef} style={{ width: '100%', height: '100vh' }}>
+      <div onClick={handleMapClick} className="relative z-0" ref={mapRef} style={{ width: '100%', height: '100vh' }}>
         <motion.div
           drag="y"
           dragConstraints={{ top: maxDragPosition, bottom: 160 }} // 최대로 올라가는 위치 제한
@@ -399,7 +410,9 @@ export default function NearbyHospitalsMap() {
           initial={{ y: bottomOffset }} // 초기 위치 설정
           animate={{ y: isExpanded ? maxDragPosition : bottomOffset }} // 드래그 후 위치 설정
           transition={{ type: 'spring', stiffness: 300 }}
-          className="w-full absolute  z-20 bottom-[-100px] h-[350px] bg-white rounded-t-3xl flex flex-col items-center"
+          className={`w-full absolute z-10 bottom-[-100px] h-[350px] bg-white rounded-t-3xl flex flex-col items-center ${
+            isExpanded ? 'pointer-events-none' : 'pointer-events-auto'
+          }`} // 패널이 열렸을 때 클릭 무시
           style={{ touchAction: 'none', height: panelHeight }}>
           <div className="bg-gray-300 my-2 mb-6 flex flex-col rounded-full w-12 h-2 cursor-pointer" />
           <div className="w-full px-6 gap-2 flex flex-col  overflow-y-scroll" style={{ alignItems: 'flex-start' }}>
