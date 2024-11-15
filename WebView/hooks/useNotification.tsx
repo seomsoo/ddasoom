@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import * as Notifications from "expo-notifications";
+import * as Network from "expo-network";
 import useNotificationStore from "@/zustand/notificationStore";
 import { registerForPushNotificationsAsync } from "@/utils/notifications";
 
@@ -18,18 +19,30 @@ const useNotification = () => {
   const responseListener = useRef<Notifications.Subscription>();
 
   useEffect(() => {
-    registerForPushNotificationsAsync()
-      .then(token => setExpoPushToken(token ?? ""))
-      .catch(error => console.error("Push notification registration failed", error));
+    const setupNotifications = async () => {
+      const networkState = await Network.getNetworkStateAsync();
+      if (!networkState.isConnected) {
+        console.log("No network connection, skipping push notification registration.");
+        return;
+      }
 
-    // Set up notification listeners
-    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-      setNotification(notification);
-    });
+      try {
+        const token = await registerForPushNotificationsAsync();
+        setExpoPushToken(token ?? "");
+      } catch (error) {
+        console.error("Push notification registration failed", error);
+      }
 
-    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-      console.log("Notification response received:", response);
-    });
+      notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+        setNotification(notification);
+      });
+
+      responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+        console.log("Notification response received:", response);
+      });
+    };
+
+    setupNotifications();
 
     return () => {
       if (notificationListener.current) {
