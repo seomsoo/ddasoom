@@ -52,24 +52,31 @@ const AuthedScreen = () => {
         router.push("(app)/(login)");
         return;
       case "RECORD":
-        if (content === "ONAIR" && userName) {
-          await startRecording();
-          return;
-        }
-        if (content === "STOPAIR" && userName) {
-          await stopRecording();
-          return;
-        }
-        if (content === "OFFAIR" && userName) {
-          const uri = await stopRecording(); // stopRecording이 완료되면 uri가 반환됨
-          if (uri) {
-            await sendRecording(uri, userName);
-          } else {
-            console.log("녹음 파일이 저장되지 않았습니다.");
+        // content가 RecordMessage 타입인지 확인
+        if (typeof content === "object" && "state" in content) {
+          const recordContent = content as RecordMessgae;
+          if (recordContent.state === "ONAIR" && recordContent.name) {
+            await startRecording();
+            return;
           }
-          return;
+          if (recordContent.state === "STOPAIR" && recordContent.name) {
+            await stopRecording();
+            return;
+          }
+          if (recordContent.state === "OFFAIR" && recordContent.name) {
+            const uri = await stopRecording();
+            if (uri) {
+              await sendRecording(uri, recordContent.name);
+            } else {
+              console.log("녹음 파일이 저장되지 않았습니다.");
+            }
+            return;
+          }
+        } else {
+          console.error("잘못된 RECORD 메시지 형식:", content);
         }
         return;
+
       case "VIBRATE":
         vibrate(content as string);
         return;

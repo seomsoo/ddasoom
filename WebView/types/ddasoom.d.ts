@@ -25,10 +25,15 @@ type BreathData = {
 
 type VoiceKey = string;
 
+type RecordMessgae = {
+  state: "ONAIR" | "STOPAIR" | "OFFAIR";
+  name: Name;
+};
+
 // 웹-앱 통신 DTO
 type WebMessageDto = {
   title: string;
-  content: string | number | object;
+  content: string | number | RecordMessgae | object;
 };
 
 /** 위치 정보 타입 */
