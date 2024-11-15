@@ -48,7 +48,7 @@ export default function ErrorModal({ onClose, onRetry, context }: ErrorModalProp
           에러 내용 :<span>{context}</span>
         </div>
 
-        {context.includes('Network') ? (
+        {context.includes('401') ? (
           <button
             onClick={handleMoveHome}
             className="bg-button1 text-black text-lg font-nanumBold py-2 px-8 rounded-full">
