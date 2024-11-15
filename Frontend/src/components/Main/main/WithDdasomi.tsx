@@ -1,4 +1,5 @@
 'use client';
+
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -34,6 +35,7 @@ export default function WithDdasomi() {
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [errorContext, setErrorContext] = useState<string>('');
   const [currentInteractionGif, setCurrentInteractionGif] = useState<string | null>(null);
+  const [currentInteractionType, setCurrentInteractionType] = useState<'PLAY' | 'STROKE' | 'HUG' | null>(null);
 
   // 캐릭터 데이터를 불러오는 useQuery
   const {
@@ -120,7 +122,11 @@ export default function WithDdasomi() {
           <Bookcase />
         </div>
         <div>
-          <Character level={ddasomiData?.level ?? 1} currentInteractionGif={currentInteractionGif} />
+          <Character
+            level={ddasomiData?.level ?? 1}
+            currentInteractionGif={currentInteractionGif}
+            currentInteractionType={currentInteractionType}
+          />
         </div>
       </main>
       <section className="flex flex-col p-3">
@@ -131,6 +137,7 @@ export default function WithDdasomi() {
           hugCount={ddasomiData?.hugCount ?? 0}
           playCount={ddasomiData?.playCount ?? 0}
           onInteractionStart={setCurrentInteractionGif}
+          onInteractionType={setCurrentInteractionType}
         />
       </section>
       <Navbar />

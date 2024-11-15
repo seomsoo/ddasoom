@@ -29,6 +29,7 @@ interface InteractionProps {
   hugCount: number;
   playCount: number;
   onInteractionStart: (gif: string | null) => void;
+  onInteractionType: (type: 'PLAY' | 'STROKE' | 'HUG') => void;
 }
 
 export default function Interaction({
@@ -38,6 +39,7 @@ export default function Interaction({
   hugCount,
   playCount,
   onInteractionStart,
+  onInteractionType,
 }: InteractionProps) {
   const queryClient = useQueryClient();
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
@@ -47,12 +49,12 @@ export default function Interaction({
   const [SelectedIcon, setSelectedIcon] = useState<IconComponentType | null>(null);
   const [lastInteraction, setLastInteraction] = useState<{
     IconComponent: IconComponentType;
-    interactionType: string;
+    interactionType: 'PLAY' | 'STROKE' | 'HUG';
   } | null>(null);
   useAuth();
 
   const interactionMutation = useMutation({
-    mutationFn: (data: { interactionType: string }) => putInteractionData(data),
+    mutationFn: (data: { interactionType: 'PLAY' | 'STROKE' | 'HUG' }) => putInteractionData(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [queryKeys.MAIN] });
     },
@@ -63,7 +65,7 @@ export default function Interaction({
     },
   });
 
-  const getInteractionGif = (type: string) => {
+  const getInteractionGif = (type: 'PLAY' | 'STROKE' | 'HUG'): string | null => {
     if (level === 1) {
       if (type === 'HUG') return Lv1Hug.src;
       if (type === 'PLAY') return Lv1Play.src;
@@ -77,14 +79,14 @@ export default function Interaction({
       if (type === 'PLAY') return Lv3Play.src;
       if (type === 'STROKE') return Lv3Stroke.src;
     }
-
     return null;
   };
 
-  const handleButtonClick = (IconComponent: IconComponentType, interactionType: string) => {
+  const handleButtonClick = (IconComponent: IconComponentType, interactionType: 'PLAY' | 'STROKE' | 'HUG') => {
     const interactionGif = getInteractionGif(interactionType);
     if (interactionGif) {
       onInteractionStart(interactionGif); // 상호작용 GIF 시작
+      onInteractionType(interactionType);
     }
     setIsInProgress(true);
     setSelectedIcon(() => IconComponent);
