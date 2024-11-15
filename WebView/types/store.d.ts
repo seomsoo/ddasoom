@@ -21,3 +21,15 @@ interface ContactStore {
   phoneNumbers: EmergencyPhoneNumber[];
   setPhoneNumbers: (phoneNumber: EmergencyPhoneNumber) => void;
 }
+
+interface NotificationState {
+  expoPushToken: string | null;
+  notification: Notifications.Notification | null;
+  setExpoPushToken: (token: string | null) => void;
+  setNotification: (notification: Notifications.Notification | null) => void;
+}
+
+interface VoiceKeyStore {
+  voiceKey: VoiceKey;
+  setVoiceKey: (voiceKey: VoiceKey) => void;
+}
