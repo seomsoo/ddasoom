@@ -23,6 +23,8 @@ type BreathData = {
   stages: BreathStage[];
 };
 
+type VoiceKey = string;
+
 // 웹-앱 통신 DTO
 type WebMessageDto = {
   title: string;
