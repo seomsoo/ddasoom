@@ -22,7 +22,7 @@ export default function MissionContent() {
     error,
     refetch,
   } = useQuery({
-    queryKey: [queryKeys.COMPLETED_TRAINING],
+    queryKey: [queryKeys.MAIN],
     queryFn: () => getCompletedTrainingData(),
     retry: false,
   });
@@ -31,7 +31,7 @@ export default function MissionContent() {
 
   useEffect(() => {
     if (!completedData) return;
-    queryClient.invalidateQueries({ queryKey: [queryKeys.COMPLETED_TRAINING] });
+    queryClient.invalidateQueries({ queryKey: [queryKeys.MAIN] });
     const completionStatus = [
       completedData.data.breath, // 호흡 연습
       completedData.data.grounding, // 그라운딩

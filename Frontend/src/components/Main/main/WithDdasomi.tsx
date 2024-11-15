@@ -40,8 +40,9 @@ export default function WithDdasomi() {
     data: characterData,
     isError,
     error,
+    refetch,
   } = useQuery({
-    queryKey: [queryKeys.CHARACTER, userId],
+    queryKey: [queryKeys.MAIN, userId],
     queryFn: () => getCharacterData(Number(userId)),
     retry: false,
   });
@@ -50,7 +51,7 @@ export default function WithDdasomi() {
 
   useEffect(() => {
     if (userId && token) {
-      queryClient.invalidateQueries({ queryKey: [queryKeys.CHARACTER, userId] });
+      queryClient.invalidateQueries({ queryKey: [queryKeys.MAIN, userId] });
     }
   }, [ddasomiData, queryClient, userId, token]);
 
@@ -62,6 +63,7 @@ export default function WithDdasomi() {
   }, [isError, error]);
 
   const handleRetry = async () => {
+    refetch();
     setIsErrorModalOpen(false);
 
     try {
@@ -73,7 +75,7 @@ export default function WithDdasomi() {
           userId: userId,
         }),
       );
-      queryClient.invalidateQueries({ queryKey: [queryKeys.CHARACTER, userId] });
+      queryClient.invalidateQueries({ queryKey: [queryKeys.MAIN, userId] });
     } catch (error) {
       console.error('새로운 토큰 요청 실패:', error);
       setErrorContext('토큰 갱신에 실패했습니다.');
