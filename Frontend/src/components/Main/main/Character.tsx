@@ -53,8 +53,8 @@ export default function Character({ level, currentInteractionGif, currentInterac
   };
 
   return (
-    <div className="flex flex-col items-center mt-8">
-      <div className="absolute bg-gray1 p-4 rounded-2xl shadow-md text-center text-sm max-w-72 top-64">
+    <div className="flex relative flex-col items-center mt-8">
+      <div className="absolute bg-gray1 p-4 w-[25vh] min-w-[25vh] max-w-[40vh] rounded-2xl shadow-md text-center text-sm  -top-12">
         <span>{getBalloonText()}</span>
         <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 translate-y-full w-4 h-4 bg-gray1 rotate-45" />
       </div>

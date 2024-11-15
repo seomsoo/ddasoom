@@ -132,7 +132,7 @@ export default function Interaction({
         </span>
       </div>
 
-      <div className="bg-white h-40 rounded-3xl items-center justify-center gap-3 flex shadow-xl">
+      <div className="bg-white rounded-3xl items-center justify-center gap-3 flex shadow-xl min-h-[10vh] max-h-[25vh] h-[30vh] w-full ">
         {isInProgress ? (
           <div className="relative w-full h-full flex items-center justify-center">
             <div className="w-4/5 h-2 bg-gradient-to-r from-[#e0f7e4] to-[#66eb58] rounded-full overflow-hidden">
@@ -152,10 +152,10 @@ export default function Interaction({
             <button
               onClick={() => handleButtonClick(Hug, 'HUG')}
               disabled={hugCount === 0}
-              className={`bg-[#ffde84] flex flex-col justify-end rounded-2xl w-[105px] h-32 shadow-lg transform transition duration-100 active:translate-y-1 active:shadow-none ${
+              className={`bg-[#ffde84]  min-h-[10vh] max-h-[25vh] h-[16vh] flex flex-col justify-end rounded-2xl w-[105px] shadow-lg transform transition duration-100 active:translate-y-1 active:shadow-none ${
                 hugCount === 0 ? 'opacity-85 cursor-not-allowed' : ''
               }`}>
-              <div className="relative bg-[#ffffe4] rounded-xl text-center h-24 flex w-full flex-col justify-center">
+              <div className="relative bg-[#ffffe4] rounded-xl  min-h-[5vh] max-h-[25vh] h-[12vh] text-center  flex w-full flex-col justify-center">
                 <div className="absolute -top-5 left-7">
                   <Hug />
                 </div>
@@ -167,10 +167,10 @@ export default function Interaction({
             <button
               onClick={() => handleButtonClick(Play, 'PLAY')}
               disabled={playCount === 0}
-              className={`bg-[#7caeff] flex flex-col justify-end rounded-2xl w-[105px] h-32 shadow-lg transform transition duration-100 active:translate-y-1 active:shadow-none ${
+              className={`bg-[#7caeff] flex flex-col justify-end rounded-2xl w-[105px]  min-h-[10vh] max-h-[25vh] h-[16vh] shadow-lg transform transition duration-100 active:translate-y-1 active:shadow-none ${
                 playCount === 0 ? 'opacity-85 cursor-not-allowed' : ''
               }`}>
-              <div className="relative w-full bg-[#f3f8ff] rounded-xl text-center h-24 flex flex-col justify-center">
+              <div className="relative w-full bg-[#f3f8ff] rounded-xl text-center min-h-[5vh] max-h-[25vh] h-[12vh] flex flex-col justify-center">
                 <div className="absolute -top-5 left-7">
                   <Play />
                 </div>
@@ -182,10 +182,10 @@ export default function Interaction({
             <button
               onClick={() => handleButtonClick(Stroke, 'STROKE')}
               disabled={strokeCount === 0}
-              className={`bg-[#30cc81] flex flex-col justify-end rounded-2xl w-[105px] h-32 shadow-lg transform transition duration-100 active:translate-y-1 active:shadow-none ${
+              className={`bg-[#30cc81] flex flex-col justify-end rounded-2xl w-[105px]   min-h-[10vh] max-h-[25vh] h-[16vh] shadow-lg transform transition duration-100 active:translate-y-1 active:shadow-none ${
                 strokeCount === 0 ? 'opacity-85 cursor-not-allowed' : ''
               }`}>
-              <div className="relative w-full bg-[#dcffee] rounded-2xl text-center h-24 flex flex-col justify-center">
+              <div className="relative w-full bg-[#dcffee] rounded-2xl text-center min-h-[5vh] max-h-[25vh] h-[12vh] flex flex-col justify-center">
                 <div className="absolute -top-5 left-7">
                   <Stroke />
                 </div>
