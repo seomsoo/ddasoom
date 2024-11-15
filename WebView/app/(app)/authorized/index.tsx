@@ -5,8 +5,8 @@ import { deletePanicInfoFromStorage, loadPanicInfoFromStorage } from "@/storage/
 import { vibrate, vibrateOff } from "@/utils/vibrate";
 import useAuthStore from "@/zustand/authStore";
 import { logout } from "@react-native-kakao/user";
-import { router, useLocalSearchParams } from "expo-router";
-import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { router } from "expo-router";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { BackHandler, Platform, StatusBar } from "react-native";
 import WebView, { WebViewMessageEvent } from "react-native-webview";
 import type { WebView as WebViewType } from "react-native-webview";
@@ -16,11 +16,11 @@ import {
   promptDisablePushNotification,
   requestPushNotificationPermission,
 } from "@/utils/permissions";
-import useLocation from "@/hooks/useLocation";
 import useSendLocation from "@/hooks/useSendLocation";
 import { loadBreathTypeFromStorage, saveBreathTypeToStorage } from "@/storage/breath";
 import { sendMessageToWeb } from "@/utils/sendMessageToWeb";
 import useVoiceKeyStore from "@/zustand/voiceKeyStore";
+import usePhoneStore from "@/zustand/contactStore";
 
 const AuthedScreen = () => {
   const webViewRef = useRef<WebViewType | null>(null);
@@ -31,6 +31,7 @@ const AuthedScreen = () => {
   const [breathType, setBreathType] = useState<BreathType>("basicTime");
   const [panicData, setPanicData] = useState<PanicFirstForm | null>(null);
   const [inputText, setInputText] = useState(""); // 모달 입력 상태 추가
+  const { phoneNumbers, setPhoneNumbers } = usePhoneStore();
   const sendLocationToWebView = useSendLocation(webViewRef);
 
   const statusBarHeight = Platform.OS === "android" ? StatusBar.currentHeight : 0;
@@ -123,6 +124,13 @@ const AuthedScreen = () => {
           return;
         }
         setVoiceKey(content as string);
+        return;
+      case "PHONELIST":
+        sendMessageToWeb({ webViewRef, title: "PHONELIST", content: phoneNumbers });
+        return;
+      case "SETPHONE":
+        console.log("리스트", content);
+        setPhoneNumbers(content as any);
         return;
       default:
         console.log(title, " : ", content);
