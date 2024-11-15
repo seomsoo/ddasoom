@@ -86,24 +86,24 @@ export default function WithDdasomi() {
   };
 
   return (
-    <div className="bg-[#C7C0B3] h-screen -m-4">
+    <div className="bg-[#C7C0B3] h-screen -m-4 flex flex-col">
       {isErrorModalOpen && (
         <ErrorModal onClose={() => setIsErrorModalOpen(false)} onRetry={handleRetry} context={errorContext} />
       )}
-      <header className="flex flex-col w-full h-72 bg-main4 p-6 border-b-8">
+      <header className="flex flex-col w-full h-[30vh] bg-main4 p-6 border-b-8">
         <article className="flex justify-between w-full">
           <LevelBar level={ddasomiData?.level ?? 0} experiencePercent={ddasomiData?.experiencePercent ?? 0} />
           <EmergencyModal ContentComponent={EmergencyContent} />
         </article>
 
         <div className="flex justify-between">
-          <div className="mt-8 ml-7">
+          <div className="mt-4 ml-7">
             <Window />
           </div>
-          <div className="mt-8 mr-14">
+          <div className="mt-4 mr-14">
             <Watch />
           </div>
-          <div className="absolute gap-6 right-6 top-40 z-10 flex flex-col">
+          <div className="absolute gap-6 right-6 top-40 z-40 flex flex-col">
             <HelpModal ContentComponent={HelpContent} />
             <Link href="/main/setting">
               <Setting />
@@ -114,11 +114,11 @@ export default function WithDdasomi() {
         </div>
       </header>
 
-      <main className="flex flex-col bg-[#D8D1C3] items-center h-48">
-        <div className="absolute left-7 top-56">
+      <main className=" relative flex flex-col bg-[#D8D1C3] items-center min-h-[15vh] max-h-[45h] h-[28vh]">
+        <div className="absolute left-7 -top-12">
           <Bed />
         </div>
-        <div className="absolute right-16 z-0 top-52">
+        <div className="absolute right-16 z-0 -top-16">
           <Bookcase />
         </div>
         <div>
@@ -129,7 +129,7 @@ export default function WithDdasomi() {
           />
         </div>
       </main>
-      <section className="flex flex-col p-3">
+      <section className="flex flex-col p-3  h-[27vh]  min-h-[15vh] max-h-[45h]">
         <Interaction
           level={ddasomiData?.level ?? 1}
           continuousTrainingDays={ddasomiData?.continuousTrainingDays ?? 0}
