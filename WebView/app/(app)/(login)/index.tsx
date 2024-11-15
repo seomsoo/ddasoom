@@ -10,12 +10,20 @@ import { router } from "expo-router";
 import { signIn } from "@/services/auth";
 import useAuthStore from "@/zustand/authStore";
 import { loadBreathTypeFromStorage } from "@/storage/breath";
+import * as Network from "expo-network";
 
 const Main = () => {
   const { token, userId, setToken, setUserEmail, setUserName, setUserId } = useAuthStore();
   const [breathType, setBreathType] = useState<BreathType>("basicTime");
 
   const handleKaKaoLogin = async () => {
+    // 네트워크 상태 확인
+    const networkState = await Network.getNetworkStateAsync();
+    if (!networkState.isConnected) {
+      ToastAndroid.show("네트워크 연결이 불안정합니다.", 3000);
+      return;
+    }
+
     const { accessToken, refreshToken } = await login();
 
     if (!accessToken || !refreshToken) {

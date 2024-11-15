@@ -18,6 +18,7 @@ import useNotificationStore from "@/zustand/notificationStore";
 import { scheduleLocalNotification, sendPushNotification } from "@/utils/notifications";
 import { savePanicInfoToStorage } from "@/storage/panic";
 import useAuthStore from "@/zustand/authStore";
+import * as Network from "expo-network";
 
 const BreathEndModal = () => {
   const { token, userName } = useAuthStore();
@@ -50,6 +51,7 @@ const BreathEndModal = () => {
     router.push("(app)/(login)");
   };
 
+  // handleSkip 함수
   const handleSkip = async () => {
     // 10분 뒤 다시 작성할 수 있게 하는 로컬 알림
 
@@ -69,10 +71,15 @@ const BreathEndModal = () => {
       scheduleLocalNotification({ title: "따 숨", body: "진정이 됐나요? 오늘 상황을 기록해보세요.", seconds: 5 });
     }
 
+    // 네트워크 상태 확인 후 조건에 따라 페이지 이동
     if (token) {
-      router.push("(app)/authorized");
-      return;
+      const networkState = await Network.getNetworkStateAsync();
+      if (networkState.isConnected) {
+        router.push("(app)/authorized");
+        return;
+      }
     }
+
     router.push("(app)/(login)");
   };
 
@@ -86,7 +93,7 @@ const BreathEndModal = () => {
     if (address) {
       setPanicSpot(address?.split(" ").splice(1).join(" "));
     } else {
-      setPanicSpot("위치를 받아오는 중 입니다...");
+      setPanicSpot("네트워크 에러로 주소를 불러오지 못했습니다.");
     }
   }, [address]);
 
