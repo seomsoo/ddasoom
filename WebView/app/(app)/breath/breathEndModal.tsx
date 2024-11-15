@@ -19,6 +19,11 @@ import { scheduleLocalNotification, sendPushNotification } from "@/utils/notific
 import { savePanicInfoToStorage } from "@/storage/panic";
 import useAuthStore from "@/zustand/authStore";
 import * as Network from "expo-network";
+import usePhoneStore from "@/zustand/contactStore";
+import { postPhoneMessageToList } from "@/services/phone";
+import { postPanicAtFirst } from "@/services/panic";
+
+const PANIC_TIME = 10;
 
 const BreathEndModal = () => {
   const { token, userName } = useAuthStore();
@@ -28,6 +33,7 @@ const BreathEndModal = () => {
   const { reverseGeocode, address } = useGeocoding();
   const [panicSpot, setPanicSpot] = useState("");
   const [inputText, setInputText] = useState("");
+  const { phoneNumbers } = usePhoneStore();
 
   const nowTime = getLocalISOString();
   const nowTimeArr = nowTime.split("T")[1].split(":");
@@ -42,13 +48,26 @@ const BreathEndModal = () => {
       startDate: nowTime, // 한국 시간으로 변환
     };
 
-    // panicInfo를 기기의 메모리에 저장
-    await savePanicInfoToStorage(panicInfo);
-    if (token) {
+    const networkState = await Network.getNetworkStateAsync();
+    if (networkState.isConnected) {
+      // 시간이 PANIC_TIME 이상 되면 긴급 상황 문자 보내기
+      if (Number(totalTime) >= PANIC_TIME) {
+        //문자
+        console.log("전송 시도", userName, phoneNumbers);
+        const newList = phoneNumbers.map(numberItem => numberItem.PhoneNumber);
+        await postPhoneMessageToList({ name: userName, phoneNumbers: newList });
+      }
+
+      // 네트워크 있으니 서버로 바로 저장하기
+      await postPanicAtFirst(panicInfo);
       router.push("(app)/authorized");
       return;
+    } else {
+      // 네트워크 없으면 임시 저장
+      await savePanicInfoToStorage(panicInfo);
+      ToastAndroid.show("로그인 후 다시 확인할 수 있어요.", 3000);
+      router.push("(app)/(login)");
     }
-    router.push("(app)/(login)");
   };
 
   // handleSkip 함수
@@ -72,12 +91,16 @@ const BreathEndModal = () => {
     }
 
     // 네트워크 상태 확인 후 조건에 따라 페이지 이동
-    if (token) {
-      const networkState = await Network.getNetworkStateAsync();
-      if (networkState.isConnected) {
-        router.push("(app)/authorized");
-        return;
+    const networkState = await Network.getNetworkStateAsync();
+    if (networkState.isConnected) {
+      // 시간이 PANIC_TIME 이상 되면 긴급 상황 문자 보내기
+      if (Number(totalTime) >= PANIC_TIME) {
+        //문자
+        const numberArray = phoneNumbers.map(entry => entry.PhoneNumber);
+        await postPhoneMessageToList({ name: userName, phoneNumbers: numberArray });
       }
+      router.push("(app)/authorized");
+      return;
     }
 
     router.push("(app)/(login)");
@@ -93,7 +116,7 @@ const BreathEndModal = () => {
     if (address) {
       setPanicSpot(address?.split(" ").splice(1).join(" "));
     } else {
-      setPanicSpot("네트워크 에러로 주소를 불러오지 못했습니다.");
+      setPanicSpot("주소 불러오는 중...");
     }
   }, [address]);
 
@@ -143,7 +166,7 @@ const BreathEndModal = () => {
           </Button>
           <CancelBox onPress={handleSkip}>
             <CancelText>건너뛰기</CancelText>
-            <CancelText>(30분 뒤 다시 작성할 수 있어요.)</CancelText>
+            <CancelText>(이후에 다시 작성할 수 있어요.)</CancelText>
           </CancelBox>
         </ButtonBox>
       </ScrollView>

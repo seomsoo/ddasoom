@@ -70,7 +70,7 @@ const PanicDataModal = ({
               <ButtonText>저장</ButtonText>
             </ModalButton>
             <ModalButton onPress={handleCancel} style={{ backgroundColor: "#B6D89A" }}>
-              <ButtonText>취소</ButtonText>
+              <ButtonText>지우기</ButtonText>
             </ModalButton>
           </ButtonContainer>
         </ModalContent>

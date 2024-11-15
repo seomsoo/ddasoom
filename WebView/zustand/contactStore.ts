@@ -2,13 +2,18 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-const useContractStore = create<ContactStore>()(
+interface PhoneStore {
+  phoneNumbers: EmergencyPhoneNumberObject[];
+  setPhoneNumbers: (phoneNumbers: EmergencyPhoneNumberObject[]) => void;
+}
+
+const usePhoneStore = create<PhoneStore>()(
   persist(
     set => ({
       phoneNumbers: [],
-      setPhoneNumbers: (phone: EmergencyPhoneNumber) =>
-        set(state => ({
-          phoneNumbers: [...state.phoneNumbers, phone],
+      setPhoneNumbers: (phoneNumbers: EmergencyPhoneNumberObject[]) =>
+        set(() => ({
+          phoneNumbers, // 전달받은 phoneNumbers 배열로 상태를 설정
         })),
     }),
     {
@@ -21,4 +26,4 @@ const useContractStore = create<ContactStore>()(
   ),
 );
 
-export default useContractStore;
+export default usePhoneStore;

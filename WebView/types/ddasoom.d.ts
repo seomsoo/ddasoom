@@ -5,10 +5,16 @@ type Email = string;
 type PhoneNumber = string;
 type DateString = string;
 type Token = string;
-type EmergencyPhoneNumber = {
+type EmergencyPhoneNumberDto = {
   name: Name;
-  phoneNumber: PhoneNumber;
+  phoneNumbers: PhoneNumber[];
 };
+
+interface EmergencyPhoneNumberObject {
+  PhoneBookId: number;
+  PhoneNumber: PhoneNumber;
+  alias: string;
+}
 
 // 호흡 타입
 type BreathStage = {
