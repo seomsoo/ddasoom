@@ -25,19 +25,19 @@ export const groundingData = {
       id: '007',
       question: '지금 들리는, 소리의 높낮이는 어떠한가요?',
       gif: GroundingSound.src,
-      sound: '/sounds/fire.mp3',
+      sound: '/sounds/grassBug.mp3',
     },
     {
       id: '008',
       question: '이 소리가, 차분하게 들리나요?, 활기차게 느껴지나요?',
       gif: GroundingSound.src,
-      sound: '/sounds/bird_valley.mp3',
+      sound: '/sounds/fire.mp3',
     },
     {
       id: '009',
       question: '소리가 점점 커지나요?, 작아지고 있나요?',
       gif: GroundingSound.src,
-      sound: '/sounds/grassBug.mp3',
+      sound: '/sounds/bird_valley.mp3',
     },
   ],
   nothingQA: [
