@@ -38,7 +38,7 @@ const Root = () => {
       refetchToken();
       router.push("(app)/authorized");
     }
-  }, [expoPushToken, token]);
+  }, [expoPushToken]);
 
   return (
     <ThemeProvider theme={theme}>
