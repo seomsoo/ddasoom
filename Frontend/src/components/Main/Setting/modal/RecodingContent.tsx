@@ -77,11 +77,9 @@ export default function RecodingContent({ closeModal }: RecodingContentProps) {
     queryClient.invalidateQueries({ queryKey: [queryKeys.AIVOICE] });
   }, [queryClient]);
 
-  // selectedVoiceKey 변경 시 음성 재생
-  useEffect(() => {
-    if (!selectedVoiceKey) return;
-
-    const preVoice = `https://ddasoom.s3.ap-southeast-2.amazonaws.com/${selectedVoiceKey}-SAMPLE_001.mp3`;
+  // 보이스 재생 함수
+  const playVoice = (voiceKey: string) => {
+    const preVoice = `https://ddasoom.s3.ap-southeast-2.amazonaws.com/${voiceKey}-SAMPLE_001.mp3`;
     const audio = new Audio(preVoice);
 
     audio.play().catch(error => {
@@ -89,15 +87,19 @@ export default function RecodingContent({ closeModal }: RecodingContentProps) {
       setErrorContext('목소리 재생 중 오류가 발생했습니다.');
       setIsErrorModalOpen(true);
     });
-  }, [selectedVoiceKey]);
+  };
+
+  // 보이스 선택 처리
+  const handleSelect = (voiceKey: string) => {
+    if (selectedVoiceKey !== voiceKey) {
+      setSelectedVoiceKey(voiceKey); // 선택한 보이스 키 업데이트
+      playVoice(voiceKey); // 새 보이스 키로 음성 재생
+    }
+  };
 
   const handleRetry = () => {
     setIsErrorModalOpen(false);
     refetch();
-  };
-
-  const handleSelect = (voiceKey: string) => {
-    setSelectedVoiceKey(prevKey => (prevKey === voiceKey ? null : voiceKey));
   };
 
   const goToRecodingPage = () => {
