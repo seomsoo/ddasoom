@@ -1,16 +1,19 @@
 'use client';
 
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 
 import queryKeys from '@/api/querykeys';
 import { getReportData } from '@/api/recordAPI';
-import DailyReportSection from '@/components/Report/DailyReportSection';
-import { reportMessageStyles } from '@/constants/ReportMessageStyles';
 
 import ErrorModal from '../Common/ErrorModal';
 import LoadingModal from '../Common/LoadingModal';
+import DailyReportSection from './DailyReportSection';
+import PanicChartSlide from './PanicChartSlide';
+import PanicSummary from './PanicSummary';
+import PercentageChangeSlide from './PercentageChangeSlide';
 import SummaryBox from './SummaryBox';
+import SummarySlide from './SummarySlide';
 
 interface MainContentProps {
   year: string;
@@ -18,38 +21,58 @@ interface MainContentProps {
 }
 
 export default function MainContent({ year, month }: MainContentProps) {
-  const queryClient = useQueryClient();
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [errorContext, setErrorContext] = useState<string>('');
 
+  // 현재 달 데이터 가져오기
   const {
     data: reportData,
-    isLoading,
-    isError,
-    error,
-    refetch,
+    isLoading: isReportLoading,
+    isError: isReportError,
+    error: reportError,
+    refetch: refetchReport,
   } = useQuery({
     queryKey: [queryKeys.REPORT, year, month],
     queryFn: () => getReportData(year, month),
     retry: false,
   });
 
-  const trainingStyles = reportData ? reportMessageStyles(reportData.continuousTrainingCount) : null;
+  // 전달 데이터 가져오기
+  const {
+    data: previousReportData,
+    isLoading: isPreviousLoading,
+    isError: isPreviousError,
+    error: previousError,
+  } = useQuery({
+    queryKey: [queryKeys.REPORT, 'previous', year, month],
+    queryFn: () => {
+      const prevMonth = month === '01' ? '12' : String(Number(month) - 1).padStart(2, '0');
+      const prevYear = month === '01' ? String(Number(year) - 1) : year;
+      return getReportData(prevYear, prevMonth);
+    },
+    retry: false,
+  });
 
-  useEffect(() => {
-    queryClient.invalidateQueries({ queryKey: [queryKeys.REPORT, year, month] });
-    if (isError && error) {
-      setErrorContext(error instanceof Error ? error.message : '에러 메시지 읽기 실패');
+  // 에러 핸들링
+  if (isReportError || isPreviousError) {
+    const errorMessage =
+      reportError instanceof Error
+        ? reportError.message
+        : previousError instanceof Error
+          ? previousError.message
+          : '에러 메시지 읽기 실패';
+    if (!isErrorModalOpen) {
+      setErrorContext(errorMessage);
       setIsErrorModalOpen(true);
     }
-  }, [isError, error]);
+  }
 
   const handleRetry = () => {
     setIsErrorModalOpen(false);
-    refetch();
+    refetchReport();
   };
 
-  if (isLoading) return <LoadingModal />;
+  if (isReportLoading || isPreviousLoading) return <LoadingModal />;
 
   return (
     <div className="w-full max-w-md mt-8 flex flex-col font-nanumExtraBold">
@@ -59,38 +82,28 @@ export default function MainContent({ year, month }: MainContentProps) {
 
       {/* 공황 발작 정보 */}
       <SummaryBox>
-        <div>
-          {reportData?.panicReport ? (
-            <>
-              <span className="flex items-baseline">
-                <p className="text-lg text-main1 mr-1">{reportData.panicReport.panicCount}번의</p> 공황 발작이
-              </span>
-              <span className="flex items-baseline mt-1">
-                <p className="text-lg text-main1 mr-1">평균 {reportData.panicReport.panicDurationAverage}초</p> 동안
-                공황 증상이 발현됐어요.
-              </span>
-            </>
-          ) : (
-            <p className="text-lg text-gray-500">공황 발작 정보가 없습니다.</p>
-          )}
-        </div>
+        <PanicSummary panicReport={reportData?.panicReport} />
       </SummaryBox>
 
       {/* 생활 패턴 */}
       <DailyReportSection dailyReport={reportData?.dailyReport ?? null} />
 
-      <SummaryBox>
-        <div className="flex flex-col items-center -mb-4">
-          {trainingStyles && (
-            <>
-              <span className={`flex font-nanumExtraBold text-2xl mb-4  ${trainingStyles.messageColor}`}>
-                {trainingStyles.message}
-              </span>
-              {trainingStyles.icon}{' '}
-            </>
-          )}
-        </div>
-      </SummaryBox>
+      {/* 전달 대비 변화 */}
+      {reportData && previousReportData && (
+        <>
+          <SummaryBox>
+            <PercentageChangeSlide reportData={reportData} previousReportData={previousReportData} />
+          </SummaryBox>
+
+          <SummaryBox>
+            <PanicChartSlide reportData={reportData} previousReportData={previousReportData} />
+          </SummaryBox>
+
+          <SummaryBox>
+            <SummarySlide reportData={reportData} previousReportData={previousReportData} />
+          </SummaryBox>
+        </>
+      )}
     </div>
   );
 }
