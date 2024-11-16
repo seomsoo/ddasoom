@@ -42,7 +42,9 @@ public enum SpeechScript {
     EMERGENCY_015("다음에도 이렇게 극복할 수 있을 거야."),
     EMERGENCY_016("난 너를 믿어. 너는 최선을 다하고 있어."),
     EMERGENCY_017("너를 믿고 응원하는 사람들이 있다는 걸 잊지 마. 우리는 언제나 네 곁에 있어."),
-    EMERGENCY_018("이 순간이 지나가면, 너는 한 층 더 단단해져있을거야.");
+    EMERGENCY_018("이 순간이 지나가면, 너는 한 층 더 단단해져있을거야."),
+
+    SAMPLE_001("이 목소리로 설정됩니다.");
 
     private final String message;
 
