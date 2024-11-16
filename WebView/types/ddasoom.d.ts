@@ -18,6 +18,7 @@ interface EmergencyPhoneNumberObject {
 
 // 호흡 타입
 type BreathStage = {
+  fileId: number;
   duration: number;
   description: string;
 };
