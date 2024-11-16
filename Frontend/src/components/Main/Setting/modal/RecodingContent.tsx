@@ -87,16 +87,15 @@ export default function RecodingContent({ closeModal }: RecodingContentProps) {
 
   // selectedVoiceKey가 변경될 때 음성 재생
   useEffect(() => {
-    if (selectedVoiceKey) {
-      const preVoice = `https://ddasoom.s3.ap-southeast-2.amazonaws.com/${selectedVoiceKey}-SAMPLE_001.mp3`;
-      const audio = new Audio(preVoice);
+    if (!selectedVoiceKey) return;
+    const preVoice = `https://ddasoom.s3.ap-southeast-2.amazonaws.com/${selectedVoiceKey}-SAMPLE_001.mp3`;
+    const audio = new Audio(preVoice);
 
-      audio.play().catch(error => {
-        console.error('Audio playback failed:', error);
-        setErrorContext('목소리 재생 중 오류가 발생했습니다.');
-        setIsErrorModalOpen(true);
-      });
-    }
+    audio.play().catch(error => {
+      console.error('Audio playback failed:', error);
+      setErrorContext('목소리 재생 중 오류가 발생했습니다.');
+      setIsErrorModalOpen(true);
+    });
   }, [selectedVoiceKey]);
 
   const goToRecodingPage = () => {
