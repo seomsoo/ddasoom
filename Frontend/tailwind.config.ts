@@ -59,7 +59,7 @@ const config: Config = {
         sub1: '#fbee7d',
         sub2: '#ff9901',
         sub3: '#e03c18',
-        sub4: '#5673f9',
+        sub4: '#D35F42',
         sub5: '#00c67b',
         black: '#262626',
         gray1: '#F8F9FA',
