@@ -10,7 +10,6 @@ import { reportMessageStyles } from '@/constants/ReportMessageStyles';
 
 import ErrorModal from '../Common/ErrorModal';
 import LoadingModal from '../Common/LoadingModal';
-import SelfDiagnosisProgress from './SelfDiagnosisProgress';
 import SummaryBox from './SummaryBox';
 
 interface MainContentProps {
@@ -79,14 +78,6 @@ export default function MainContent({ year, month }: MainContentProps) {
 
       {/* 생활 패턴 */}
       <DailyReportSection dailyReport={reportData?.dailyReport ?? null} />
-
-      {/* 자가진단 진행 상황 */}
-      <SummaryBox>
-        <SelfDiagnosisProgress
-          progressCount={reportData?.selfDiagnosis.progressCount ?? 0}
-          totalPanicDoubtCount={reportData?.selfDiagnosis.totalPanicDoubtCount ?? 0}
-        />
-      </SummaryBox>
 
       <SummaryBox>
         <div className="flex flex-col items-center -mb-4">
