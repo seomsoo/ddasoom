@@ -70,7 +70,7 @@ export default function CustomCalendar({ selectedDate, onDateSelect }: CustomCal
       <div className="grid grid-cols-7 text-center font-hakgyoansimR mb-5">
         {daysOfWeek.map(day => (
           <div key={day} className="text-2xl">
-            <span className={`${day === '일' ? 'text-sub3' : day === '토' ? 'text-sub4' : ''}`}>{day}</span>
+            <span className={`${day === '일' ? 'text-sub3' : day === '토' ? 'text-blue-500' : ''}`}>{day}</span>
           </div>
         ))}
       </div>
