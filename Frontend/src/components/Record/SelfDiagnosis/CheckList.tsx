@@ -2,23 +2,36 @@
 
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { postSelfDiagnosisData } from '@/api/recordAPI';
-import Button from '@/components/Common/Button';
 import ErrorModal from '@/components/Common/ErrorModal';
 import ProgressBar from '@/components/Record/SelfDiagnosis/ProgressBar';
-import QuestionText from '@/components/Record/SelfDiagnosis/QuestionText';
-import { questions } from '@/constants/SelfDiagnosisData';
+import Question from '@/components/Record/SelfDiagnosis/QuestionText';
+import { questions as originalQuestions } from '@/constants/SelfDiagnosisData';
+import BackIcon from '@/svgs/BackIcon';
 import { SelfDiagnosisRequestBody } from '@/types/http/request';
+
+// 질문 배열을 랜덤하게 섞는 함수
+function shuffleQuestions<T>(questions: T[]): T[] {
+  return questions
+    .map(question => ({ ...question, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(({ sort, ...question }) => question as T);
+}
 
 export default function CheckList() {
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [errorContext, setErrorContext] = useState('');
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [yesCount, setYesCount] = useState(0);
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [questions, setQuestions] = useState(originalQuestions); // 질문 배열을 상태로 관리
   const router = useRouter();
+
+  useEffect(() => {
+    // 컴포넌트가 처음 렌더링될 때 질문을 랜덤하게 섞음
+    setQuestions(shuffleQuestions(originalQuestions));
+  }, []);
 
   const mutation = useMutation({
     mutationFn: (data: SelfDiagnosisRequestBody) => postSelfDiagnosisData(data),
@@ -31,17 +44,14 @@ export default function CheckList() {
       setIsErrorModalOpen(true);
     },
   });
-  const handleOptionClick = (option: string) => {
-    setSelectedOption(option);
-  };
 
-  const handleNextClick = () => {
-    if (selectedOption === '네') {
+  const handleOptionClick = (option: string) => {
+    if (option === '네') {
       setYesCount(prevCount => prevCount + 1);
     }
 
     if (currentQuestionIndex === questions.length - 1) {
-      const finalYesCount = yesCount + (selectedOption === '네' ? 1 : 0);
+      const finalYesCount = yesCount + (option === '네' ? 1 : 0);
       const panicDoubt: SelfDiagnosisRequestBody = {
         panicDoubtCount: finalYesCount,
       };
@@ -49,7 +59,14 @@ export default function CheckList() {
       router.push(`/record/selfDiagnosis/result?yesCount=${finalYesCount}`);
     } else {
       setCurrentQuestionIndex(prevIndex => prevIndex + 1);
-      setSelectedOption(null);
+    }
+  };
+
+  const handleBackClick = () => {
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex(prevIndex => prevIndex - 1);
+    } else {
+      router.back(); // 처음 질문일 경우 이전 페이지로 이동
     }
   };
 
@@ -58,34 +75,32 @@ export default function CheckList() {
 
   const handleRetry = () => {
     setIsErrorModalOpen(false);
-    handleNextClick();
   };
 
   return (
-    <div>
+    <div className="flex flex-col">
       {isErrorModalOpen && (
         <ErrorModal onClose={() => setIsErrorModalOpen(false)} onRetry={handleRetry} context={errorContext} />
       )}
-      <div className=" flex flex-col items-center ">
+      <div className="ml-2 mt-0.5 mb-6" onClick={handleBackClick}>
+        <BackIcon />
+      </div>
+      <div className="flex flex-col items-center">
         <ProgressBar progress={progress} />
-        <QuestionText text={currentQuestion.text} />
+        <Question question={currentQuestion.text} gif={currentQuestion.gif} />
 
-        <div className="flex flex-col gap-5 w-full items-center">
+        <div className="flex gap-8 mt-12 w-full items-center justify-center">
           {currentQuestion.options.map((option, index) => (
             <button
               key={index}
               onClick={() => handleOptionClick(option)}
-              className={`flex items-center justify-between w-72 h-20 px-4 py-3 rounded-2xl shadow-md text-2xl ${
-                selectedOption === option ? 'bg-main2 border-2 border-main1' : 'bg-main4 border border-gray3'
+              className={`flex items-center justify-center w-[40%] h-20 text-center rounded-xl shadow-md text-lg transition-transform duration-150 active:translate-y-1 active:shadow-none ${
+                option === '네' ? 'bg-main2 border border-main1' : 'bg-main4 border border-gray3'
               }`}>
-              <span>{option}</span>
+              <span className="font-nanumBold">{option}</span>
             </button>
           ))}
         </div>
-      </div>
-
-      <div className="mt-36 w-full ">
-        <Button onClick={handleNextClick} label="다음" disabled={!selectedOption} />
       </div>
     </div>
   );

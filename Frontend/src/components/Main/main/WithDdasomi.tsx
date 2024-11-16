@@ -91,25 +91,26 @@ export default function WithDdasomi() {
         <ErrorModal onClose={() => setIsErrorModalOpen(false)} onRetry={handleRetry} context={errorContext} />
       )}
       <header className="flex flex-col w-full h-[30vh] bg-main4 p-6 border-b-8">
-        <article className="flex justify-between w-full">
-          <LevelBar level={ddasomiData?.level ?? 0} experiencePercent={ddasomiData?.experiencePercent ?? 0} />
-          <EmergencyModal ContentComponent={EmergencyContent} />
-        </article>
-
-        <div className="flex justify-between">
-          <div className="mt-4 ml-7">
-            <Window />
-          </div>
-          <div className="mt-4 mr-14">
-            <Watch />
-          </div>
-          <div className="absolute gap-6 right-6 top-40 z-40 flex flex-col">
+        <div className="z-40">
+          <article className="flex justify-between w-full">
+            <LevelBar level={ddasomiData?.level ?? 0} experiencePercent={ddasomiData?.experiencePercent ?? 0} />
+            <EmergencyModal ContentComponent={EmergencyContent} />
+          </article>
+          <div className="absolute gap-6 right-6 top-40  flex flex-col">
             <HelpModal ContentComponent={HelpContent} />
             <Link href="/main/setting">
               <Setting />
             </Link>
             <SoundOn />
             <MissionModal ContentComponent={MissionContent} />
+          </div>
+        </div>
+        <div className="flex justify-between">
+          <div className="mt-4 ml-7">
+            <Window />
+          </div>
+          <div className="mt-4 mr-14">
+            <Watch />
           </div>
         </div>
       </header>
