@@ -2,36 +2,22 @@
 
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { postSelfDiagnosisData } from '@/api/recordAPI';
 import ErrorModal from '@/components/Common/ErrorModal';
 import ProgressBar from '@/components/Record/SelfDiagnosis/ProgressBar';
 import Question from '@/components/Record/SelfDiagnosis/QuestionText';
-import { questions as originalQuestions } from '@/constants/SelfDiagnosisData';
+import { questions } from '@/constants/SelfDiagnosisData';
 import BackIcon from '@/svgs/BackIcon';
 import { SelfDiagnosisRequestBody } from '@/types/http/request';
-
-// 질문 배열을 랜덤하게 섞는 함수
-function shuffleQuestions<T>(questions: T[]): T[] {
-  return questions
-    .map(question => ({ ...question, sort: Math.random() }))
-    .sort((a, b) => a.sort - b.sort)
-    .map(({ sort, ...question }) => question as T);
-}
 
 export default function CheckList() {
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [errorContext, setErrorContext] = useState('');
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [yesCount, setYesCount] = useState(0);
-  const [questions, setQuestions] = useState(originalQuestions); // 질문 배열을 상태로 관리
   const router = useRouter();
-
-  useEffect(() => {
-    // 컴포넌트가 처음 렌더링될 때 질문을 랜덤하게 섞음
-    setQuestions(shuffleQuestions(originalQuestions));
-  }, []);
 
   const mutation = useMutation({
     mutationFn: (data: SelfDiagnosisRequestBody) => postSelfDiagnosisData(data),
@@ -94,7 +80,7 @@ export default function CheckList() {
             <button
               key={index}
               onClick={() => handleOptionClick(option)}
-              className={`flex items-center justify-center w-[40%] h-20 text-center rounded-xl shadow-md text-lg transition-transform duration-150 active:translate-y-1 active:shadow-none ${
+              className={`flex items-center justify-center w-[40%] h-20 text-center rounded-xl shadow-md text-lg transition-transform duration-150 transform hover:scale-105 active:scale-95 active:translate-y-1 active:shadow-none ${
                 option === '네' ? 'bg-main2 border border-main1' : 'bg-main4 border border-gray3'
               }`}>
               <span className="font-nanumBold">{option}</span>
