@@ -38,8 +38,11 @@ export default function DiaryItem({ label, count }: RecordItemProps) {
         className={`flex flex-grow justify-center items-center rounded-full shadow-[0px_6px_10px_rgba(0,0,0,0.25)] w-14 h-14 ${bgColor}`}>
         {Icon && <Icon className="text-white" />}
       </div>
-      <span className="text-center text-sm font-nanumBold text-gray-500 mt-2">{labelNames[label]}</span>
-      <span className="text-center text-xs text-black mt-1">{count}회</span>
+      <span
+        className={`text-center text-sm font-nanumBold text-gray-500 mt-2 ${count > 0 ? (labelNames[label] === '운동' ? 'text-sub5' : 'text-sub3') : ''}`}>
+        {labelNames[label]}
+      </span>
+      <span className="text-center text-xs text-black mt-1 ">{count}회</span>
     </div>
   );
 }
