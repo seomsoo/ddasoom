@@ -7,7 +7,7 @@ import queryKeys from '@/api/querykeys';
 import { getReportData } from '@/api/recordAPI';
 import background from '@/components/BackGround/Background.module.css';
 import Back from '@/svgs/backIcon.svg';
-import Ddasom from '@/svgs/ddasomi.svg';
+// import Ddasom from '@/svgs/ddasomi.svg';
 import { ReportData } from '@/types/http/response';
 
 import ErrorModal from '../Common/ErrorModal';
