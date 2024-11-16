@@ -200,6 +200,7 @@ const AuthedScreen = () => {
   };
 
   useEffect(() => {
+    BackHandler.addEventListener("hardwareBackPress", backPress);
     if (token) {
       sendTokenToWeb();
     }
@@ -211,7 +212,6 @@ const AuthedScreen = () => {
 
     fetchBreathType();
 
-    BackHandler.addEventListener("hardwareBackPress", backPress);
     fetchPanicData();
     checkPushPermission(); // 푸시 알림 설정 여부
     return () => {
