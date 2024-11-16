@@ -42,10 +42,7 @@ export default function DiaryItem({ label, count }: RecordItemProps) {
         className={`text-center text-sm font-nanumBold text-gray-500 mt-2 ${count > 0 ? (labelNames[label] === '운동' ? 'text-sub5' : 'text-sub3') : ''}`}>
         {labelNames[label]}
       </span>
-      <span
-        className={`text-center text-xs text-black mt-1 ${count > 0 ? (labelNames[label] === '운동' ? 'text-sub5' : 'text-sub3') : ''}`}>
-        {count}회
-      </span>
+      <span className="text-center text-xs text-black mt-1 ">{count}회</span>
     </div>
   );
 }
