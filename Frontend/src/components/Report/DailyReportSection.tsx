@@ -17,12 +17,25 @@ interface DailyReportSectionProps {
   dailyReport: DailyReport | null;
 }
 
+// 라벨을 한글로 매핑
+const labelMapping: Record<string, string> = {
+  caffeine: '카페인',
+  smoking: '니코틴',
+  alcohol: '알코올',
+  exercise: '운동',
+};
+
 export default function DailyReportSection({ dailyReport }: DailyReportSectionProps) {
   const mostFrequentActivities = dailyReport ? getMostFrequentActivities(dailyReport) : [];
   const activityMessage =
-    mostFrequentActivities.length === 1
-      ? `${mostFrequentActivities[0]}이 가장 많았어요.`
-      : '이번 달 생활 패턴은 다음과 같아요.';
+    mostFrequentActivities.length === 1 ? (
+      <p>
+        <span className="text-main1">{labelMapping[mostFrequentActivities[0]] || mostFrequentActivities[0]}</span>이
+        가장 많았어요.
+      </p>
+    ) : (
+      '이번 달 생활 패턴은 다음과 같아요.'
+    );
 
   return (
     <SummaryBox>

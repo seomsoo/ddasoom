@@ -7,10 +7,11 @@ import queryKeys from '@/api/querykeys';
 import { getReportData } from '@/api/recordAPI';
 import background from '@/components/BackGround/Background.module.css';
 import Back from '@/svgs/backIcon.svg';
-import Ddasom from '@/svgs/ddasomi.svg';
+// import Ddasom from '@/svgs/ddasomi.svg';
 import { ReportData } from '@/types/http/response';
 
 import ErrorModal from '../Common/ErrorModal';
+import SelfDiagnosisProgress from './SelfDiagnosisProgress';
 
 interface HeaderProps {
   year: string;
@@ -61,9 +62,16 @@ export default function Header({ year, month }: HeaderProps) {
       {isErrorModalOpen && (
         <ErrorModal onClose={() => setIsErrorModalOpen(false)} onRetry={handleRetry} context={errorContext} />
       )}
-      <Back className="ml-6 absolute top-4 cursor-pointer" onClick={() => router.back()} />
-      <Ddasom className="absolute bottom-24 left-1/2 transform -translate-x-1/2 w-44 h-44" />
 
+      <Back className="ml-6 absolute top-4 cursor-pointer" onClick={() => router.back()} />
+
+      {/* <Ddasom className="absolute bottom-24 left-1/2 transform -translate-x-1/2 w-44 h-44" /> */}
+      <div className="absolute bottom-24 left-1/2 transform -translate-x-1/2 w-64 h-44">
+        <SelfDiagnosisProgress
+          progressCount={reportData?.selfDiagnosis.progressCount ?? 0}
+          totalPanicDoubtCount={reportData?.selfDiagnosis.totalPanicDoubtCount ?? 0}
+        />
+      </div>
       <span className="flex items-end absolute font-hakgyoansimR text-4xl bottom-14 left-6">
         <p
           className="text-5xl mr-2 text-main4 bg-clip-text"
