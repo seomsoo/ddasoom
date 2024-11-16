@@ -16,7 +16,7 @@ export default function GroundingTraining() {
   const GROUNDING = 'GROUNDING';
   const router = useRouter();
 
-  const [voiceKey, setVoiceKey] = useState<string | null>(null);
+  const [voiceKey, setVoiceKey] = useState<string | null>('4YfrbQK40Ch5hslvU2Fs');
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [errorContext, setErrorContext] = useState<string>('');
   const [step, setStep] = useState(1);
