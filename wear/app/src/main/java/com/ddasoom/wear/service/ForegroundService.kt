@@ -1,5 +1,3 @@
-// package com.ddasoom.wear.service
-
 package com.ddasoom.wear.service
 
 import android.app.Notification
@@ -152,11 +150,12 @@ class ForegroundService : Service(), HeartRateManager.HeartRateListener {
     }
   }
 
-  // 심박수 데이터를 전송하는 메서드
+  // 심박수 데이터를 전송하는 메서드 (수정됨)
   private fun sendHeartRate(heartRate: Int) {
     nodeId?.let {
       val jsonObject = JSONObject().apply {
-        put("message", heartRate.toString())
+        put("title", "bpm")
+        put("content", heartRate)
       }
       val message = jsonObject.toString().toByteArray()
 
@@ -172,21 +171,6 @@ class ForegroundService : Service(), HeartRateManager.HeartRateListener {
     }
   }
 
-  fun onSensorChanged(event: SensorEvent?) {
-    event?.let {
-      if (it.sensor.type == Sensor.TYPE_HEART_RATE) {
-        val heartRate = it.values[0].toInt()
-        Log.d(Constants.TAG, "Heart rate: $heartRate")
-        sendHeartRate(heartRate)
-
-        // 심박수 데이터를 로컬 브로드캐스트로 전송
-        val intent = Intent("HeartRateUpdate")
-        intent.putExtra("heartRate", heartRate)
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
-      }
-    }
-  }
-
   // onDestroy 메서드
   override fun onDestroy() {
     super.onDestroy()
@@ -199,6 +183,7 @@ class ForegroundService : Service(), HeartRateManager.HeartRateListener {
     heartRateCallback = null
   }
 
+  // HRV 지표를 처리하는 메서드 (수정됨)
   private fun processHrvMetrics(hrvMetrics: FloatArray) {
     // PyTorch 모델 실행
     val result = PytorchModelUtils.runModel(this, hrvMetrics)
@@ -206,10 +191,32 @@ class ForegroundService : Service(), HeartRateManager.HeartRateListener {
 
     // 모델 출력 값이 0.5 이상인지 확인
     if (result.isNotEmpty() && result[0] >= 0.5f) {
-      Log.d(Constants.TAG, "모델 결과가 0.5 이상입니다. RequestActivity를 실행합니다.")
+      Log.d(Constants.TAG, "모델 결과가 0.5 이상입니다. EMERGENCY 메시지를 전송합니다.")
+      sendEmergencyMessage(result[0])
       startRequestActivity()
     } else {
       Log.d(Constants.TAG, "모델 결과가 0.5 미만입니다. 아무 작업도 수행하지 않습니다.")
+    }
+  }
+
+  // EMERGENCY 메시지를 전송하는 메서드 (새로 추가됨)
+  private fun sendEmergencyMessage(modelResult: Float) {
+    nodeId?.let {
+      val jsonObject = JSONObject().apply {
+        put("title", "EMERGENCY")
+        put("content", modelResult)
+      }
+      val message = jsonObject.toString().toByteArray()
+
+      messageClient.sendMessage(it, Constants.NOTI_PUSH_PATH, message)
+        .addOnSuccessListener {
+          Log.d(Constants.TAG, "EMERGENCY 메시지 전송 성공: $modelResult")
+        }
+        .addOnFailureListener { e ->
+          Log.e(Constants.TAG, "EMERGENCY 메시지 전송 실패: ${e.message}")
+        }
+    } ?: run {
+      Log.e(Constants.TAG, "Node ID is null. Emergency message not sent.")
     }
   }
 
@@ -220,8 +227,6 @@ class ForegroundService : Service(), HeartRateManager.HeartRateListener {
     startActivity(intent)
     Log.d(Constants.TAG, "RequestActivity를 실행했습니다.")
   }
-
-
 
   override fun onBind(intent: Intent?): IBinder? = null
 }
