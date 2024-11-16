@@ -35,6 +35,7 @@ export default function RecodingContent({ closeModal }: RecodingContentProps) {
     queryFn: () => getAiVocieData(),
   });
 
+  // 에러 발생 시 처리
   useEffect(() => {
     if (isError && error) {
       setErrorContext(error instanceof Error ? error.message : '데이터 요청 중 오류가 발생했습니다.');
@@ -42,52 +43,44 @@ export default function RecodingContent({ closeModal }: RecodingContentProps) {
     }
   }, [isError, error]);
 
-  const requestVoiceFromApp = () => {
-    window.ReactNativeWebView?.postMessage(
-      JSON.stringify({
-        title: 'AIVOICE',
-        content: null,
-      }),
-    );
-
-    const handleMessage = (event: MessageEvent) => {
-      try {
-        const parsedMessage = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
-        if (parsedMessage.title === 'AIVOICE') {
-          setSelectedVoiceKey(parsedMessage.content);
-        }
-      } catch (error) {
-        console.error('Failed to parse message:', error);
-        setErrorContext('앱으로부터 데이터를 받는 데 실패했습니다.');
-        setIsErrorModalOpen(true);
-      }
-    };
-
-    window.addEventListener('message', handleMessage);
-
-    return () => {
-      window.removeEventListener('message', handleMessage);
-    };
-  };
-
-  // 모달이 열릴 때마다 앱에서 목소리 설정을 요청
+  // 목소리 요청 및 이벤트 핸들링
   useEffect(() => {
+    const requestVoiceFromApp = () => {
+      window.ReactNativeWebView?.postMessage(
+        JSON.stringify({
+          title: 'AIVOICE',
+          content: null,
+        }),
+      );
+
+      const handleMessage = (event: MessageEvent) => {
+        try {
+          const parsedMessage = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
+          if (parsedMessage.title === 'AIVOICE') {
+            setSelectedVoiceKey(parsedMessage.content || null);
+          }
+        } catch (error) {
+          console.error('Failed to parse message:', error);
+          setErrorContext('앱으로부터 데이터를 받는 데 실패했습니다.');
+          setIsErrorModalOpen(true);
+        }
+      };
+
+      window.addEventListener('message', handleMessage);
+
+      return () => {
+        window.removeEventListener('message', handleMessage);
+      };
+    };
+
     requestVoiceFromApp();
     queryClient.invalidateQueries({ queryKey: [queryKeys.AIVOICE] });
-  }, []);
+  }, [queryClient]);
 
-  const handleRetry = () => {
-    setIsErrorModalOpen(false);
-    refetch();
-  };
-
-  const handleSelect = (voiceKey: string) => {
-    setSelectedVoiceKey(prevKey => (prevKey === voiceKey ? null : voiceKey));
-  };
-
-  // selectedVoiceKey가 변경될 때 음성 재생
+  // selectedVoiceKey 변경 시 음성 재생
   useEffect(() => {
     if (!selectedVoiceKey) return;
+
     const preVoice = `https://ddasoom.s3.ap-southeast-2.amazonaws.com/${selectedVoiceKey}-SAMPLE_001.mp3`;
     const audio = new Audio(preVoice);
 
@@ -97,6 +90,15 @@ export default function RecodingContent({ closeModal }: RecodingContentProps) {
       setIsErrorModalOpen(true);
     });
   }, [selectedVoiceKey]);
+
+  const handleRetry = () => {
+    setIsErrorModalOpen(false);
+    refetch();
+  };
+
+  const handleSelect = (voiceKey: string) => {
+    setSelectedVoiceKey(prevKey => (prevKey === voiceKey ? null : voiceKey));
+  };
 
   const goToRecodingPage = () => {
     router.push('/main/setting/recoding');
