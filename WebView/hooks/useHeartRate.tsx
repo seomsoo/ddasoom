@@ -6,14 +6,17 @@ const eventEmitter = new NativeEventEmitter(HeartRateModule);
 
 export const useHeartRate = (callback: (heartRate: string) => void) => {
   useEffect(() => {
-    const subscription = eventEmitter.addListener("onHeartRateReceived", (heartRate: string) => {
-      console.log("Received heart rate:", heartRate);
+    const subscriptionHeartRate = eventEmitter.addListener("onHeartRateReceived", (heartRate: string) => {
       callback(heartRate);
+    });
+    const subscriptionEmergency = eventEmitter.addListener("onEmergencyReceived", (message: string) => {
+      callback(message);
     });
 
     // Cleanup subscription
     return () => {
-      subscription.remove();
+      subscriptionHeartRate.remove();
+      subscriptionEmergency.remove();
     };
   }, [callback]);
 };
