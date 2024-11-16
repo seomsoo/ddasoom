@@ -1,27 +1,36 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  TextInput,
-  ScrollView,
-  KeyboardAvoidingView,
-  Platform,
-  ToastAndroid,
-} from "react-native";
+import { ScrollView, Platform, ToastAndroid } from "react-native";
 import React, { useEffect, useState } from "react";
-import styled from "styled-components/native";
 import useGeocoding from "@/hooks/useGeocoding";
 import useLocation from "@/hooks/useLocation";
 import { router, useLocalSearchParams } from "expo-router";
 import { getLocalISOString, timeFormat } from "@/utils/timeFormat";
 import useNotificationStore from "@/zustand/notificationStore";
-import { scheduleLocalNotification, sendPushNotification } from "@/utils/notifications";
+import { scheduleLocalNotification } from "@/utils/notifications";
 import { savePanicInfoToStorage } from "@/storage/panic";
 import useAuthStore from "@/zustand/authStore";
 import * as Network from "expo-network";
 import usePhoneStore from "@/zustand/contactStore";
 import { postPhoneMessageToList } from "@/services/phone";
 import { postPanicAtFirst } from "@/services/panic";
+import {
+  KeyboardAvoidingContainer,
+  InnerContainer,
+  Title,
+  InfoBox,
+  InfoContent,
+  InfoTextLeft,
+  InfoTextRight,
+  InputContainer,
+  LabelContainer,
+  InputLabel,
+  OptionalText,
+  TextInputBox,
+  ButtonBox,
+  Button,
+  ButtonText,
+  CancelBox,
+  CancelText,
+} from "./_breathEndModal.styles";
 
 const PANIC_TIME = 10;
 
@@ -175,119 +184,3 @@ const BreathEndModal = () => {
 };
 
 export default BreathEndModal;
-
-const KeyboardAvoidingContainer = styled(KeyboardAvoidingView)`
-  flex: 1;
-`;
-const InnerContainer = styled(View)`
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  gap: 10px;
-  flex: 1;
-`;
-
-const Title = styled(Text)`
-  font-size: 40px;
-  color: #333;
-  margin: 0px 0px 20px 0px;
-  font-family: hakgyoansimRegular;
-`;
-
-const InfoBox = styled(View)`
-  width: 100%;
-  min-height: 250px;
-  justify-content: center;
-  background-color: #f8fcf6;
-  border-radius: 12px;
-  padding: 45px 20px;
-  border: 1.5px solid ${(props: any) => props.theme.color.MAIN1};
-  margin-bottom: 20px;
-  gap: 30px;
-`;
-
-const InfoContent = styled(Text)`
-  width: 100%;
-  justify-content: center;
-  flex-direction: row;
-  gap: 40px;
-  font-family: nanumSquareNeoRegular;
-`;
-
-const InfoTextLeft = styled(Text)`
-  font-size: 18px;
-  color: #333;
-  font-weight: 600;
-  font-family: nanumSquareNeoRegular;
-`;
-const InfoTextRight = styled(Text)`
-  font-size: 18px;
-  color: #333;
-  font-weight: 400;
-  font-family: nanumSquareNeoRegular;
-`;
-
-const InputContainer = styled(View)`
-  width: 100%;
-  margin-bottom: 20px;
-`;
-
-const LabelContainer = styled(View)`
-  flex-direction: row;
-  align-items: center;
-  padding: 4px;
-  justify-content: flex-start;
-  gap: 10px;
-  margin-bottom: 8px;
-`;
-
-const InputLabel = styled(Text)`
-  font-size: 18px;
-  font-family: nanumSquareNeoRegular;
-`;
-
-const OptionalText = styled(Text)`
-  color: #a8a8a8;
-  font-size: 18px;
-  font-family: nanumSquareNeoRegular;
-`;
-
-const TextInputBox = styled(TextInput)`
-  background-color: #f8fcf6;
-  padding: 10px;
-  border-radius: 10px;
-  border: 1.5px solid ${(props: any) => props.theme.color.MAIN1};
-  font-size: 16px;
-  color: #333;
-  font-family: nanumSquareNeoRegular;
-`;
-
-const ButtonBox = styled(View)`
-  width: 100%;
-  gap: 10px;
-  justify-content: center;
-`;
-
-const Button = styled(TouchableOpacity)`
-  width: 100%;
-  background-color: ${(props: any) => props.theme.color.MAIN1};
-  padding: 15px;
-  border-radius: 10px;
-  align-items: center;
-`;
-
-const ButtonText = styled(Text)`
-  color: white;
-  font-size: 20px;
-  font-family: nanumSquareNeoRegular;
-`;
-
-const CancelBox = styled(TouchableOpacity)`
-  align-items: center;
-`;
-
-const CancelText = styled(Text)`
-  color: #9c9c9c;
-  font-size: 16px;
-  font-family: nanumSquareNeoRegular;
-`;
