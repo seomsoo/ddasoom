@@ -15,6 +15,7 @@ export default function SelfDiagnosisProgress({ progressCount, totalPanicDoubtCo
   const percentage = progressCount ? Math.round((totalPanicDoubtCount / progressCount) * 100) : 0;
 
   const getStatusText = () => {
+    if (percentage == 0) return '결과 없음';
     if (percentage <= 20) return '양호';
     if (percentage <= 40) return '주의';
     if (percentage <= 60) return '심각';
@@ -28,6 +29,7 @@ export default function SelfDiagnosisProgress({ progressCount, totalPanicDoubtCo
     if (percentage > 60) return ['#c4b5fd', '#a78bfa', '#7c3aed', '#5b21b6', '#e5e7eb'];
     if (percentage > 40) return ['#c4b5fd', '#a78bfa', '#7c3aed', '#e5e7eb', '#e5e7eb'];
     if (percentage > 20) return ['#c4b5fd', '#a78bfa', '#e5e7eb', '#e5e7eb', '#e5e7eb'];
+    if (percentage == 0) return ['#e5e7eb', '#e5e7eb', '#e5e7eb', '#e5e7eb', '#e5e7eb'];
     return ['#c4b5fd', '#e5e7eb', '#e5e7eb', '#e5e7eb', '#e5e7eb'];
   };
 
