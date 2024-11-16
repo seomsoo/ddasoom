@@ -33,8 +33,18 @@ export default function GroundingTraining() {
     return { id: randomItem.id, question: randomItem.question, gif: randomItem.gif, sound: randomItem.sound };
   };
 
+  const requestVoiceFromApp = () => {
+    window.ReactNativeWebView?.postMessage(
+      JSON.stringify({
+        title: 'AIVOICE',
+        content: null,
+      }),
+    );
+  };
+
   // 앱에서 VoiceKey 받아오기
   useEffect(() => {
+    requestVoiceFromApp();
     const handleMessage = (event: MessageEvent) => {
       try {
         const parsedMessage = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
