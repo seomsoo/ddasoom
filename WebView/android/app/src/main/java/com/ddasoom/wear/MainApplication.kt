@@ -1,5 +1,7 @@
 package com.ddasoom.wear
 
+import android.os.Build
+
 import android.app.Application
 import android.content.Intent
 import android.content.res.Configuration
@@ -44,19 +46,23 @@ class MainApplication : Application(), ReactApplication {
     super.onCreate()
     SoLoader.init(this, false)
 
-    // Firebase 초기화 코드 추가
-        FirebaseApp.initializeApp(this) // Firebase 초기화 코드 추가
+    // Firebase 초기화
+    FirebaseApp.initializeApp(this)
 
-//    // MessageService 시작
-//    val serviceIntent = Intent(this, MessageService::class.java)
-//    startService(serviceIntent)
+    // MessageService 시작
+    val serviceIntent = Intent(this, MessageService::class.java)
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        startForegroundService(serviceIntent)
+    } else {
+        startService(serviceIntent)
+    }
 
     if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
-      // If you opted-in for the New Architecture, we load the native entry point for this app.
-      load()
+        load()
     }
     ApplicationLifecycleDispatcher.onApplicationCreate(this)
-  }
+}
+
 
   override fun onConfigurationChanged(newConfig: Configuration) {
     super.onConfigurationChanged(newConfig)

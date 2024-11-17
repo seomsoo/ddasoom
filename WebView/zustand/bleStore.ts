@@ -1,11 +1,11 @@
-// useBleStore.ts
 import { create } from "zustand";
 import { BleManager, Device } from "react-native-ble-plx";
 import { Buffer } from "buffer";
 import { requestPermissions } from "@/utils/ble";
 import { Alert, ToastAndroid } from "react-native";
 
-const bleManager = new BleManager();
+// BleManager 인스턴스 타입을 'BleManager | null'로 설정
+let bleManager: BleManager | null = new BleManager();
 
 interface BleStore {
   ledServiceUUID: string;
@@ -14,6 +14,8 @@ interface BleStore {
   connectedDevice: Device | null;
   isScanning: boolean;
   isLedOn: boolean;
+  initializeBleManager: () => void;
+  destroyBleManager: () => void;
   startScan: () => Promise<void>;
   stopScan: () => void;
   connectToDevice: (device: Device) => Promise<void>;
@@ -31,6 +33,23 @@ export const useBleStore = create<BleStore>((set, get) => ({
   ledServiceUUID: "9c73e86c-0837-49c0-9a26-ed299e12caf1",
   ledCharacteristicUUID: "4ed65ae1-31dc-4a36-8164-0fd01cb015de",
 
+  // BleManager 초기화
+  initializeBleManager: () => {
+    if (!bleManager) {
+      bleManager = new BleManager();
+      console.log("BleManager initialized");
+    }
+  },
+
+  // BleManager 파괴
+  destroyBleManager: () => {
+    if (bleManager) {
+      bleManager.destroy();
+      bleManager = null;
+      console.log("BleManager destroyed");
+    }
+  },
+
   startScan: async () => {
     const isGranted = await requestPermissions();
     if (!isGranted) {
@@ -39,7 +58,7 @@ export const useBleStore = create<BleStore>((set, get) => ({
     }
 
     set({ isScanning: true, devices: [] }); // 스캔 시작 시 devices 초기화
-    bleManager.startDeviceScan([get().ledServiceUUID], null, (error, device) => {
+    bleManager?.startDeviceScan([get().ledServiceUUID], null, (error, device) => {
       if (error) {
         console.log("스캔 에러:", error);
         set({ isScanning: false }); // 에러 발생 시 스캔 중지
@@ -61,13 +80,15 @@ export const useBleStore = create<BleStore>((set, get) => ({
   },
 
   stopScan: () => {
-    bleManager.stopDeviceScan();
+    bleManager?.stopDeviceScan(); // null-safe 연산자 사용
     set({ isScanning: false });
   },
 
   connectToDevice: async (device: Device) => {
     try {
-      const connectedDevice = await bleManager.connectToDevice(device.id);
+      const connectedDevice = await bleManager?.connectToDevice(device.id);
+      if (!connectedDevice) return;
+
       await connectedDevice.discoverAllServicesAndCharacteristics();
       set({ connectedDevice });
       get().stopScan(); // 연결 성공 시 스캔 중지
@@ -95,7 +116,7 @@ export const useBleStore = create<BleStore>((set, get) => ({
         const buffer = Buffer.from([value]);
         const base64Value = buffer.toString("base64");
 
-        await bleManager.writeCharacteristicWithResponseForDevice(
+        await bleManager?.writeCharacteristicWithResponseForDevice(
           connectedDevice.id,
           ledServiceUUID,
           ledCharacteristicUUID,
