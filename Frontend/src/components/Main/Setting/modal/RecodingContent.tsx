@@ -91,7 +91,7 @@ export default function RecodingContent({ closeModal }: RecodingContentProps) {
       })
       .catch(error => {
         console.error('Audio playback failed:', error);
-        setIsLoading(false);
+        setIsLoading(true);
       });
   };
 
