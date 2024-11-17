@@ -1,5 +1,7 @@
 package com.ddasoom.wear
 
+import android.os.Build
+
 import android.util.Log
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
@@ -10,6 +12,7 @@ import com.google.android.gms.wearable.MessageClient
 import com.google.android.gms.wearable.MessageEvent
 import com.google.android.gms.wearable.Wearable
 import org.json.JSONObject
+import android.content.Intent
 
 class ModuleTest(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext), MessageClient.OnMessageReceivedListener {
 
@@ -65,6 +68,16 @@ class ModuleTest(reactContext: ReactApplicationContext) : ReactContextBaseJavaMo
                 .emit(eventName, data)
         } catch (e: Exception) {
             Log.e(TAG, "Failed to send event to JS", e)
+        }
+    }
+
+    @ReactMethod
+    fun startForegroundService() {
+        val intent = Intent(reactApplicationContext, MessageService::class.java)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            reactApplicationContext.startForegroundService(intent)
+        } else {
+            reactApplicationContext.startService(intent)
         }
     }
 

@@ -125,7 +125,7 @@ class ForegroundService : Service(), HeartRateManager.HeartRateListener {
 
   // 심박수 변경 시 호출되는 메서드
   override fun onHeartRateChanged(heartRate: Int) {
-    sendHeartRate(heartRate)
+//    sendHeartRate(heartRate)
     // 심박수 데이터 콜백 호출
     heartRateCallback?.invoke(heartRate)
 
@@ -151,25 +151,25 @@ class ForegroundService : Service(), HeartRateManager.HeartRateListener {
   }
 
   // 심박수 데이터를 전송하는 메서드 (수정됨)
-  private fun sendHeartRate(heartRate: Int) {
-    nodeId?.let {
-      val jsonObject = JSONObject().apply {
-        put("title", "bpm")
-        put("content", heartRate)
-      }
-      val message = jsonObject.toString().toByteArray()
-
-      messageClient.sendMessage(it, Constants.NOTI_PUSH_PATH, message)
-        .addOnSuccessListener {
-          Log.d(Constants.TAG, "심박수 데이터 전송 성공: $heartRate")
-        }
-        .addOnFailureListener { e ->
-          Log.e(Constants.TAG, "심박수 데이터 전송 실패: ${e.message}")
-        }
-    } ?: run {
-      Log.e(Constants.TAG, "Node ID is null. Message not sent.")
-    }
-  }
+//  private fun sendHeartRate(heartRate: Int) {
+//    nodeId?.let {
+//      val jsonObject = JSONObject().apply {
+//        put("title", "bpm")
+//        put("content", heartRate)
+//      }
+//      val message = jsonObject.toString().toByteArray()
+//
+//      messageClient.sendMessage(it, Constants.NOTI_PUSH_PATH, message)
+//        .addOnSuccessListener {
+//          Log.d(Constants.TAG, "심박수 데이터 전송 성공: $heartRate")
+//        }
+//        .addOnFailureListener { e ->
+//          Log.e(Constants.TAG, "심박수 데이터 전송 실패: ${e.message}")
+//        }
+//    } ?: run {
+//      Log.e(Constants.TAG, "Node ID is null. Message not sent.")
+//    }
+//  }
 
   // onDestroy 메서드
   override fun onDestroy() {
@@ -192,7 +192,7 @@ class ForegroundService : Service(), HeartRateManager.HeartRateListener {
     // 모델 출력 값이 0.5 이상인지 확인
     if (result.isNotEmpty() && result[0] >= 0.5f) {
       Log.d(Constants.TAG, "모델 결과가 0.5 이상입니다. EMERGENCY 메시지를 전송합니다.")
-      sendEmergencyMessage(result[0])
+//      sendEmergencyMessage(result[0])
       startRequestActivity()
     } else {
       Log.d(Constants.TAG, "모델 결과가 0.5 미만입니다. 아무 작업도 수행하지 않습니다.")

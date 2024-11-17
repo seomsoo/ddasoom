@@ -6,6 +6,7 @@ const AppLayout = () => {
       <Stack.Screen name="(login)" />
       <Stack.Screen name="authorized" />
       <Stack.Screen name="breath" />
+      <Stack.Screen name="sos" />
     </Stack>
   );
 };
