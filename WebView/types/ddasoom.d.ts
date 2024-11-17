@@ -61,5 +61,5 @@ interface LocalNotiDto {
   title: string;
   body: string;
   seconds: number;
-  data?: CustomLocalData;
+  data?: CustomLocalData | any;
 }
