@@ -6,7 +6,6 @@ import { useEffect, useState } from 'react';
 import Button from '@/components/Common/Button';
 import ErrorModal from '@/components/Common/ErrorModal';
 import { groundingData } from '@/constants/GroundingData';
-import Mic from '@/svgs/groundingMic.svg';
 
 import AnswerInput from './AnserInput';
 import ProgressBar from './ProgressBar';
@@ -140,7 +139,6 @@ export default function GroundingTraining() {
           <AnswerInput value={inputValue} onChange={e => setInputValue(e.target.value)} />
         </>
       )}
-      <Mic className="my-4" />
       <div className="w-[328px] mt-4">
         <Button label={step < totalSteps ? '다음' : '완료'} onClick={handleNextStep} disabled={!inputValue.trim()} />
       </div>
