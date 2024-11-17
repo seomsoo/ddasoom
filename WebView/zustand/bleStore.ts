@@ -54,13 +54,10 @@ export const useBleStore = create<BleStore>((set, get) => ({
       }
     });
 
-    // 10초 후 스캔 중지
+    // 5초 후 스캔 중지
     setTimeout(() => {
       get().stopScan();
-      if (get().devices.length === 0) {
-        ToastAndroid.show("주변에 연결 가능한 따솜이가 없어요...", 1000);
-      }
-    }, 3000);
+    }, 5000);
   },
 
   stopScan: () => {
