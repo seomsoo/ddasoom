@@ -49,7 +49,6 @@ const Main = () => {
       setUserName(name);
       setUserId(userId);
       console.log("로그인 성공. 토큰 : ", token);
-      // Alert.alert("로그인 성공");
       router.push("(app)/authorized");
     } catch (e: unknown) {
       const error = e as DdasoomError;
@@ -58,7 +57,6 @@ const Main = () => {
       if (errorCode === 404) {
         // Alert.alert("회원가입 필요");
         router.push("(app)/(login)/signupModal");
-        // router.push("authorized");
       } else {
         console.error(errorCode);
         ToastAndroid.show("로그인 오류가 발생했습니다.", 3000);
