@@ -3,7 +3,7 @@ import { create } from "zustand";
 import { BleManager, Device } from "react-native-ble-plx";
 import { Buffer } from "buffer";
 import { requestPermissions } from "@/utils/ble";
-import { Alert } from "react-native";
+import { Alert, ToastAndroid } from "react-native";
 
 const bleManager = new BleManager();
 
@@ -58,9 +58,9 @@ export const useBleStore = create<BleStore>((set, get) => ({
     setTimeout(() => {
       get().stopScan();
       if (get().devices.length === 0) {
-        Alert.alert("따솜이 검색 결과", "주변에 따솜이가 없어요...");
+        ToastAndroid.show("주변에 연결 가능한 따솜이가 없어요...", 1000);
       }
-    }, 10000);
+    }, 3000);
   },
 
   stopScan: () => {
@@ -74,10 +74,10 @@ export const useBleStore = create<BleStore>((set, get) => ({
       await connectedDevice.discoverAllServicesAndCharacteristics();
       set({ connectedDevice });
       get().stopScan(); // 연결 성공 시 스캔 중지
-      Alert.alert("연결 성공", `${connectedDevice.name}에 연결되었습니다.`);
+      ToastAndroid.show(`${connectedDevice.name}에 연결했어요.`, 3000);
     } catch (error) {
       console.log("연결 에러:", error);
-      Alert.alert("따솜이 연결이 실패했어요.", "기기 연결에 실패했습니다.");
+      ToastAndroid.show("따솜이 연결에 실패했어요.", 3000);
     }
   },
 
@@ -86,7 +86,7 @@ export const useBleStore = create<BleStore>((set, get) => ({
     if (connectedDevice) {
       await connectedDevice.cancelConnection();
       set({ connectedDevice: null, isLedOn: false });
-      Alert.alert("연결 해제", "기기 연결이 해제되었습니다.");
+      ToastAndroid.show("따솜이 연결이 해제됐어요.", 3000);
     }
   },
 
@@ -106,10 +106,10 @@ export const useBleStore = create<BleStore>((set, get) => ({
         );
 
         set({ isLedOn: !isLedOn });
-        Alert.alert("LED 상태 변경", isLedOn ? "원래대로 돌아왔어요." : "따뜻한 따솜이가 되었어요.");
+        ToastAndroid.show(isLedOn ? "다시 차가운 따솜이가 됐어요." : "따뜻한 따솜이가 되었어요.", 3000);
       } catch (error) {
         console.log("LED 제어 에러:", error);
-        Alert.alert("LED 제어 실패", "LED 상태를 변경할 수 없습니다.");
+        ToastAndroid.show("따솜이가 따뜻해질 수 없어요...", 3000);
       }
     }
   },
