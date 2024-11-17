@@ -27,24 +27,12 @@ export default function Character({ level, currentInteractionGif, currentInterac
             };
       const sizeClass = currentInteractionType ? sizeClasses[currentInteractionType] : 'w-32 h-36';
 
-      return (
-        <img
-          src={currentInteractionGif}
-          className={`${sizeClass} transition-opacity duration-300 ease-in-out`}
-          alt={`${currentInteractionType} GIF`}
-        />
-      );
+      return <img src={currentInteractionGif} className={`${sizeClass} `} alt={`${currentInteractionType} GIF`} />;
     }
 
     const levelImages = [Lv1, Lv2, Lv3];
     const defaultImage = levelImages[level - 1]?.src || Lv1.src;
-    return (
-      <img
-        src={defaultImage}
-        className="w-28 h-32 mt-2 transition-transform duration-300 ease-in-out"
-        alt={`Level ${level} Character`}
-      />
-    );
+    return <img src={defaultImage} className="w-28 h-32 mt-2 " alt={`Level ${level} Character`} />;
   };
 
   const getBalloonText = () => {
