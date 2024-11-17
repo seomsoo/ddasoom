@@ -62,6 +62,15 @@ export default function NearbyHospitalsMap() {
     }
   };
 
+  useEffect(() => {
+    window.ReactNativeWebView?.postMessage(
+      JSON.stringify({
+        title: 'GPS',
+        content: null,
+      }),
+    );
+  }, []);
+
   // WebView에서 GPS 위치 메시지 수신
   useEffect(() => {
     const handleMessage = async (event: MessageEvent) => {
