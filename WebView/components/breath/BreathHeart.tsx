@@ -1,4 +1,3 @@
-// BreathCircle.tsx
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { View, Text, Vibration } from "react-native";
 import {
@@ -16,7 +15,7 @@ import {
   AnimationBackground,
   StopButton,
   StopButtonText,
-} from "./BreathHeart.styles"; // 스타일 임포트
+} from "./BreathHeart.styles";
 import FooterSVG from "@/assets/svgs/breathfooter.svg";
 import StartBasic from "@/assets/videos/start478.gif";
 import StartLong from "@/assets/videos/start573.gif";
@@ -29,7 +28,6 @@ import { Image } from "expo-image";
 import { router } from "expo-router";
 import useVoiceKeyStore from "@/zustand/voiceKeyStore";
 import { Audio } from "expo-av";
-import * as Network from "expo-network";
 
 interface BreathCircleProps {
   breathType: "shortTime" | "basicTime" | "longTime";
@@ -48,9 +46,8 @@ const BreathCircle = ({ breathType }: BreathCircleProps) => {
   const [stageProgress, setStageProgress] = useState<number[]>([]);
   const [preparationIndex, setPreparationIndex] = useState(0);
   const [totalTimer, setTotalTimer] = useState(0);
-  const [animationGIF, setAnimationGIF] = useState(StartBasic); // GIF 소스 상태 관리
-  const [stageStartTime, setStageStartTime] = useState<number | null>(null); // 스테이지 시작 시간 초기화
-  const [sound, setSound] = useState();
+  const [animationGIF, setAnimationGIF] = useState(StartBasic);
+  const [stageStartTime, setStageStartTime] = useState<number | null>(null);
   const { voiceKey } = useVoiceKeyStore();
 
   const sequence = useMemo(() => breathData[breathType].stages, [breathType]);
@@ -58,22 +55,56 @@ const BreathCircle = ({ breathType }: BreathCircleProps) => {
   const preparationIntervalRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const countdownIntervalRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const progressIntervalRef = useRef<NodeJS.Timeout | undefined>(undefined);
-  const totalTimerIntervalRef = useRef<NodeJS.Timeout | undefined>(undefined); // 총 타이머 기록용 ref
+  const totalTimerIntervalRef = useRef<NodeJS.Timeout | undefined>(undefined);
+  const voiceIntervalRef = useRef<NodeJS.Timeout | undefined>(undefined);
+  const currentSoundRef = useRef<Audio.Sound | null>(null); // 현재 재생 중인 소리 객체 저장
 
   // 종료 버튼 누르면 타이머 및 누적 시간 종료
   const handleStop = () => {
-    if (countdownIntervalRef.current) clearInterval(countdownIntervalRef.current);
-    if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
-    if (totalTimerIntervalRef.current) clearInterval(totalTimerIntervalRef.current); // 누적 시간 기록 종료
-
-    Vibration.cancel();
+    clearAllIntervals();
     setIsAnimating(false);
+    Vibration.cancel();
+
+    if (currentSoundRef.current) {
+      currentSoundRef.current.stopAsync();
+      currentSoundRef.current.unloadAsync();
+      currentSoundRef.current = null;
+    }
+
     console.log(`총 누적 시간: ${totalTimer}초`);
     router.push(`/breath/breathEndModal?totalTime=${totalTimer}`);
   };
 
+  // 모든 인터벌을 정리하는 함수
+  const clearAllIntervals = () => {
+    if (countdownIntervalRef.current) clearInterval(countdownIntervalRef.current);
+    if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+    if (totalTimerIntervalRef.current) clearInterval(totalTimerIntervalRef.current);
+    if (preparationIntervalRef.current) clearInterval(preparationIntervalRef.current);
+    if (voiceIntervalRef.current) clearInterval(voiceIntervalRef.current);
+  };
+
+  const playSound = async (voiceKey: string, fileId: number) => {
+    const sound = new Audio.Sound();
+    const soundUrl = `https://ddasoom.s3.ap-southeast-2.amazonaws.com/${voiceKey}-EMERGENCY_${String(fileId).padStart(3, "0")}.mp3`;
+
+    try {
+      // 현재 재생 중인 소리 중지 및 해제
+      // if (currentSoundRef.current) {
+      //   await currentSoundRef.current.stopAsync();
+      //   await currentSoundRef.current.unloadAsync();
+      // }
+
+      // 새 소리를 로드 및 재생
+      await sound.loadAsync({ uri: soundUrl });
+      await sound.playAsync();
+      currentSoundRef.current = sound; // 현재 소리 객체 저장
+    } catch (error) {
+      console.log("소리 재생 오류:", error);
+    }
+  };
+
   useEffect(() => {
-    // breathType에 따라 초기 GIF 소스를 설정합니다.
     switch (breathType) {
       case "basicTime":
         setAnimationGIF(StartBasic);
@@ -85,12 +116,30 @@ const BreathCircle = ({ breathType }: BreathCircleProps) => {
         setAnimationGIF(StartShort);
         break;
       default:
-        setAnimationGIF(StartBasic); // 기본값 설정
+        setAnimationGIF(StartBasic);
         break;
     }
   }, [breathType]);
 
-  // 초기화 및 준비 단계
+  useEffect(() => {
+    // 7초 간격으로 랜덤 ID의 소리 재생
+    voiceIntervalRef.current = setInterval(async () => {
+      const randomId = Math.floor(Math.random() * 18) + 1; // 1부터 18까지의 랜덤 숫자 생성
+      await playSound(voiceKey, randomId);
+    }, 7000);
+
+    // 컴포넌트가 언마운트될 때 인터벌 해제 및 소리 정리
+    return () => {
+      clearAllIntervals();
+      Vibration.cancel();
+      if (currentSoundRef.current) {
+        currentSoundRef.current.stopAsync();
+        currentSoundRef.current.unloadAsync();
+        currentSoundRef.current = null;
+      }
+    };
+  }, [voiceKey]);
+
   useEffect(() => {
     setIsPreparing(true);
     setPreparationIndex(0);
@@ -99,16 +148,15 @@ const BreathCircle = ({ breathType }: BreathCircleProps) => {
       setPreparationIndex(prev => prev + 1);
     }, 1000);
 
-    const preparationTimeout = setTimeout(() => {
+    const preparationTimeout = setTimeout(async () => {
       if (preparationIntervalRef.current) clearInterval(preparationIntervalRef.current);
       setIsPreparing(false);
       setIsAnimating(true);
       setDescription(sequence[0].description);
       setTimer(Math.ceil(sequence[0].duration / 1000));
       setCurrentStage(0);
-      setStageStartTime(Date.now()); // 스테이지 시작 시간 설정
+      setStageStartTime(Date.now());
 
-      // 호흡 시작과 동시에 누적 시간 기록 시작
       totalTimerIntervalRef.current = setInterval(() => {
         setTotalTimer(prev => prev + 1);
       }, 1000);
@@ -119,73 +167,18 @@ const BreathCircle = ({ breathType }: BreathCircleProps) => {
     }, 3000);
 
     return () => {
-      if (preparationIntervalRef.current) clearInterval(preparationIntervalRef.current);
+      clearAllIntervals();
       clearTimeout(preparationTimeout);
     };
   }, [sequence]);
 
-  const settingSound = async (fileId: number) => {
-    // 네트워크 상태 확인
-    const networkState = await Network.getNetworkStateAsync();
-
-    // 네트워크가 연결되지 않은 경우 로컬 파일 사용
-    // if (!networkState.isConnected) {
-    //   let soundFile;
-
-    //   // fileId에 따라 로컬 파일을 설정합니다.
-    //   switch (fileId) {
-    //     case 1:
-    //       soundFile = require("@/assets/sounds/BREATHING_001.mp3"); // 실제 경로로 수정
-    //       break;
-    //     case 2:
-    //       soundFile = require("@/assets/sounds/BREATHING_002.mp3"); // 실제 경로로 수정
-    //       break;
-    //     case 3:
-    //       soundFile = require("@/assets/sounds/BREATHING_003.mp3"); // 실제 경로로 수정
-    //       break;
-    //     default:
-    //       console.error("Invalid fileId:", fileId);
-    //       return;
-    //   }
-
-    //   try {
-    //     // 로컬 파일을 불러와 재생합니다.
-    //     const { sound } = await Audio.Sound.createAsync(soundFile, { shouldPlay: true });
-    //     await sound.playAsync();
-    //   } catch (error) {
-    //     console.error("Error loading local sound:", error);
-    //   }
-
-    //   return;
-    // }
-
-    // 네트워크가 연결된 경우 원격 파일 사용
-    const soundUrl = `https://ddasoom.s3.ap-southeast-2.amazonaws.com/${voiceKey}-BREATHING_00${fileId}.mp3`;
-    try {
-      // URL을 uri로 전달하여 네트워크에서 사운드를 로드합니다.
-      const { sound } = await Audio.Sound.createAsync(
-        { uri: soundUrl },
-        { shouldPlay: true }, // 로드와 동시에 재생
-      );
-      await sound.playAsync();
-    } catch (error) {
-      console.log("네트워크 파일 로딩 에러:", error);
-    }
-  };
-
-  // 메인 애니메이션 로직
   useEffect(() => {
     if (!isAnimating || isPreparing || stageStartTime === null) return;
 
-    const { duration, fileId } = sequence[currentStage];
+    const { duration } = sequence[currentStage];
     setTimer(Math.ceil(duration / 1000));
 
-    settingSound(fileId);
-
-    // 각 스테이지의 고정 구간 길이 계산
     const segmentLength = circumference / sequence.length - gapLength;
-
-    // 프로그레스 업데이트 간격 (ms)
     const updateInterval = 50;
 
     countdownIntervalRef.current = setInterval(() => {
@@ -205,21 +198,19 @@ const BreathCircle = ({ breathType }: BreathCircleProps) => {
       });
 
       if (elapsedTime >= duration) {
-        if (countdownIntervalRef.current) clearInterval(countdownIntervalRef.current);
-        if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+        clearInterval(countdownIntervalRef.current!);
+        clearInterval(progressIntervalRef.current!);
 
-        // 다음 스테이지로 이동
         setCurrentStage(prevStage => {
           const nextStage = (prevStage + 1) % sequence.length;
           setDescription(sequence[nextStage].description);
           setTimer(Math.ceil(sequence[nextStage].duration / 1000));
-          setStageStartTime(Date.now()); // 다음 스테이지 시작 시간 설정
+          setStageStartTime(Date.now());
 
           if (sequence[nextStage].description === "들이마시기" || sequence[nextStage].description === "내쉬기") {
             Vibration.vibrate(sequence[nextStage].duration);
           }
 
-          // 한 사이클이 끝나면 프로그레스 초기화
           if (nextStage === 0) {
             setStageProgress(Array(sequence.length).fill(0));
           }
@@ -230,8 +221,8 @@ const BreathCircle = ({ breathType }: BreathCircleProps) => {
     }, updateInterval);
 
     return () => {
-      if (countdownIntervalRef.current) clearInterval(countdownIntervalRef.current);
-      if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+      clearInterval(countdownIntervalRef.current!);
+      clearInterval(progressIntervalRef.current!);
     };
   }, [isAnimating, isPreparing, currentStage, sequence, stageStartTime]);
 
@@ -270,7 +261,7 @@ const BreathCircle = ({ breathType }: BreathCircleProps) => {
           }}>
           <AnimationBackground>
             <Image
-              source={isPreparing ? readyImg : animationGIF} // 이미지 소스 변경
+              source={isPreparing ? readyImg : animationGIF}
               style={{ zIndex: 2, width: 230, height: 230, borderRadius: 115 }}
             />
           </AnimationBackground>
