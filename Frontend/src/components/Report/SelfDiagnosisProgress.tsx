@@ -25,12 +25,12 @@ export default function SelfDiagnosisProgress({ progressCount, totalPanicDoubtCo
 
   // 진행률에 따라 색상 적용
   const getBackgroundColor = () => {
-    if (percentage > 80) return ['#c4b5fd', '#a78bfa', '#7c3aed', '#5b21b6', '#4c1d95'];
-    if (percentage > 60) return ['#c4b5fd', '#a78bfa', '#7c3aed', '#5b21b6', '#e5e7eb'];
-    if (percentage > 40) return ['#c4b5fd', '#a78bfa', '#7c3aed', '#e5e7eb', '#e5e7eb'];
-    if (percentage > 20) return ['#c4b5fd', '#a78bfa', '#e5e7eb', '#e5e7eb', '#e5e7eb'];
-    if (percentage === 0) return ['#e5e7eb', '#e5e7eb', '#e5e7eb', '#e5e7eb', '#e5e7eb'];
-    return ['#c4b5fd', '#e5e7eb', '#e5e7eb', '#e5e7eb', '#e5e7eb'];
+    if (percentage > 80) return ['#dcedc8', '#c5e1a5', '#aed581', '#8bc34a', '#466e18'];
+    if (percentage > 60) return ['#dcedc8', '#c5e1a5', '#aed581', '#8bc34a', '#f1f8e9'];
+    if (percentage > 40) return ['#dcedc8', '#c5e1a5', '#aed581', '#f1f8e9', '#f1f8e9'];
+    if (percentage > 20) return ['#dcedc8', '#c5e1a5', '#f1f8e9', '#f1f8e9', '#f1f8e9'];
+    if (percentage === 0) return ['#f1f8e9', '#f1f8e9', '#f1f8e9', '#f1f8e9', '#f1f8e9'];
+    return ['#dcedc8', '#f1f8e9', '#f1f8e9', '#f1f8e9', '#f1f8e9'];
   };
 
   // Chart.js 데이터와 옵션 설정
@@ -40,8 +40,8 @@ export default function SelfDiagnosisProgress({ progressCount, totalPanicDoubtCo
       {
         data: [20, 20, 20, 20, 20],
         backgroundColor: getBackgroundColor(), // 각 부분 색상
-        borderColor: '#ffffff', // 경계선 색상
-        borderWidth: 3, // 경계선 두께
+        borderColor: '#bcfaaa', // 경계선 색상
+        borderWidth: 1, // 경계선 두께
       },
     ],
   };
@@ -67,10 +67,10 @@ export default function SelfDiagnosisProgress({ progressCount, totalPanicDoubtCo
           <span className="text-sm mt-1 ">{getStatusText()}</span>
         </div>
       </div>
-      <p className="flex items-baseline mt-1 text-xxs font-nanumBold text-main3 mt-2">
-        <span className="text-sm text-yellow-300 mr-1 font-nanumBold">{progressCount}번</span>
+      <p className="flex items-baseline text-xxs font-nanumBold text-main3 mt-4">
+        <span className="text-sm text-[#36a53c] mr-1 font-nanumBold">{progressCount}번</span>
         <span>의 자가진단 중</span>
-        <span className="text-sm text-yellow-300 ml-1 font-nanumBold">{totalPanicDoubtCount}번</span> 공황 증상이
+        <span className="text-sm text-[#ff6f6f] mx-1 font-nanumBold">{totalPanicDoubtCount}번</span> 공황 증상이
         의심되었어요.
       </p>
     </div>
