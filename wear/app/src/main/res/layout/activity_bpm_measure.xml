@@ -60,6 +60,18 @@
             android:textSize="17sp"
             android:textColor="@android:color/black"
             android:textAlignment="center" />
+
+        <Button
+            android:id="@+id/button_emergency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:backgroundTint="@color/gray_background"
+            android:text="긴급"
+            android:textColor="@android:color/white"
+            android:background="@drawable/rounded_button_background"/>
     </FrameLayout>
 
 </RelativeLayout>
