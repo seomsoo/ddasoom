@@ -3,6 +3,7 @@ import * as Notifications from "expo-notifications";
 import * as Network from "expo-network";
 import useNotificationStore from "@/zustand/notificationStore";
 import { registerForPushNotificationsAsync } from "@/utils/notifications";
+import { router } from "expo-router";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -38,7 +39,10 @@ const useNotification = () => {
       });
 
       responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-        console.log("Notification response received:", response);
+        const route = response.notification.request.content.data.route;
+        if (route) {
+          router.push(route); // 경로로 이동
+        }
       });
     };
 

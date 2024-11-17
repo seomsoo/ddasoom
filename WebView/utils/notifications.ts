@@ -73,7 +73,7 @@ export async function scheduleLocalNotification({ title, body, seconds, data }: 
     content: {
       title,
       body,
-      data: { customData: "여기에 데이터를 포함할 수 있습니다." },
+      data,
     },
     trigger: { seconds }, // 5초 후에 알림을 보냅니다
   });
