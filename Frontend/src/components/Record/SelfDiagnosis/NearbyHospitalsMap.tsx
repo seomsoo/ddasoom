@@ -32,12 +32,15 @@ export default function NearbyHospitalsMap() {
   const mapRef = useRef<HTMLDivElement>(null);
   const [places, setPlaces] = useState<Place[]>([]);
   const [isExpanded, setIsExpanded] = useState(false);
-  const [receivedLocation, setReceivedLocation] = useState<{ latitude: number; longitude: number } | null>(null);
+  const [receivedLocation, setReceivedLocation] = useState<{ latitude: number; longitude: number }>({
+    latitude: 35.2052474,
+    longitude: 126.8117694,
+  });
 
   const kakaoMapKey = 'db0dd621cffe4388d2816e641f4242d9';
 
   // 기본 위치 설정
-  const defaultLocation = { latitude: 35.2052474, longitude: 126.8117694 };
+  // const defaultLocation = { latitude: 35.2052474, longitude: 126.8117694 };
 
   const panelHeight = 300; // 패널의 높이를 설정
   const bottomOffset = -100; // 패널이 화면 하단에서 살짝 보이도록 설정
@@ -65,20 +68,22 @@ export default function NearbyHospitalsMap() {
       try {
         const parsedMessage = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
         setErrorContext(`parsedMessage:  ${parsedMessage}`);
-        if (parsedMessage.title === 'GPS' && parsedMessage.latitude && parsedMessage.longitude) {
+        if (parsedMessage.title === 'GPS' && parsedMessage.content.latitude && parsedMessage.content.longitude) {
           setReceivedLocation({
-            latitude: parsedMessage.latitude,
-            longitude: parsedMessage.longitude,
+            latitude: parsedMessage.content.latitude,
+            longitude: parsedMessage.content.longitude,
           });
         } else {
           console.log('필요한 title이 아님 또는 content 없음');
-          setErrorContext('parsedMessage.title && parsedMessage.latitude && parsedMessage.longitude 실패');
-          setReceivedLocation(defaultLocation); // 기본 위치 사용
+          setErrorContext(
+            'parsedMessage.title && parsedMessage.content.latitude && parsedMessage.content.longitude 실패',
+          );
+          // setReceivedLocation(defaultLocation); // 기본 위치 사용
         }
       } catch (error) {
         console.error('Failed to parse message:', error);
         setErrorContext('아예 앱으로부터 못 받아옴, 기본 위치 사용');
-        setReceivedLocation(defaultLocation); // 파싱 오류 시 기본 위치 사용
+        // setReceivedLocation(defaultLocation); // 파싱 오류 시 기본 위치 사용
       }
     };
 
@@ -115,7 +120,8 @@ export default function NearbyHospitalsMap() {
   const initializeMap = () => {
     if (!mapRef.current || !window.kakao) return;
 
-    const location = receivedLocation || defaultLocation;
+    // const location = receivedLocation || defaultLocation;
+    const location = receivedLocation;
 
     const map = new window.kakao.maps.Map(mapRef.current, {
       center: new window.kakao.maps.LatLng(location.latitude, location.longitude),
