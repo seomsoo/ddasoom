@@ -13,6 +13,7 @@ import White from '@/svgs/Ddasomiz/whiteSomi.svg';
 import Character from '@/svgs/Ddasomiz/xEyesSomi.svg';
 import Yellow from '@/svgs/Ddasomiz/yellowSomi.svg';
 
+import LoadingModal from '../voice/LoadingModal';
 interface RecodingContentProps {
   closeModal: () => void;
 }
@@ -21,6 +22,7 @@ export default function RecodingContent({ closeModal }: RecodingContentProps) {
   const queryClient = useQueryClient();
   const [selectedVoiceKey, setSelectedVoiceKey] = useState<string | null>(null);
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [errorContext, setErrorContext] = useState<string>('');
   const router = useRouter();
   const icons = [Green, Orange, White, Yellow];
@@ -82,11 +84,15 @@ export default function RecodingContent({ closeModal }: RecodingContentProps) {
     const preVoice = `https://ddasoom.s3.ap-southeast-2.amazonaws.com/${voiceKey}-SAMPLE_001.mp3`;
     const audio = new Audio(preVoice);
 
-    audio.play().catch(error => {
-      console.error('Audio playback failed:', error);
-      setErrorContext('목소리 재생 중 오류가 발생했습니다.');
-      setIsErrorModalOpen(true);
-    });
+    audio
+      .play()
+      .then(() => {
+        setIsLoading(false);
+      })
+      .catch(error => {
+        console.error('Audio playback failed:', error);
+        setIsLoading(false);
+      });
   };
 
   // 보이스 선택 처리
@@ -120,6 +126,7 @@ export default function RecodingContent({ closeModal }: RecodingContentProps) {
 
   return (
     <div className="flex flex-col items-center w-full p-4 max-w-md mx-auto space-y-6">
+      {isLoading && <LoadingModal />}
       {isErrorModalOpen && (
         <ErrorModal onClose={() => setIsErrorModalOpen(false)} onRetry={handleRetry} context={errorContext} />
       )}
