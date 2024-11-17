@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { View, Text, Vibration } from "react-native";
+import { View, Text, Vibration, ImageBackground } from "react-native";
 import {
   Container,
   HeaderContainer,
@@ -21,6 +21,7 @@ import StartBasic from "@/assets/videos/start478.gif";
 import StartLong from "@/assets/videos/start573.gif";
 import StartShort from "@/assets/videos/start4444.gif";
 import readyImg from "@/assets/videos/ready.gif";
+import backGroundImg from "@/assets/images/gradient.png";
 import BreathCircleAnimation from "./BreathCircleAnimation";
 import breathData from "@/constant/BreathData";
 import Header from "./Header";
@@ -123,10 +124,13 @@ const BreathCircle = ({ breathType }: BreathCircleProps) => {
 
   useEffect(() => {
     // 7초 간격으로 랜덤 ID의 소리 재생
+    const randomId = Math.floor(Math.random() * 18) + 1; // 1부터 18까지의 랜덤 숫자 생성
+    playSound(voiceKey, randomId);
+
     voiceIntervalRef.current = setInterval(async () => {
       const randomId = Math.floor(Math.random() * 18) + 1; // 1부터 18까지의 랜덤 숫자 생성
       await playSound(voiceKey, randomId);
-    }, 7000);
+    }, 10000);
 
     // 컴포넌트가 언마운트될 때 인터벌 해제 및 소리 정리
     return () => {
@@ -228,56 +232,58 @@ const BreathCircle = ({ breathType }: BreathCircleProps) => {
 
   return (
     <Container>
-      <HeaderContainer>
-        <Header label="" />
-      </HeaderContainer>
-      <FooterContainer>
-        <FooterSVG />
-      </FooterContainer>
-      <ContentContainer>
-        <TimerContainer>
-          {isPreparing ? (
-            <PreparationContainer>
-              <Text style={{ fontFamily: "hakgyoansimRegular", fontSize: 24 }}>곧 호흡이 시작돼요!</Text>
-              <DotContainer>
-                {[...Array(3)].map((_, idx) => (
-                  <Dot key={idx} active={idx <= preparationIndex} />
-                ))}
-              </DotContainer>
-            </PreparationContainer>
-          ) : (
-            <TextContainer>
-              <DescriptionText>숨 {description}</DescriptionText>
-              <TimerText>{`${timer}초`}</TimerText>
-            </TextContainer>
-          )}
-        </TimerContainer>
-        <View
-          style={{
-            position: "absolute",
-            bottom: 200,
-            justifyContent: "center",
-            alignItems: "center",
-          }}>
-          <AnimationBackground>
-            <Image
-              source={isPreparing ? readyImg : animationGIF}
-              style={{ zIndex: 2, width: 230, height: 230, borderRadius: 115 }}
+      <ImageBackground source={backGroundImg} style={{ width: "100%", height: "100%" }}>
+        <HeaderContainer>
+          <Header label="" />
+        </HeaderContainer>
+        <FooterContainer>
+          <FooterSVG />
+        </FooterContainer>
+        <ContentContainer>
+          <TimerContainer>
+            {isPreparing ? (
+              <PreparationContainer>
+                <Text style={{ fontFamily: "hakgyoansimRegular", fontSize: 24 }}>곧 호흡이 시작돼요!</Text>
+                <DotContainer>
+                  {[...Array(3)].map((_, idx) => (
+                    <Dot key={idx} active={idx <= preparationIndex} />
+                  ))}
+                </DotContainer>
+              </PreparationContainer>
+            ) : (
+              <TextContainer>
+                <DescriptionText>숨 {description}</DescriptionText>
+                <TimerText>{`${timer}초`}</TimerText>
+              </TextContainer>
+            )}
+          </TimerContainer>
+          <View
+            style={{
+              position: "absolute",
+              bottom: 200,
+              justifyContent: "center",
+              alignItems: "center",
+            }}>
+            <AnimationBackground>
+              <Image
+                source={isPreparing ? readyImg : animationGIF}
+                style={{ zIndex: 2, width: 230, height: 230, borderRadius: 115 }}
+              />
+            </AnimationBackground>
+            <BreathCircleAnimation
+              sequenceLength={sequence.length}
+              circumference={circumference}
+              gapLength={gapLength}
+              circleRadius={circleRadius}
+              stageProgress={stageProgress}
+              currentStage={currentStage}
             />
-          </AnimationBackground>
-          <BreathCircleAnimation
-            sequenceLength={sequence.length}
-            circumference={circumference}
-            gapLength={gapLength}
-            circleRadius={circleRadius}
-            stageProgress={stageProgress}
-            currentStage={currentStage}
-          />
-        </View>
-      </ContentContainer>
-      <StopButton onPress={handleStop}>
-        <StopButtonText>괜찮아요</StopButtonText>
-      </StopButton>
+          </View>
+        </ContentContainer>
+        <StopButton onPress={handleStop}>
+          <StopButtonText>괜찮아요</StopButtonText>
+        </StopButton>
+      </ImageBackground>
     </Container>
   );
 };
