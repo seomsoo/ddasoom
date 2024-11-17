@@ -1,8 +1,8 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import React, { useEffect } from 'react';
 
+// import React, { useEffect } from 'react';
 import Button from '@/components/Common/Button';
 interface ResultContextProps {
   isPanicSuspected: boolean;
@@ -12,14 +12,14 @@ export default function ResultButton({ isPanicSuspected }: ResultContextProps) {
   const router = useRouter();
 
   // WebView에서 GPS 요청 메시지 보내기
-  useEffect(() => {
-    window.ReactNativeWebView?.postMessage(
-      JSON.stringify({
-        title: 'GPS',
-        content: null,
-      }),
-    );
-  }, []);
+  // useEffect(() => {
+  //   window.ReactNativeWebView?.postMessage(
+  //     JSON.stringify({
+  //       title: 'GPS',
+  //       content: null,
+  //     }),
+  //   );
+  // }, []);
   const handleMoveMain = () => {
     router.push('/main');
   };
