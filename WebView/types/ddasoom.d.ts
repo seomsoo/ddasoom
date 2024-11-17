@@ -32,7 +32,7 @@ type BreathData = {
 
 type VoiceKey = string;
 
-type RecordMessgae = {
+type RecordMessage = {
   state: "ONAIR" | "STOPAIR" | "OFFAIR";
   name: Name;
 };
