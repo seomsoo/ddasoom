@@ -53,7 +53,7 @@ const Icon = styled(Image)<{ iconPosition: string }>`
 
 const ButtonText = styled(Text)<{ textColor: string }>`
   color: ${({ textColor }: any) => textColor};
-  font-size: 18px;
+  font-size: 16px;
   text-align: center;
   margin-bottom: 3px;
   font-family: nanumSquareNeoRegular;
