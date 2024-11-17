@@ -5,7 +5,7 @@ import { createJSONStorage, persist } from "zustand/middleware";
 const useBreathStore = create<BreathStore>()(
   persist(
     set => ({
-      breathType: "BASIC",
+      breathType: "basicTime",
       breathTime: 0,
       setBreathType: (breathType: BreathType) => set({ breathType }),
       setBreathTime: (time: number) => set({ breathTime: time }),

@@ -13,7 +13,7 @@ const useAuthStore = create<AuthStore>()(
       setUserEmail: (email: Email) => set({ userEmail: email }),
       setUserName: (name: Name) => set({ userName: name }),
       setUserId: (id: UserId) => set({ userId: id }),
-      clearToken: () => set({ token: "" }),
+      clearToken: () => set({ token: "", userEmail: "", userName: "", userId: 0 }),
     }),
     {
       name: "auth-storage",
