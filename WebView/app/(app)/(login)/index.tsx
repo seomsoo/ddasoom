@@ -1,7 +1,7 @@
 import { Text, ImageBackground, ToastAndroid, Pressable, Alert } from "react-native";
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import backGroundImg from "@/assets/images/first.png";
-import mini from "@/assets/images/mini_Ddasom.png";
+import header from "@/assets/images/header.png";
+import mini from "@/assets/videos/mini.gif";
 import kakaoIcon from "@/assets/images/kakao_icon.png";
 import styled from "styled-components/native";
 import Button from "@/components/common/Button";
@@ -11,7 +11,8 @@ import { signIn } from "@/services/auth";
 import useAuthStore from "@/zustand/authStore";
 import { loadBreathTypeFromStorage } from "@/storage/breath";
 import * as Network from "expo-network";
-
+import backGround from "@/assets/videos/back.gif";
+import logoImage from "@/assets/videos/eye.gif";
 const Main = () => {
   const { token, userId, setToken, setUserEmail, setUserName, setUserId } = useAuthStore();
   const [breathType, setBreathType] = useState<BreathType>("basicTime");
@@ -80,14 +81,16 @@ const Main = () => {
 
   return (
     <Container>
-      <ImageBackground source={backGroundImg} style={{ width: "100%", height: "100%" }}>
+      <ImageBackground source={backGround} style={{ width: "100%", height: "100%" }}>
+        <Overlay />
         <FloatingView>
           <Header>
-            <HeaderText>따 숨</HeaderText>
+            <HeaderText source={header} />
           </Header>
-          <LogoView>{/* <Image source={logoImage} style={{ width: 200 }} resizeMode="contain" /> */}</LogoView>
-
-          <Button color="yellow" textColor="black" onPress={handleKaKaoLogin} icon={kakaoIcon} iconPosition="left16">
+          <LogoView>
+            <StyledImage source={logoImage} />
+          </LogoView>
+          <Button color="#FEE500" textColor="black" onPress={handleKaKaoLogin} icon={kakaoIcon} iconPosition="left16">
             카카오 로그인
           </Button>
           <Button color="white" textColor="black" onPress={handleUnauthorized} icon={mini} iconPosition="bottomLeft">
@@ -103,7 +106,14 @@ const Main = () => {
 };
 
 export default Main;
-
+const Overlay = styled.View`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 230, 0, 0.171);
+`;
 const Container = styled.View`
   flex: 1;
 `;
@@ -125,8 +135,17 @@ const Header = styled.View`
   position: absolute;
   top: 150px;
 `;
-const HeaderText = styled(Text)`
-  font-size: 72px;
-  font-family: hakgyoansimRegular;
+const HeaderText = styled.Image`
+  width: 160px;
+  height: 100px;
+  resize-mode: contain;
 `;
-const LogoView = styled.View``;
+const LogoView = styled.View`
+  position: absolute;
+  top: 35%;
+`;
+const StyledImage = styled.Image`
+  width: 250px;
+  height: 250px;
+  resize-mode: contain;
+`;
