@@ -26,7 +26,7 @@ import { setAuthData } from '@/store/authSlice';
 import Bed from '@/svgs/bed.svg';
 import Bookcase from '@/svgs/bookcase.svg';
 import Setting from '@/svgs/setting.svg';
-import SoundOn from '@/svgs/soundOn.svg';
+// import SoundOn from '@/svgs/soundOn.svg';
 
 export default function WithDdasomi() {
   const { token, userId, userName } = useSelector((state: RootState) => state.auth);
@@ -97,11 +97,11 @@ export default function WithDdasomi() {
             <EmergencyModal ContentComponent={EmergencyContent} />
           </article>
           <div className="absolute gap-6 right-6 top-40  flex flex-col">
-            <HelpModal ContentComponent={HelpContent} />
             <Link href="/main/setting">
               <Setting />
             </Link>
-            <SoundOn />
+            <HelpModal ContentComponent={HelpContent} />
+            {/* <SoundOn /> */}
             <MissionModal ContentComponent={MissionContent} />
           </div>
         </div>
