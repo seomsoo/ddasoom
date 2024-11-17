@@ -21,6 +21,7 @@ import { loadBreathTypeFromStorage, saveBreathTypeToStorage } from "@/storage/br
 import { sendMessageToWeb } from "@/utils/sendMessageToWeb";
 import useVoiceKeyStore from "@/zustand/voiceKeyStore";
 import usePhoneStore from "@/zustand/contactStore";
+import BleModal from "@/components/authorized/BleModal";
 
 const AuthedScreen = () => {
   const webViewRef = useRef<WebViewType | null>(null);
@@ -28,6 +29,7 @@ const AuthedScreen = () => {
   const { token, userName, userId, userEmail } = useAuthStore();
   const { voiceKey, setVoiceKey } = useVoiceKeyStore();
   const [modalVisible, setModalVisible] = useState(false);
+  const [bleModalVisible, setBleModalVisible] = useState(false);
   const [breathType, setBreathType] = useState<BreathType>("basicTime");
   const [panicData, setPanicData] = useState<PanicFirstForm | null>(null);
   const [inputText, setInputText] = useState(""); // 모달 입력 상태 추가
@@ -93,11 +95,7 @@ const AuthedScreen = () => {
         }
         return;
       case "ARDSETTING":
-        BackHandler.removeEventListener("hardwareBackPress", backPress);
-        router.push("(app)/ble");
-        return;
-      case "ARD":
-        console.log(content === "ON" ? "아두이노 작동" : "아두이노 끄기");
+        setBleModalVisible(true);
         return;
       case "SOS":
         BackHandler.removeEventListener("hardwareBackPress", backPress);
@@ -190,6 +188,10 @@ const AuthedScreen = () => {
     await deletePanicInfoFromStorage();
   };
 
+  const handleBleCancel = () => {
+    setBleModalVisible(false);
+  };
+
   const checkPushPermission = async () => {
     const isPermission = await checkPushNotificationPermission();
     const data = JSON.stringify({ title: "ISPUSH", content: isPermission });
@@ -244,6 +246,7 @@ const AuthedScreen = () => {
         handleSave={handleSave}
         handleCancel={handleCancel}
       />
+      <BleModal bleModalVisible={bleModalVisible} setBleModalVisible={setBleModalVisible} />
     </>
   );
 };
