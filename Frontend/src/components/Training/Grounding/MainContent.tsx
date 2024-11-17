@@ -83,9 +83,9 @@ export default function GroundingTraining() {
     const groundingAudio = new Audio(groundingURL);
 
     groundingAudio.play().catch(error => {
-      console.error('Failed to play grounding audio:', error);
-      setErrorContext('기본 음성을 재생하는 데 문제가 발생했습니다.');
-      setIsErrorModalOpen(true);
+      // console.error('Failed to play grounding audio:', error);
+      // setErrorContext('기본 음성을 재생하는 데 문제가 발생했습니다.');
+      // setIsErrorModalOpen(true);
     });
 
     return () => {
