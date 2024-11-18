@@ -72,7 +72,7 @@ const BleModal = ({ bleModalVisible, setBleModalVisible }: BleModalProps) => {
                   ))}
                 </View>
               ) : (
-                <View style={{ gap: 10, alignItems: "center" }}>
+                <View style={{ gap: 10, alignItems: "center", justifyContent: "center" }}>
                   <InputLabel>주변에 따솜이가 없어요...</InputLabel>
                   <ModalButton onPress={startScan}>
                     <ButtonText>따솜이 찾기</ButtonText>
@@ -146,7 +146,6 @@ const ModalButton = styled(TouchableOpacity)`
   border-radius: 12px;
   align-items: center;
   justify-content: center;
-  flex: 1;
 `;
 
 const ButtonText = styled(Text)`
