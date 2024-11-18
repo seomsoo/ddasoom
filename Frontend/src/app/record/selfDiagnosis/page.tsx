@@ -1,10 +1,26 @@
+'use client';
+
+import { motion } from 'framer-motion';
 import Link from 'next/link';
 
 import Header from '@/components/Common/Header';
 import Ddasomi from '@/videos/EyeMouse.gif';
+
+const pageVariants = {
+  initial: { x: '100%', opacity: 0 }, // 화면 오른쪽에서 시작
+  animate: { x: 0, opacity: 1 }, // 화면 중앙으로 이동
+  exit: { x: '-100%', opacity: 0 }, // 화면 왼쪽으로 사라짐
+};
+
 export default function SelfDiagnosisPage() {
   return (
-    <div>
+    <motion.div
+      className="flex flex-col"
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      variants={pageVariants}
+      transition={{ duration: 0.5, ease: 'easeInOut' }}>
       <Header label="자가진단" />
       <main className="flex flex-col">
         <section className="flex flex-col justify-center items-center gap-5 mt-14">
@@ -26,6 +42,6 @@ export default function SelfDiagnosisPage() {
           시작하기
         </Link>
       </main>
-    </div>
+    </motion.div>
   );
 }
