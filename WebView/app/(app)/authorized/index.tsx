@@ -129,6 +129,10 @@ const AuthedScreen = () => {
     };
   }, [backPress, token]);
 
+  useEffect(() => {
+    return () => setBleModalVisible(false);
+  }, []);
+
   return (
     <>
       <StatusBar />
