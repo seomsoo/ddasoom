@@ -1,4 +1,6 @@
 'use client';
+
+import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 
 import background from '@/components/BackGround/Background.module.css';
@@ -8,12 +10,15 @@ import SettingButton from '@/components/Training/Breath/SettingButton';
 import SettingContent from '@/components/Training/Breath/SettingContent';
 import SettingModal from '@/components/Training/Breath/SettingModal';
 import Backcloud from '@/svgs/backcloud.svg';
-
+const pageVariants = {
+  initial: { x: '100%', opacity: 0 }, // 화면 오른쪽에서 시작
+  animate: { x: 0, opacity: 1 }, // 화면 중앙으로 이동
+  exit: { x: '-100%', opacity: 0 }, // 화면 왼쪽으로 사라짐
+};
 export default function BreathTrainingPage() {
   const [selectedBreathType, setSelectedBreathType] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // 초기 로드 시 앱에 메시지 전달
   useEffect(() => {
     if (!selectedBreathType) {
       window.ReactNativeWebView?.postMessage(
@@ -23,25 +28,6 @@ export default function BreathTrainingPage() {
         }),
       );
     }
-  }, []);
-
-  // 앱으로부터 수신된 메시지를 통해 선택된 호흡 유형 설정
-  useEffect(() => {
-    const handleMessage = (event: MessageEvent) => {
-      try {
-        const messageData = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
-        const { title, content } = messageData;
-
-        if (title === 'BREATH' && content) {
-          setSelectedBreathType(content);
-        }
-      } catch (e) {
-        console.error('Failed to handle message:', e);
-      }
-    };
-
-    window.addEventListener('message', handleMessage);
-    return () => window.removeEventListener('message', handleMessage);
   }, []);
 
   const handleSaveSelection = (breathType: string) => {
@@ -57,7 +43,13 @@ export default function BreathTrainingPage() {
   };
 
   return (
-    <section className={`${background.background4} absolute inset-0 flex justify-center overflow-hidden text-white`}>
+    <motion.section
+      className={`${background.background4} absolute inset-0 flex justify-center overflow-hidden text-white`}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      variants={pageVariants}
+      transition={{ duration: 0.6, ease: 'easeInOut' }}>
       <div className="absolute top-9 left-2 w-full">
         <Header label="" />
       </div>
@@ -89,6 +81,6 @@ export default function BreathTrainingPage() {
           />
         )}
       </main>
-    </section>
+    </motion.section>
   );
 }
