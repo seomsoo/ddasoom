@@ -10,13 +10,13 @@
         android:layout_centerInParent="true"
         android:background="@color/main_background">
 
-        <ProgressBar
-            android:id="@+id/circularProgressBar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:max="360"
-            android:progress="0"
-            android:progressDrawable="@drawable/circular_progress"/>
+<!--        <ProgressBar-->
+<!--            android:id="@+id/circularProgressBar"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:max="360"-->
+<!--            android:progress="0"-->
+<!--            android:progressDrawable="@drawable/circular_progress"/>-->
 
         <!-- 단계 -->
         <TextView
