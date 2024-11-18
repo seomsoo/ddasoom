@@ -28,5 +28,12 @@
         "EXPO_PUBLIC_MAP_API_KEY": "AIzaSyA6EMSwyx4-oztWIQ7Y9NVSibZolLz_unA"
       }
     }
+  },
+  "submit": {
+    "production": {
+      "android": {
+        "serviceAccountKeyPath": "./google-services.json"
+      }
+    }
   }
 }
