@@ -21,7 +21,7 @@
         "backgroundColor": "#EBF4E3"
       },
       "package": "com.ddasoom.wear",
-      "googleServicesFile": "process.env.GOOGLE_SERVICES_JSON",
+      "googleServicesFile": "./google-services.json",
 
       "permissions": [
         "android.permission.ACCESS_COARSE_LOCATION",

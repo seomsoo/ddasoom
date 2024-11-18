@@ -25,7 +25,8 @@
         "APP_NAME": "따 숨",
         "EXPO_PUBLIC_BASEURL": "https://k11c103.p.ssafy.io",
         "EXPO_PUBLIC_KAKAO_NATIVE_KEY": "776e8affab113456d6b62b5c1a675605",
-        "EXPO_PUBLIC_MAP_API_KEY": "AIzaSyA6EMSwyx4-oztWIQ7Y9NVSibZolLz_unA"
+        "EXPO_PUBLIC_MAP_API_KEY": "AIzaSyA6EMSwyx4-oztWIQ7Y9NVSibZolLz_unA",
+        "GOOGLE_SERVICES_JSON": "@GOOGLE_SERVICES_JSON"
       }
     }
   },

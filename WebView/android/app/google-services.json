@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1016362837192",
+    "project_id": "ddasoom-aea0f",
+    "storage_bucket": "ddasoom-aea0f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1016362837192:android:5ea1946493e455d58bb1fd",
+        "android_client_info": {
+          "package_name": "com.ddasoom.wear"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6EMSwyx4-oztWIQ7Y9NVSibZolLz_unA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
