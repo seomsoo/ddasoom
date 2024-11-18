@@ -83,9 +83,9 @@
             android:name=".service.MessageService"
             android:enabled="true"
             android:exported="true">
-            <intent-filter>
-                <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
-            </intent-filter>
+<!--            <intent-filter>-->
+<!--                <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />-->
+<!--            </intent-filter>-->
         </service>
 
         <!-- SleepReceiver 등록 -->

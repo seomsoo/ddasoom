@@ -26,8 +26,7 @@ class BreathActivity : AppCompatActivity() {
         // 화면 꺼짐 방지 설정
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
-        // 프로그레스 바와 텍스트 뷰 연결
-        val progressBar = findViewById<ProgressBar>(R.id.circularProgressBar)
+        // 텍스트 뷰와 버튼 연결
         val phaseTextView = findViewById<TextView>(R.id.phaseTextView)
         val timerTextView = findViewById<TextView>(R.id.timerTextView)
         val stopButton = findViewById<Button>(R.id.breath_stop)
@@ -36,12 +35,12 @@ class BreathActivity : AppCompatActivity() {
         if (intent.hasExtra("breath_mode")) {
             mode = intent.getStringExtra("breath_mode")
             isFromSelectActivity = true
-            setupBreathing(progressBar, phaseTextView, timerTextView, stopButton)
+            setupBreathing(phaseTextView, timerTextView, stopButton)
         } else {
             retrieveBreathModeFromWatch { retrievedMode ->
                 mode = retrievedMode
                 isFromSelectActivity = false
-                setupBreathing(progressBar, phaseTextView, timerTextView, stopButton)
+                setupBreathing(phaseTextView, timerTextView, stopButton)
             }
         }
     }
@@ -62,13 +61,10 @@ class BreathActivity : AppCompatActivity() {
     }
 
     private fun setupBreathing(
-        progressBar: ProgressBar,
         phaseTextView: TextView,
         timerTextView: TextView,
         stopButton: Button
     ) {
-        progressBar.progress = 0
-
         val intervals: IntArray
         val durations: IntArray
         val phases: Array<String>
@@ -96,11 +92,8 @@ class BreathActivity : AppCompatActivity() {
             }
         }
 
-        progressBar.max = intervals.sum()
-
         // 반복 실행
         val handler = Handler(Looper.getMainLooper())
-        var totalProgress = 0
 
         fun startBreathingCycle() {
             var totalTime = 0
@@ -108,7 +101,6 @@ class BreathActivity : AppCompatActivity() {
             for (i in phases.indices) {
                 val phase = phases[i]
                 val duration = durations[i]
-                val interval = intervals[i]
 
                 handler.postDelayed({
                     // 단계 텍스트 업데이트
@@ -130,14 +122,6 @@ class BreathActivity : AppCompatActivity() {
                     }
                     countdownHandler.post(countdownRunnable)
 
-                    // 프로그레스 바 애니메이션
-                    ObjectAnimator.ofInt(progressBar, "progress", totalProgress, totalProgress + interval)
-                        .apply {
-                            this.duration = (duration * 1000).toLong()
-                            start()
-                        }
-
-                    totalProgress += interval
                 }, totalTime * 1000L)
 
                 totalTime += duration
@@ -145,7 +129,6 @@ class BreathActivity : AppCompatActivity() {
 
             // 모든 단계가 끝난 후 반복
             handler.postDelayed({
-                totalProgress = 0 // 프로그레스 초기화
                 startBreathingCycle() // 반복 실행
             }, totalTime * 1000L)
         }
@@ -164,3 +147,4 @@ class BreathActivity : AppCompatActivity() {
         }
     }
 }
+
