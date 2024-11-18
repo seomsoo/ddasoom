@@ -39,7 +39,7 @@ export default function PushButton() {
   return (
     <button
       onClick={toggleSwitch} // 버튼 전체에 toggleSwitch 적용
-      className="bg-main4 p-5 items-center font-nanumBold flex justify-between rounded-full text-left cursor-pointer">
+      className="bg-main4 p-5 items-center w-full font-nanumBold flex justify-between rounded-full text-left cursor-pointer">
       <span>Push 알림 </span>
       <div
         className={`w-14 h-8 flex items-center rounded-full p-1 transition-colors duration-300 ${
