@@ -4,11 +4,13 @@
 BLEService ledService("9c73e86c-0837-49c0-9a26-ed299e12caf1"); 
 
 // LED 제어를 위한 BLE 특성 정의
-// - UUID, 읽기+쓰기 권한
 BLEByteCharacteristic switchCharacteristic("4ed65ae1-31dc-4a36-8164-0fd01cb015de", BLEWrite | BLEWriteWithoutResponse | BLERead | BLENotify);
 
 const int ledPin = LED_BUILTIN;  // 내장 LED 핀 정의
 const int relayPin = 2;          // 릴레이 제어 핀 정의 (D2)
+
+unsigned long timerStart = 0;    // 타이머 시작 시간
+bool timerActive = false;        // 타이머가 활성화되었는지 여부
 
 void setup() {
   Serial.begin(9600);             // 시리얼 통신 초기화
@@ -58,10 +60,18 @@ void loop() {
           digitalWrite(ledPin, HIGH);     // LED 켜기
           digitalWrite(relayPin, HIGH);   // 릴레이 활성화
           Serial.println("LED와 릴레이가 켜졌습니다.");
-        } else {
+          timerActive = false;            // 타이머 비활성화
+        } else if (value == 0) {
           digitalWrite(ledPin, LOW);      // LED 끄기
           digitalWrite(relayPin, LOW);    // 릴레이 비활성화
           Serial.println("LED와 릴레이가 꺼졌습니다.");
+          timerActive = false;            // 타이머 비활성화
+        } else if (value == 2) {
+          digitalWrite(ledPin, HIGH);     // LED 켜기
+          digitalWrite(relayPin, HIGH);   // 릴레이 활성화
+          Serial.println("LED와 릴레이가 5분 동안 켜졌습니다.");
+          timerStart = millis();          // 타이머 시작 시간 설정
+          timerActive = true;             // 타이머 활성화
         }
 
         // 현재 상태 출력
@@ -70,6 +80,15 @@ void loop() {
         Serial.print("현재 릴레이 상태: ");
         Serial.println(digitalRead(relayPin) == HIGH ? "ON" : "OFF");
       }
+
+      // 타이머가 활성화되었고, 5분이 지난 경우 LED와 릴레이를 끔
+      if (timerActive && (millis() - timerStart >= 300000)) {
+        digitalWrite(ledPin, LOW);       // LED 끄기
+        digitalWrite(relayPin, LOW);     // 릴레이 비활성화
+        timerActive = false;             // 타이머 비활성화
+        Serial.println("5분이 경과하여 LED와 릴레이가 꺼졌습니다.");
+      }
+      
       delay(100);  // 상태 확인 주기 설정
     }
 
