@@ -32,7 +32,7 @@ import {
   CancelText,
 } from "./_breathEndModal.styles";
 
-const PANIC_TIME = 10;
+const PANIC_TIME = 15;
 
 const BreathEndModal = () => {
   const { token, userName } = useAuthStore();
@@ -96,7 +96,7 @@ const BreathEndModal = () => {
     await savePanicInfoToStorage(panicInfo);
 
     if (expoPushToken) {
-      scheduleLocalNotification({ title: "따 숨", body: "진정이 됐나요? 오늘 상황을 기록해보세요.", seconds: 5 });
+      scheduleLocalNotification({ title: "따 숨", body: "진정이 됐나요? 오늘 상황을 기록해보세요.", seconds: 10 });
     }
 
     // 네트워크 상태 확인 후 조건에 따라 페이지 이동
