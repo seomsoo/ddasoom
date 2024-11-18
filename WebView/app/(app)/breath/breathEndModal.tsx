@@ -32,7 +32,7 @@ import {
   CancelText,
 } from "./_breathEndModal.styles";
 
-const PANIC_TIME = 15;
+const PANIC_TIME = 5;
 
 const BreathEndModal = () => {
   const { token, userName } = useAuthStore();
