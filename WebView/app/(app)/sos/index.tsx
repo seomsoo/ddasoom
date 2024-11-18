@@ -5,13 +5,33 @@ import { router } from "expo-router";
 import { Image } from "react-native";
 import SOS from "@/assets/svgs/SosButton.svg";
 import { loadBreathTypeFromStorage } from "@/storage/breath";
+import { useBleStore } from "@/zustand/bleStore";
 
 const SosScreen = () => {
   const scaleAnim = useRef(new Animated.Value(1)).current; // 초기 스케일을 1로 설정
+  const { devices, connectedDevice, startScan, connectToDevice, turnOnWithTimer } = useBleStore();
 
   const handleEmergency = async () => {
     const storedBreathType = await loadBreathTypeFromStorage();
     console.log(storedBreathType);
+
+    // 기기가 연결되어 있는지 확인
+    if (!connectedDevice) {
+      // 기기가 연결되어 있지 않은 경우, BLE 스캔 시작
+      await startScan();
+
+      // 첫 번째 기기에 연결 시도
+      if (devices.length > 0) {
+        await connectToDevice(devices[0]);
+      }
+    }
+
+    // 연결된 상태라면 LED를 켜는 타이머 실행
+    if (connectedDevice) {
+      turnOnWithTimer();
+    }
+
+    // 화면 이동
     router.push(`(app)/breath?breathType=${storedBreathType ?? "basicTime"}`);
   };
 

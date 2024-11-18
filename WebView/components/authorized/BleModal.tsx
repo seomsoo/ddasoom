@@ -74,6 +74,9 @@ const BleModal = ({ bleModalVisible, setBleModalVisible }: BleModalProps) => {
               ) : (
                 <View style={{ gap: 10, alignItems: "center" }}>
                   <InputLabel>주변에 따솜이가 없어요...</InputLabel>
+                  <ModalButton onPress={startScan}>
+                    <ButtonText>따솜이 찾기</ButtonText>
+                  </ModalButton>
                 </View>
               )}
             </LabelContainer>
@@ -88,9 +91,7 @@ const BleModal = ({ bleModalVisible, setBleModalVisible }: BleModalProps) => {
                   <ButtonText>연결 해제</ButtonText>
                 </ModalButton>
               </>
-            ) : (
-              ""
-            )}
+            ) : null}
           </ButtonContainer>
         </ModalContent>
       </ModalOverlay>

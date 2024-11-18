@@ -1,11 +1,11 @@
 import { create } from "zustand";
-import { BleManager, Device } from "react-native-ble-plx";
+import { BleManager, Device, State } from "react-native-ble-plx";
 import { Buffer } from "buffer";
 import { requestPermissions } from "@/utils/ble";
 import { Alert, ToastAndroid } from "react-native";
 
-// BleManager 인스턴스 타입을 'BleManager | null'로 설정
 let bleManager: BleManager | null = new BleManager();
+let timerId: NodeJS.Timeout | null = null; // 타이머 ID 저장 변수
 
 interface BleStore {
   ledServiceUUID: string;
@@ -21,6 +21,9 @@ interface BleStore {
   connectToDevice: (device: Device) => Promise<void>;
   disconnectFromDevice: () => Promise<void>;
   toggleLED: () => Promise<void>;
+  turnOnLED: () => Promise<void>;
+  turnOffLED: () => Promise<void>;
+  turnOnWithTimer: () => Promise<void>;
 }
 
 export const useBleStore = create<BleStore>((set, get) => ({
@@ -29,19 +32,26 @@ export const useBleStore = create<BleStore>((set, get) => ({
   isScanning: false,
   isLedOn: false,
 
-  // UUID 설정
   ledServiceUUID: "9c73e86c-0837-49c0-9a26-ed299e12caf1",
   ledCharacteristicUUID: "4ed65ae1-31dc-4a36-8164-0fd01cb015de",
 
-  // BleManager 초기화
   initializeBleManager: () => {
     if (!bleManager) {
       bleManager = new BleManager();
       console.log("BleManager initialized");
     }
+
+    bleManager.onDeviceDisconnected(get().ledServiceUUID, (error, device) => {
+      if (error) {
+        console.log("연결 해제 에러:", error);
+        return;
+      }
+      console.log("기기 연결이 해제되었습니다:", device?.name);
+      set({ connectedDevice: null, isLedOn: false });
+      ToastAndroid.show("따솜이 연결이 해제되었습니다.", 1500);
+    });
   },
 
-  // BleManager 파괴
   destroyBleManager: () => {
     if (bleManager) {
       bleManager.destroy();
@@ -57,11 +67,11 @@ export const useBleStore = create<BleStore>((set, get) => ({
       return;
     }
 
-    set({ isScanning: true, devices: [] }); // 스캔 시작 시 devices 초기화
+    set({ isScanning: true, devices: [] });
     bleManager?.startDeviceScan([get().ledServiceUUID], null, (error, device) => {
       if (error) {
         console.log("스캔 에러:", error);
-        set({ isScanning: false }); // 에러 발생 시 스캔 중지
+        set({ isScanning: false });
         return;
       }
 
@@ -73,14 +83,13 @@ export const useBleStore = create<BleStore>((set, get) => ({
       }
     });
 
-    // 5초 후 스캔 중지
     setTimeout(() => {
       get().stopScan();
     }, 5000);
   },
 
   stopScan: () => {
-    bleManager?.stopDeviceScan(); // null-safe 연산자 사용
+    bleManager?.stopDeviceScan();
     set({ isScanning: false });
   },
 
@@ -91,11 +100,12 @@ export const useBleStore = create<BleStore>((set, get) => ({
 
       await connectedDevice.discoverAllServicesAndCharacteristics();
       set({ connectedDevice });
-      get().stopScan(); // 연결 성공 시 스캔 중지
-      ToastAndroid.show(`${connectedDevice.name}에 연결했어요.`, 3000);
+      get().stopScan();
+      ToastAndroid.show(`${connectedDevice.name}에 연결했어요.`, 1500);
     } catch (error) {
       console.log("연결 에러:", error);
-      ToastAndroid.show("따솜이 연결에 실패했어요.", 3000);
+      set({ connectedDevice: null });
+      ToastAndroid.show("따솜이 연결에 실패했어요.", 1500);
     }
   },
 
@@ -104,7 +114,7 @@ export const useBleStore = create<BleStore>((set, get) => ({
     if (connectedDevice) {
       await connectedDevice.cancelConnection();
       set({ connectedDevice: null, isLedOn: false });
-      ToastAndroid.show("따솜이 연결이 해제됐어요.", 3000);
+      ToastAndroid.show("따솜이 연결이 해제됐어요.", 1500);
     }
   },
 
@@ -112,7 +122,7 @@ export const useBleStore = create<BleStore>((set, get) => ({
     const { connectedDevice, isLedOn, ledServiceUUID, ledCharacteristicUUID } = get();
     if (connectedDevice) {
       try {
-        const value = isLedOn ? 0 : 1; // Toggle between 0 and 1
+        const value = isLedOn ? 0 : 1;
         const buffer = Buffer.from([value]);
         const base64Value = buffer.toString("base64");
 
@@ -127,7 +137,77 @@ export const useBleStore = create<BleStore>((set, get) => ({
         ToastAndroid.show(isLedOn ? "다시 차가운 따솜이가 됐어요." : "따뜻한 따솜이가 되었어요.", 3000);
       } catch (error) {
         console.log("LED 제어 에러:", error);
-        ToastAndroid.show("따솜이가 따뜻해질 수 없어요...", 3000);
+        ToastAndroid.show("따솜이가 따뜻해질 수 없어요...", 1500);
+      }
+    }
+  },
+
+  turnOnLED: async () => {
+    const { connectedDevice, isLedOn, ledServiceUUID, ledCharacteristicUUID } = get();
+    if (connectedDevice && !isLedOn) {
+      try {
+        const buffer = Buffer.from([1]); // Turn on LED
+        const base64Value = buffer.toString("base64");
+
+        await bleManager?.writeCharacteristicWithResponseForDevice(
+          connectedDevice.id,
+          ledServiceUUID,
+          ledCharacteristicUUID,
+          base64Value,
+        );
+
+        set({ isLedOn: true });
+        ToastAndroid.show("따소미가 따듯해졌어요", 1500);
+      } catch (error) {
+        console.log("LED 켜기 에러:", error);
+        ToastAndroid.show("따소미를 따듯하게 할 수 없어요..", 1500);
+      }
+    }
+  },
+
+  turnOffLED: async () => {
+    const { connectedDevice, isLedOn, ledServiceUUID, ledCharacteristicUUID } = get();
+    if (connectedDevice && isLedOn) {
+      try {
+        const buffer = Buffer.from([0]); // Turn off LED
+        const base64Value = buffer.toString("base64");
+
+        await bleManager?.writeCharacteristicWithResponseForDevice(
+          connectedDevice.id,
+          ledServiceUUID,
+          ledCharacteristicUUID,
+          base64Value,
+        );
+
+        set({ isLedOn: false });
+        ToastAndroid.show("따소미가 차가워졌어요.", 1500);
+      } catch (error) {
+        console.log("LED 끄기 에러:", error);
+        ToastAndroid.show("따소미를 다시 차갑게 할 수 없어요..", 1500);
+      }
+    }
+  },
+
+  turnOnWithTimer: async () => {
+    const { connectedDevice, isLedOn, ledServiceUUID, ledCharacteristicUUID } = get();
+    if (connectedDevice && !isLedOn) {
+      try {
+        // 2의 값을 전달하여 LED를 켭니다.
+        const buffer = Buffer.from([2]);
+        const base64Value = buffer.toString("base64");
+
+        await bleManager?.writeCharacteristicWithResponseForDevice(
+          connectedDevice.id,
+          ledServiceUUID,
+          ledCharacteristicUUID,
+          base64Value,
+        );
+
+        set({ isLedOn: true });
+        ToastAndroid.show(`따소미가 5분간 따듯해져요.`, 1500);
+      } catch (error) {
+        console.log("타이머로 LED 켜기 에러:", error);
+        ToastAndroid.show("따소미를 따듯하게 할 수 없어요...", 1500);
       }
     }
   },
