@@ -14,18 +14,6 @@ Notifications.setNotificationHandler({
   }),
 });
 
-// 알림 채널 설정 함수 (Android)
-const setNotificationChannelAsync = async () => {
-  if (Platform.OS === "android") {
-    await Notifications.setNotificationChannelAsync("default", {
-      name: "Default",
-      importance: Notifications.AndroidImportance.HIGH, // 중요도 높게 설정
-      vibrationPattern: [0, 250, 250, 250], // 진동 패턴 설정
-      lockscreenVisibility: Notifications.AndroidNotificationVisibility.PUBLIC, // 잠금 화면에 표시
-    });
-  }
-};
-
 const useNotification = () => {
   const setExpoPushToken = useNotificationStore(state => state.setExpoPushToken);
   const setNotification = useNotificationStore(state => state.setNotification);
@@ -34,9 +22,6 @@ const useNotification = () => {
 
   useEffect(() => {
     const setupNotifications = async () => {
-      // Android 알림 채널 설정
-      await setNotificationChannelAsync();
-
       const networkState = await Network.getNetworkStateAsync();
       if (!networkState.isConnected) {
         console.log("No network connection, skipping push notification registration.");
