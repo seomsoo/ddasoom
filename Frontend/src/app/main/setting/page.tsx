@@ -35,7 +35,7 @@ export default function SettingPage() {
         </Link>
       </header>
       <article className="flex flex-col gap-6 mt-12 text-lg">
-        <ModalWithState label="목소리 설정" ContentComponent={RecodingContent} />
+        <ModalWithState label="AI 목소리 변환" ContentComponent={RecodingContent} />
         <ArduinoSetting />
         <ModalWithState label="비상 연락처" ContentComponent={SosContent} />
         <PushButton />
