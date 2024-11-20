@@ -127,7 +127,7 @@ export default function Interaction({
         <ErrorModal onClose={() => setIsErrorModalOpen(false)} onRetry={handleRetry} context={errorContext} />
       )}
       <div className="mb-2">
-        <span className="font-hakgyoansimR items-baseline text-xl flex text-gray1">
+        <span className="font-hakgyoansimR items-baseline text-2xl flex text-gray1">
           연속 <p className={`ml-1 font-hakgyoansimB ${getTextColor()}`}>{continuousTrainingDays}일</p>째 훈련 중 🔥
         </span>
       </div>

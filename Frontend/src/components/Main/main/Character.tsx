@@ -36,13 +36,13 @@ export default function Character({ level, currentInteractionGif, currentInterac
   };
 
   const getBalloonText = () => {
-    const texts = ['응애', '안녕 오늘 기분은 어때?!', '슈퍼 따소미 등장!!'];
+    const texts = ['오늘 하루는 어땠어!?', '안녕 오늘 기분은 어때?!', '슈퍼 따소미 등장!!'];
     return texts[level - 1] || '';
   };
 
   return (
     <div className="flex relative flex-col items-center mt-8">
-      <div className="absolute bg-gray1 p-4 w-[25vh] min-w-[25vh] max-w-[40vh] rounded-2xl shadow-md text-center text-sm  -top-12">
+      <div className="absolute bg-gray1 p-4 w-[25vh] min-w-[25vh] max-w-[40vh] rounded-2xl shadow-md text-center text-sm  -top-14">
         <span>{getBalloonText()}</span>
         <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 translate-y-full w-4 h-4 bg-gray1 rotate-45" />
       </div>
