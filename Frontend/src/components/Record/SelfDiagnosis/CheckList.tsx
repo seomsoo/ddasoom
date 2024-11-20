@@ -55,7 +55,9 @@ export default function CheckList() {
       router.back(); // 처음 질문일 경우 이전 페이지로 이동
     }
   };
-
+  const handleSkipClick = () => {
+    router.push(`/record/selfDiagnosis/result?yesCount=${yesCount}`);
+  };
   const currentQuestion = questions[currentQuestionIndex];
   const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
 
@@ -87,6 +89,9 @@ export default function CheckList() {
             </button>
           ))}
         </div>
+        <button className="underline underline-offset-4 mt-8  text-gray5" onClick={handleSkipClick}>
+          건너뛰기
+        </button>
       </div>
     </div>
   );
