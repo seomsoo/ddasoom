@@ -131,7 +131,7 @@ export default function RecodingContent({ closeModal }: RecodingContentProps) {
         <ErrorModal onClose={() => setIsErrorModalOpen(false)} onRetry={handleRetry} context={errorContext} />
       )}
       <header className="text-2xl font-nanumBold mb-2 flex flex-col items-center gap-2">
-        <span>목소리 설정</span>
+        <span>AI 목소리 변환</span>
         <p className="text-sm opacity-50 text-nowrap">가장 익숙한 목소리로, 특별한 순간을 함께하세요.</p>
       </header>
       <main className="flex border-2 rounded-xl border-main2 flex-col w-full space-y-2 max-h-72 min-h-72 overflow-y-scroll">
@@ -180,7 +180,7 @@ export default function RecodingContent({ closeModal }: RecodingContentProps) {
           저장하기
         </button>
         <button onClick={goToRecodingPage} className="bg-button1 p-3 px-6 rounded-full flex-1 font-nanumBold">
-          녹음하기
+          복제하기
         </button>
       </section>
     </div>
