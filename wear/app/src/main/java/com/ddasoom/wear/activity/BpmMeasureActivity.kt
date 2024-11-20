@@ -3,6 +3,7 @@ package com.ddasoom.wear.activity
 import android.animation.Animator
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -48,6 +49,8 @@ class BpmMeasureActivity : AppCompatActivity() {
         // 긴급 버튼 클릭 이벤트 처리
         emergencyButton.setOnClickListener {
             sendEmergencyMessage(0.0f) // 모델 결과값이 없다면 0.0f로 전달
+            val intent = Intent(this, EmergencyActivity::class.java) // 긴급 상황 화면으로 전환
+            startActivity(intent)
         }
 
         // 하트 애니메이션 시작
