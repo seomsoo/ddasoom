@@ -5,10 +5,10 @@ import { useEffect } from 'react';
 
 import queryKeys from '@/api/querykeys';
 import { getMonthlyData } from '@/api/recordAPI';
+import Panic from '@/svgs/Ddasomiz/xEyesSomi2.svg';
 import { Calendars } from '@/types/http/response';
 
 import DdasomiIcon from './DdasomiIcon';
-
 interface CalendarGridProps {
   date: Date;
   selectedDate: Date | null;
@@ -81,8 +81,9 @@ export default function CalendarGrid({ date, selectedDate, onDateSelect }: Calen
               }}
               className={`relative h-11 w-11 flex items-center justify-center rounded-full ${
                 isFutureDate ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer'
-              } ${isPanicDay ? 'bg-black' : 'bg-[#d6f0bf]'} ${isDiary ? 'border border-button1 border-2' : ''}`}>
+              } ${isPanicDay ? 'bg-[#d6f0bf] ' : 'bg-[#d6f0bf]'} ${isDiary ? 'border border-button1 border-2' : ''}`}>
               {trainingCount > 0 && <DdasomiIcon trainingCount={trainingCount} />}
+              {isPanicDay && <Panic className="absolute " />}
             </div>
             <span
               className={`text-sm mt-2 font-hakgyoansimR w-8 rounded-xl text-center ${
