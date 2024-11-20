@@ -123,14 +123,17 @@ const BreathCircle = ({ breathType }: BreathCircleProps) => {
   }, [breathType]);
 
   useEffect(() => {
-    // 7초 간격으로 랜덤 ID의 소리 재생
-    const randomId = Math.floor(Math.random() * 18) + 1; // 1부터 18까지의 랜덤 숫자 생성
-    playSound(voiceKey, randomId);
-
-    voiceIntervalRef.current = setInterval(async () => {
+    // 랜덤 ID의 소리 재생
+    setTimeout(() => {
       const randomId = Math.floor(Math.random() * 18) + 1; // 1부터 18까지의 랜덤 숫자 생성
-      await playSound(voiceKey, randomId);
-    }, 10000);
+      playSound(voiceKey, randomId);
+    }, 8000);
+
+    // 인터벌 제거하고 처음 한번만 재생
+    // voiceIntervalRef.current = setInterval(async () => {
+    //   const randomId = Math.floor(Math.random() * 18) + 1; // 1부터 18까지의 랜덤 숫자 생성
+    //   await playSound(voiceKey, randomId);
+    // }, 10000);
 
     // 컴포넌트가 언마운트될 때 인터벌 해제 및 소리 정리
     return () => {
