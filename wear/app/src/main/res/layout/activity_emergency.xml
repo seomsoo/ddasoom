@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="26dp"
-            android:text="긴급 상황"
+            android:text="공황 감지"
             android:textAlignment="center"
             android:textColor="#ffffff"
             android:textSize="18sp"
@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="80dp"
-            android:text="스마트폰의 알림을 확인하고"
+            android:text="심박수 이상 변화를 감지했어요."
             android:textAlignment="center"
             android:textColor="#000000"
             android:textSize="14sp"
@@ -36,36 +36,45 @@
             android:id="@+id/end_text_3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
-            android:text="따소미를 따라서"
+            android:layout_marginTop="105dp"
+            android:text="도움이 필요하신가요?"
             android:textAlignment="center"
             android:textColor="#000000"
             android:textSize="14sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/end_text_4"
-            android:layout_width="match_parent"
+        <!-- Buttons in LinearLayout -->
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="120dp"
-            android:text="호흡을 바로 잡으세요."
-            android:textAlignment="center"
-            android:textColor="#000000"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+            android:layout_gravity="center"
+            android:layout_marginTop="60dp"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/btn_confirm_breath"
-            android:layout_width="122dp"
-            android:layout_height="33dp"
-            android:layout_gravity="bottom|center_horizontal"
-            android:layout_marginBottom="30dp"
-            android:background="@drawable/rounded_button_background"
-            android:gravity="center"
-            android:text="닫기"
-            android:textAlignment="center"
-            android:textColor="#000000"
-            android:textSize="16sp" />
+            <Button
+                android:id="@+id/btn_confirm_breath"
+                android:layout_width="0dp"
+                android:layout_height="33dp"
+                android:layout_weight="0.2"
+                android:background="@drawable/rounded_button_background"
+                android:layout_marginEnd="4dp"
+                android:gravity="center"
+                android:text="네"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/btn_reject_breath"
+                android:layout_width="0dp"
+                android:layout_height="33dp"
+                android:layout_weight="0.2"
+                android:background="@drawable/rounded_button_background"
+                android:gravity="center"
+                android:text="아니오"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="16sp" />
+        </LinearLayout>
     </FrameLayout>
-
 </RelativeLayout>
