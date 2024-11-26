@@ -34,23 +34,25 @@
 
 
 - 실시간 심박수 측정
-<img src="https://github.com/user-attachments/assets/bcce58fc-516d-471b-bd92-6cb70a0447b6" width="300" height="300" alt="login">
+ <img src="https://github.com/user-attachments/assets/bcce58fc-516d-471b-bd92-6cb70a0447b6" width="300" height="300" alt="login">
 
 
 - 긴급 상황
-<img src="https://github.com/user-attachments/assets/68a571e8-8306-466b-a1e9-a1a948be0672" width="300" height="300" alt="login">
+ <img src="https://github.com/user-attachments/assets/68a571e8-8306-466b-a1e9-a1a948be0672" width="300" height="300" alt="login">
 
+![워치푸시](https://github.com/user-attachments/assets/1f8983a8-8349-4a40-97c5-322e0190c7a4)
 
 - 호흡하기
-<img src="https://github.com/user-attachments/assets/2e6dbb1b-516d-48de-a338-9881e26b1db5" width="300" height="300" alt="login">
+ <img src="https://github.com/user-attachments/assets/2e6dbb1b-516d-48de-a338-9881e26b1db5" width="300" height="300" alt="login">
 
 
 ---
 
 ### 🎈 **앱**
 - 카카오 로그인
-  
-   <img src="https://github.com/user-attachments/assets/9c7ac3fb-a9ba-46ce-a4af-787fe107889a" width="300" height="600" alt="login">
+
+   <img src="https://github.com/user-attachments/assets/5188a749-a9b5-45e3-86e3-e79b10ebf7b2" width="300" height="600" alt="login">
+
 
    
 - 따소미 키우기 (상호작용)
@@ -59,6 +61,12 @@
   <img src="https://github.com/user-attachments/assets/fe49ac3b-3db5-45d8-9a76-4dfddd41eb9c" width="300" height="600" alt="login">
   <img src="https://github.com/user-attachments/assets/11cd1ee2-aeb0-4f5a-8857-1fc9050ba0ee" width="300" height="600" alt="login">
 
+
+- 긴급상황
+  
+  ![Screen_Recording_20241126_160112_ ](https://github.com/user-attachments/assets/9cd8e10a-58fd-4796-b4ad-1bf1872aa184)
+  <img src="https://github.com/user-attachments/assets/2ef27d7c-068a-4ff5-8c3b-1109ea05a8bf" width="250" height="505" alt="login">
+  <img src="https://github.com/user-attachments/assets/93b8ab08-ca5b-43b6-9f59-0003640c769c" width="350" height="400" alt="login">
 
 
 - AI 보이스 녹음
@@ -69,11 +77,14 @@
  
 - 비상연락처 저장
 
-    <img src="https://github.com/user-attachments/assets/ae760ecb-3638-4dea-babf-27055627aafc" width="300" height="650" alt="login">
+  <img src="https://github.com/user-attachments/assets/ae760ecb-3638-4dea-babf-27055627aafc" width="300" height="650" alt="login">
 
 - 호흡하기 연습
 
    <img src="https://github.com/user-attachments/assets/d95bd30c-8baa-4a3d-89a5-05ce384e8743" width="350" height="600" alt="login">
+   <img src="https://github.com/user-attachments/assets/fe978e8a-eb12-435b-a6d6-8a2aa8864603" width="300" height="600" alt="login">
+   <img src="https://github.com/user-attachments/assets/39669e15-515d-4b48-ba95-feb8d424992b" width="300" height="600" alt="login">
+
 
 - 그라운딩 훈련
 
@@ -81,17 +92,14 @@
 
 - 안정화 기법
 
-
   <img src="https://github.com/user-attachments/assets/cbec30c0-6414-42da-b1bc-f6e815e74be4" width="350" height="600" alt="login">
   <img src="https://github.com/user-attachments/assets/59f97b55-b352-4064-914d-ce26f25ccf35" width="300" height="600" alt="login">
 <br/>
-  <img src="https://github.com/user-attachments/assets/886ee462-be38-4d09-81d8-f014c23b8977" width="300" height="600" alt="login">
-  <img src="https://github.com/user-attachments/assets/886ee462-be38-4d09-81d8-f014c23b8977" width="300" height="600" alt="login">
-  <img src="https://github.com/user-attachments/assets/2692cdbd-a18c-4838-a6eb-fcdad32c94e8" width="300" height="600" alt="login">
+   <img src="https://github.com/user-attachments/assets/886ee462-be38-4d09-81d8-f014c23b8977" width="300" height="600" alt="login">
+   <img src="https://github.com/user-attachments/assets/d818bd74-d073-49f8-a6a5-4e6ce1725451" width="300" height="600" alt="login">
+   <img src="https://github.com/user-attachments/assets/2692cdbd-a18c-4838-a6eb-fcdad32c94e8" width="300" height="600" alt="login">
 
-- 긴급상황
 
-  
 - 캘린더(생활 습관 기록)
 
   ![캘린더](https://github.com/user-attachments/assets/31274902-3f7f-4a0e-aa6d-90e12fdbf375)
@@ -110,9 +118,9 @@
 
 - 생활 리포트
 
-  <img src="https://github.com/user-attachments/assets/21123519-a1d3-4b94-9061-cc2a30684a38" width="350" height="600" alt="login">
-  <img src="https://github.com/user-attachments/assets/3b3a9f26-b7fc-4e84-9f8f-c2d06c7a7340" width="300" height="600" alt="login">
-  <img src="https://github.com/user-attachments/assets/a911be38-bd09-4631-8c93-c4d81c5f6333" width="300" height="600" alt="login">
+<img src="https://github.com/user-attachments/assets/21123519-a1d3-4b94-9061-cc2a30684a38" width="350" height="600" alt="login">
+<img src="https://github.com/user-attachments/assets/3b3a9f26-b7fc-4e84-9f8f-c2d06c7a7340" width="300" height="600" alt="login">
+<img src="https://github.com/user-attachments/assets/a911be38-bd09-4631-8c93-c4d81c5f6333" width="300" height="600" alt="login">
 
 
 
@@ -121,10 +129,14 @@
 ### 🎈 **블루투스 키링**
 
 - 비닐봉지 내장, 호흡 보조도구
+
+<img src="https://github.com/user-attachments/assets/e163bc0a-1450-4372-90e9-3e503c82b6be" width="400" height="600" alt="login">&nbsp;&nbsp;
+<img src="https://github.com/user-attachments/assets/02077b95-b830-4e92-875b-d173e036621c" width="400" height="600" alt="login">
+  
 - 손난로 기능
 
   
-  <img src="https://github.com/user-attachments/assets/88beaab1-c8f2-4ba0-a3f3-6948caab19c2" width="300" height="600" alt="login">
+<img src="https://github.com/user-attachments/assets/88beaab1-c8f2-4ba0-a3f3-6948caab19c2" width="300" height="600" alt="login">
   
 ---
 
