@@ -95,9 +95,9 @@
   <img src="https://github.com/user-attachments/assets/cbec30c0-6414-42da-b1bc-f6e815e74be4" width="350" height="600" alt="login">
   <img src="https://github.com/user-attachments/assets/59f97b55-b352-4064-914d-ce26f25ccf35" width="300" height="600" alt="login">
 <br/>
-   <img src="https://github.com/user-attachments/assets/886ee462-be38-4d09-81d8-f014c23b8977" width="300" height="600" alt="login">
-   <img src="https://github.com/user-attachments/assets/d818bd74-d073-49f8-a6a5-4e6ce1725451" width="300" height="600" alt="login">
-   <img src="https://github.com/user-attachments/assets/2692cdbd-a18c-4838-a6eb-fcdad32c94e8" width="300" height="600" alt="login">
+   <img src="https://github.com/user-attachments/assets/886ee462-be38-4d09-81d8-f014c23b8977" width="280" height="600" alt="login">
+   <img src="https://github.com/user-attachments/assets/d818bd74-d073-49f8-a6a5-4e6ce1725451" width="280" height="600" alt="login">
+   <img src="https://github.com/user-attachments/assets/2692cdbd-a18c-4838-a6eb-fcdad32c94e8" width="280" height="600" alt="login">
 
 
 - 캘린더(생활 습관 기록)
