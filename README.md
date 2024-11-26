@@ -1,6 +1,6 @@
 # 🌞 따 숨
+![C103_광주1반_자율PJT_자유주제_따숨-01 (1)](https://github.com/user-attachments/assets/a96d9e5b-9dbd-4bbb-8ca1-57b8cbc005bf)
 
-<img alt='func5.1' src='./readme-image/DDASOOM.PNG'  style="padding:20px">
 
 ## 1️⃣ 프로젝트 개요
 
@@ -18,7 +18,7 @@
 
 | Contributors | Role | Position |
 | ------------ | ---- | -------- |
-| 손다인       | 팀장 | - BE     |
+|   손다인     | 팀장 | - BE     |
 | 　박지훈     | 팀원 | - BE     |
 | 　김두열     | 팀원 | - BE     |
 | 　김신범     | 팀원 | - BE     |
@@ -31,39 +31,107 @@
 ## 2️⃣ 서비스 기능 소개
 
 ### 🎈 **워치**
+
+
 - 실시간 심박수 측정
-- 호흡하기 연습
+<img src="https://github.com/user-attachments/assets/bcce58fc-516d-471b-bd92-6cb70a0447b6" width="300" height="300" alt="login">
+
+
+- 긴급 상황
+<img src="https://github.com/user-attachments/assets/68a571e8-8306-466b-a1e9-a1a948be0672" width="300" height="300" alt="login">
+
+
+- 호흡하기
+<img src="https://github.com/user-attachments/assets/2e6dbb1b-516d-48de-a338-9881e26b1db5" width="300" height="300" alt="login">
+
+
 ---
 
 ### 🎈 **앱**
 - 카카오 로그인
-- AI 보이스 녹음
-- 비상연락처 저장
-- 호흡하기 연습
-- 그라운딩 훈련
-- 안정화 기법
-- 긴급상황 저장
-- 생활습관 기록
-- 생활 리포트
+  
+   <img src="https://github.com/user-attachments/assets/9c7ac3fb-a9ba-46ce-a4af-787fe107889a" width="300" height="600" alt="login">
+
+   
 - 따소미 키우기 (상호작용)
+  
+  <img src="https://github.com/user-attachments/assets/e2ee18a8-a4fb-4baa-988d-734470ea35a4" width="300" height="600" alt="login">
+  <img src="https://github.com/user-attachments/assets/fe49ac3b-3db5-45d8-9a76-4dfddd41eb9c" width="300" height="600" alt="login">
+  <img src="https://github.com/user-attachments/assets/11cd1ee2-aeb0-4f5a-8857-1fc9050ba0ee" width="300" height="600" alt="login">
+
+
+
+- AI 보이스 녹음
+
+  ![새로운 프로젝트](https://github.com/user-attachments/assets/85584dc5-0758-4c32-8aaf-b2054797f183)
+  <img src="https://github.com/user-attachments/assets/c2c568cf-98ba-43c8-bb51-334f135272da" width="300" height="600" alt="login">
+
+ 
+- 비상연락처 저장
+
+    <img src="https://github.com/user-attachments/assets/ae760ecb-3638-4dea-babf-27055627aafc" width="300" height="650" alt="login">
+
+- 호흡하기 연습
+
+   <img src="https://github.com/user-attachments/assets/d95bd30c-8baa-4a3d-89a5-05ce384e8743" width="350" height="600" alt="login">
+
+- 그라운딩 훈련
+
+  ![그라운딩](https://github.com/user-attachments/assets/b9439593-0a7e-4de8-bf91-51bd169cd3db)
+
+- 안정화 기법
+
+
+  <img src="https://github.com/user-attachments/assets/cbec30c0-6414-42da-b1bc-f6e815e74be4" width="350" height="600" alt="login">
+  <img src="https://github.com/user-attachments/assets/59f97b55-b352-4064-914d-ce26f25ccf35" width="300" height="600" alt="login">
+<br/>
+  <img src="https://github.com/user-attachments/assets/886ee462-be38-4d09-81d8-f014c23b8977" width="300" height="600" alt="login">
+  <img src="https://github.com/user-attachments/assets/886ee462-be38-4d09-81d8-f014c23b8977" width="300" height="600" alt="login">
+  <img src="https://github.com/user-attachments/assets/2692cdbd-a18c-4838-a6eb-fcdad32c94e8" width="300" height="600" alt="login">
+
+- 긴급상황
+
+  
+- 캘린더(생활 습관 기록)
+
+  ![캘린더](https://github.com/user-attachments/assets/31274902-3f7f-4a0e-aa6d-90e12fdbf375)
+
+  
+- 자가진단
+
+  
+![자가진단](https://github.com/user-attachments/assets/37cbc8e7-8703-4936-b015-c5c3c0d2fc6e)
+
+  <img src="https://github.com/user-attachments/assets/b6708c3a-8ef9-4154-8dc6-3dff7ba69779" width="300" height="600" alt="login">
+  <img src="https://github.com/user-attachments/assets/f5d128d8-ec0e-43b0-a163-51053a450bb6" width="300" height="600" alt="login">
+  <img src="https://github.com/user-attachments/assets/184b32d0-9d79-4355-9003-487657b5fd5f" width="300" height="600" alt="login">
+
+
+
+- 생활 리포트
+
+  <img src="https://github.com/user-attachments/assets/21123519-a1d3-4b94-9061-cc2a30684a38" width="350" height="600" alt="login">
+  <img src="https://github.com/user-attachments/assets/3b3a9f26-b7fc-4e84-9f8f-c2d06c7a7340" width="300" height="600" alt="login">
+  <img src="https://github.com/user-attachments/assets/a911be38-bd09-4631-8c93-c4d81c5f6333" width="300" height="600" alt="login">
+
+
+
 ---
 
 ### 🎈 **블루투스 키링**
+
 - 비닐봉지 내장, 호흡 보조도구
 - 손난로 기능
+
+  
+  <img src="https://github.com/user-attachments/assets/88beaab1-c8f2-4ba0-a3f3-6948caab19c2" width="300" height="600" alt="login">
+  
 ---
 
 ## 3️⃣ 프로젝트 설계
 
 ### 🎈 **기술 스택**
 
-FE: Next.js, Expo, tailwind, react query, redux toolkit
-
-BE: Java 17, SpringBoot 3.x.x, Kafka
-
-DB: MySQL, Redis
-
-Infra: Ubuntu, Docker
 
   <h3>AI</h3>
   <p>
@@ -128,46 +196,9 @@ Infra: Ubuntu, Docker
 
  <img alt='func5.1' src='./readme-image/아키텍쳐.PNG'  style="padding-left: 45px;">
 
-## 4️⃣ Git Commit Convention
+### 🎈 **아두이노**
 
-### 🎈 **1. 타입**
 
-- `FEAT`: 새로운 기능 추가(API 스펙 변경)
-- `FIX`: 버그 수정
-- `DEL`: 사용하지 않는 파일, 코드 삭제
-- `DOCS`: 문서 수정
-- `STYLE`: 코드 스타일 변경(white-space, formatting, missing semi-colons, etc)
-- `REFACTOR`: 코드 리팩토링(기능 변경x) -> 객체 책임 분리, 구조변경
-- `TEST`: 테스트 코드 추가
-- `CHORE`: 빌드 업무 수정, 패키지 매니저 수정 (.gitignore 수정 등)
-- `DESIGN`: UI 스타일 변경
-- `REVERT`: 이전 커밋으로 되돌리기
-- `RENAME`: 파일명 또는 폴더명 변경 및 이동
+ ![C103_광주1반_자율PJT_자유주제_따숨-25](https://github.com/user-attachments/assets/f0906a92-e004-4c30-a33e-273b8fda9a52)
 
-### 🎈 **2. 커밋 메시지 형식**
 
-- `[타입] #{이슈 번호} 커밋 메시지`
-  - ex) `[FEAT] #17 유저 엔티티 추가`
-
-### 🎈 **3. 작성 시 유의점**
-
-- 제목 끝에 마침표 붙이지 않기
-- “어떻게” 보다는 “무엇, 왜”를 중심으로 작성하기
-- 본문 작성이 필요한 경우 제목과 빈 행을 한 줄 띄어 구분
-
-### 🎈 **4. 브랜치 네이밍**
-
-- `feature/#{이슈 번호}`
-- ex) `feature/#15`
-- 무조건 브랜치 이름은 `feature/#{이슈 번호}` 로
-  - 디자인, 리팩토링, 버그 픽스 등은 git lab issue에 Labels를 이용해서 표기
-  - 이슈 이름에 리팩토링, 버그 픽스, 디자인 등을 명시
-    - ex) 여행 계좌 생성 기능 리팩토링
-    - ex) 여행 계좌 ui 디자인
-
-### 🎈 **5. Merge Request 네이밍**
-
-- 제목: `#{이슈 번호} {이슈 제목}`
-- ex) `#15 유저 엔티티 생성`
-- 본문에 `close #{이슈 번호}` 입력
-  - merge 시 issue 자동으로 닫힘
