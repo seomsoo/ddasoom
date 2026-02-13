@@ -24,15 +24,16 @@
 
 ### 팀원 소개
 
+
 | 구분 | 이름   | 역할 | 포지션  | 담당                                       |
 | ---- | ------ | ---- | ------- | ------------------------------------------ |
-| FE   | 강창우 | 팀원 | FE, App | 워치, 아두이노                             |
-| FE   | 김민영 | 팀원 | FE, Web | 캘린더, 비상연락처, 리포트                 |
-| FE   | 서민수 | 팀원 | FE, Web | 훈련, 게이미피케이션, 설정페이지, 자가진단 |
-| BE   | 김두열 | 팀원 | BE      | -                                          |
-| BE   | 김신범 | 팀원 | BE      | -                                          |
-| BE   | 박지훈 | 팀원 | BE      | -                                          |
-| BE   | 손다인 | 팀장 | BE      | -                                          |
+| FE   | [강창우](https://github.com/monam2) | 팀원 | FE, App | 워치, 아두이노                             |
+| FE   | [김민영](https://github.com/minyeong981) | 팀원 | FE, Web | 캘린더, 비상연락처, 리포트                 |
+| FE   | [서민수](https://github.com/seomsoo) | 팀원 | FE, Web | 훈련, 게이미피케이션, 설정페이지, 자가진단 |
+| BE   | [김두열](https://github.com/enduf7686) | 팀원 | BE      | -                                          |
+| BE   | [김신범](https://github.com/ShinBeomKim) | 팀원 | BE      | -                                          |
+| BE   | [박지훈](https://github.com/JiHunparkkk) | 팀원 | BE      | -                                          |
+| BE   | [손다인](https://github.com/dain0826) | 팀장 | BE      | -                                          |
 
 ## 서비스 기능 소개
 
